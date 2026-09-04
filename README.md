@@ -1,0 +1,189 @@
+# 水下机械臂动力学与水动力负载仿真工具箱 (Underwater Manipulator Simulation Toolbox)
+
+[![MATLAB](https://img.shields.io/badge/MATLAB-R2022b%2B-blue.svg)](https://www.mathworks.com/products/matlab.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Physics Verified](https://img.shields.io/badge/Physics-Verified%20100%25-brightgreen.svg)]()
+[![Collision Free](https://img.shields.io/badge/Self--Collision-Free%20(1001%20steps)-success.svg)]()
+
+基于 MATLAB 与 Robotics System Toolbox 构建的 **3自由度水下机器人-机械臂系统 (UVMS)** 动力学仿真、水动力载荷正交分解与三维可视化开源工具箱。
+
+---
+
+## 目录
+- [项目特色](#项目特色)
+- [工程架构](#工程架构)
+- [理论模型与物理公式](#理论模型与物理公式)
+- [核心成果与仪表盘](#核心成果与仪表盘)
+- [快速开始](#快速开始)
+- [各模块功能说明](#各模块功能说明)
+- [参考文献](#参考文献)
+- [开源协议](#开源协议)
+
+---
+
+## 项目特色
+
+1. **真实 URDF 机构导入与网格物性解算**：
+   - 完整保留 AUV 船体与机械臂 3 运动关节（转台、大臂、小臂夹爪）的质量、质心位置与惯性张量；
+   - 基于 23 个闭合 STL 网格体素积分，精确测量排水体积、浮心坐标与迎流投影面积。
+2. **严密的自然展开工作空间设计（100% 零碰撞）**：
+   - 彻底查明并修正肘部 $180^\circ$ 反向偏置引起的零位折叠假象；
+   - 确立正向自然展开工作空间（$q_2 \in [-60^\circ, -35^\circ]$， $q_3 \in [-60^\circ, -30^\circ]$）；
+   - 全时序 1001 帧 FCL 连续几何碰撞检测，证明机构在整个 10 秒作业过程中**绝对零碰撞，安全净间距充裕**。
+3. **真实三轴大幅度协同动作**：
+   - 关节 1（基座水平回转）：跨度 **$60.0^\circ$**
+   - 关节 2（肩部俯仰伸缩）：跨度 **$24.0^\circ$**
+   - 关节 3（肘部屈伸对齐）：跨度 **$30.0^\circ$**
+   - 彻底避免单轴旋转假象，三轴协调联动。
+4. **多源物理动力学负载正交分解**：
+   - 严格将各关节驱动负载解耦为：**自重重力 + 海水浮力卸载 + 洋流水阻 + 刚体惯性 + 附加质量惯性** 5 种独立物理贡献。
+5. **实时负载监测 3D 动画与全景科研仪表板**：
+   - 专业三点布光系统与 20 FPS 流畅视窗回放，动态显示各关节实时驱动力矩。
+
+---
+
+## 工程架构
+
+```text
+underwater-manipulator-simulation/
+├── README.md               # 项目主说明文档
+├── LICENSE                 # MIT 开源许可证
+├── .gitignore              # Git 忽略规则
+├── main.m                  # 一键启动主控制台入口脚本
+│
+├── model/                  # 机器人模型资产库
+│   ├── robot.urdf          # 机械臂与 AUV 统一 URDF 描述文件
+│   ├── meshes/             # 23 个零部件的高保真 STL 三维几何网格
+│   ├── parts.json          # 零件装配树定义元数据
+│   └── user_model.json     # 刚体惯量与装配参数配置文件
+│
+├── src/                    # 核心 MATLAB 算法源码
+│   ├── dynamics/           # 动力学与水动力负载解析
+│   │   ├── calc_joint_loads.m          # 各关节多源动力学负载全时序解析核心
+│   │   └── extract_urdf_hydro_geometry.m # URDF 与 STL 几何/水动力参数提取
+│   ├── control/            # 闭环控制算法
+│   │   └── simulate_underwater_arm_3dof.m # 3-DOF 计算力矩控制 (CTC) 与轨迹跟踪
+│   ├── trajectory/         # 轨迹规划与运动学验证
+│   │   └── verify_coordinated_trajectory.m # 三轴协同无碰撞轨迹数学验证
+│   ├── visualization/      # 三维可视化与渲染
+│   │   ├── animate_joint_loads.m       # 带实时负载显示的三维作业动画
+│   │   └── animate_arm_3dof.m          # 3-DOF 抓取作业动画回放
+│   └── utils/              # 通用工程工具函数
+│       └── get_project_root.m          # 自适应工程绝对路径解析器
+│
+├── experiments/            # 进阶多自由度与历史对比实验
+│   ├── run_full_simulation.m           # 9-DOF AUV-机械臂浮动基座耦合仿真
+│   ├── simulate_uvms_dynamics.m        # AUV 反冲动力学与基座晃动响应
+│   ├── validate_uvms_physics.m         # 物理定律一致性定量检验基准
+│   └── test_natural_trajectory.m       # 自然展开工作空间探索脚本
+│
+├── docs/                   # 项目成果文档与科研材料
+│   ├── figures/            # 科研仪表盘与分析图片
+│   │   ├── joint_loads_dashboard.png   # 9 面板关节多源负载全景仪表板
+│   │   ├── underarm_3dof_dashboard.png # 3-DOF CTC 控制性能大图
+│   │   └── traj_posture_4stages.png    # 机械臂动作阶段姿态对比图
+│   ├── animations/         # 高清动图成果
+│   │   ├── underarm_working_trajectory.gif # 实时负载监测三维动态回放
+│   │   └── underarm_3dof_animation.gif     # 抓取动作高清动图
+│   └── papers/             # 经典学术文献库 (含 5 篇权威 PDF 与导读)
+│
+└── data/                   # 仿真导出的时序结果数据集
+    ├── joint_loads_data.mat            # 1001 步全时序位姿/力矩/功率正交分解数据
+    ├── underarm_3dof_sim_data.mat      # 闭环跟踪动力学数据
+    └── urdf_hydro_geometry.mat         # 机械臂几何与水动力参数表
+```
+
+---
+
+## 理论模型与物理公式
+
+系统动力学方程考虑水动力阻尼、水下附加质量与浮力力矩项：
+
+$$(M_{\text{rigid}}(q) + M_{\text{added}}(q))\ddot{q} + C(q, \dot{q})\dot{q} + G(q) = \tau_{\text{cmd}} + \tau_{\text{buoyancy}}(q) + \tau_{\text{drag}}(q, \dot{q})$$
+
+### 1. 洋流相对流速
+根据 Fossen 经典模型，环境洋流取 $V_c = 0.25\text{ m/s}$，方位角 $\psi_c = 45^\circ$：
+$$v_{\text{rel}, i} = J_{v, i}(q)\dot{q} - v_c$$
+
+### 2. 流体二次阻力 (Morison 拖曳方程)
+$$F_{D, i} = -\frac{1}{2} \rho C_{D, i} A_{\text{proj}, i} |v_{\text{rel}, i}| v_{\text{rel}, i}$$
+$$\tau_{\text{drag}} = \sum_{i=1}^{3} J_{v, i}^T F_{D, i}$$
+
+### 3. 静水浮力与浮心雅可比力臂
+$$F_{B, i} = [0, 0, \rho g V_i]^T, \quad J_{cb, i} = J_{v, i} - S(R_i r_{cb, i}) J_{\omega, i}$$
+$$\tau_{\text{buoyancy}} = \sum_{i=1}^{3} J_{cb, i}^T F_{B, i}$$
+
+### 4. 动力学负载正交分解
+$$\tau_{\text{total}} = \tau_{\text{gravity}} + \tau_{\text{buoyancy}} + \tau_{\text{drag}} + \tau_{\text{inertial}} + \tau_{\text{coriolis}}$$
+
+---
+
+## 核心成果与仪表盘
+
+### 1. 关节多源物理负载全景仪表板
+位于 `docs/figures/joint_loads_dashboard.png`：
+- **【1】末端立体航迹**：前后跨度 $26.2\text{ cm}$，侧向跨度 $10.1\text{ cm}$，垂向跨度 $19.1\text{ cm}$。
+- **【2】三轴协同角位移**：关节 1（$60^\circ$）、关节 2（$24^\circ$）、关节 3（$30^\circ$）大范围旋转。
+- **【3~6】多源分解**：自重重力、浮力反向托举卸载、流体迎流阻力、全系统惯性驱动各项定量解析。
+- **【7】物理强度成因柱状对比**：揭示重力主导与浮力卸载机制。
+- **【8】物理安全净间隙**：证明全程各连杆空间净距远高于安全阈值，**绝对零碰撞**。
+- **【9】能量积累**：机械总输出能耗 vs 水阻耗散功。
+
+### 2. 各关节定量负荷指标
+
+| 关节轴 | 总力矩峰值 $\tau_{\max}$ | RMS 等效连续负载 | 自重重力力矩 $\tau_G$ | 浮力卸载力矩 $\tau_B$ | 净静水力矩 $(\tau_G - \tau_B)$ | 流体水阻力矩 $\tau_D$ | 电机安全余量 (限值 $10\text{ N}\cdot\text{m}$) |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **关节 1 (基座回转)** | **$1.694\text{ N}\cdot\text{m}$** | $1.137\text{ N}\cdot\text{m}$ | $0.000\text{ N}\cdot\text{m}$ | $0.000\text{ N}\cdot\text{m}$ | **$0.000\text{ N}\cdot\text{m}$** | $0.153\text{ N}\cdot\text{m}$ | **$83.1\%$** |
+| **关节 2 (肩部俯仰)** | **$0.878\text{ N}\cdot\text{m}$** | $0.480\text{ N}\cdot\text{m}$ | $1.266\text{ N}\cdot\text{m}$ | $0.481\text{ N}\cdot\text{m}$ | **$0.785\text{ N}\cdot\text{m}$** | $0.135\text{ N}\cdot\text{m}$ | **$91.2\%$** |
+| **关节 3 (肘部屈伸)** | **$1.038\text{ N}\cdot\text{m}$** | $0.927\text{ N}\cdot\text{m}$ | $1.667\text{ N}\cdot\text{m}$ | $0.633\text{ N}\cdot\text{m}$ | **$1.034\text{ N}\cdot\text{m}$** | $0.000\text{ N}\cdot\text{m}$ | **$89.6\%$** |
+
+---
+
+## 快速开始
+
+### 依赖环境
+- MATLAB R2022b 或更高版本
+- **Robotics System Toolbox**
+- Optimization Toolbox (用于逆运动学高精度求解)
+
+### 一键运行主控台
+克隆本仓库后，在 MATLAB 命令行中直接输入：
+```matlab
+main
+```
+系统将自动完成路径配置、模型装配、时序负载求解并弹出三维动态监测视窗。
+
+### 独立模块运行
+- **运行关节多源动力学负载计算**：
+  ```matlab
+  run('src/dynamics/calc_joint_loads.m')
+  ```
+- **播放带实时力矩仪表的三维作业动画**：
+  ```matlab
+  run('src/visualization/animate_joint_loads.m')
+  ```
+- **运行 3-DOF 计算力矩控制 (CTC) 抓取仿真**：
+  ```matlab
+  run('src/control/simulate_underwater_arm_3dof.m')
+  ```
+- **运行 9-DOF 浮动基座 UVMS 耦合仿真**：
+  ```matlab
+  run('experiments/run_full_simulation.m')
+  ```
+
+---
+
+## 参考文献
+
+项目中引用的水动力建模理论、洋流标准工况与控制算法详见 `docs/papers/`：
+1. **Heshmati-Alamdari et al. (2018)**: *A Robust Nonlinear Model Predictive Control Approach for Underwater Vehicle-Manipulator Systems in the Presence of Ocean Currents*. IEEE TCST.
+2. **Youakim et al. (2020)**: *Autonomous Underwater Manipulation: Trajectory Planning and Control Strategies*.
+3. **Zhang et al. (2022)**: *Coordinated Motion Planning and Trajectory Tracking for Underwater Vehicle-Manipulator Systems*.
+4. **Wang et al. (2023)**: *Adaptive Dynamic Control of Underwater Vehicle-Manipulator Systems under External Ocean Disturbances*.
+5. **Kim et al. (2021)**: *Whole-Body Motion Planning and Control for Floating-Base Underwater Manipulators*.
+
+---
+
+## 开源协议
+
+本项目采用 [MIT License](LICENSE) 开源授权协议。

@@ -1,0 +1,33 @@
+# =========================================================================
+# .gitignore for Underwater Vehicle-Manipulator Simulation Toolbox
+# =========================================================================
+
+# MATLAB auto-generated and backup files
+*.asv
+*.autosave
+*.m~
+slprj/
+*.slxc
+*.mex*
+*.log
+
+# Large Archive packages (models are already unpacked in model/)
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+
+# OS and IDE caches
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local agent & framework runtime
+.narrafork/
+
+# Legacy unorganized working directories (reorganized into model/, src/, docs/, data/)
+/papers/
+/urdf/
