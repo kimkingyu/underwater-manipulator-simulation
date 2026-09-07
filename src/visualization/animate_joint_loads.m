@@ -9,7 +9,12 @@
 
 clear; clc;
 
-rootDir = get_project_root();
+% 自动定位工程根目录并装载路径
+currentScript = mfilename('fullpath');
+visDir        = fileparts(currentScript);
+srcDir        = fileparts(visDir);
+rootDir       = fileparts(srcDir);
+
 addpath(genpath(fullfile(rootDir, 'src')));
 
 dataFile = fullfile(rootDir, 'data', 'joint_loads_data.mat');

@@ -1,5 +1,8 @@
 %% verify_coordinated_trajectory.m
-robot = importrobot('D:/work4/urdf/robot.urdf');
+currentScript = mfilename('fullpath');
+rootDir  = fileparts(fileparts(fileparts(currentScript)));
+urdfPath = fullfile(rootDir, 'model', 'robot.urdf');
+robot = importrobot(urdfPath);
 robot.DataFormat = 'row';
 tcpOffset = [0.280, -0.030, -0.0168];
 

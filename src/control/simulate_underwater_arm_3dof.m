@@ -27,7 +27,9 @@ fprintf('   3-DOF 水下机械臂系统 深度优化动力学与高阶轨迹跟�
 fprintf('========================================================================\n\n');
 
 scriptDir = fileparts(mfilename('fullpath'));
-urdfPath = fullfile(scriptDir, 'robot.urdf');
+srcDir    = fileparts(scriptDir);
+rootDir   = fileparts(srcDir);
+urdfPath  = fullfile(rootDir, 'model', 'robot.urdf');
 
 if ~isfile(urdfPath)
     error('未在目录中找到模型文件: %s', urdfPath);
@@ -108,33 +110,30 @@ fprintf('  - 夹爪 TCP 抓取中心相对偏置: [%.3f, %.3f, %.3f] m\n\n', tcp
 %% =========================================================================
 %% 3. 目标抓取点设定、工作空间校验与逆运动学 (IK) 求解
 %% =========================================================================
-% 设定世界坐标系下的期望抓取目标点 (位于展开工作空间核心作业区)
-target_pos = [-0.075, 0.247, -0.327]; % [X, Y, Z] 单位: m
+% 机械臂待机就绪姿态 (基于绝对无碰撞黄金安全区: q2 in [-60°, -35°], q3 in [-60°, -30°])
+q0 = [0.0, deg2rad(-36.0), deg2rad(-45.0)];
 
-% 机械臂待机就绪姿态 (脱离零位折叠区，肘部关节天然展开 45°，杜绝连杆内部干涉)
-q0 = [deg2rad(0), deg2rad(15), deg2rad(45)]; % [0°, 15°, 45°]
+% 期望抓取目标点位姿 (位于 AUV 舷侧开阔水区)
+q_goal_target = [deg2rad(25.0), deg2rad(-55.0), deg2rad(-35.0)];
+target_pos = get_tcp_world_pos(robot, q_goal_target, tcpOffset);
 
-% 1) 利用 Levenberg-Marquardt 算法进行全局逆解粗寻优
-ik = inverseKinematics('RigidBodyTree', robot);
-ik.SolverParameters.MaxIterations = 200;
-ik.SolverParameters.SolutionTolerance = 1e-5;
-weights = [0, 0, 0, 1, 1, 1]; % 3-DOF 机械臂严格约束空间 X, Y, Z 三维坐标
-[q_init_ik, solInfo] = ik('link_004', trvec2tform(target_pos), weights, q0);
-
-% 2) 引入针对实际夹爪 TCP 偏移的高精度二次非线性规划细化求解
-% 【关键物理防干涉约束】: 强制约束肘部 q3 处于展开作业区 [35°, 90°]，彻底杜绝折叠干涉
-costFunc = @(q) norm(get_tcp_world_pos(robot, q, tcpOffset) - target_pos);
-joint_lb = [-1.57, -1.57, deg2rad(35.0)]; % 肘关节强制下限 35°，防止反折
-joint_ub = [ 1.57,  1.57, deg2rad(88.0)]; % 肘关节上限 88°
+% 1) 引入针对实际夹爪 TCP 偏移的高精度二次非线性规划细化求解
+% 【关键物理防干涉约束】: 强制约束肘部 q3 处于开阔自然舒展区 [-60°, -25°]，彻底杜绝折叠干涉
+costFunc = @(q) norm(get_tcp_world_pos(robot, q, tcpOffset) - target_pos)^2 + 1e-4*norm(q - q0)^2;
+joint_lb = [deg2rad(-85.0), deg2rad(-65.0), deg2rad(-65.0)];
+joint_ub = [deg2rad( 85.0), deg2rad(-35.0), deg2rad(-25.0)];
 
 optOptions = optimoptions('fmincon', 'Display', 'none', 'Algorithm', 'sqp', ...
     'OptimalityTolerance', 1e-8, 'ConstraintTolerance', 1e-8);
-q_goal = fmincon(costFunc, q_init_ik, [], [], [], [], joint_lb, joint_ub, [], optOptions);
+q_goal = fmincon(costFunc, q_goal_target, [], [], [], [], joint_lb, joint_ub, [], optOptions);
 
-% 3) 校验目标位姿下的雅可比可操纵度 (Yoshikawa Manipulability Measure) 排除奇异点
-J_goal = geometricJacobian(robot, q_goal, 'link_004');
-J_pos_goal = J_goal(4:6, :); % 位置雅可比 3x3
-manipulability = sqrt(max(0, det(J_pos_goal * J_pos_goal.')));
+% 2) 校验目标位姿下的雅可比可操纵度 (Yoshikawa Manipulability Measure) 排除奇异点
+T4 = getTransform(robot, q_goal, 'link_004');
+R4 = T4(1:3, 1:3);
+J_geom = geometricJacobian(robot, q_goal, 'link_004');
+r_tcp_w = R4 * tcpOffset.';
+J_tcp_pos = J_geom(4:6, :) - skew(r_tcp_w) * J_geom(1:3, :);
+manipulability = sqrt(max(0, det(J_tcp_pos * J_tcp_pos.')));
 
 actual_err_mm = norm(get_tcp_world_pos(robot, q_goal, tcpOffset) - target_pos) * 1000;
 
@@ -252,8 +251,9 @@ for k = 1:nSteps
     e_vel = (qd_des(k, :) - qd).';
     v_acc = (qdd_des(k, :)').' + (Kv_mat * e_vel).' + (Kp_mat * e_pos).';
     
-    % 动力学前馈完全解耦控制
-    tau_ideal = (M_total * v_acc.').' + C_term + G_term - tau_buoy - tau_drag;
+    % 动力学前馈完全解耦控制 (前馈模型须与被控对象完全同构，含附加质量科氏项)
+    C_add_tau = (eval_added_mass_coriolis(robot, q, qd, hydro) * qd.').';
+    tau_ideal = (M_total * v_acc.').' + C_term + C_add_tau + G_term - tau_buoy - tau_drag;
     
     % 施加电机物理硬件力矩饱和限制
     tau_cmd = max(min(tau_ideal, max_torque_limit), -max_torque_limit);
@@ -378,14 +378,14 @@ grid on; xlabel('时间 / s'); ylabel('瞬时功率 / W');
 title('【6】能量转化 (流体阻尼耗散 vs 机械总功率)');
 legend('水动力阻尼耗散功率', '电机输出机械总功率', 'Location', 'best');
 
-dashImgPath = fullfile(scriptDir, 'underarm_3dof_dashboard.png');
+dashImgPath = fullfile(rootDir, 'docs', 'figures', 'underarm_3dof_dashboard.png');
 exportgraphics(fDash, dashImgPath, 'Resolution', 220);
 fprintf('全景科研分析图表已成功导出: %s\n', dashImgPath);
 
 %% =========================================================================
 %% 9. 导出完整仿真时序数据集 (.mat)
 %% =========================================================================
-matFilePath = fullfile(scriptDir, 'underarm_3dof_sim_data.mat');
+matFilePath = fullfile(rootDir, 'data', 'underarm_3dof_sim_data.mat');
 save(matFilePath, 'time', 'log_q', 'log_qd', 'log_qdd', 'log_tau_cmd', ...
     'log_tcp_pos', 'target_pos', 'q_des', 'qd_des', 'qdd_des', ...
     'env', 'hydro', 'tcpOffset', 'max_torque_limit');
@@ -415,39 +415,32 @@ function [M_add, tau_buoyancy, tau_drag, p_damp] = eval_underwater_link_hydro(ro
         T_body = getTransform(robot, q, bodyName);
         R_body = T_body(1:3, 1:3);
         
-        % 2. 局部浮心 CB 在世界坐标系下的位置
-        p_cb_world = R_body * hydro(i).cb_local.' + T_body(1:3, 4);
-        
-        % 3. 连杆几何浮力矢量 (竖直向上)
-        F_buoy_vec = [0.0; 0.0; env.rho * env.g * hydro(i).volume];
-        
-        % 计算浮心位置处的几何雅可比 (3x3 平移部分)
+        % 2. 几何雅可比 (角速度 1:3, 原点线速度 4:6)
         J_geom = geometricJacobian(robot, q, bodyName);
-        J_v = J_geom(4:6, :);
-        % 修正浮心力臂偏移雅可比
-        r_offset = R_body * hydro(i).cb_local.';
-        J_cb = J_v - skew(r_offset) * J_geom(1:3, :);
+        J_v    = J_geom(4:6, :);
+        J_w    = J_geom(1:3, :);
         
-        % 浮力对各关节产生的广义恢复力矩
+        % 3. 浮力与浮心 (CB) 雅可比力臂
+        F_buoy_vec = [0.0; 0.0; env.rho * env.g * hydro(i).volume];
+        r_cb_offset = R_body * hydro(i).cb_local.';
+        J_cb = J_v - skew(r_cb_offset) * J_w;
         tau_buoyancy = tau_buoyancy + (J_cb.' * F_buoy_vec).';
         
-        % 4. 连杆在质心处的空间线速度
-        v_link = J_v * qd.';
-        % 相对洋流速度: v_rel = v_link - v_current
-        v_rel = v_link - env.vc_world;
+        % 4. 连杆真实质心 (COM) 雅可比与流体二次拖曳阻力
+        r_com_offset = R_body * robot.Bodies{i}.CenterOfMass.';
+        J_com = J_v - skew(r_com_offset) * J_w;
         
-        % Morison 二次流体阻力方程: F_D = -0.5 * rho * Cd * A * |v_rel| * v_rel
+        v_com_link = J_com * qd.';
+        v_rel      = v_com_link - env.vc_world;
         v_rel_norm = norm(v_rel);
         F_drag_vec = -0.5 * env.rho * hydro(i).Cd * hydro(i).A_proj * v_rel_norm * v_rel;
         
-        % 流体拖曳阻力映射至各关节力矩
-        tau_drag = tau_drag + (J_v.' * F_drag_vec).';
+        tau_drag = tau_drag + (J_com.' * F_drag_vec).';
+        p_damp   = p_damp + abs(dot(F_drag_vec, v_com_link));
         
-        % 阻尼功率耗散
-        p_damp = p_damp + abs(dot(F_drag_vec, v_link));
-        
-        % 5. 附加质量矩阵在关节空间的投影: M_add = J_v.' * M_A_link * J_v
-        M_add = M_add + J_v.' * hydro(i).added_mass * J_v;
+        % 5. 附加质量张量在关节空间的严密投影映射
+        M_add_world = R_body * hydro(i).added_mass * R_body.';
+        M_add = M_add + J_com.' * M_add_world * J_com;
     end
 end
 
@@ -460,9 +453,47 @@ function qdd = eval_arm_accel(robot, q, qd, tau, hydro, env)
     [M_add, tau_buoy, tau_drag, ~] = eval_underwater_link_hydro(robot, q, qd, hydro, env);
     M_total = M_rigid + M_add;
     
-    % 正向动力学求解: qdd = M_total \ (tau - C - G + tau_buoy + tau_drag)
+    % 附加质量矩阵随构型变化必然诱导科氏/离心项，缺失将破坏拉格朗日方程自洽与能量守恒
+    C_add_tau = (eval_added_mass_coriolis(robot, q, qd, hydro) * qd.').';
+    
+    % 正向动力学求解: qdd = M_total \ (tau - C - C_add - G + tau_buoy + tau_drag)
     % 注: 浮力和水阻作为外部环境广义力，与电机控制力矩同在右侧
-    qdd = (M_total \ (tau - C_term - G_term + tau_buoy + tau_drag).').';
+    qdd = (M_total \ (tau - C_term - C_add_tau - G_term + tau_buoy + tau_drag).').';
+end
+
+% --- 仅计算附加质量矩阵 M_add(q) (供 Christoffel 数值微分调用) ---
+function M_add = eval_added_mass_matrix(robot, q, hydro)
+    M_add = zeros(3, 3);
+    for i = 1:numel(hydro)
+        T_body = getTransform(robot, q, hydro(i).name);
+        R_body = T_body(1:3, 1:3);
+        J_geom = geometricJacobian(robot, q, hydro(i).name);
+        r_com_world = R_body * robot.Bodies{i}.CenterOfMass.';
+        J_com = J_geom(4:6, :) - skew(r_com_world) * J_geom(1:3, :);
+        M_add = M_add + J_com.' * (R_body * hydro(i).added_mass * R_body.') * J_com;
+    end
+end
+
+% --- 附加质量诱导的科氏/离心矩阵 (Christoffel 第一类符号严格构造) ---
+function C_add = eval_added_mass_coriolis(robot, q, qd, hydro)
+    h = 1e-6;
+    dMdq = cell(3, 1);
+    for k = 1:3
+        dq = zeros(1, 3); dq(k) = h;
+        dMdq{k} = (eval_added_mass_matrix(robot, q + dq, hydro) - ...
+                   eval_added_mass_matrix(robot, q - dq, hydro)) / (2 * h);
+    end
+    
+    C_add = zeros(3, 3);
+    for i = 1:3
+        for j = 1:3
+            s = 0;
+            for k = 1:3
+                s = s + 0.5 * (dMdq{k}(i, j) + dMdq{j}(i, k) - dMdq{i}(j, k)) * qd(k);
+            end
+            C_add(i, j) = s;
+        end
+    end
 end
 
 % --- 三维向量反对称矩阵 (Skew-symmetric matrix) ---

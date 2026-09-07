@@ -31,3 +31,8 @@ desktop.ini
 # Legacy unorganized working directories (reorganized into model/, src/, docs/, data/)
 /papers/
 /urdf/
+
+# Personal / administrative documents unrelated to the simulation toolbox
+*.docx
+*.pdf
+~$*
