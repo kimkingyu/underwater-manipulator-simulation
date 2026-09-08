@@ -38,12 +38,17 @@ fAnim = figure('Name', '水下机械臂作业轨迹与关节负载实时监测',
 ax = axes('Parent', fAnim);
 hold(ax, 'on');
 
-set(ax, 'XLim', [-0.30, 0.30], 'YLim', [0.35, 0.80], 'ZLim', [-0.80, -0.30]);
+% 视框需容纳收拢停放姿态 (URDF 零位，臂贴于框架下方) 到完全伸展的全部行程，
+% 并保留部分 AUV 框架作为空间参照，以体现机械臂的悬挂安装关系。
+set(ax, 'XLim', [-0.32, 0.32], 'YLim', [0.30, 0.85], 'ZLim', [-0.75, -0.12]);
 axis(ax, 'manual');
 axis(ax, 'equal');
 grid(ax, 'on');
 set(ax, 'GridColor', [0.75, 0.82, 0.90], 'GridAlpha', 0.6);
-view(ax, 135, 25);
+% 视角选取: 转台扫掠主要发生在 X 方向 (±0.14 m)，Y 向位移很小。
+% 原 (135,25) 近似正对扫掠平面，60° 横扫在画面上被压成小幅摆动；
+% (210,25) 侧对该平面，左右扫掠幅度与末端弧线均能完整展开。
+view(ax, 210, 25);
 
 xlabel(ax, 'X (前向) / m', 'FontWeight', 'bold');
 ylabel(ax, 'Y (侧向) / m', 'FontWeight', 'bold');

@@ -18,6 +18,18 @@ slprj/
 *.7z
 *.rar
 
+# CAD source tree unpacked from model.zip (~42 MB of SolidWorks binaries).
+# The simulation reads model/meshes/*.stl and model/robot.urdf, both exported
+# from this tree, so the sources themselves are not needed in the repo.
+# Note these are the ONLY copy of the CAD originals -- back them up elsewhere.
+/机器人/
+*.SLDPRT
+*.SLDASM
+*.SLDDRW
+*.sldprt
+*.sldasm
+*.slddrw
+
 # OS and IDE caches
 .DS_Store
 Thumbs.db
