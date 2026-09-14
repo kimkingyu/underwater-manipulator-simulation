@@ -48,3 +48,10 @@ desktop.ini
 *.docx
 *.pdf
 ~$*
+
+# Surrogate artifacts that run_hydro_surrogate regenerates from fixed seeds.
+# The trained model, metrics and comparison figures ARE tracked; the sampled
+# datasets and per-row prediction dumps are not, to keep the repo small.
+data/hydro_surrogate/**/dataset.mat
+data/hydro_surrogate/**/test_predictions.csv
+data/hydro_surrogate/smoke/
