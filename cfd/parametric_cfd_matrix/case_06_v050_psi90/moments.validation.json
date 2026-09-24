@@ -1,0 +1,16 @@
+{
+  "valid": true,
+  "status": "completed",
+  "case_id": "case_06_v050_psi90",
+  "speed_mps": 0.5,
+  "azimuth_deg": 90.0,
+  "dt": 0.01,
+  "total_steps": 8,
+  "settled_torques": {
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_nm": -0.2099106248870112,
+    "j2_nm": 1.2794481387731331,
+    "j3_nm": 0.9453182489211535
+  }
+}

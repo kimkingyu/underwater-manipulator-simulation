@@ -1,0 +1,92 @@
+[
+  {
+    "case_id": "case_01_v025_psi00",
+    "speed_mps": 0.25,
+    "azimuth_deg": 0.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -0.2685613418877881,
+    "j2_cfd_nm": -0.08612760625876659,
+    "j3_cfd_nm": -0.07180177778387845
+  },
+  {
+    "case_id": "case_02_v025_psi45",
+    "speed_mps": 0.25,
+    "azimuth_deg": 45.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -0.2203489133218142,
+    "j2_cfd_nm": 0.31713116805983926,
+    "j3_cfd_nm": 0.3340889467766054
+  },
+  {
+    "case_id": "case_03_v025_psi90",
+    "speed_mps": 0.25,
+    "azimuth_deg": 90.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -0.009039701356342335,
+    "j2_cfd_nm": 0.512354451535381,
+    "j3_cfd_nm": 0.561533537744461
+  },
+  {
+    "case_id": "case_04_v050_psi00",
+    "speed_mps": 0.5,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "flow_time_s": 0.03,
+    "j1_cfd_nm": -1.006016354751784,
+    "j2_cfd_nm": -0.22904820517839247,
+    "j3_cfd_nm": -0.20942703668750862
+  },
+  {
+    "case_id": "case_05_v050_psi45",
+    "speed_mps": 0.5,
+    "azimuth_deg": 45.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -0.6882695964026032,
+    "j2_cfd_nm": 0.5242876330374358,
+    "j3_cfd_nm": 0.5319706074156233
+  },
+  {
+    "case_id": "case_06_v050_psi90",
+    "speed_mps": 0.5,
+    "azimuth_deg": 90.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -0.2099106248870112,
+    "j2_cfd_nm": 1.2794481387731331,
+    "j3_cfd_nm": 0.9453182489211535
+  },
+  {
+    "case_id": "case_07_v100_psi00",
+    "speed_mps": 1.0,
+    "azimuth_deg": 0.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -2.441808032469262,
+    "j2_cfd_nm": -0.819088655263988,
+    "j3_cfd_nm": 0.7717431685915959
+  },
+  {
+    "case_id": "case_08_v100_psi45",
+    "speed_mps": 1.0,
+    "azimuth_deg": 45.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": -2.293113674747873,
+    "j2_cfd_nm": 10.755208733590273,
+    "j3_cfd_nm": 0.34816901064265426
+  },
+  {
+    "case_id": "case_09_v100_psi90",
+    "speed_mps": 1.0,
+    "azimuth_deg": 90.0,
+    "step_used": 4,
+    "flow_time_s": 0.04,
+    "j1_cfd_nm": 0.426683687189664,
+    "j2_cfd_nm": 1.850903730571952,
+    "j3_cfd_nm": 1.018306403457548
+  }
+]
