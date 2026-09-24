@@ -14,7 +14,7 @@ if ischar(model) || (isstring(model) && isscalar(model))
     model = s.model;
 end
 if ~isstruct(model) || ~isfield(model,'schemaVersion') || model.schemaVersion ~= 2 ...
-        || ~isfield(model,'kind') || ~strcmp(model.kind,'fourier_buoyancy_tanh_dynamic')
+        || ~isfield(model,'kind') || ~ismember(model.kind, {'fourier_buoyancy_tanh_dynamic', 'small_sample_gpr_cfd'})
     error('hydro:ModelFormat','Unsupported hydro surrogate model format.');
 end
 X = hydro_surrogate_inputs(q,qd,qdd,vc);
@@ -30,16 +30,23 @@ if any(outside,'all')
             error('hydro:Extrapolation','Input exceeds the training extrema.');
     end
 end
-A0 = (X-model.xMean)./model.xScale;
 tau = zeros(size(X,1),3);
-for j = 1:3
-    A = A0;
-    net = model.networks{j};
-    for layer = 1:numel(net.weights)
-        A = A*net.weights{layer}.' + reshape(net.biases{layer},1,[]);
-        if layer < numel(net.weights), A = tanh(A); end
+if isfield(model, 'gpr_models') && ~isempty(model.gpr_models)
+    % Small-sample Gaussian Process Regression (GPR / Kriging)
+    for j = 1:3
+        tau(:,j) = predict(model.gpr_models{j}, X);
     end
-    tau(:,j) = A*model.yScale(j) + model.yMean(j);
+else
+    A0 = (X-model.xMean)./model.xScale;
+    for j = 1:3
+        A = A0;
+        net = model.networks{j};
+        for layer = 1:numel(net.weights)
+            A = A*net.weights{layer}.' + reshape(net.biases{layer},1,[]);
+            if layer < numel(net.weights), A = tanh(A); end
+        end
+        tau(:,j) = A*model.yScale(j) + model.yMean(j);
+    end
 end
 buoyancy = hydro_buoyancy_features(X(:,1:3))*model.buoyancyWeights;
 info.buoyancy = buoyancy;
