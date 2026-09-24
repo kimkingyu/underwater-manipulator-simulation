@@ -1,0 +1,15 @@
+{
+  "valid": true,
+  "status": "completed",
+  "case_id": "case_21_v040_psi90",
+  "speed_mps": 0.4,
+  "azimuth_deg": 90.0,
+  "dt": 0.01,
+  "total_steps": 3,
+  "settled_torques": {
+    "step_used": 3,
+    "j1_mean_nm": 0.2634053249121439,
+    "j2_mean_nm": -0.09401556215315465,
+    "j3_mean_nm": 0.7578521613897773
+  }
+}
