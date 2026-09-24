@@ -3,7 +3,7 @@ function [hydro, env] = underwater_hydro_defaults(robot)
 % SI units. These are assumed model parameters, not CFD-calibrated values.
 % Changing density/geometry/Cd/added mass requires retraining the surrogate.
 env = struct('rho', 1025.0, 'g', 9.81, 'current_speed', 0.25, ...
-    'current_psi', deg2rad(45), 'current_alpha', 0);
+    'current_psi', deg2rad(0), 'current_alpha', 0);
 env.vc_world = env.current_speed * [cos(env.current_alpha)*cos(env.current_psi); ...
     cos(env.current_alpha)*sin(env.current_psi); sin(env.current_alpha)];
 names = {'link_002', 'link_003', 'link_004'};

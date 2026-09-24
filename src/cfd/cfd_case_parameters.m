@@ -28,7 +28,7 @@ cfg.environment.densityKgM3 = 1025.0;
 cfg.environment.gravityMS2 = 9.81;
 cfg.environment.dynamicViscosityPaS = 1.05e-3;
 cfg.environment.currentSpeedMPS = 0.25;
-cfg.environment.currentAzimuthDeg = 45.0;
+cfg.environment.currentAzimuthDeg = 0.0;
 cfg.environment.currentElevationDeg = 0.0;
 
 cfg.geometry = struct();

@@ -46,7 +46,7 @@ env = struct();
 env.rho           = 1025.0;            % 海水标准密度 [kg/m^3]
 env.g             = 9.81;              % 重力加速度 [m/s^2]
 env.current_speed = 0.25;              % 洋流平均流速 [m/s] (近海作业典型值)
-env.current_psi   = deg2rad(45.0);     % 水平来流方位角 [rad] (45°斜向来流)
+env.current_psi   = deg2rad(0.0);      % 水平来流方位角 [rad] (0° 沿+X轴向直冲，严格对齐 Fluent 水槽长轴)
 env.current_alpha = deg2rad(0.0);      % 垂向迎流角 [rad]
 
 env.vc_world = [ env.current_speed * cos(env.current_alpha) * cos(env.current_psi); ...

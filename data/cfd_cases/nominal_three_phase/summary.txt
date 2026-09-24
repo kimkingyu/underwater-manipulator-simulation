@@ -10,6 +10,6 @@ total_time_s=10
 full_steps=1000
 density_kg_m3=1025
 current_speed_mps=0.25
-current_azimuth_deg=45
+current_azimuth_deg=0
 current_elevation_deg=0
 sign_convention=fluid_on_arm_positive_URDF_joint_axis
