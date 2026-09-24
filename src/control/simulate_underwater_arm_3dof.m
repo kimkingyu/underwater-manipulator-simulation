@@ -44,9 +44,9 @@ env.g           = 9.81;              % 重力加速度 [m/s^2]
 env.mu          = 1.08e-3;           % 动力黏度 [Pa*s]
 env.nu          = env.mu / env.rho;  % 运动黏度 [m^2/s]
 
-% 洋流场定义 (依据 Fossen 2011 海事标准洋流模型)
+% 洋流场定义 (依据 Fossen 2011 海事标准洋流模型，0° 轴向直冲严格对齐 Fluent 动网格水槽)
 env.current_speed = 0.25;            % 洋流速度标量大小 [m/s] (约 0.5 节，近海典型作业流)
-env.current_psi   = deg2rad(45.0);   % 水平来流方位角 [rad] (45°斜向，激发前后左右复合水阻)
+env.current_psi   = deg2rad(0.0);    % 水平来流方位角 [rad] (0° 沿+X轴向直冲)
 env.current_alpha = deg2rad(0.0);    % 垂向迎流角 [rad] (水平流动)
 
 % 世界坐标系下的环境流速三维矢量 [m/s]
@@ -56,7 +56,7 @@ env.vc_world = [ env.current_speed * cos(env.current_alpha) * cos(env.current_ps
 
 fprintf('[配置 1/5] 海水流体环境初始化:\n');
 fprintf('  - 海水密度: %.1f kg/m^3 | 重力: %.2f m/s^2\n', env.rho, env.g);
-fprintf('  - 洋流矢量: [%.3f, %.3f, %.3f] m/s (流速 %.2f m/s, 方位角 45.0°)\n\n', ...
+fprintf('  - 洋流矢量: [%.3f, %.3f, %.3f] m/s (流速 %.2f m/s, 方位角 0.0°)\n\n', ...
     env.vc_world(1), env.vc_world(2), env.vc_world(3), env.current_speed);
 
 %% =========================================================================
@@ -70,8 +70,7 @@ robot.Gravity = [0, 0, -env.g];
 % 夹爪抓取中心相对 link_004 坐标系的精确偏移 (基于前期 STL 网格三维测量得出)
 tcpOffset = [0.280, -0.030, -0.0168]; % [X, Y, Z] 单位: m
 
-% 各活动连杆的水动力物性参数 (直接采用前期从 STL 实体网格闭合积分得出的真实几何)
-% 注: 阻力系数 Cd 取圆柱与方盒复合体经验值 1.1，附加质量系数取 0.8
+% 各活动连杆的水动力物性参数 (采用 4.STEP CAD 原生迎水投影面积与 3D CFD 标定阻力系数)
 hydro = struct();
 
 % 连杆 1: link_002 (基座转台)
@@ -79,8 +78,8 @@ hydro(1).name       = 'link_002';
 hydro(1).mass       = 0.3298;        % 刚体质量 [kg]
 hydro(1).volume     = 0.0001222;     % 排水体积 [m^3]
 hydro(1).cb_local   = [0.0083, 0.0081, 0.0266]; % 局部浮心位置 [m]
-hydro(1).A_proj     = 0.0035;        % 平均迎流特征投影面积 [m^2]
-hydro(1).Cd         = 1.1;           % 二次拖曳阻力系数
+hydro(1).A_proj     = 0.0288;        % 4.STEP CAD 真实迎水特征投影面积 [m^2]
+hydro(1).Cd         = 0.77;          % 3D CFD 标定阻力系数
 hydro(1).added_mass = diag([0.10, 0.10, 0.05]); % 平移附加质量 [kg]
 
 % 连杆 2: link_003 (大臂)
@@ -88,8 +87,8 @@ hydro(2).name       = 'link_003';
 hydro(2).mass       = 1.6834;        % 刚体质量 [kg]
 hydro(2).volume     = 0.0006235;     % 排水体积 [m^3]
 hydro(2).cb_local   = [-0.0990, 0.0280, 0.0173]; % 局部浮心位置 [m]
-hydro(2).A_proj     = 0.0108;        % 平均迎流特征投影面积 [m^2]
-hydro(2).Cd         = 1.1;           % 二次拖曳阻力系数
+hydro(2).A_proj     = 0.0420;        % 4.STEP CAD 真实迎水特征投影面积 [m^2]
+hydro(2).Cd         = 0.77;          % 3D CFD 标定阻力系数
 hydro(2).added_mass = diag([0.45, 0.50, 0.20]); % 平移附加质量 [kg]
 
 % 连杆 3: link_004 (小臂与夹爪)
@@ -97,8 +96,8 @@ hydro(3).name       = 'link_004';
 hydro(3).mass       = 1.3667;        % 刚体质量 [kg]
 hydro(3).volume     = 0.0005062;     % 排水体积 [m^3]
 hydro(3).cb_local   = [0.1211, -0.0282, -0.0149]; % 局部浮心位置 [m]
-hydro(3).A_proj     = 0.0171;        % 平均迎流特征投影面积 [m^2]
-hydro(3).Cd         = 1.2;           % 二次拖曳阻力系数
+hydro(3).A_proj     = 0.0728;        % 4.STEP CAD 真实迎水特征投影面积 [m^2]
+hydro(3).Cd         = 0.84;          % 3D CFD 标定阻力系数
 hydro(3).added_mass = diag([0.40, 0.45, 0.25]); % 平移附加质量 [kg]
 
 fprintf('[配置 2/5] 机械臂机构与水动力参数装配完成:\n');

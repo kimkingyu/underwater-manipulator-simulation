@@ -34,7 +34,7 @@ cases = repmat(struct('id',0,'family','','split','','parameters',struct()),nCase
 for c = 1:nCases
     if c == 1
         p = struct('stow',[0 0 0], 'work',deg2rad([-30 -50 -55]), ...
-            'durations',[3 10 3], 'current',env.vc_world.');
+            'durations',[2.0 6.0 2.0], 'current',env.vc_world.');
         family = 'nominal_three_phase';
         [t,q,qd,qdd] = three_phase(p,n);
     elseif c <= cut
