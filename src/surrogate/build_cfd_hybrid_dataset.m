@@ -35,16 +35,35 @@ if isfile(phaseA_csv)
     end
 end
 
-% 1.2 9-Case Parametric CFD Matrix
-cfdSummaryFile = fullfile(root, 'cfd', 'parametric_cfd_matrix', 'cfd_matrix_verified_summary.json');
-if isfile(cfdSummaryFile)
-    cfdItems = jsondecode(fileread(cfdSummaryFile));
-    for i = 1:numel(cfdItems)
-        item = cfdItems(i);
-        csv_file = fullfile(root, 'cfd', 'parametric_cfd_matrix', item.case_id, 'moments.csv');
-        if isfile(csv_file)
-            t_csv = readtable(csv_file);
-            v_rows = find(t_csv.step_index >= 2 & abs(t_csv.j1_torque_nm) < 20.0);
+% 1.2 52-Case Full Parametric CFD Matrix (falling back to 9-case if needed)
+cfdSummaryFile52 = fullfile(root, 'cfd', 'parametric_cfd_matrix_52', 'cfd_52_matrix_summary.json');
+cfdSummaryFile9  = fullfile(root, 'cfd', 'parametric_cfd_matrix', 'cfd_matrix_verified_summary.json');
+
+if isfile(cfdSummaryFile52)
+    cfdItems = jsondecode(fileread(cfdSummaryFile52));
+    matDir = fullfile(root, 'cfd', 'parametric_cfd_matrix_52');
+elseif isfile(cfdSummaryFile9)
+    cfdItems = jsondecode(fileread(cfdSummaryFile9));
+    matDir = fullfile(root, 'cfd', 'parametric_cfd_matrix');
+else
+    cfdItems = [];
+end
+
+for i = 1:numel(cfdItems)
+    item = cfdItems(i);
+    csv_file = fullfile(matDir, item.case_id, 'moments.csv');
+    if isfile(csv_file)
+        t_csv = readtable(csv_file);
+        v_rows = find(t_csv.step_index >= 2 & abs(t_csv.j1_torque_nm) < 20.0);
+        if isempty(v_rows)
+            % Use summary torque as single representative row
+            psi = deg2rad(item.azimuth_deg);
+            vc = [item.speed_mps * cos(psi), item.speed_mps * sin(psi), 0.0];
+            x_k = hydro_surrogate_inputs([0 0 0], [0 0 0], [0 0 0], vc);
+            y_k = [item.j1_cfd_nm, item.j2_cfd_nm, item.j3_cfd_nm];
+            X_cfd = [X_cfd; x_k];
+            Y_cfd = [Y_cfd; y_k];
+        else
             psi = deg2rad(item.azimuth_deg);
             vc = [item.speed_mps * cos(psi), item.speed_mps * sin(psi), 0.0];
             for r = 1:numel(v_rows)

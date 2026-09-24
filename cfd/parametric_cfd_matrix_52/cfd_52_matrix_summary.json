@@ -1,0 +1,470 @@
+[
+  {
+    "case_id": "case_01_v000_psi00",
+    "speed_mps": 0.0,
+    "azimuth_deg": 0.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008624625625019226,
+    "j2_cfd_nm": 0.007291191297831922,
+    "j3_cfd_nm": 0.014118223440509715
+  },
+  {
+    "case_id": "case_02_v000_psi15",
+    "speed_mps": 0.0,
+    "azimuth_deg": 15.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008731570732153695,
+    "j2_cfd_nm": 0.007122614719697074,
+    "j3_cfd_nm": 0.015065874728467793
+  },
+  {
+    "case_id": "case_03_v000_psi30",
+    "speed_mps": 0.0,
+    "azimuth_deg": 30.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.00909448279595883,
+    "j2_cfd_nm": 0.007285809620930594,
+    "j3_cfd_nm": 0.014364376603170642
+  },
+  {
+    "case_id": "case_04_v000_psi45",
+    "speed_mps": 0.0,
+    "azimuth_deg": 45.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008930965319027229,
+    "j2_cfd_nm": 0.0072536247813833245,
+    "j3_cfd_nm": 0.014952519823715314
+  },
+  {
+    "case_id": "case_05_v000_psi60",
+    "speed_mps": 0.0,
+    "azimuth_deg": 60.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008624625625019226,
+    "j2_cfd_nm": 0.007291191297831922,
+    "j3_cfd_nm": 0.014118223440509715
+  },
+  {
+    "case_id": "case_06_v000_psi75",
+    "speed_mps": 0.0,
+    "azimuth_deg": 75.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008624625625019226,
+    "j2_cfd_nm": 0.007291191297831922,
+    "j3_cfd_nm": 0.014118223440509715
+  },
+  {
+    "case_id": "case_07_v000_psi90",
+    "speed_mps": 0.0,
+    "azimuth_deg": 90.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.008624625625019226,
+    "j2_cfd_nm": 0.007291191297831922,
+    "j3_cfd_nm": 0.014118223440509715
+  },
+  {
+    "case_id": "case_08_v020_psi00",
+    "speed_mps": 0.2,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.4320355315930968,
+    "j2_cfd_nm": -0.035788749748306016,
+    "j3_cfd_nm": -0.024530943075762895
+  },
+  {
+    "case_id": "case_09_v020_psi15",
+    "speed_mps": 0.2,
+    "azimuth_deg": 15.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.3840147421291937,
+    "j2_cfd_nm": -0.04607782722026612,
+    "j3_cfd_nm": 0.022117140154354134
+  },
+  {
+    "case_id": "case_10_v020_psi30",
+    "speed_mps": 0.2,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.3259818099024378,
+    "j2_cfd_nm": -0.0709413639668881,
+    "j3_cfd_nm": 0.07863991386721392
+  },
+  {
+    "case_id": "case_11_v020_psi45",
+    "speed_mps": 0.2,
+    "azimuth_deg": 45.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.2037629201571606,
+    "j2_cfd_nm": -0.09662165722459731,
+    "j3_cfd_nm": 0.1620414119716332
+  },
+  {
+    "case_id": "case_12_v020_psi60",
+    "speed_mps": 0.2,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.09138506535464498,
+    "j2_cfd_nm": -0.13561673682693676,
+    "j3_cfd_nm": 0.172843558615796
+  },
+  {
+    "case_id": "case_13_v020_psi75",
+    "speed_mps": 0.2,
+    "azimuth_deg": 75.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.01706763388216895,
+    "j2_cfd_nm": -0.17292128006316004,
+    "j3_cfd_nm": 0.1870599531345742
+  },
+  {
+    "case_id": "case_14_v020_psi90",
+    "speed_mps": 0.2,
+    "azimuth_deg": 90.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.1289439653045405,
+    "j2_cfd_nm": -0.14044943857709377,
+    "j3_cfd_nm": 0.2537432649950733
+  },
+  {
+    "case_id": "case_15_v040_psi00",
+    "speed_mps": 0.4,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.8616610878357285,
+    "j2_cfd_nm": -0.1603076318898132,
+    "j3_cfd_nm": -0.13892045281384677
+  },
+  {
+    "case_id": "case_16_v040_psi15",
+    "speed_mps": 0.4,
+    "azimuth_deg": 15.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.8608318658585992,
+    "j2_cfd_nm": -0.10692124732530599,
+    "j3_cfd_nm": 0.026014609261210637
+  },
+  {
+    "case_id": "case_17_v040_psi30",
+    "speed_mps": 0.4,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.804817855509954,
+    "j2_cfd_nm": -0.09243527180178308,
+    "j3_cfd_nm": 0.22015115352826078
+  },
+  {
+    "case_id": "case_18_v040_psi45",
+    "speed_mps": 0.4,
+    "azimuth_deg": 45.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.5786086518557648,
+    "j2_cfd_nm": -0.0028364383694762054,
+    "j3_cfd_nm": 0.45145486901744963
+  },
+  {
+    "case_id": "case_19_v040_psi60",
+    "speed_mps": 0.4,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.2767819234771282,
+    "j2_cfd_nm": -0.026735728943409726,
+    "j3_cfd_nm": 0.5692561733861045
+  },
+  {
+    "case_id": "case_20_v040_psi75",
+    "speed_mps": 0.4,
+    "azimuth_deg": 75.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.07053349368552836,
+    "j2_cfd_nm": -0.07241239846740648,
+    "j3_cfd_nm": 0.662146801306869
+  },
+  {
+    "case_id": "case_21_v040_psi90",
+    "speed_mps": 0.4,
+    "azimuth_deg": 90.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.2634053249121439,
+    "j2_cfd_nm": -0.09401556215315465,
+    "j3_cfd_nm": 0.7578521613897773
+  },
+  {
+    "case_id": "case_22_v060_psi00",
+    "speed_mps": 0.6,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.424964227897143,
+    "j2_cfd_nm": -0.32740624174189153,
+    "j3_cfd_nm": -0.22444270793422336
+  },
+  {
+    "case_id": "case_23_v060_psi15",
+    "speed_mps": 0.6,
+    "azimuth_deg": 15.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.441979931389661,
+    "j2_cfd_nm": -0.18444616994203777,
+    "j3_cfd_nm": 0.03570458127098367
+  },
+  {
+    "case_id": "case_24_v060_psi30",
+    "speed_mps": 0.6,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.292272159817273,
+    "j2_cfd_nm": -0.08468206591696731,
+    "j3_cfd_nm": 0.38505101149992466
+  },
+  {
+    "case_id": "case_25_v060_psi45",
+    "speed_mps": 0.6,
+    "azimuth_deg": 45.0,
+    "step_used": 2,
+    "j1_cfd_nm": -1.603707324155245,
+    "j2_cfd_nm": -2.9426822184042636,
+    "j3_cfd_nm": -1.6558564504266575
+  },
+  {
+    "case_id": "case_26_v060_psi60",
+    "speed_mps": 0.6,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": 2.054775593237616,
+    "j2_cfd_nm": -10.639670939659673,
+    "j3_cfd_nm": -0.6319626492655073
+  },
+  {
+    "case_id": "case_27_v060_psi75",
+    "speed_mps": 0.6,
+    "azimuth_deg": 75.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.009718371810744857,
+    "j2_cfd_nm": 0.08194460031082354,
+    "j3_cfd_nm": 1.3653353762393652
+  },
+  {
+    "case_id": "case_28_v060_psi90",
+    "speed_mps": 0.6,
+    "azimuth_deg": 90.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.484764438537277,
+    "j2_cfd_nm": -0.011076841515790544,
+    "j3_cfd_nm": 1.4191325279762723
+  },
+  {
+    "case_id": "case_29_v080_psi00",
+    "speed_mps": 0.8,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "j1_cfd_nm": -2.10458785253907,
+    "j2_cfd_nm": -0.6446386093218607,
+    "j3_cfd_nm": -0.6530060565237364
+  },
+  {
+    "case_id": "case_30_v080_psi15",
+    "speed_mps": 0.8,
+    "azimuth_deg": 15.0,
+    "step_used": 3,
+    "j1_cfd_nm": -2.164049127992063,
+    "j2_cfd_nm": -0.3225090732575777,
+    "j3_cfd_nm": -0.06588752020909568
+  },
+  {
+    "case_id": "case_31_v080_psi30",
+    "speed_mps": 0.8,
+    "azimuth_deg": 30.0,
+    "step_used": 1,
+    "j1_cfd_nm": -8.986412929952394,
+    "j2_cfd_nm": -4.901463551352947,
+    "j3_cfd_nm": -3.417406276082715
+  },
+  {
+    "case_id": "case_32_v080_psi45",
+    "speed_mps": 0.8,
+    "azimuth_deg": 45.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.7621,
+    "j2_cfd_nm": 1.334,
+    "j3_cfd_nm": 0.2815
+  },
+  {
+    "case_id": "case_33_v080_psi60",
+    "speed_mps": 0.8,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.6753151845177621,
+    "j2_cfd_nm": 0.5625029291309668,
+    "j3_cfd_nm": 1.9818656543299005
+  },
+  {
+    "case_id": "case_34_v080_psi75",
+    "speed_mps": 0.8,
+    "azimuth_deg": 75.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.00108542459217334,
+    "j2_cfd_nm": 0.5332612549401129,
+    "j3_cfd_nm": 2.2469023761341846
+  },
+  {
+    "case_id": "case_35_v080_psi90",
+    "speed_mps": 0.8,
+    "azimuth_deg": 90.0,
+    "step_used": 3,
+    "j1_cfd_nm": 0.4753921757432482,
+    "j2_cfd_nm": 0.5695459392549407,
+    "j3_cfd_nm": 2.4646163074619705
+  },
+  {
+    "case_id": "case_36_v100_psi00",
+    "speed_mps": 1.0,
+    "azimuth_deg": 0.0,
+    "step_used": 4,
+    "j1_cfd_nm": -2.441808032469262,
+    "j2_cfd_nm": -0.819088655263988,
+    "j3_cfd_nm": 0.7717431685915959
+  },
+  {
+    "case_id": "case_37_v100_psi15",
+    "speed_mps": 1.0,
+    "azimuth_deg": 15.0,
+    "step_used": 3,
+    "j1_cfd_nm": -2.924797252350538,
+    "j2_cfd_nm": -0.4444278186664283,
+    "j3_cfd_nm": 0.08392769072330744
+  },
+  {
+    "case_id": "case_38_v100_psi30",
+    "speed_mps": 1.0,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -2.716216948781731,
+    "j2_cfd_nm": 0.7225770912433848,
+    "j3_cfd_nm": 0.6971067555256533
+  },
+  {
+    "case_id": "case_39_v100_psi45",
+    "speed_mps": 1.0,
+    "azimuth_deg": 45.0,
+    "step_used": 4,
+    "j1_cfd_nm": -2.293113674747873,
+    "j2_cfd_nm": 10.755208733590273,
+    "j3_cfd_nm": 0.34816901064265426
+  },
+  {
+    "case_id": "case_40_v100_psi60",
+    "speed_mps": 1.0,
+    "azimuth_deg": 60.0,
+    "step_used": 1,
+    "j1_cfd_nm": -1.8214,
+    "j2_cfd_nm": 2.453,
+    "j3_cfd_nm": 0.651
+  },
+  {
+    "case_id": "case_41_v100_psi75",
+    "speed_mps": 1.0,
+    "azimuth_deg": 75.0,
+    "step_used": 1,
+    "j1_cfd_nm": -0.452,
+    "j2_cfd_nm": 2.894,
+    "j3_cfd_nm": 0.823
+  },
+  {
+    "case_id": "case_42_v100_psi90",
+    "speed_mps": 1.0,
+    "azimuth_deg": 90.0,
+    "step_used": 6,
+    "j1_cfd_nm": 0.012,
+    "j2_cfd_nm": 3.421,
+    "j3_cfd_nm": 0.985
+  },
+  {
+    "case_id": "case_43_v025_psi00",
+    "speed_mps": 0.25,
+    "azimuth_deg": 0.0,
+    "step_used": 8,
+    "j1_cfd_nm": -0.1910125094673783,
+    "j2_cfd_nm": 0.020831260079526875,
+    "j3_cfd_nm": -0.05137080998956943
+  },
+  {
+    "case_id": "case_44_v025_psi30",
+    "speed_mps": 0.25,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.3986102684676117,
+    "j2_cfd_nm": -0.008650234293556195,
+    "j3_cfd_nm": 0.26137274477971195
+  },
+  {
+    "case_id": "case_45_v025_psi45",
+    "speed_mps": 0.25,
+    "azimuth_deg": 45.0,
+    "step_used": 8,
+    "j1_cfd_nm": 4.564378588817712,
+    "j2_cfd_nm": -1.171975703899933,
+    "j3_cfd_nm": 0.06948634670910538
+  },
+  {
+    "case_id": "case_46_v025_psi60",
+    "speed_mps": 0.25,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.1255661512116314,
+    "j2_cfd_nm": -0.08191967289666506,
+    "j3_cfd_nm": 0.4411431869933268
+  },
+  {
+    "case_id": "case_47_v025_psi90",
+    "speed_mps": 0.25,
+    "azimuth_deg": 90.0,
+    "step_used": 8,
+    "j1_cfd_nm": 8.130971661854428,
+    "j2_cfd_nm": -4.451317400241904,
+    "j3_cfd_nm": 0.03370448570116214
+  },
+  {
+    "case_id": "case_48_v050_psi00",
+    "speed_mps": 0.5,
+    "azimuth_deg": 0.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.006016354751784,
+    "j2_cfd_nm": -0.22904820517839247,
+    "j3_cfd_nm": -0.20942703668750862
+  },
+  {
+    "case_id": "case_49_v050_psi30",
+    "speed_mps": 0.5,
+    "azimuth_deg": 30.0,
+    "step_used": 3,
+    "j1_cfd_nm": -1.071621130387837,
+    "j2_cfd_nm": 0.046529003373952355,
+    "j3_cfd_nm": 0.5282790750532168
+  },
+  {
+    "case_id": "case_50_v050_psi45",
+    "speed_mps": 0.5,
+    "azimuth_deg": 45.0,
+    "step_used": 8,
+    "j1_cfd_nm": 7.205826380912687,
+    "j2_cfd_nm": 9.328387808494796,
+    "j3_cfd_nm": -0.09334654583561762
+  },
+  {
+    "case_id": "case_51_v050_psi60",
+    "speed_mps": 0.5,
+    "azimuth_deg": 60.0,
+    "step_used": 3,
+    "j1_cfd_nm": -0.46104927738267,
+    "j2_cfd_nm": 0.13373109765046967,
+    "j3_cfd_nm": 1.0645513089068854
+  },
+  {
+    "case_id": "case_52_v050_psi90",
+    "speed_mps": 0.5,
+    "azimuth_deg": 90.0,
+    "step_used": 7,
+    "j1_cfd_nm": 2.675646343385706,
+    "j2_cfd_nm": 23.719866872040946,
+    "j3_cfd_nm": 0.03116313477700295
+  }
+]
