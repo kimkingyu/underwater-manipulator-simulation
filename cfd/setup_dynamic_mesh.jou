@@ -1,0 +1,129 @@
+; DISABLED: NOT VALIDATED IN FLUENT. ALL LEGACY LINES BELOW ARE COMMENTS.
+; This file performs no setup, mesh update, or solve operation.
+; Do not rely on the archived prompt order, timing, or safety claims below.
+; Re-enable only after recording and testing the commands in Fluent 2024 R2.
+; TUI journal commands must be read as a Journal, not as Scheme source.
+; =====================================================================
+; ; setup_dynamic_mesh.jou
+; ; 3-DOF 水下机械臂 Fluent 动网格区域自动配置
+; ;
+; ; 【区域归属】URDF link 分组 + STL 包围盒精确匹配 (误差 < 0.5 mm)
+; ;   wall-l1___-__3   = part_017 -> link_002 (转台)     -> joint1_motion
+; ;   wall-l2___3      = part_018 -> link_003 (大臂)     -> joint2_motion
+; ;   wall-3___2       = part_019 -> link_004 (小臂夹爪) -> joint3_motion
+; ;   wall-__1_none    = part_020 -> link_004            -> joint3_motion
+; ;   wall-__2___-__1  = part_021 -> link_004            -> joint3_motion
+; ;   wall-__4_none    = part_022 -> link_004            -> joint3_motion
+; ;   wall-0___2       = part_016 -> base_link (固定)    -> 不加入动网格
+; ;
+; ; 【重心坐标】各关节真实轴心, 已换算到 Fluent CAD 坐标系
+; ;   URDF 坐标 + 平移偏置 [-0.7456337, 0.74786146, -0.75564012]
+; ;   交叉验证: 正向运动学 / collision origin 反解, 两路一致
+; ;
+; ; 【运动学验证】以 1751 个真实 STL 顶点复现 Fluent 刚体积分:
+; ;   dt=0.05 最大形变误差 0.054 mm; dt=0.01 降至 0.002 mm (随步长收敛)
+; ;
+; ; 【relative motion 必须为 no】
+; ;   UDF 已在全局系给出绝对速度, 开启会叠加二次驱动导致连杆飞散
+; ;
+; ; 【网格尺度实测】机械臂表面单元 p50=3.05mm, p5=1.05mm
+; ;   展开段表面最大线速度 0.362 m/s
+; ;   => dt=0.002s 时每步位移 0.72mm = 单元的 24%, 安全
+; ;   => dt=0.05s  时每步位移 18.1mm = 单元的 593%, 必然撕裂
+; ;
+; ; 【用法】文件 -> 读取 -> 方案(Scheme), 选择本文件
+; ;   执行前确认 libudf_parallel 已载入
+; ; =====================================================================
+; 
+; ; ---------- 1. 瞬态求解器 ----------
+; /define/models/unsteady-1st-order? yes
+; 
+; ; ---------- 2. 启用动网格 ----------
+; /define/dynamic-mesh/dynamic-mesh? yes
+; 
+; ; 平滑 + 重新划分网格 (50~60 度大转角必须开 remeshing)
+; /define/dynamic-mesh/controls/smoothing? yes
+; /define/dynamic-mesh/controls/remeshing? yes
+; /define/dynamic-mesh/controls/layering? no
+; 
+; ; ---------- 3. 建立刚体区域 ----------
+; ; 应答顺序: zone / type / motion-udf / relative-motion? / cg x,y,z / orientation
+; 
+; ; --- lk1 转台 (绕全局 Y 轴扫掠) ---
+; /define/dynamic-mesh/zones/create
+; lk1
+; rigid-body
+; joint1_motion::libudf_parallel
+; no
+; -0.745634
+; 1.155872
+; -1.142240
+; 0
+; 0
+; 0
+; 
+; ; --- lk2 大臂 ---
+; /define/dynamic-mesh/zones/create
+; lk2
+; rigid-body
+; joint2_motion::libudf_parallel
+; no
+; -0.728944
+; 1.206372
+; -1.172240
+; 0
+; 0
+; 0
+; 
+; ; --- lk3w1 ~ lk3w4 小臂与夹爪 (共用 joint3 轴心) ---
+; /define/dynamic-mesh/zones/create
+; lk3w1
+; rigid-body
+; joint3_motion::libudf_parallel
+; no
+; -0.730834
+; 1.008372
+; -1.228240
+; 0
+; 0
+; 0
+; 
+; /define/dynamic-mesh/zones/create
+; lk3w2
+; rigid-body
+; joint3_motion::libudf_parallel
+; no
+; -0.730834
+; 1.008372
+; -1.228240
+; 0
+; 0
+; 0
+; 
+; /define/dynamic-mesh/zones/create
+; lk3w3
+; rigid-body
+; joint3_motion::libudf_parallel
+; no
+; -0.730834
+; 1.008372
+; -1.228240
+; 0
+; 0
+; 0
+; 
+; /define/dynamic-mesh/zones/create
+; lk3w4
+; rigid-body
+; joint3_motion::libudf_parallel
+; no
+; -0.730834
+; 1.008372
+; -1.228240
+; 0
+; 0
+; 0
+; 
+; ; ---------- 4. 列出结果核对 ----------
+; /define/dynamic-mesh/zones/list
+; 

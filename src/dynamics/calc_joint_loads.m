@@ -111,10 +111,10 @@ hydro(3).added_mass = diag([0.40, 0.45, 0.25]);
 % 分离过程连续渐变，证实为贴合而非穿透。故碰撞检测对该对单独豁免，其余对严格检验。
 dt = 0.01;                             % 计算步长 [s] (100 Hz 高精度解算)
 
-T_deploy  = 3.0;                       % 阶段 A 伸展时长 [s]
-T_work    = 10.0;                      % 阶段 B 往复作业周期 [s]
-T_retract = 3.0;                       % 阶段 C 收回时长 [s]
-tEnd = T_deploy + T_work + T_retract;  % 总时长 16 s
+T_deploy  = 2.0;                       % 阶段 A 伸展时长 [s]
+T_work    = 6.0;                       % 阶段 B 往复作业周期 [s]
+T_retract = 2.0;                       % 阶段 C 收回时长 [s]
+tEnd = T_deploy + T_work + T_retract;  % 总时长 10 s
 
 time   = 0:dt:tEnd;
 nSteps = numel(time);

@@ -1,0 +1,50 @@
+; DISABLED: NOT VALIDATED IN FLUENT. ALL LEGACY LINES BELOW ARE COMMENTS.
+; This file performs no setup, mesh update, or solve operation.
+; The archived timing and safe-step claims below were not measured in Fluent.
+; Display Zone Motion is not a test of volume-mesh quality.
+; Re-enable only after recording and testing the commands in Fluent 2024 R2.
+; TUI journal commands must be read as a Journal, not as Scheme source.
+; =====================================================================
+; ; preview_check.jou
+; ; 动网格低成本前置验证 —— 先花 6 分钟确认不散架, 再投入长时间计算
+; ;
+; ; 【为什么要先跑这个】
+; ;   全网格 163 万单元 / 18 核:
+; ;     预览 3s (dt=0.002, 1500 步)  ~ 30 分钟
+; ;     全程 16s 带流场求解          ~ 40 小时
+; ;   若绑定或步长有误, 上述代价全部白费。
+; ;   本脚本只跑 0.6 秒 (300 步), 约 6 分钟即可暴露问题。
+; ;
+; ; 【判定标准】
+; ;   控制台不得出现:
+; ;     negative cell volume detected
+; ;     incorrect cg motion UDF ... assuming no motion
+; ;   出现任一条即说明绑定或步长仍有问题, 立即停止。
+; ;
+; ; 【前置条件】
+; ;   1. libudf_parallel 已载入
+; ;   2. 已执行 setup_dynamic_mesh.jou 完成六区域绑定
+; ;
+; ; 【用法】文件 -> 读取 -> 方案(Scheme)
+; ; =====================================================================
+; 
+; ; ---------- 1. 核对区域绑定 ----------
+; /define/dynamic-mesh/zones/list
+; 
+; ; ---------- 2. 短程网格运动预览 ----------
+; ; dt=0.002s 每步表面位移 0.72mm = 单元尺寸(3.05mm) 的 24%
+; ; 300 步 = 0.6 秒, 此时 q2 约 -2.2 度, 尚未脱开属正常
+; /solve/set/transient-controls/specified-time-step? yes
+; /solve/set/time-step 0.002
+; 
+; ; 预览网格运动 (不求解流场)
+; /display/set/rendering-options/animate? yes
+; /solve/mesh-motion 300 0.002
+; 
+; ; ---------- 3. 检查网格质量 ----------
+; /mesh/check
+; /mesh/quality
+; 
+; ; ---------- 4. 保存当前状态备查 ----------
+; ; 若预览通过, 可继续加大步数至 1500 跑满 3 秒展开段
+; 

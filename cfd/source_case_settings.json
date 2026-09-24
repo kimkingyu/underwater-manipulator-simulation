@@ -1,0 +1,287 @@
+{
+  "general": {
+    "solver": {
+      "type": "pressure-based",
+      "time": "unsteady-1st-order"
+    },
+    "operating_conditions": {
+      "gravity": {
+        "enable": false
+      },
+      "operating_pressure": 101325,
+      "reference_pressure_location": [
+        0,
+        0,
+        0
+      ],
+      "reference_pressure_method": "Connected and disconnected fluid zones"
+    },
+    "units": null
+  },
+  "models": {
+    "multiphase": {
+      "models": "none",
+      "number_of_phases": 0
+    },
+    "energy": {
+      "enabled": false
+    },
+    "viscous": {
+      "model": "k-omega",
+      "k_omega_model": "sst",
+      "k_omega_options": {
+        "kw_low_re_correction": false
+      },
+      "near_wall_treatment": {
+        "wall_omega_treatment": "correlation"
+      },
+      "transition_module": "none",
+      "hybrid_rans_les": "none",
+      "options": {
+        "curvature_correction": false,
+        "corner_flow_correction": false,
+        "production_kato_launder_enabled": false,
+        "production_limiter": {
+          "enabled": true,
+          "clip_factor": 10.0
+        }
+      },
+      "turbulence_expert": {
+        "turb_non_newtonian": false,
+        "restore_sst_v61": false
+      },
+      "user_defined": {
+        "turb_visc_func": "none"
+      }
+    },
+    "radiation": {
+      "model": "none",
+      "solar_load": {
+        "solar_model": "none",
+        "sun_direction_vector_definition": null
+      }
+    },
+    "species": {
+      "model": {
+        "option": "off",
+        "number_vol_spec": false
+      }
+    },
+    "discrete_phase": {
+      "general_settings": {
+        "interaction": {
+          "enabled": false
+        },
+        "unsteady_tracking": {
+          "enabled": true
+        },
+        "contour_plotting": "none"
+      },
+      "physical_models": {
+        "pressure_gradient_force": null,
+        "saffman_lift_force_enabled": false,
+        "pressure_force_enabled": false,
+        "virtual_mass_force": {
+          "enabled": false
+        },
+        "erosion_accretion_enabled": false,
+        "secondary_breakup_enabled": false
+      },
+      "tracking": {
+        "max_num_steps": 500,
+        "step_size_controls": {
+          "option": "step-length-factor",
+          "step_length_factor": 5
+        },
+        "expert": {
+          "randomize_every_iteration": true,
+          "randomize_every_timestep": true,
+          "verbosity": 1
+        }
+      },
+      "numerics": {
+        "tracking": {
+          "accuracy_control": {
+            "enabled": true,
+            "tolerance": 1e-05,
+            "max_num_refinements": 20,
+            "step_size_fraction": 1.0
+          },
+          "option": "automatic",
+          "low_order_scheme": "implicit",
+          "high_order_scheme": "trapezoidal"
+        },
+        "node_based_averaging": {
+          "enabled": false
+        },
+        "dynamic_interaction_range_enabled": false,
+        "high_res_tracking": {
+          "enabled": true,
+          "always_use_face_centroid_with_periodics": true,
+          "flow_interpolation": {
+            "specific_heat_enabled": false,
+            "density_enabled": false,
+            "gradients_enabled": true,
+            "viscosity_enabled": false,
+            "temperature_enabled": false,
+            "wall_zero_vel_enabled": false
+          },
+          "boundary_layer_tracking_enabled": true,
+          "subtet_validity_checking_enabled": true,
+          "auto_intersect_tol_enabled": true,
+          "barycentric_intersection_enabled": false,
+          "particle_relocation": {
+            "enhanced_method_enabled": false,
+            "support_for_std_track_data_read_enabled": false,
+            "overset_robustness_level": 1,
+            "legacy_method_enabled": false
+          },
+          "stuck_particle_removal_enabled": true,
+          "barycentric_sampling_enabled": false,
+          "quad_face_centroid_enabled": true
+        }
+      },
+      "parallel": {
+        "option": "hybrid",
+        "hybrid": {
+          "dpm_domain": {
+            "enabled": false
+          }
+        },
+        "expert": {
+          "parallel_verbosity_level": 0
+        }
+      },
+      "user_defined_functions": {
+        "body_force": "none",
+        "source_terms": "none",
+        "output": "none",
+        "scalar_update": "none",
+        "dpm_time_step_size": "none",
+        "flow_interpolation": "none",
+        "number_of_scalars": 0,
+        "max_num_udf_species": 50
+      },
+      "injections": null
+    },
+    "virtual_blade_model": {
+      "enable": false
+    },
+    "structure": {
+      "model": "off"
+    },
+    "ablation": {
+      "enabled": false
+    },
+    "echemistry": {
+      "potential": false
+    },
+    "battery": {
+      "enabled": false
+    },
+    "system_coupling": {
+      "user_defined_coupling_variables_via_udm": null,
+      "use_face_or_element_based_data_transfer": true
+    },
+    "sofc": {
+      "enabled": false
+    },
+    "pemfc": {
+      "enabled": false
+    }
+  },
+  "materials": {
+    "seawater": {
+      "name": "seawater",
+      "chemical_formula": "",
+      "density": {
+        "option": "constant",
+        "value": 1025.0
+      },
+      "viscosity": {
+        "option": "constant",
+        "value": 0.00108
+      }
+    }
+  },
+  "inlets": {
+    "input": {
+      "name": "input",
+      "momentum": {
+        "velocity_specification_method": "Magnitude, Normal to Boundary",
+        "reference_frame": "Absolute",
+        "velocity": {
+          "option": "value",
+          "value": 0.25
+        },
+        "initial_gauge_pressure": {
+          "option": "value",
+          "value": 0
+        }
+      },
+      "turbulence": {
+        "turbulence_specification": "Intensity and Viscosity Ratio",
+        "turbulent_intensity": 0.05,
+        "turbulent_viscosity_ratio": 10
+      }
+    }
+  },
+  "outlets": {
+    "output": {
+      "name": "output",
+      "momentum": {
+        "backflow_reference_frame": "Absolute",
+        "gauge_pressure": {
+          "option": "value",
+          "value": 0
+        },
+        "pressure_profile_multiplier": 1,
+        "backflow_dir_spec_method": "Normal to Boundary",
+        "backflow_pressure_spec": "Total Pressure",
+        "prevent_reverse_flow": false,
+        "radial_equ_pressure_distribution": false,
+        "avg_pressure_spec": false,
+        "target_mass_flow_rate": false
+      },
+      "turbulence": {
+        "turbulence_specification": "Intensity and Viscosity Ratio",
+        "backflow_turbulent_intensity": 0.05,
+        "backflow_turbulent_viscosity_ratio": 10
+      }
+    }
+  },
+  "methods": {
+    "p_v_coupling": {
+      "flow_scheme": "Coupled"
+    },
+    "flux_type": {
+      "pbns_cases": {
+        "flux_auto_select": true
+      }
+    },
+    "discretization_scheme": {
+      "k": "second-order-upwind",
+      "mom": "second-order-upwind",
+      "omega": "second-order-upwind",
+      "pressure": "second-order"
+    },
+    "transient_formulation": "unsteady-1st-order",
+    "expert": {
+      "numerics_pbns": {
+        "implicit_bodyforce_treatment": false,
+        "physical_velocity_formulation": false,
+        "disable_rhie_chow_flux": false,
+        "presto_pressure_scheme": false,
+        "first_to_second_order_blending": 1.0
+      }
+    },
+    "gradient_scheme": "least-square-cell-based",
+    "high_order_term_relaxation": {
+      "enable": false
+    },
+    "nita": false,
+    "warped_face_gradient_correction": {
+      "enable": false
+    }
+  }
+}

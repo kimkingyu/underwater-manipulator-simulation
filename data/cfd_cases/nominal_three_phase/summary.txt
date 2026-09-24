@@ -1,0 +1,15 @@
+case_id=nominal_three_phase
+header=D:\work4\src\cfd\arm_motion_config.h
+q_stow_deg=[0 0 0]
+q_work_deg=[-30 -50 -55]
+durations_s=[2 6 2]
+q1_sweep_half_deg=30
+q1_sweep_direction=1
+time_step_s=0.01
+total_time_s=10
+full_steps=1000
+density_kg_m3=1025
+current_speed_mps=0.25
+current_azimuth_deg=45
+current_elevation_deg=0
+sign_convention=fluid_on_arm_positive_URDF_joint_axis
