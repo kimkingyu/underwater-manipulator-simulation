@@ -9,7 +9,8 @@ env.vc_world = env.current_speed * [cos(env.current_alpha)*cos(env.current_psi);
 names = {'link_002', 'link_003', 'link_004'};
 volumes = [0.0001222, 0.0006235, 0.0005062];
 cb = [0.0083 0.0081 0.0266; -0.0990 0.0280 0.0173; 0.1211 -0.0282 -0.0149];
-areas = [0.0035, 0.0108, 0.0171];
+% Real 4.STEP CAD frontal projected areas (m^2) for link_002, link_003, link_004
+areas = [0.0288, 0.0420, 0.0728];
 cd = [1.1, 1.1, 1.2];
 added = [0.10 0.10 0.05; 0.45 0.50 0.20; 0.40 0.45 0.25];
 hydro = repmat(struct('name','','mass',0,'volume',0,'com_local',zeros(1,3), ...

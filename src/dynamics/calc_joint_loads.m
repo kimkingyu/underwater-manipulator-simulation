@@ -69,7 +69,7 @@ hydro(1).mass       = robot.Bodies{1}.Mass;
 hydro(1).volume     = 0.0001222;
 hydro(1).com_local  = robot.Bodies{1}.CenterOfMass; % 局部质心偏移
 hydro(1).cb_local   = [0.0083, 0.0081, 0.0266];    % 局部浮心偏移
-hydro(1).A_proj     = 0.0035;
+hydro(1).A_proj     = 0.0288;                      % 真实 4.STEP CAD 迎水投影面积 [m^2]
 hydro(1).Cd         = 1.1;
 hydro(1).added_mass = diag([0.10, 0.10, 0.05]);
 
@@ -78,7 +78,7 @@ hydro(2).mass       = robot.Bodies{2}.Mass;
 hydro(2).volume     = 0.0006235;
 hydro(2).com_local  = robot.Bodies{2}.CenterOfMass;
 hydro(2).cb_local   = [-0.0990, 0.0280, 0.0173];
-hydro(2).A_proj     = 0.0108;
+hydro(2).A_proj     = 0.0420;                      % 真实 4.STEP CAD 迎水投影面积 [m^2]
 hydro(2).Cd         = 1.1;
 hydro(2).added_mass = diag([0.45, 0.50, 0.20]);
 
@@ -87,7 +87,7 @@ hydro(3).mass       = robot.Bodies{3}.Mass;
 hydro(3).volume     = 0.0005062;
 hydro(3).com_local  = robot.Bodies{3}.CenterOfMass;
 hydro(3).cb_local   = [0.1211, -0.0282, -0.0149];
-hydro(3).A_proj     = 0.0171;
+hydro(3).A_proj     = 0.0728;                      % 真实 4.STEP CAD 迎水投影面积 [m^2]
 hydro(3).Cd         = 1.2;
 hydro(3).added_mass = diag([0.40, 0.45, 0.25]);
 
