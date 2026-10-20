@@ -1,0 +1,11 @@
+﻿1 open v5g
+  OK
+2 save as v5h (new file)
+  OK
+3 meshing: spheres of influence + GenerateMesh
+  OK
+4 update mesh component (writes FFF.msh)
+  OK
+5 save
+  OK
+END

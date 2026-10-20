@@ -1,0 +1,138 @@
+# encoding: utf-8
+# Fresh project auvm_water_v6.wbpj from fluid_domain_v6.scdoc (v4/v4b kept). Before the first mesh
+# generation, inside Meshing: global sizes following the j3 run that meshed (ElementSize == MaximumSize),
+# curvature 18 deg, proximity min 0.02 mm (gap factor 3, faces), arm-wall face sizings
+# (jaws/pin 1 mm, link3/l2/l1 2 mm); generate, dump new messages + counts; then update the component
+# (writes FFF.msh) and save. Launch with run_wb_fullenv.py.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v6_trace.txt"
+PROJECT = D + r"\auvm_water_v6.wbpj"
+CAD = D + r"\fluid_domain_v6.scdoc"
+INNER = D + r"\mesh_v6_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+SIZES = [("wall_jaw1", "1 [mm]"), ("wall_jaw2", "1 [mm]"), ("wall_pin4", "1 [mm]"),
+         ("wall_link3", "2 [mm]"), ("wall_l2", "2 [mm]"), ("wall_l1", "2 [mm]"),
+         ("gap_faces", "0.3 [mm]")]
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    def put(name, value):
+        try:
+            setattr(mesh, name, value)
+            out.write("set %%s = %%s\n" %% (name, getattr(mesh, name)))
+        except Exception, e:
+            out.write("FAILED %%s : %%s\n" %% (name, e))
+    ns = dict((s.Name, s) for s in m.NamedSelections.Children)
+    for name, size in SIZES:
+        sz = mesh.AddSizing()
+        sz.Location = ns[name]
+        sz.ElementSize = Quantity(size)
+        sz.Name = "size_" + name
+        out.write("sizing %%s %%s\n" %% (name, sz.ElementSize))
+    gap_sz = [c for c in mesh.Children if c.GetType().Name == "Sizing" and c.Name == "size_gap_faces"][0]
+    gids = list(ns["gap_faces"].Location.Ids)
+    sel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    sel.Ids = gids
+    gap_sz.Location = sel
+    ns["gap_faces"].Delete()
+    out.write("gap sizing scoped to ids %%s, helper NS deleted\n" %% gids)
+    n_before = len(list(ExtAPI.Application.Messages))
+    out.write("messages before generate %%d\n" %% n_before)
+    for msg in ExtAPI.Application.Messages:
+        out.write("  (old) [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+    out.write("GENERATE\n")
+    try:
+        mesh.GenerateMesh()
+    except Exception, e:
+        out.write("GenerateMesh raised %%s\n" %% e)
+    out.write("MESSAGES\n")
+    for msg in ExtAPI.Application.Messages:
+        out.write("  [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+        try:
+            loc = msg.Location
+            ids = list(loc.Ids) if loc is not None else []
+            geo = ExtAPI.DataModel.GeoData
+            for i in ids[:10]:
+                ent = geo.GeoEntityById(i)
+                out.write("       id %%d %%s centroid_m %%s\n" %% (i, ent.Type, [round(v, 6) for v in ent.Centroid]))
+        except Exception, e:
+            out.write("     location error %%s\n" %% e)
+    out.write("mesh_nodes %%s\n" %% mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% mesh.Elements)
+    for s in m.NamedSelections.Children:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    holder = {}
+
+    def create():
+        s = GetTemplate(TemplateName="Fluid Flow").CreateSystem()
+        s.DisplayText = "mesh_water_v6"
+        geo = s.GetContainer(ComponentName="Geometry")
+        geo.SetFile(FilePath=CAD)
+        props = geo.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        s.GetComponent(Name="Geometry").Update(AllDependencies=True)
+        holder["s"] = s
+    if not step("1 create system + geometry", create):
+        return
+    if not step("2 save project (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = holder["s"]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 refresh mesh (attach geometry, no generation)", lambda: comp.Refresh())
+    ok = ok and step("4 meshing: settings + GenerateMesh", lambda: (
+        mesh.Edit(Interactive=False),
+        mesh.SendCommand(Language="Python", Command=INSIDE),
+        mesh.Exit()))
+    ok = ok and step("5 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    step("6 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

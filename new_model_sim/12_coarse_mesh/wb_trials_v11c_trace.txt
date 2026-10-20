@@ -1,0 +1,7 @@
+﻿1 open v11
+  OK
+2 save as v11_trials (new file)
+  OK
+3 trials
+  OK
+END

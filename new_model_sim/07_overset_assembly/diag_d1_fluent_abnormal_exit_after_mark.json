@@ -1,0 +1,49 @@
+{
+  "steps": [
+    {
+      "step": "show option overlap_boundaries",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "show option minimize_overlap",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "show option donor_priority_method",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "show option partial_cut_faces",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "verbosity 2",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "check",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "mark orphan",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "mark dead",
+      "ok": true,
+      "result": ""
+    },
+    {
+      "step": "registers",
+      "ok": true,
+      "result": "None"
+    }
+  ]
+}

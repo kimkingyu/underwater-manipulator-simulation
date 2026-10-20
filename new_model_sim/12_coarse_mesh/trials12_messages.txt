@@ -1,0 +1,67 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707686
+hull faces 362, nearest 10 (d_m, id, area_m2): [(0.056000000000000001, 688, 0.078189999999999996), (0.28199999999999997, 689, 0.26901999999999998), (0.40100000000000002, 704, 0.0053099999999999996), (0.40100000000000002, 693, 0.0053099999999999996), (0.41499999999999998, 685, 0.57513000000000003), (0.47099999999999997, 928, 0.01321), (0.48799999999999999, 701, 0.022610000000000002), (0.48799999999999999, 695, 0.022610000000000002), (0.52000000000000002, 975, 0.090490000000000001), (0.57499999999999996, 694, 0.048669999999999998)]
+STEP X1_es150_max300_nohull ['MaximumSize=300 [mm]', 'ElementSize=150 [mm]']
+  RESULT X1_es150_max300_nohull nodes 1058372 elements 5398648 Skewness min 9.1790586242979089E-10 max 0.95037198316865124 avg 0.23258985890370293 seconds 148
+STEP X2_es80 ['ElementSize=80 [mm]']
+  RESULT X2_es80 nodes 1136711 elements 5817917 Skewness min 3.2812219608047144E-09 max 0.97299576546923561 avg 0.23245873069825315 seconds 148
+STEP X3_es50 ['ElementSize=50 [mm]']
+  RESULT X3_es50 nodes 1316265 elements 6774682 Skewness min 1.860745224568916E-09 max 0.97613059707256755 avg 0.23230526910557772 seconds 170
+STEP X4_es50_hullfar80 ['ElementSize=80 [mm]', 'GrowthRate=1.2', 'faces 361', 'hard']
+  RESULT X4_es50_hullfar80 nodes 62412 elements 124842 Skewness min 0 max 0 avg 0 seconds 13
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 无法以可接受的质量对一个或多个表面进行网格划分。请尝试使用不同的单元尺寸或虚拟拓扑。
+    [Error] 当前网格划分选项与设置无法生成网格。
+STEP X5_es80_hullfar120 ['ElementSize=80 [mm]', 'ElementSize=120 [mm]', 'GrowthRate=1.2', 'faces 361', 'hard']
+  RESULT X5_es80_hullfar120 nodes 115901 elements 558289 Skewness min 1.9282685448374082E-08 max 0.99999999764639325 avg 0.24969660284391043 seconds 27

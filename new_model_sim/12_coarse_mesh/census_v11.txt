@@ -1,0 +1,11 @@
+elements 3806327 nodes 758282
+unit check first centroid 0.0131585268444 -0.151969585268 -0.306278591628
+counted 3806327
+shell 0.000-0.020 m : 0 elements
+shell 0.020-0.050 m : 272206 elements
+shell 0.050-0.100 m : 1207322 elements
+shell 0.100-0.200 m : 1874039 elements
+shell 0.200-0.400 m : 119355 elements
+shell 0.400-0.800 m : 83424 elements
+shell 0.800-1.600 m : 211289 elements
+shell 1.600-10.000 m : 38692 elements

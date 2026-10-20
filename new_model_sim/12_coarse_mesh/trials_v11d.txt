@@ -1,0 +1,13 @@
+global before: Max 300 [mm] ES 150 [mm] Min 0 [mm] G 1.2 curv True
+COMBO B1 all set
+  RESULT B1 elements 0 nodes 0 skew max 0 avg 0 0s
+    [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“最小尺寸”和“特征清除尺寸”
+COMBO B2 all set
+  RESULT B2 elements 923905 nodes 186781 skew max 0.99992030860939884 avg 0.26193598859594169 24s
+  census <5cm,5-10,10-20,20-40,>40cm: [58652, 294450, 456112, 46516, 68175]
+COMBO B3 all set
+  RESULT B3 elements 86630 nodes 43339 skew max 0 avg 0 6s
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 无法以可接受的质量对一个或多个表面进行网格划分。请尝试使用不同的单元尺寸或虚拟拓扑。
+    [Error] 当前网格划分选项与设置无法生成网格。
+  census <5cm,5-10,10-20,20-40,>40cm: [5495, 35437, 38248, 693, 6757]

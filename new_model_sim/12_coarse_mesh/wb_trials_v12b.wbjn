@@ -1,0 +1,120 @@
+# encoding: utf-8
+# Jaw/pin4 refinement trials on a COPY of auvm_water_v12.wbpj (v12_trials_b.wbpj, no msh export).
+# Everything else as v12 (E3). Reports elements, skewness max/avg and orthogonal quality if the enum exists.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_trials_v12b_trace.txt"
+SOURCE_PROJECT = D + r"\auvm_water_v12.wbpj"
+PROJECT = D + r"\v12_trials_b.wbpj"
+INNER = D + r"\trials_v12b.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+    return False
+
+
+INSIDE = r'''
+import codecs, time
+out = codecs.open(r"%s", "w", "utf-8")
+# (tag, jaw_pin_mm, min_mm)
+COMBOS = [("J1_jaw1.5", 1.5, 0.3), ("J2_jaw1.0", 1.0, 0.3), ("J3_jaw1.0_min0.1", 1.0, 0.1), ("J4_jaw0.8_min0.1", 0.8, 0.1)]
+def w(s):
+    out.write(s + "\n"); out.flush()
+def put(obj, name, value):
+    try:
+        setattr(obj, name, value)
+        return "%%s=%%s" %% (name, getattr(obj, name))
+    except Exception, e:
+        return "FAILED %%s: %%s" %% (name, e)
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    w("metric enum: %%s" %% [x for x in dir(MeshMetricType) if not x.startswith("_")])
+    sz = dict((c.Name, c) for c in mesh.Children if c.GetType().Name == "Sizing")
+    body = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)[0]
+    bsel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    bsel.Ids = [body.GetGeoBody().Id]
+    cs = m.CoordinateSystems.AddCoordinateSystem()
+    cs.Name = "soi_jawseam"
+    cs.OriginX = Quantity("-10.4 [mm]")
+    cs.OriginY = Quantity("-151.7 [mm]")
+    cs.OriginZ = Quantity("-536.8 [mm]")
+    soi = mesh.AddSizing()
+    soi.Location = bsel
+    soi.Type = SizingType.SphereOfInfluence
+    soi.SphereCenter = cs
+    soi.Name = "soi_jawseam"
+    try:
+        soi.GrowthRate = 1.4
+    except Exception:
+        pass
+    def gen(tag, r):
+        w("STEP %%s %%s" %% (tag, [x for x in r if "FAILED" in x] or "all set"))
+        t0 = time.time()
+        mesh.ClearGeneratedData()
+        try:
+            mesh.GenerateMesh()
+        except Exception, e:
+            w("  GenerateMesh raised %%s" %% e)
+        res = []
+        for nm in ("Skewness", "ElementQuality"):
+            try:
+                mesh.MeshMetric = getattr(MeshMetricType, nm)
+                res.append("%%s min %%.4g max %%.4g avg %%.4g" %% (nm, mesh.Minimum, mesh.Maximum, mesh.Average))
+            except Exception, e:
+                res.append("%%s err %%s" %% (nm, e))
+        w("  RESULT %%s elements %%s | %%s | %%.0fs" %% (tag, mesh.Elements, "; ".join(res), time.time() - t0))
+        for msg in ExtAPI.Application.Messages:
+            if msg.Severity.ToString() == "Error":
+                w("    [Error] %%s" %% msg.DisplayString)
+        try:
+            ExtAPI.Application.Messages.Clear()
+        except Exception:
+            pass
+    gen("S1_r8_0.5", [put(soi, "SphereRadius", Quantity("8 [mm]")), put(soi, "ElementSize", Quantity("0.5 [mm]"))])
+    gen("S2_r12_0.5", [put(soi, "SphereRadius", Quantity("12 [mm]"))])
+    gen("S3_r12_0.3", [put(soi, "ElementSize", Quantity("0.3 [mm]"))])
+    gen("S4_r20_0.5", [put(soi, "SphereRadius", Quantity("20 [mm]")), put(soi, "ElementSize", Quantity("0.5 [mm]"))])
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v12", lambda: Open(FilePath=SOURCE_PROJECT)):
+        return
+    if not step("2 save as v12_trials (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("3 trials", lambda: (mesh.Edit(Interactive=False),
+                              mesh.SendCommand(Language="Python", Command=INSIDE),
+                              mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+log("END")

@@ -1,0 +1,44 @@
+sizing wall_jaw1 1 [mm]
+sizing wall_jaw2 1 [mm]
+sizing wall_pin4 1 [mm]
+sizing wall_link3 2 [mm]
+sizing wall_l2 2 [mm]
+sizing wall_l1 2 [mm]
+messages before generate 0
+GENERATE
+MESSAGES
+  [Warning] 一些受保护拓扑的边界已被清除特征。右键点击此消息并选择“显示问题几何结构”，以查看受影响的边。
+       id 1129 GeoEdge centroid_m [0.0044970000000000001, -0.15509000000000001, -0.54648799999999997]
+       id 1146 GeoEdge centroid_m [-0.0099989999999999992, -0.150509, -0.53765600000000002]
+       id 1381 GeoEdge centroid_m [-0.0072389999999999998, -0.15259, -0.53154699999999999]
+       id 1382 GeoEdge centroid_m [0.0032390000000000001, -0.15259, -0.53154699999999999]
+       id 1437 GeoEdge centroid_m [-0.00040099999999999999, -0.14509, -0.55835699999999999]
+       id 1441 GeoEdge centroid_m [-0.00040099999999999999, -0.16009000000000001, -0.55835699999999999]
+       id 1497 GeoEdge centroid_m [-0.0073109999999999998, -0.14509, -0.55639000000000005]
+       id 1533 GeoEdge centroid_m [0.0033110000000000001, -0.14509, -0.55639000000000005]
+       id 1534 GeoEdge centroid_m [-0.0035999999999999999, -0.14509, -0.55835599999999996]
+       id 1848 GeoEdge centroid_m [-0.0035999999999999999, -0.16009000000000001, -0.55835599999999996]
+  [Warning] 发现指定的特征清除容差大于指定尺寸。一个或多个边上的单元可能被清除特征。
+       id 1102 GeoEdge centroid_m [-0.0099919999999999991, -0.15443000000000001, -0.539663]
+       id 1103 GeoEdge centroid_m [-0.0099839999999999998, -0.15459000000000001, -0.54577399999999998]
+       id 1104 GeoEdge centroid_m [-0.0099939999999999994, -0.15434, -0.55058300000000004]
+       id 1105 GeoEdge centroid_m [-0.01, -0.15409, -0.54309099999999999]
+       id 1106 GeoEdge centroid_m [-0.0099939999999999994, -0.15434, -0.53559999999999997]
+       id 1107 GeoEdge centroid_m [-0.0099839999999999998, -0.15459000000000001, -0.53686]
+       id 1108 GeoEdge centroid_m [-0.0099860000000000001, -0.154561, -0.53823699999999997]
+       id 1109 GeoEdge centroid_m [-0.0099919999999999991, -0.15459000000000001, -0.53808999999999996]
+       id 1111 GeoEdge centroid_m [-0.0099919999999999991, -0.15459000000000001, -0.53559999999999997]
+       id 1112 GeoEdge centroid_m [-0.01, -0.15459000000000001, -0.53683099999999995]
+mesh_nodes 570673
+mesh_elements 3063370
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 54
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

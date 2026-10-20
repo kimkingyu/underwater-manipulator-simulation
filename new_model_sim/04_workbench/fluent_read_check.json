@@ -1,0 +1,31 @@
+{
+  "mesh": "D:\\work4\\new_model_sim\\04_workbench\\auvm_water_v3_files\\dp0\\FFF\\MECH\\FFF.msh",
+  "status": "ok",
+  "zones": {
+    "velocity_inlet": [
+      "inlet"
+    ],
+    "pressure_outlet": [
+      "outlet"
+    ],
+    "wall": [
+      "tank_wall",
+      "wall_auv",
+      "wall_base0",
+      "wall_jaw1",
+      "wall_jaw2",
+      "wall_l1",
+      "wall_l2",
+      "wall_link3",
+      "wall_pin4"
+    ],
+    "symmetry": [],
+    "interior": [
+      "interior-fff_water"
+    ],
+    "cell_zones": [
+      "fff_water"
+    ]
+  },
+  "seconds": 46.7
+}

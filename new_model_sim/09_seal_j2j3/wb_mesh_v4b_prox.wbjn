@@ -1,0 +1,118 @@
+# encoding: utf-8
+# v4 mesh (arm-wall sizings) passed meshing but Fluent min orth = 4.5e-5 in the 0.068 mm gap between
+# l2's R28 cylinder and base0/l1's R30 cylinder (parallel axes, no zero-angle wedge, geometry kept).
+# Save auvm_water_v4.wbpj as auvm_water_v4b.wbpj (v4 kept), then in Meshing enable proximity sizing
+# (min 0.02 mm, gap factor 3, faces), keep the arm-wall sizings, regenerate, dump messages/counts,
+# update the component (writes FFF.msh of v4b) and save.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v4b_prox_trace.txt"
+SOURCE_PROJECT = D + r"\auvm_water_v4.wbpj"
+PROJECT = D + r"\auvm_water_v4b.wbpj"
+INNER = D + r"\mesh_v4b_prox_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    sizings = [c.Name for c in mesh.Children if c.GetType().Name == "Sizing"]
+    out.write("sizings kept %%s\n" %% sizings)
+    def put(name, value):
+        try:
+            setattr(mesh, name, value)
+            out.write("set %%s = %%s\n" %% (name, getattr(mesh, name)))
+        except Exception, e:
+            out.write("FAILED %%s : %%s\n" %% (name, e))
+    out.write("UseAdaptiveSizing %%s MaximumSize %%s MinimumSize %%s GrowthRate %%s\n" %% (
+        mesh.UseAdaptiveSizing, mesh.MaximumSize, mesh.MinimumSize, mesh.GrowthRate))
+    put("ElementSize", Quantity("150 [mm]"))
+    put("MaximumSize", Quantity("300 [mm]"))
+    put("MinimumSize", Quantity("0.02 [mm]"))
+    put("CurvatureNormalAngle", Quantity("18 [deg]"))
+    put("CaptureProximity", True)
+    put("ProximityMinimumSize", Quantity("0.02 [mm]"))
+    put("ProximityGapFactor", 3.0)
+    put("ProximitySizeSources", ProximitySFSourcesType.Faces)
+    n_before = len(list(ExtAPI.Application.Messages))
+    out.write("messages before generate %%d\n" %% n_before)
+    out.write("GENERATE\n")
+    mesh.ClearGeneratedData()
+    try:
+        mesh.GenerateMesh()
+    except Exception, e:
+        out.write("GenerateMesh raised %%s\n" %% e)
+    out.write("MESSAGES\n")
+    for msg in ExtAPI.Application.Messages:
+        out.write("  [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+        try:
+            loc = msg.Location
+            ids = list(loc.Ids) if loc is not None else []
+            geo = ExtAPI.DataModel.GeoData
+            for i in ids[:10]:
+                ent = geo.GeoEntityById(i)
+                out.write("       id %%d %%s centroid_m %%s\n" %% (i, ent.Type, [round(v, 6) for v in ent.Centroid]))
+        except Exception, e:
+            out.write("     location error %%s\n" %% e)
+    out.write("mesh_nodes %%s\n" %% mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% mesh.Elements)
+    for s in m.NamedSelections.Children:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v4b", lambda: Open(FilePath=PROJECT)):
+        return
+    s = GetAllSystems()[0]
+    log("  system %s / %s" % (s.Name, s.DisplayText))
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 meshing: proximity sizing + GenerateMesh", lambda: (
+        mesh.Edit(Interactive=False),
+        mesh.SendCommand(Language="Python", Command=INSIDE),
+        mesh.Exit()))
+    ok = ok and step("4 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    step("5 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

@@ -1,0 +1,5 @@
+gap face ids [427, 550, 633, 635]
+sizing scoped to ids, size 0.3 [mm]
+named selections now ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+mesh_nodes 906257
+mesh_elements 4659390

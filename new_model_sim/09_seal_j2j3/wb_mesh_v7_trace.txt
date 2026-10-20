@@ -1,0 +1,29 @@
+﻿1 create system + geometry
+  OK
+2 save project (new file)
+  OK
+3 refresh mesh (attach geometry, no generation)
+  OK
+4 meshing: settings + GenerateMesh
+  OK
+5 update mesh component (writes FFF.msh)
+  .NET ERROR:
+Ansys.Core.Commands.CommandFailedException: mesh_water_v7中网格组件的更新失败。在系统mesh_water_v7中更新单元网格出错。 ---> Ansys.Core.Commands.UserReadableFailureException: mesh_water_v7中网格组件的更新失败。在系统mesh_water_v7中更新单元网格出错。 ---> Ansys.Core.Commands.CommandFailedException: 在系统mesh_water_v7中更新单元网格出错。 ---> Ansys.Core.Commands.UserReadableFailureException: 在系统mesh_water_v7中更新单元网格出错。
+   at Ansys.Addins.Infrastructure.CommandUtilities.CommandHelper.Execute(IFullContext context)
+   at Ansys.Core.Commands.Concurrency.CommandWorkUnit.executeInContext(CommandContext subContext, IExecutionEngineCallback tracer)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.doExecute(IExecutionEngineCallback executionEngine, CommandContext subContext)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.Execute(IExecutionEngineCallback executionEngine, Boolean dontCatchExceptions)
+   --- End of inner exception stack trace ---
+   at Ansys.Core.Commands.CommandAsyncResult.RethrowFailureException(Exception e)
+   at Ansys.Core.Commands.CommandAsyncResult.WaitForSuspendOrComplete(Int32 milliSecondsTimeout, Boolean exitContext)
+   at Ansys.ProjectSchematic.Data.ComponentTemplateEntity.Update(IFullContext context, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, DataContainerReference container, String dataGroup, UpdateOptions updateOptions, IEnumerable`1 downstream, IEnumerable`1 allRemaining)
+   at Ansys.ProjectSchematic.Update.UpdateTask.Update(IFullContext context, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, UpdateOptions updateOptions, IEnumerable`1 downstream, IEnumerable`1 allRemaining)
+   at Ansys.ProjectSchematic.Update.ComponentUpdatePlugin.updateComponent(IContextForUpdatePlugin callbacks, UpdateTask task, String trackToken, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, TaskHolder remainingTasksInThisDp, List`1 dependentTasks)
+   at Ansys.ProjectSchematic.Update.ComponentUpdatePlugin.<>c__DisplayClass0_0.<UpdateComponent>b__0()
+   at Ansys.ProjectSchematic.Update.ExecuteWithErrorBehaviour.Execute(IContextForUpdatePlugin callbacks, UpdateErrorBehavior behavior, Action op, UpdateTask forTask, Action opUponError)
+   at Ansys.ProjectSchematic.Update.ComponentUpdatePlugin.UpdateComponent(IContextForUpdatePlugin callbacks, UpdateTask task, String trackToken, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, UpdateErrorBehavior errorBehavior, ActiveBackgroundTaskTracker bgTaskTracker, IWakeableOnTaskCompletion wakeableOnTaskCompletion, TaskHolder remainingTasksInThisDp, List`1 dependentTasks)
+   at Ansys.ProjectSchematic.Update.UpdatePluginManager.UpdateComponent(IContextForUpdatePlugin callbacks, UpdateTask task, String trackToken, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, UpdateErrorBehavior errorBehavior, ActiveBackgroundTaskTracker bgTaskTracker, IWakeableOnTaskCompletion wakeableOnTaskCompletion, TaskHolder remainingTasksInThisDp, List`1 dependentTasks)
+   at Ansys.ProjectSchematic.Update.UpdateImpl.updat
+6 save
+  OK
+END

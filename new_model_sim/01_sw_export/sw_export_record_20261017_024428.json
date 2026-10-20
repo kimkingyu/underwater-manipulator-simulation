@@ -1,0 +1,538 @@
+{
+  "started": "2026-10-17T02:44:28.258926",
+  "assembly": "D:\\work4\\简化模型\\AUVM.SLDASM",
+  "solidworks_pids_before": [],
+  "solidworks_pids_after_connect": [
+    52964
+  ],
+  "solidworks_revision": "33.0.0",
+  "already_open_documents": 0,
+  "open": {
+    "seconds": 1.9,
+    "errors": 0,
+    "error_flags": [],
+    "warnings": 0,
+    "warning_flags": []
+  },
+  "read_only": true,
+  "title": "AUVM.SLDASM",
+  "active_configuration": "默认",
+  "configurations": [
+    "默认"
+  ],
+  "length_unit": 0,
+  "resolve_lightweight": 2,
+  "component_count_all": 10,
+  "component_count_top": 4,
+  "components": [
+    {
+      "name": "l2-1",
+      "parent": null,
+      "file": "D:\\work4\\简化模型\\l2.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ],
+        "translation_m": [
+          0.002800000000001,
+          -0.0946,
+          -0.489200000000001
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.025209498872648596,
+        -0.1506000000000034,
+        -0.539200000000001,
+        0.030800025000001,
+        -0.03860000000000001,
+        -0.285200000000001
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "l3-1",
+      "parent": null,
+      "file": "D:\\work4\\简化模型\\l3.SLDASM",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.001999999999998,
+          -0.152600000000003,
+          -0.531649999999999
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.08398747767669215,
+        -0.18260000000000298,
+        -0.6532180980201596,
+        0.08017288632570188,
+        -0.094600000000003,
+        -0.28519999999999895
+      ],
+      "solid_bodies": 0
+    },
+    {
+      "name": "l3-1/夹爪1-1",
+      "parent": "l3-1",
+      "file": "D:\\work4\\简化模型\\夹爪1.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -0.8659836561611367,
+            0.0,
+            0.5000723020342058
+          ],
+          [
+            -0.5000723020342058,
+            -0.0,
+            -0.8659836561611367
+          ]
+        ],
+        "translation_m": [
+          0.006022215981702,
+          -0.152600000000003,
+          -0.5327156808082479
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.0839874776766921,
+        -0.16260725948468027,
+        -0.6529536050418465,
+        0.008938067122550297,
+        -0.14259274051532575,
+        -0.5291111733285625
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "l3-1/夹爪4-1",
+      "parent": "l3-1",
+      "file": "D:\\work4\\简化模型\\夹爪4.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            -8e-15,
+            -1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            8e-15,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ],
+        "translation_m": [
+          -0.001999999999998,
+          -0.152600000000003,
+          -0.5310919475381759
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.010249999999998089,
+        -0.16085000000000307,
+        -0.5585827888027364,
+        0.006250000000002047,
+        -0.14435000000000278,
+        -0.44154678509870804
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "l3-1/夹爪2-1",
+      "parent": "l3-1",
+      "file": "D:\\work4\\简化模型\\夹爪2.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            -0.866118845529399,
+            -0.0,
+            -0.499838119213432
+          ],
+          [
+            0.499838119213432,
+            0.0,
+            -0.866118845529399
+          ]
+        ],
+        "translation_m": [
+          -0.010019799145774,
+          -0.152600000000003,
+          -0.5327085094493299
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.012937288490572955,
+        -0.16510000000000263,
+        -0.6532180980201595,
+        0.08017288632570188,
+        -0.1401000000000026,
+        -0.5290803992225931
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "l3-1/3-1",
+      "parent": "l3-1",
+      "file": "D:\\work4\\简化模型\\3.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          -0.001999999999998,
+          -0.152600000000003,
+          -0.531649999999999
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.031999999999998,
+        -0.18260000000000298,
+        -0.547649999999999,
+        0.028005036646896266,
+        -0.094600000000003,
+        -0.2851999999999989
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "bl-1",
+      "parent": null,
+      "file": "D:\\work4\\简化模型\\bl.SLDASM",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.41339999999999977,
+        -0.06659999999999999,
+        -0.6006000000000202,
+        0.41339999999999977,
+        0.7354000000000003,
+        0.49529999999998897
+      ],
+      "solid_bodies": 0
+    },
+    {
+      "name": "bl-1/AUV-1",
+      "parent": "bl-1",
+      "file": "D:\\work4\\简化模型\\AUV.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "translation_m": [
+          -2.28703581293799,
+          -1.13348881618196,
+          1.03407050441822
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.41339999999999977,
+        -0.005600000000000271,
+        -0.6006000000000202,
+        0.41339999999999977,
+        0.7354000000000003,
+        0.49529999999998897
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "bl-1/0-1",
+      "parent": "bl-1",
+      "file": "D:\\work4\\简化模型\\0.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "translation_m": [
+          2e-15,
+          -0.0366,
+          -0.362700000000001
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.029999999999998,
+        -0.06659999999999999,
+        -0.460700000000001,
+        0.030000000000001997,
+        0.033400000000000006,
+        -0.294200000000001
+      ],
+      "solid_bodies": 1
+    },
+    {
+      "name": "l1-1",
+      "parent": null,
+      "file": "D:\\work4\\简化模型\\l1.SLDPRT",
+      "configuration": "默认",
+      "suppression": "swComponentFullyResolved",
+      "hidden": false,
+      "fixed": true,
+      "virtual": false,
+      "transform": {
+        "rotation_rows": [
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        ],
+        "translation_m": [
+          2e-15,
+          -0.0366,
+          -0.460700000000001
+        ],
+        "scale": 1.0
+      },
+      "bbox_m": [
+        -0.03002258557448252,
+        -0.09459999999999999,
+        -0.539200000000001,
+        0.030000000000001997,
+        -0.006599975000000001,
+        -0.460699975000001
+      ],
+      "solid_bodies": 1
+    }
+  ],
+  "assembly_box_m": [
+    -0.41339999999999977,
+    -0.18260000000000298,
+    -0.6532180980201596,
+    0.41339999999999977,
+    0.7354000000000003,
+    0.49529999999998897
+  ],
+  "mass_properties_visible": {
+    "volume_m3": 0.45178326956639786,
+    "surface_area_m2": 4.721504384631615,
+    "mass_kg": 451.7832695663979,
+    "density_kg_m3": 1000.0000000000001,
+    "center_of_mass_m": [
+      2.796538632231479e-06,
+      0.2917422007750253,
+      -0.06934983260550802
+    ]
+  },
+  "mates": [],
+  "unsaved_changes_after_open": false,
+  "export_preferences_original": {
+    "swParasolidOutputVersion": 0,
+    "swXTAssemSaveFormat": false,
+    "swExportOutputCoordinateSystem": ""
+  },
+  "exports": [
+    {
+      "file": "D:\\work4\\简化模型_导出\\AUVM.x_t",
+      "returned": true,
+      "errors": 0,
+      "error_flags": [],
+      "warnings": 0,
+      "warning_flags": [],
+      "exists": true,
+      "bytes": 3005299
+    },
+    {
+      "file": "D:\\work4\\简化模型_导出\\AUVM.step",
+      "returned": true,
+      "errors": 0,
+      "error_flags": [],
+      "warnings": 0,
+      "warning_flags": [],
+      "exists": true,
+      "bytes": 4262312
+    }
+  ],
+  "preferences_restored": true,
+  "unsaved_changes_before_close": false,
+  "closed_document": true,
+  "solidworks_pids_force_stopped": [],
+  "solidworks_pids_remaining": [],
+  "source_unchanged": true,
+  "source_sha256": {
+    "0.SLDPRT": "01c71f664c1316b90ec296594972a912e445630d9179ca9c3702c7a54c9fa9fc",
+    "3.SLDPRT": "d0bb0f3bf799e775d7626f5f8187655dc8b89db1424b32fe6652849e15cc7a5a",
+    "AUV.SLDPRT": "1a793e130167c4369fd1cc95d0fce9ecf70f9d6fda651cd4390aff8b3040d1e3",
+    "AUVM.SLDASM": "0a352f29aeddc32c5be0674b2af2d7355343868918f08dd05f05854ca4ddcbab",
+    "bl.SLDASM": "86f91984facab17be6598e46e5bfd0eccebd54417bed1caec7cba2098423ba1c",
+    "l1.SLDPRT": "83c2b1a975397e5a14ef79d21cdd62da502f53914ccae5c08cd02e850b244624",
+    "l2.SLDPRT": "8f4b95c037a88365b340689d3eb918fd5742bc5ce74d3a411d750512428ef6bf",
+    "l3.SLDASM": "1b6b0b327716e04d0dca435ead652cbb00f073d01c6645bd0f7b71e160e9c519",
+    "夹爪1.SLDPRT": "acdad1da9c45b3a2f6c4ab5faed31656049c889fa20b812f087f50373c1ec5e8",
+    "夹爪2.SLDPRT": "c1ab46cc8accde8203dadc0c1c103c3332186cffdd620ceb9f687be405c5b7f8",
+    "夹爪4.SLDPRT": "92dbf4b61e3b109fa613fb81c5db527722ada908c05d0d0d10b9fd8107777325"
+  },
+  "lock_files_left": [],
+  "finished": "2026-10-17T02:44:46.801212"
+}

@@ -1,0 +1,13 @@
+{
+  "status": "failed_no_bodies",
+  "bodies": [],
+  "component_count": 0,
+  "root_name": "设计(D)1",
+  "input": "D:\\work4\\简化模型\\l1.SLDPRT",
+  "components": [],
+  "body_count": 0,
+  "exit_code": 0,
+  "elapsed_s": 20.6,
+  "source_sha256": "83c2b1a975397e5a14ef79d21cdd62da502f53914ccae5c08cd02e850b244624",
+  "source_unchanged": true
+}

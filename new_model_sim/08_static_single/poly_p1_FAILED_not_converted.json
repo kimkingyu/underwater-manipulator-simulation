@@ -1,0 +1,122 @@
+{
+  "status": "ok",
+  "mesh": "D:\\work4\\new_model_sim\\04_workbench\\auvm_water_v3_files\\dp0\\FFF\\MECH\\FFF.msh",
+  "mesh_bytes": 80416449,
+  "steps": [
+    {
+      "step": "read_mesh",
+      "ok": true,
+      "seconds": 20.8
+    },
+    {
+      "step": "zones",
+      "ok": true,
+      "result": {
+        "fluid": [
+          "fff_water"
+        ],
+        "wall": [
+          "tank_wall",
+          "wall_auv",
+          "wall_base0",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_l1",
+          "wall_l2",
+          "wall_link3",
+          "wall_pin4"
+        ],
+        "velocity_inlet": [
+          "inlet"
+        ],
+        "pressure_outlet": [
+          "outlet"
+        ]
+      },
+      "seconds": 0.1
+    },
+    {
+      "step": "check_tet",
+      "ok": true,
+      "result": "",
+      "seconds": 0.9
+    },
+    {
+      "step": "quality_tet",
+      "ok": true,
+      "result": "",
+      "seconds": 0.3
+    },
+    {
+      "step": "convert_polyhedra",
+      "ok": true,
+      "result": "",
+      "seconds": 0.5
+    },
+    {
+      "step": "check_poly",
+      "ok": true,
+      "result": "",
+      "seconds": 1.0
+    },
+    {
+      "step": "quality_poly",
+      "ok": true,
+      "result": "",
+      "seconds": 0.6
+    },
+    {
+      "step": "improve_quality",
+      "ok": true,
+      "result": "",
+      "seconds": 3.0
+    },
+    {
+      "step": "quality_poly_improved",
+      "ok": true,
+      "result": "",
+      "seconds": 0.6
+    },
+    {
+      "step": "check_poly_improved",
+      "ok": true,
+      "result": "",
+      "seconds": 1.0
+    },
+    {
+      "step": "write_case",
+      "ok": true,
+      "seconds": 2.0
+    }
+  ],
+  "min_orth_sequence": [
+    7.3431e-07,
+    7.3431e-07,
+    7.3431e-07
+  ],
+  "max_aspect_sequence": [
+    1126.15,
+    1126.15,
+    1126.15
+  ],
+  "min_orth_locations": [
+    " 4.79366e-03, -1.23385e-01, -3.41159e-01",
+    " 4.79366e-03, -1.23385e-01, -3.41159e-01",
+    " 4.79366e-03, -1.23385e-01, -3.41159e-01"
+  ],
+  "min_volume_sequence": [
+    8.171868e-12,
+    8.171868e-12,
+    8.171868e-12
+  ],
+  "total_volume_sequence": [
+    34.37622,
+    34.37622,
+    34.37622
+  ],
+  "cell_counts": [
+    "1779694"
+  ],
+  "warnings_errors": [],
+  "case_written": true
+}

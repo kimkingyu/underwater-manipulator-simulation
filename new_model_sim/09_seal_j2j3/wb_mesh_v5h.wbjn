@@ -1,0 +1,112 @@
+# encoding: utf-8
+# v5g mesh (fluid_domain_v5 geometry, 0.3 mm on the four 0.2 mm plane-gap faces) has min orth 2.4e-3 in
+# the 0.198 mm parallel-axis gap between l2 R28 and link3 R30 (axes along Z) at J3. Geometry fills for
+# that gap failed in SpaceClaim (v6-v10), so refine the mesh only: save auvm_water_v5g.wbpj as
+# auvm_water_v5h.wbpj, add 8 spheres of influence (R 4 mm, 0.2 mm) on the gap centre line
+# x = 0.483 mm, y = -122.603 mm, z = -344 ... -392 mm, regenerate, export FFF.msh, save.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v5h_trace.txt"
+SOURCE_PROJECT = D + r"\auvm_water_v5g.wbpj"
+PROJECT = D + r"\auvm_water_v5h.wbpj"
+INNER = D + r"\mesh_v5h_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+ZS = [-344.0, -351.0, -358.0, -365.0, -372.0, -379.0, -386.0, -392.0]
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    out.write("sizings before %%s\n" %% [c.Name for c in mesh.Children if c.GetType().Name == "Sizing"])
+    body = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)[0]
+    bsel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    bsel.Ids = [body.GetGeoBody().Id]
+    out.write("body %%s id %%s\n" %% (body.Name, body.GetGeoBody().Id))
+    for i, z in enumerate(ZS):
+        cs = m.CoordinateSystems.AddCoordinateSystem()
+        cs.Name = "soi_j3gap_%%d" %% i
+        cs.OriginX = Quantity("0.483 [mm]")
+        cs.OriginY = Quantity("-122.603 [mm]")
+        cs.OriginZ = Quantity("%%s [mm]" %% z)
+        sz = mesh.AddSizing()
+        sz.Location = bsel
+        sz.Type = SizingType.SphereOfInfluence
+        sz.SphereCenter = cs
+        sz.SphereRadius = Quantity("4 [mm]")
+        sz.ElementSize = Quantity("0.2 [mm]")
+        sz.Name = "soi_j3gap_%%d" %% i
+        out.write("sphere %%d centre (%%s, %%s, %%s) r %%s size %%s\n" %% (i, cs.OriginX, cs.OriginY, cs.OriginZ,
+                                                                    sz.SphereRadius, sz.ElementSize))
+        out.flush()
+    out.write("GENERATE\n")
+    mesh.ClearGeneratedData()
+    try:
+        mesh.GenerateMesh()
+    except Exception, e:
+        out.write("GenerateMesh raised %%s\n" %% e)
+    for msg in ExtAPI.Application.Messages:
+        if msg.Severity.ToString() != "Warning":
+            out.write("  [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+    out.write("mesh_nodes %%s\n" %% mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% mesh.Elements)
+    for s in m.NamedSelections.Children:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v5g", lambda: Open(FilePath=SOURCE_PROJECT)):
+        return
+    if not step("2 save as v5h (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = GetAllSystems()[0]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 meshing: spheres of influence + GenerateMesh", lambda: (
+        mesh.Edit(Interactive=False),
+        mesh.SendCommand(Language="Python", Command=INSIDE),
+        mesh.Exit()))
+    ok = ok and step("4 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    step("5 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

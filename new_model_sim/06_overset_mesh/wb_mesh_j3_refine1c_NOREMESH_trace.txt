@@ -1,0 +1,16 @@
+﻿1 open original project
+  OK
+1b save as new project
+  OK
+2 get system 'FFF 3'
+  display text: mesh_j3
+  OK
+3 open j3 meshing + apply settings
+  OK
+4 update j3 mesh
+  OK
+5 report
+  OK
+6 save
+  OK
+END

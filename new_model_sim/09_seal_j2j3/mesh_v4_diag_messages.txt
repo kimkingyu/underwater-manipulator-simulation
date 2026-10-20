@@ -1,0 +1,34 @@
+physics CFD element_size 0 [mm]
+body FFF\water volume 34375665729.882019 [mm mm mm]
+GENERATE
+MESSAGES
+  [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+     location ids [2878]
+       id 2878 type GeoFace centroid_m [0.0062750000000000002, -0.15509000000000001, -0.53811900000000001] area 1.82713105135e-06
+  [Error] 表面网格相互交叉或近似交叉，因此难以创建体积网格。请通过调整网格尺寸或调整几何结构来解决该问题。
+     location ids [2878]
+       id 2878 type GeoFace centroid_m [0.0062750000000000002, -0.15509000000000001, -0.53811900000000001] area 1.82713105135e-06
+  [Warning] 一些受保护拓扑的边界已被清除特征。右键点击此消息并选择“显示问题几何结构”，以查看受影响的边。
+     location ids [1059, 1093, 1315, 1317, 1372, 1375, 1468, 1782]
+       id 1059 type GeoEdge centroid_m [0.005751, -0.15509000000000001, -0.53688100000000005] area 
+       id 1093 type GeoEdge centroid_m [-0.0099939999999999994, -0.15009, -0.54721600000000004] area 
+       id 1315 type GeoEdge centroid_m [-0.0072389999999999998, -0.15259, -0.53154699999999999] area 
+       id 1317 type GeoEdge centroid_m [0.0032390000000000001, -0.15259, -0.53154699999999999] area 
+       id 1372 type GeoEdge centroid_m [-0.00040099999999999999, -0.14509, -0.55835699999999999] area 
+       id 1375 type GeoEdge centroid_m [-0.00040099999999999999, -0.16009000000000001, -0.55835699999999999] area 
+       id 1468 type GeoEdge centroid_m [-0.0035999999999999999, -0.14509, -0.55835599999999996] area 
+       id 1782 type GeoEdge centroid_m [-0.0035999999999999999, -0.16009000000000001, -0.55835599999999996] area 
+  [Error] 当前网格划分选项与设置无法生成网格。
+mesh_nodes 65309
+mesh_elements 130658
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 44
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

@@ -1,0 +1,139 @@
+# encoding: utf-8
+# Old-arm-model style sizing on a COPY of auvm_water_v11.wbpj (v11_trials_e.wbpj, no msh export):
+# arm faces ~5 mm, jaws ~3 mm, coarser J3 gap refinement, curvature capture relaxed/off, growth 1.2 kept.
+# Element census by distance from the arm after each combo.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_trials_v11e_trace.txt"
+SOURCE_PROJECT = D + r"\auvm_water_v11.wbpj"
+PROJECT = D + r"\v11_trials_e.wbpj"
+INNER = D + r"\trials_v11e.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+    return False
+
+
+INSIDE = r'''
+import codecs, math, time
+out = codecs.open(r"%s", "w", "utf-8")
+C = (0.0, -0.10, -0.45)
+R = [0.05, 0.1, 0.2, 0.4, 10.0]
+# (tag, curvature_on, curv_deg, min_mm, arm_mm, jaw_mm, gap_mm, soi_mm, soi_r_mm)
+COMBOS = [("E1_g1.3", False, 30, 0.3, 5, 3, 0.6, 0.4, 4, 1.3),
+          ("E2_g1.4", False, 30, 0.3, 5, 3, 0.6, 0.4, 4, 1.4),
+          ("E3_g1.4_gap1", False, 30, 0.3, 5, 3, 1.0, 0.4, 4, 1.4)]
+def w(s):
+    out.write(s + "\n"); out.flush()
+def put(obj, name, value):
+    try:
+        setattr(obj, name, value)
+        return "%%s=%%s" %% (name, getattr(obj, name))
+    except Exception, e:
+        return "FAILED %%s: %%s" %% (name, e)
+def census():
+    md = ExtAPI.DataModel.MeshDataByName("Global")
+    counts = [0] * len(R)
+    for eid in md.ElementIds:
+        el = md.ElementById(eid)
+        ps = [md.NodeById(k) for k in el.NodeIds]
+        cx = sum(p.X for p in ps) / len(ps); cy = sum(p.Y for p in ps) / len(ps); cz = sum(p.Z for p in ps) / len(ps)
+        d = math.sqrt((cx - C[0]) ** 2 + (cy - C[1]) ** 2 + (cz - C[2]) ** 2)
+        for i, r in enumerate(R):
+            if d < r:
+                counts[i] += 1
+                break
+    return counts
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    sz = dict((c.Name, c) for c in mesh.Children if c.GetType().Name == "Sizing")
+    w("global before: Max %%s ES %%s Min %%s G %%s curv %%s" %% (mesh.MaximumSize, mesh.ElementSize, mesh.MinimumSize,
+                                                         mesh.GrowthRate, mesh.CaptureCurvature))
+    for (tag, curv, cdeg, mn, arm, jaw, gap, soi, soir, g) in COMBOS:
+        r = [put(mesh, "MaximumSize", Quantity("200 [mm]")), put(mesh, "ElementSize", Quantity("150 [mm]")),
+             put(mesh, "CaptureCurvature", curv)]
+        if curv:
+            r.append(put(mesh, "CurvatureNormalAngle", Quantity("%%s [deg]" %% cdeg)))
+        r.append(put(mesh, "MinimumSize", Quantity("%%s [mm]" %% mn)))
+        r.append(put(mesh, "GrowthRate", g))
+        r.append(put(mesh, "GrowthRateSF", g))
+        for n, c in sz.items():
+            r.append(n + ":" + put(c, "GrowthRate", g))
+        for n, c in sz.items():
+            if n in ("size_wall_jaw1", "size_wall_jaw2", "size_wall_pin4"):
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% jaw)))
+            elif n in ("size_wall_link3", "size_wall_l2", "size_wall_l1"):
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% arm)))
+            elif n == "size_gap_faces":
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% gap)))
+            elif n.startswith("soi_"):
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% soi)))
+                r.append(n + ":" + put(c, "SphereRadius", Quantity("%%s [mm]" %% soir)))
+        bad = [x for x in r if "FAILED" in x]
+        w("COMBO %%s %%s" %% (tag, bad or "all set"))
+        t0 = time.time()
+        mesh.ClearGeneratedData()
+        try:
+            mesh.GenerateMesh()
+        except Exception, e:
+            w("  GenerateMesh raised %%s" %% e)
+        sk = ""
+        try:
+            mesh.MeshMetric = MeshMetricType.Skewness
+            sk = "skew max %%s avg %%s" %% (mesh.Maximum, mesh.Average)
+        except Exception, e:
+            sk = "metric err %%s" %% e
+        w("  RESULT %%s elements %%s nodes %%s %%s %%.0fs" %% (tag, mesh.Elements, mesh.Nodes, sk, time.time() - t0))
+        for msg in ExtAPI.Application.Messages:
+            if msg.Severity.ToString() == "Error":
+                w("    [Error] %%s" %% msg.DisplayString)
+        try:
+            ExtAPI.Application.Messages.Clear()
+        except Exception:
+            pass
+        if mesh.Elements > 0:
+            w("  census <5cm,5-10,10-20,20-40,>40cm: %%s" %% census())
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v11", lambda: Open(FilePath=SOURCE_PROJECT)):
+        return
+    if not step("2 save as v11_trials_d (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("3 trials", lambda: (mesh.Edit(Interactive=False),
+                              mesh.SendCommand(Language="Python", Command=INSIDE),
+                              mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+log("END")

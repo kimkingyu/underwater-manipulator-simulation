@@ -1,0 +1,11 @@
+﻿1 open v5h
+  OK
+2 save as v5k_trials (new file)
+  OK
+3 meshing settings + generate
+  OK
+4 update mesh component (writes FFF.msh)
+  OK
+5 save
+  OK
+END

@@ -1,0 +1,40 @@
+{
+  "status": "ok",
+  "parts": {
+    "j3": {
+      "mesh": "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_j3r1c_files\\dp0\\FFF-3\\MECH\\FFF-3.1.msh",
+      "bytes": 486886082,
+      "zones": {
+        "velocity_inlet": [],
+        "pressure_outlet": [],
+        "wall": [
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_link3",
+          "wall_pin4"
+        ],
+        "symmetry": [],
+        "overset": [
+          "overset_j3"
+        ],
+        "interior": [
+          "interior-fff-3_fluid_j3"
+        ],
+        "fluid": [
+          "fff-3_fluid_j3"
+        ]
+      },
+      "seconds": 79.8,
+      "min_orth": 1.01501e-07,
+      "max_aspect": 19025.7,
+      "min_volume_m3": 2.854733e-17,
+      "total_volume_m3": 0.01831427,
+      "tet_cells": 10754899,
+      "min_orth_location_m": "3.52572e-03, -1.45100e-01, -5.54930e-01",
+      "max_aspect_location_m": "-2.42477e-04, -1.45102e-01, -5.43460e-01",
+      "other_cell_types": [],
+      "errors": [],
+      "min_orth_ok": false
+    }
+  }
+}

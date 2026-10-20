@@ -1,0 +1,17 @@
+sizings ['size_wall_jaw1', 'size_wall_jaw2', 'size_wall_pin4', 'size_wall_link3', 'size_wall_l2', 'size_wall_l1']
+== combo A : CaptureCurvature=True; MinimumSize=0.05 [mm]; ProximityMinimumSize=0.05 [mm]; MaximumSize=200 [mm]; ElementSize=200 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   messages before 1 after 1 nodes 0 elements 0
+== combo B : CaptureCurvature=True; MinimumSize=0.02 [mm]; ProximityMinimumSize=0.02 [mm]; MaximumSize=100 [mm]; ElementSize=100 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   messages before 1 after 1 nodes 0 elements 0
+== combo C : CaptureCurvature=True; MinimumSize=0.05 [mm]; ProximityMinimumSize=0.05 [mm]; MaximumSize=100 [mm]; ElementSize=100 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   messages before 1 after 1 nodes 0 elements 0
+== combo D : CaptureCurvature=True; MinimumSize=0.02 [mm]; ProximityMinimumSize=0.02 [mm]; MaximumSize=50 [mm]; ElementSize=50 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   messages before 1 after 1 nodes 0 elements 0
+== combo E : CaptureCurvature=False; MinimumSize=0.02 [mm]; ProximityMinimumSize=0.02 [mm]; MaximumSize=100 [mm]; ElementSize=100 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   messages before 1 after 1 nodes 0 elements 0
+WINNER None

@@ -1,0 +1,65 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707653
+STEP S1_local_x2.5 ['ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=5 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=5 [mm]', 'ElementSize=5 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.25 [mm]', 'SphereRadius=2 [mm]', 'ElementSize=0.4 [mm]']
+  RESULT S1_local_x2.5 nodes 569604 elements 2923207 Skewness min 1.9032286857623149E-10 max 0.98675075138290713 avg 0.23928292457729458 seconds 82
+STEP S2_growth1.3 ['GrowthRate=1.3']
+  RESULT S2_growth1.3 nodes 569604 elements 2923207 Skewness min 1.9032286857623149E-10 max 0.98675075138290713 avg 0.23928292457729461 seconds 75
+STEP S3_curv36 ['CurvatureNormalAngle=36 [deg]']
+  RESULT S3_curv36 nodes 424964 elements 2137879 Skewness min 9.8810072346466882E-08 max 0.98675285136155766 avg 0.24334489736398318 seconds 56
+STEP S4_max300 ['MaximumSize=300 [mm]']
+  RESULT S4_max300 nodes 424872 elements 2137275 Skewness min 6.6311189872436671E-10 max 0.98675285136155766 avg 0.24325953118841917 seconds 57
+STEP S5_local_x3 ['ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=6 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=6 [mm]', 'ElementSize=6 [mm]', 'ElementSize=3 [mm]', 'ElementSize=3 [mm]', 'ElementSize=3 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.3 [mm]', 'SphereRadius=1.5 [mm]', 'ElementSize=0.5 [mm]']
+  RESULT S5_local_x3 nodes 334968 elements 1707287 Skewness min 2.5401736269969888E-10 max 0.98990570051379678 avg 0.2482907011588559 seconds 40
+STEP S6_growth1.4 ['GrowthRate=1.4']
+  RESULT S6_growth1.4 nodes 335025 elements 1707668 Skewness min 1.7276513553099448E-11 max 0.99478986214330478 avg 0.24835788390461622 seconds 38

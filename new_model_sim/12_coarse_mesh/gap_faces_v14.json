@@ -1,0 +1,68 @@
+{
+  "status": "ok", 
+  "faces": [
+    {
+      "hi_mm": [
+        -10.619, 
+        -482.48
+      ], 
+      "lo_mm": [
+        -94.6, 
+        -539.2
+      ], 
+      "x_mm": 15.0, 
+      "area_mm2": 2524.117, 
+      "group": "wall_l1", 
+      "face_index": 331
+    }, 
+    {
+      "hi_mm": [
+        -95.59, 
+        -286.2
+      ], 
+      "lo_mm": [
+        -177.308, 
+        -341.2
+      ], 
+      "x_mm": 15.0, 
+      "area_mm2": 2383.185, 
+      "group": "wall_link3", 
+      "face_index": 444
+    }, 
+    {
+      "hi_mm": [
+        -69.302, 
+        -286.2
+      ], 
+      "lo_mm": [
+        -149.6, 
+        -341.2
+      ], 
+      "x_mm": 14.8, 
+      "area_mm2": 2769.255, 
+      "group": "wall_l2", 
+      "face_index": 523
+    }, 
+    {
+      "hi_mm": [
+        -39.6, 
+        -483.331
+      ], 
+      "lo_mm": [
+        -119.898, 
+        -538.2
+      ], 
+      "x_mm": 14.8, 
+      "area_mm2": 2765.183, 
+      "group": "wall_l2", 
+      "face_index": 525
+    }
+  ], 
+  "saved_copy": "D:\\work4\\new_model_sim\\12_coarse_mesh\\fluid_domain_v14g.scdoc", 
+  "scdoc": "D:\\work4\\new_model_sim\\12_coarse_mesh\\fluid_domain_v14.scdoc", 
+  "planes_x_m": [
+    0.014800000000000001, 
+    0.014999999999999999
+  ], 
+  "total_area_mm2": 10441.74
+}

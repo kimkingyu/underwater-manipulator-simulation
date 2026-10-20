@@ -1,0 +1,90 @@
+# encoding: utf-8
+# Read-only census on auvm_water_v11.wbpj (project is NOT saved): regenerate the mesh with its stored
+# settings, then count elements by centroid distance from the arm centre, and nodes per shell.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_census_v11_trace.txt"
+PROJECT = D + r"\auvm_water_v11.wbpj"
+INNER = D + r"\census_v11.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+    return False
+
+
+INSIDE = r'''
+import codecs, math
+out = codecs.open(r"%s", "w", "utf-8")
+C = (0.0, -0.10, -0.45)
+R = [0.02, 0.05, 0.1, 0.2, 0.4, 0.8, 1.6, 10.0]
+def w(s):
+    out.write(s + "\n"); out.flush()
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    if mesh.Elements == 0:
+        mesh.GenerateMesh()
+    w("elements %%s nodes %%s" %% (mesh.Elements, mesh.Nodes))
+    md = ExtAPI.DataModel.MeshDataByName("Global")
+    counts = [0] * len(R)
+    n = 0
+    for eid in md.ElementIds:
+        el = md.ElementById(eid)
+        xs = [md.NodeById(k) for k in el.NodeIds]
+        cx = sum(p.X for p in xs) / len(xs)
+        cy = sum(p.Y for p in xs) / len(xs)
+        cz = sum(p.Z for p in xs) / len(xs)
+        d = math.sqrt((cx - C[0]) ** 2 + (cy - C[1]) ** 2 + (cz - C[2]) ** 2)
+        for i, r in enumerate(R):
+            if d < r:
+                counts[i] += 1
+                break
+        n += 1
+        if n == 1:
+            w("unit check first centroid %%s %%s %%s" %% (cx, cy, cz))
+    w("counted %%d" %% n)
+    lo = 0.0
+    for r, c in zip(R, counts):
+        w("shell %%.3f-%%.3f m : %%d elements" %% (lo, r, c))
+        lo = r
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v11", lambda: Open(FilePath=PROJECT)):
+        return
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("2 census", lambda: (mesh.Edit(Interactive=False),
+                              mesh.SendCommand(Language="Python", Command=INSIDE),
+                              mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+log("END")

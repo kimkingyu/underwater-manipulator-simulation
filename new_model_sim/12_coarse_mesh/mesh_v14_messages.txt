@@ -1,0 +1,31 @@
+sizing wall_jaw 3 [mm]
+sizing wall_link3 5 [mm]
+sizing wall_l2 5 [mm]
+sizing wall_l1 5 [mm]
+sizing gap_faces 1 [mm]
+set MaximumSize = 200 [mm]
+set ElementSize = 150 [mm]
+set CaptureCurvature = False
+set MinimumSize = 0.3 [mm]
+set GrowthRate = 1.4
+set GrowthRateSF = 1.4
+gap face ids [45, 165, 252, 254]
+messages before generate 0
+GENERATE
+MESSAGES
+  [Warning] 一些受保护拓扑的边界已被清除特征。右键点击此消息并选择“显示问题几何结构”，以查看受影响的边。
+       id 436 GeoEdge centroid_m [-0.0072389999999999998, -0.15259, -0.53154699999999999]
+       id 437 GeoEdge centroid_m [0.0032390000000000001, -0.15259, -0.53154699999999999]
+       id 1367 GeoEdge centroid_m [0.006476, -0.124221, -0.34111599999999997]
+mesh_nodes 81993
+mesh_elements 383085
+skewness min 3.6780689605109274E-11 max 0.99999917422591211 avg 0.30431073845867651
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 26
+  ns wall_base0 entities 18
+  ns wall_jaw entities 316
+  ns wall_l1 entities 13
+  ns wall_l2 entities 54
+  ns wall_link3 entities 161

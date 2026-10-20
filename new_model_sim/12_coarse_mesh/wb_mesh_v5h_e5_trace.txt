@@ -1,0 +1,13 @@
+﻿1 open v5h
+  OK
+2 save as v5h_e3_trials (new file)
+  OK
+3 settings + generate
+  OK
+4 mkdir MECH
+  OK
+5 update mesh component (writes FFF.msh)
+  OK
+6 save
+  OK
+END

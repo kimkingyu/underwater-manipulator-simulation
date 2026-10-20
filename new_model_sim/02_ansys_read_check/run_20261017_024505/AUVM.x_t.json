@@ -1,0 +1,80 @@
+{
+  "status": "failed_no_bodies",
+  "root_name": "AUVM",
+  "get_all_bodies_count": 0,
+  "component_count": 8,
+  "components": [
+    {
+      "template": "圆角3",
+      "path": [
+        "AUVM",
+        "圆角3"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "凸台-拉伸3",
+      "path": [
+        "AUVM",
+        "凸台-拉伸3"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "NONE",
+      "path": [
+        "AUVM",
+        "NONE"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "切除-拉伸1",
+      "path": [
+        "AUVM",
+        "切除-拉伸1"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "NONE-0",
+      "path": [
+        "AUVM",
+        "NONE-0"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "圆角2",
+      "path": [
+        "AUVM",
+        "圆角2"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "圆角2-1",
+      "path": [
+        "AUVM",
+        "圆角2-1"
+      ],
+      "body_count": 0
+    },
+    {
+      "template": "切除-拉伸5",
+      "path": [
+        "AUVM",
+        "切除-拉伸5"
+      ],
+      "body_count": 0
+    }
+  ],
+  "warnings": [],
+  "body_count": 0,
+  "input": "D:\\work4\\简化模型_导出\\AUVM.x_t",
+  "bodies": [],
+  "exit_code": 0,
+  "elapsed_s": 22.4,
+  "source_sha256": "ca37331053710ca7719992abb64af261ae010a437e16413fce614e4b2e7d85af",
+  "source_unchanged": true
+}

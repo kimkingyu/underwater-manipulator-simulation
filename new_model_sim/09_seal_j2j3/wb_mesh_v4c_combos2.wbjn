@@ -1,0 +1,125 @@
+# encoding: utf-8
+# auvm_water_v4c.wbpj: all global size combos failed with the same validation error, so test whether
+# the local face sizings (LocalMinimumSize / ProximityMinimumSize / GrowthRate read as 0) cause it.
+#   G: local sizings kept, their LocalMinimumSize=0.02 mm, GrowthRate=1.2 (+ proximity fields if present)
+#   F: local sizings suppressed, global proximity only
+# Global: ElementSize=MaximumSize=100 mm, MinimumSize=ProximityMinimumSize=0.02 mm, curvature 18 deg.
+# First combo producing nodes wins; update component + save only then.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v4c_combos2_trace.txt"
+PROJECT = D + r"\auvm_water_v4c.wbpj"
+INNER = D + r"\mesh_v4c_combos2.txt"
+FLAG = D + r"\mesh_v4c_combos2_success.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    sizings = [c for c in mesh.Children if c.GetType().Name == "Sizing"]
+    def put(obj, name, value):
+        try:
+            setattr(obj, name, value)
+            return "%%s=%%s" %% (name, getattr(obj, name))
+        except Exception, e:
+            return "FAILED %%s:%%s" %% (name, e)
+    glob = [put(mesh, "CaptureCurvature", True), put(mesh, "CurvatureNormalAngle", Quantity("18 [deg]")),
+            put(mesh, "MinimumSize", Quantity("0.02 [mm]")), put(mesh, "ProximityMinimumSize", Quantity("0.02 [mm]")),
+            put(mesh, "MaximumSize", Quantity("100 [mm]")), put(mesh, "ElementSize", Quantity("100 [mm]")),
+            put(mesh, "CaptureProximity", True), put(mesh, "ProximityGapFactor", 3.0),
+            put(mesh, "ProximitySizeSources", ProximitySFSourcesType.Faces), put(mesh, "GrowthRate", 1.2)]
+    out.write("global: %%s\n" %% "; ".join(glob))
+    def attempt(label):
+        n0 = len(list(ExtAPI.Application.Messages))
+        mesh.ClearGeneratedData()
+        try:
+            mesh.GenerateMesh()
+        except Exception, e:
+            out.write("   GenerateMesh raised %%s\n" %% e)
+        msgs = list(ExtAPI.Application.Messages)
+        for msg in msgs:
+            out.write("   [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+        out.write("   %%s: messages before %%d after %%d nodes %%s elements %%s\n" %% (label, n0, len(msgs), mesh.Nodes, mesh.Elements))
+        out.flush()
+        return mesh.Nodes > 0
+    winner = None
+    out.write("== combo G (local sizings completed)\n")
+    for sz in sizings:
+        r = [put(sz, "LocalMinimumSize", Quantity("0.02 [mm]")), put(sz, "GrowthRate", 1.2)]
+        out.write("   %%s: %%s\n" %% (sz.Name, "; ".join(r)))
+    if attempt("G"):
+        winner = "G"
+    else:
+        out.write("== combo F (local sizings suppressed)\n")
+        for sz in sizings:
+            out.write("   %%s: %%s\n" %% (sz.Name, put(sz, "Suppressed", True)))
+        if attempt("F"):
+            winner = "F"
+    out.write("WINNER %%s\n" %% winner)
+    if winner is not None:
+        for s in m.NamedSelections.Children:
+            out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+        f = codecs.open(r"%s", "w", "utf-8")
+        f.write(winner)
+        f.close()
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % (INNER, FLAG)
+
+
+def run():
+    if not step("1 open v4c", lambda: Open(FilePath=PROJECT)):
+        return
+    s = GetAllSystems()[0]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("2 meshing: combos G/F", lambda: (
+        mesh.Edit(Interactive=False),
+        mesh.SendCommand(Language="Python", Command=INSIDE),
+        mesh.Exit()))
+    if File.Exists(FLAG):
+        step("3 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    else:
+        log("3 skipped: no combination produced a mesh")
+    step("4 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

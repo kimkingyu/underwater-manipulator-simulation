@@ -1,0 +1,34 @@
+{
+  "status": "failed",
+  "tag": "r1",
+  "meshes": [
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF\\MECH\\FFF.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-1\\MECH\\FFF-1.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-2\\MECH\\FFF-2.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_j3_v2_files\\dp0\\FFF\\MECH\\FFF.msh"
+  ],
+  "steps": [
+    {
+      "step": "read_background",
+      "ok": true,
+      "seconds": 17.9
+    },
+    {
+      "step": "append FFF-1/FFF-1.msh",
+      "ok": false,
+      "error": "RuntimeError('Error reading \"D:\\\\work4\".\\nError Object: #f')",
+      "seconds": 1.7
+    }
+  ],
+  "transcript_hits": [
+    "Reading \"D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF\\MECH\\FFF.msh\"...",
+    "Error: sopeninputfile: un",
+    "aErrorb: lsopeninputfile: unable to open file for inpute",
+    "Error  Object: #f",
+    "nError:  Error reading \"D:\\work4\".",
+    "fError Object: i#f",
+    "Error Object: \"D:\\\\work4\""
+  ],
+  "orphan_counts_seen": [],
+  "case_written": false
+}

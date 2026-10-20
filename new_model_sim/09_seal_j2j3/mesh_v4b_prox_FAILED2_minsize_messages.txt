@@ -1,0 +1,24 @@
+sizings kept ['size_wall_jaw1', 'size_wall_jaw2', 'size_wall_pin4', 'size_wall_link3', 'size_wall_l2', 'size_wall_l1']
+UseAdaptiveSizing False MaximumSize 0 [mm] MinimumSize 0 [mm] GrowthRate 1.2
+set ElementSize = 150 [mm]
+set MaximumSize = 300 [mm]
+set CaptureProximity = True
+set ProximityMinimumSize = 0.02 [mm]
+set ProximityGapFactor = 3.0
+set ProximitySizeSources = Faces
+GENERATE
+MESSAGES
+  [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+mesh_nodes 0
+mesh_elements 0
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 44
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

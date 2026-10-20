@@ -1,0 +1,352 @@
+{
+  "status": "ok",
+  "tag": "b4",
+  "mesh": "D:\\work4\\new_model_sim\\12_coarse_mesh\\v5h_e4_poly.cas.h5",
+  "steps": [
+    {
+      "step": "read_mesh",
+      "required": true,
+      "ok": true,
+      "seconds": 12.2
+    },
+    {
+      "step": "sep_tank_wall",
+      "required": true,
+      "ok": true,
+      "result": "",
+      "seconds": 1.9
+    },
+    {
+      "step": "walls_after_sep",
+      "required": true,
+      "ok": true,
+      "result": [
+        "tank_wall",
+        "tank_wall:004",
+        "tank_wall:016",
+        "tank_wall:017",
+        "wall_auv",
+        "wall_base0",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_l1",
+        "wall_l2",
+        "wall_link3",
+        "wall_pin4"
+      ],
+      "seconds": 0.3
+    },
+    {
+      "step": "box_face_centroids",
+      "required": true,
+      "ok": true,
+      "result": {
+        "tank_wall:004": "[[{'c_tank_wall_004_x': [-0.0001999999999999852, 0]}], [{'c_tank_wall_004_y': [0.2919999999999991, 0]}], [{'c_tank_wall_004_z': [1.640400000000001, 0]}]]",
+        "tank_wall:016": "[[{'c_tank_wall_016_x': [-0.000199999999999929, 0]}], [{'c_tank_wall_016_y': [-1.3296, 0]}], [{'c_tank_wall_016_z': [-0.08020000000000017, 0]}]]",
+        "tank_wall:017": "[[{'c_tank_wall_017_x': [-0.0002000000000000666, 0]}], [{'c_tank_wall_017_y': [0.2919999999999994, 0]}], [{'c_tank_wall_017_z': [-1.8008, 0]}]]",
+        "tank_wall": "[[{'c_tank_wall_x': [-0.0002000000000000006, 0]}], [{'c_tank_wall_y': [1.913599999999998, 0]}], [{'c_tank_wall_z': [-0.08020000000000009, 0]}]]",
+        "inlet": "[[{'c_inlet_x': [-1.560500000000002, 0]}], [{'c_inlet_y': [0.292, 0]}], [{'c_inlet_z': [-0.08020000000000008, 0]}]]",
+        "outlet": "[[{'c_outlet_x': [1.560099999999999, 0]}], [{'c_outlet_y': [0.2919999999999999, 0]}], [{'c_outlet_z': [-0.0802, 0]}]]"
+      },
+      "seconds": 22.7
+    },
+    {
+      "step": "rename_box_faces",
+      "required": true,
+      "ok": true,
+      "result": [
+        "wall_auv",
+        "wall_base0",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_l1",
+        "wall_l2",
+        "wall_link3",
+        "wall_pin4",
+        "xmax",
+        "xmin",
+        "ymax",
+        "ymin",
+        "zmax",
+        "zmin"
+      ],
+      "seconds": 9.8
+    },
+    {
+      "step": "box_faces_wall",
+      "required": true,
+      "ok": true,
+      "result": [
+        "wall_auv",
+        "wall_base0",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_l1",
+        "wall_l2",
+        "wall_link3",
+        "wall_pin4",
+        "xmax",
+        "xmin",
+        "ymax",
+        "ymin",
+        "zmax",
+        "zmin"
+      ],
+      "seconds": 3.4
+    },
+    {
+      "step": "viscous_kw_sst",
+      "required": true,
+      "ok": true,
+      "result": "(None, None)",
+      "seconds": 0.0
+    },
+    {
+      "step": "material_water",
+      "required": true,
+      "ok": true,
+      "result": {
+        "density": 1025.0,
+        "viscosity": 0.00105
+      },
+      "seconds": 0.8
+    },
+    {
+      "step": "report_definitions",
+      "required": true,
+      "ok": true,
+      "result": {
+        "names": [
+          "fx",
+          "fy",
+          "fz",
+          "mx",
+          "my",
+          "mz",
+          "tau_j1",
+          "tau_j2",
+          "tau_j3"
+        ],
+        "fx_state": "{'name': 'fx', 'force_vector': [1, 0, 0], 'reference_frame': 'global', 'zones': ['wall_auv', 'wall_base0', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_jaw1', 'wall_jaw2', 'wall_pin4'], 'per_zone': True, 'average_over': 1, 'retain_instantaneous_values': False, 'output_parameter': False}",
+        "joint_walls": {
+          "tau_j1": [
+            "wall_l1",
+            "wall_l2",
+            "wall_link3",
+            "wall_jaw1",
+            "wall_jaw2",
+            "wall_pin4"
+          ],
+          "tau_j2": [
+            "wall_l2",
+            "wall_link3",
+            "wall_jaw1",
+            "wall_jaw2",
+            "wall_pin4"
+          ],
+          "tau_j3": [
+            "wall_link3",
+            "wall_jaw1",
+            "wall_jaw2",
+            "wall_pin4"
+          ]
+        }
+      },
+      "seconds": 8.7
+    },
+    {
+      "step": "write_case",
+      "required": true,
+      "ok": true,
+      "seconds": 1.4
+    }
+  ],
+  "probe": {
+    "fluid_zone_state": "{'name': 'fff_water', 'general': {'material': 'water-liquid', 'laminar': False}, 'reference_frame': {'frame_motion': False, 'reference_frame_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'reference_frame_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}]}, 'mesh_motion': {'enable': False}, 'zonal_models': None, 'porous_zone': {'porous': False}, 'fan_zone': {'fan_zone': False}, 'sources': {'enable': False}, 'fixed_values': {'enable': False}}",
+    "wall_state_xmin": "{'name': 'xmin', 'momentum': {'wall_motion': 'Stationary Wall', 'shear_condition': 'No Slip'}, 'turbulence': {'roughness_model': 'Standard', 'roughness_height': {'option': 'value', 'value': 0}, 'roughness_const': {'option': 'value', 'value': 0.5}}}",
+    "wall_state_auv": "{'name': 'wall_auv', 'momentum': {'wall_motion': 'Stationary Wall', 'shear_condition': 'No Slip'}, 'turbulence': {'roughness_model': 'Standard', 'roughness_height': {'option': 'value', 'value': 0}, 'roughness_const': {'option': 'value', 'value': 0.5}}}",
+    "general_solver": "{'type': 'pressure-based', 'velocity_formulation': 'absolute', 'time': 'steady'}",
+    "dynamic_mesh_attrs": "ERR AttributeError(\"'setup' object has no attribute 'dynamic_mesh'.\\nThe most similar names are: reference_frames.\")",
+    "named_expressions": [
+      "after_execute",
+      "before_execute",
+      "child_object_type",
+      "clear",
+      "command_names",
+      "compute",
+      "create",
+      "delete",
+      "file_transfer_service",
+      "find_object",
+      "flproxy",
+      "fluent_name",
+      "get",
+      "get_attr",
+      "get_attrs",
+      "get_completer_info",
+      "get_object_names",
+      "get_state",
+      "is_active",
+      "is_read_only",
+      "items",
+      "keys",
+      "list",
+      "list_properties",
+      "make_a_copy",
+      "obj_name",
+      "parent",
+      "path",
+      "pop",
+      "popitem",
+      "print_state",
+      "python_name",
+      "python_path",
+      "query_names",
+      "rename",
+      "set_flproxy",
+      "set_state",
+      "setdefault",
+      "state_with_units",
+      "to_python_keys",
+      "to_scheme_keys",
+      "update",
+      "user_creatable",
+      "values"
+    ],
+    "report_files_attrs": [
+      "after_execute",
+      "before_execute",
+      "child_object_type",
+      "clear",
+      "command_names",
+      "create",
+      "delete",
+      "file_transfer_service",
+      "find_object",
+      "flproxy",
+      "fluent_name",
+      "get",
+      "get_attr",
+      "get_attrs",
+      "get_completer_info",
+      "get_object_names",
+      "get_state",
+      "is_active",
+      "is_read_only",
+      "items",
+      "keys",
+      "list",
+      "list_properties",
+      "make_a_copy",
+      "obj_name",
+      "parent",
+      "path",
+      "pop",
+      "popitem",
+      "print_state",
+      "python_name",
+      "python_path",
+      "query_names",
+      "rename",
+      "set_flproxy",
+      "set_state",
+      "setdefault",
+      "state_with_units",
+      "to_python_keys",
+      "to_scheme_keys",
+      "update",
+      "user_creatable",
+      "values"
+    ],
+    "transient_ctrl": [
+      "adaptive_time_stepping",
+      "after_execute",
+      "before_execute",
+      "calculate",
+      "cfl_based_adaptive_time_stepping",
+      "child_names",
+      "command_names",
+      "data_sampling",
+      "data_sampling_options",
+      "dual_time_iterate",
+      "file_transfer_service",
+      "find_object",
+      "flproxy",
+      "fluent_name",
+      "get_active_child_names",
+      "get_active_command_names",
+      "get_active_query_names",
+      "get_attr",
+      "get_attrs",
+      "get_completer_info",
+      "get_state",
+      "interrupt",
+      "is_active",
+      "is_read_only",
+      "iter_count",
+      "iterate",
+      "iterating",
+      "obj_name",
+      "parent",
+      "path",
+      "print_state",
+      "profile_update_interval",
+      "pseudo_time_settings",
+      "python_name",
+      "python_path",
+      "query_names",
+      "reporting_interval",
+      "residual_verbosity",
+      "set_flproxy",
+      "set_state",
+      "state_with_units",
+      "time_step_count",
+      "to_python_keys",
+      "to_scheme_keys",
+      "transient_controls"
+    ]
+  },
+  "centroids": {
+    "tank_wall:004": [
+      -0.0001999999999999852,
+      0.2919999999999991,
+      1.640400000000001
+    ],
+    "tank_wall:016": [
+      -0.000199999999999929,
+      -1.3296,
+      -0.08020000000000017
+    ],
+    "tank_wall:017": [
+      -0.0002000000000000666,
+      0.2919999999999994,
+      -1.8008
+    ],
+    "tank_wall": [
+      -0.0002000000000000006,
+      1.913599999999998,
+      -0.08020000000000009
+    ],
+    "inlet": [
+      -1.560500000000002,
+      0.292,
+      -0.08020000000000008
+    ],
+    "outlet": [
+      1.560099999999999,
+      0.2919999999999999,
+      -0.0802
+    ]
+  },
+  "box_mapping": {
+    "tank_wall:004": "zmax",
+    "tank_wall:016": "ymin",
+    "tank_wall:017": "zmin",
+    "tank_wall": "ymax",
+    "inlet": "xmin",
+    "outlet": "xmax"
+  },
+  "fluid_zone": "fff_water",
+  "case_written": true,
+  "failed_required": []
+}

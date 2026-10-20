@@ -1,0 +1,6 @@
+﻿1 Open project
+  system FFF found
+  geometry component ok
+2 Mesh.Refresh
+FATAL:
+    [System.Text.EncoderFallbackException] 'ascii' codec can't decode byte 0 in position 67: ordinal not in range

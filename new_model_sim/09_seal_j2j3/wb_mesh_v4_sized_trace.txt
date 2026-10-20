@@ -1,0 +1,10 @@
+﻿1 open project
+  OK
+  system FFF / mesh_water_v4
+2 meshing: arm-wall sizings + GenerateMesh
+  OK
+3 update mesh component (writes FFF.msh)
+  OK
+4 save
+  OK
+END

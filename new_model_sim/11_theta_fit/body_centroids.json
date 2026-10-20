@@ -1,0 +1,272 @@
+{
+  "status": "ok", 
+  "bodies": [
+    {
+      "centroid_m": [
+        -8.5612509610206402e-18, 
+        0.29386210886672659, 
+        -0.066304536383884852
+      ], 
+      "name": "0:56", 
+      "owner": [
+        "AUVM", 
+        "bl", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 0.45225442884326233, 
+      "bbox_m": [
+        -0.41340000000000021, 
+        -0.0056000000000000494, 
+        -0.60060000000002001, 
+        0.41339999999999977, 
+        0.73540000000000028, 
+        0.49529999999998886
+      ], 
+      "volume_m3": 0.44987751308773627, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        45, 
+        41, 
+        60
+      ]
+    }, 
+    {
+      "centroid_m": [
+        6.277502119320206e-16, 
+        -0.02345442090720657, 
+        -0.36258988458438562
+      ], 
+      "name": "0:916", 
+      "owner": [
+        "AUVM", 
+        "bl", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 0.00064563348214285706, 
+      "bbox_m": [
+        -0.029999999999998, 
+        -0.066599999999999993, 
+        -0.460700000000001, 
+        0.030000000000001997, 
+        0.033400000000000006, 
+        -0.29420000000000102
+      ], 
+      "volume_m3": 0.00064910002388098346, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        14, 
+        24, 
+        40
+      ]
+    }, 
+    {
+      "centroid_m": [
+        0.00036734993614512338, 
+        -0.1508752379466401, 
+        -0.41583719362745025
+      ], 
+      "name": "0:1425", 
+      "owner": [
+        "AUVM", 
+        "l3", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 0.00043800109571025643, 
+      "bbox_m": [
+        -0.031999999999998002, 
+        -0.18260000000000301, 
+        -0.54764999999999897, 
+        0.028010000000001999, 
+        -0.094600000000003015, 
+        -0.28519999999999895
+      ], 
+      "volume_m3": 0.00043714424692243144, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        9, 
+        13, 
+        40
+      ]
+    }, 
+    {
+      "centroid_m": [
+        -0.033395893873044875, 
+        -0.15281244914160369, 
+        -0.5746311250483479
+      ], 
+      "name": "0:2393", 
+      "owner": [
+        "AUVM", 
+        "l3", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 2.6050015591966689e-05, 
+      "bbox_m": [
+        -0.083890523138210937, 
+        -0.16260145189693848, 
+        -0.65295360504184652, 
+        0.008938293654464205, 
+        -0.14259854810306755, 
+        -0.52916676856170775
+      ], 
+      "volume_m3": 2.6940568018190873e-05, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        30, 
+        6, 
+        40
+      ]
+    }, 
+    {
+      "centroid_m": [
+        0.026910548990999129, 
+        -0.15278136160714631, 
+        -0.57231552723089063
+      ], 
+      "name": "0:4783", 
+      "owner": [
+        "AUVM", 
+        "l3", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 2.6817405003394121e-05, 
+      "bbox_m": [
+        -0.012939683203409668, 
+        -0.16510000000000263, 
+        -0.6529841305465115, 
+        0.079883041353410206, 
+        -0.14010000000000261, 
+        -0.52916559766291971
+      ], 
+      "volume_m3": 2.7692816907488098e-05, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        30, 
+        8, 
+        40
+      ]
+    }, 
+    {
+      "centroid_m": [
+        -0.0019999999999980147, 
+        -0.15260000000000204, 
+        -0.49198629073916605
+      ], 
+      "name": "0:7716", 
+      "owner": [
+        "AUVM", 
+        "l3", 
+        "(unnamed)"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 2.4074305961919246e-05, 
+      "bbox_m": [
+        -0.010249999999998089, 
+        -0.16085000000000307, 
+        -0.55858278880273626, 
+        0.0062500000000020473, 
+        -0.14435000000000278, 
+        -0.44154678509870798
+      ], 
+      "volume_m3": 2.1064101926207417e-05, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        6, 
+        6, 
+        40
+      ]
+    }, 
+    {
+      "centroid_m": [
+        0.0084354986155269346, 
+        -0.044975304407476387, 
+        -0.48749435702853083
+      ], 
+      "name": "0:7955", 
+      "owner": [
+        "AUVM", 
+        "l1"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 0.0001243642277142651, 
+      "bbox_m": [
+        -0.030010052030206583, 
+        -0.09459999999999999, 
+        -0.53920000000000101, 
+        0.030010000000001997, 
+        -0.0066000000000000017, 
+        -0.460700000000001
+      ], 
+      "volume_m3": 0.00012302940303093011, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        27, 
+        40, 
+        36
+      ]
+    }, 
+    {
+      "centroid_m": [
+        -0.0012297622950809611, 
+        -0.094600000000002293, 
+        -0.41220000000000595
+      ], 
+      "name": "0:8167", 
+      "owner": [
+        "AUVM", 
+        "l2"
+      ], 
+      "method": "grid", 
+      "grid_volume_m3": 0.00059997358814816641, 
+      "bbox_m": [
+        -0.025209999999999008, 
+        -0.1506000000000034, 
+        -0.53920000000000101, 
+        0.030800000000001, 
+        -0.038600000000000002, 
+        -0.28520000000000101
+      ], 
+      "volume_m3": 0.00062651545340656784, 
+      "tess_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+      "grid": [
+        9, 
+        18, 
+        40
+      ]
+    }
+  ], 
+  "errors": [], 
+  "input": "D:\\work4\\\u7b80\u5316\u6a21\u578b_\u5bfc\u51fa\\AUVM.step", 
+  "api_probe": {
+    "face_error": "'TrimmedSpace' object has no attribute 'Faces'", 
+    "shape": [
+      "ContainsPoint", 
+      "CreateObjRef", 
+      "Equals", 
+      "ExecuteCommand", 
+      "Geometry", 
+      "GetBoundingBox", 
+      "GetClosestSeparation", 
+      "GetCollision", 
+      "GetExtremePoint", 
+      "GetGeometry", 
+      "GetHashCode", 
+      "GetLifetimeService", 
+      "GetType", 
+      "InitializeLifetimeService", 
+      "IsReversed", 
+      "LifetimeLease", 
+      "MemberwiseClone", 
+      "ProjectPoint", 
+      "ReferenceEquals", 
+      "SurfaceArea", 
+      "ToString", 
+      "Volume"
+    ]
+  }
+}

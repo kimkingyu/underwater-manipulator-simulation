@@ -1,0 +1,342 @@
+{
+  "status": "ok", 
+  "tool_checks": [
+    {
+      "faces": 367, 
+      "volume_m3": 0.44986767884316703, 
+      "manifold": true, 
+      "name": "hull", 
+      "closed": true
+    }, 
+    {
+      "faces": 20, 
+      "volume_m3": 0.00064909765158032936, 
+      "manifold": true, 
+      "name": "base0", 
+      "closed": true
+    }, 
+    {
+      "faces": 161, 
+      "volume_m3": 0.00043714424691236457, 
+      "manifold": true, 
+      "name": "link3", 
+      "closed": true
+    }, 
+    {
+      "faces": 142, 
+      "volume_m3": 2.6945336263822346e-05, 
+      "manifold": true, 
+      "name": "jaw1", 
+      "closed": true
+    }, 
+    {
+      "faces": 153, 
+      "volume_m3": 2.7692392192252085e-05, 
+      "manifold": true, 
+      "name": "jaw2", 
+      "closed": true
+    }, 
+    {
+      "faces": 32, 
+      "volume_m3": 2.106403016515883e-05, 
+      "manifold": true, 
+      "name": "pin4", 
+      "closed": true
+    }, 
+    {
+      "faces": 15, 
+      "volume_m3": 0.00012302940303093003, 
+      "manifold": true, 
+      "name": "l1", 
+      "closed": true
+    }, 
+    {
+      "faces": 43, 
+      "volume_m3": 0.00062651545343011031, 
+      "manifold": true, 
+      "name": "l2", 
+      "closed": true
+    }
+  ], 
+  "tests": [
+    {
+      "label": "alone:hull", 
+      "pieces": [
+        34.377580542356654
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "hull", 
+          "ok": true, 
+          "tool_volume_m3": 0.44986767884316703, 
+          "cut_m3": 0.44987525834734754
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:base0", 
+      "pieces": [
+        34.826806690821421
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "base0", 
+          "ok": true, 
+          "tool_volume_m3": 0.00064909765158032936, 
+          "cut_m3": 0.00064910988258048974
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:l1", 
+      "pieces": [
+        34.827333290527207
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "l1", 
+          "ok": true, 
+          "tool_volume_m3": 0.00012302940303093003, 
+          "cut_m3": 0.00012251017679432152
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:l2", 
+      "pieces": [
+        34.8268272185844
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "l2", 
+          "ok": true, 
+          "tool_volume_m3": 0.00062651545343011031, 
+          "cut_m3": 0.00062858211960303834
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:link3", 
+      "pieces": [
+        34.8270193381417
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "link3", 
+          "ok": true, 
+          "tool_volume_m3": 0.00043714424691236457, 
+          "cut_m3": 0.00043646256229834535
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:pin4", 
+      "pieces": [
+        34.827434815625978
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "pin4", 
+          "ok": true, 
+          "tool_volume_m3": 2.106403016515883e-05, 
+          "cut_m3": 2.098507802372751e-05
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:jaw1", 
+      "pieces": [
+        34.82742828002614
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "jaw1", 
+          "ok": true, 
+          "tool_volume_m3": 2.6945336263822346e-05, 
+          "cut_m3": 2.7520677861048171e-05
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "alone:jaw2", 
+      "pieces": [
+        34.82742764993062
+      ], 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "jaw2", 
+          "ok": true, 
+          "tool_volume_m3": 2.7692392192252085e-05, 
+          "cut_m3": 2.8150773381696581e-05
+        }
+      ], 
+      "result": "ok"
+    }, 
+    {
+      "label": "chain_base_to_tip", 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "hull", 
+          "ok": true, 
+          "tool_volume_m3": 0.44986767884316703, 
+          "cut_m3": 0.44987525834734754
+        }, 
+        {
+          "tool": "base0", 
+          "ok": true, 
+          "tool_volume_m3": 0.00064909765158032936, 
+          "cut_m3": 0.00064910921773275732
+        }, 
+        {
+          "tool": "l1", 
+          "ok": true, 
+          "tool_volume_m3": 0.00012302940303093003, 
+          "cut_m3": 0.00012251017679432152
+        }, 
+        {
+          "tool": "l2", 
+          "ok": true, 
+          "tool_volume_m3": 0.00062651545343011031, 
+          "cut_m3": 0.00062858211960303834
+        }, 
+        {
+          "tool": "link3", 
+          "error": "General Failure.", 
+          "ok": false
+        }
+      ], 
+      "result": "failed at link3"
+    }, 
+    {
+      "label": "chain_tip_to_base", 
+      "tolerance": 1.0000000000000001e-05, 
+      "steps": [
+        {
+          "tool": "jaw2", 
+          "ok": true, 
+          "tool_volume_m3": 2.7692392192252085e-05, 
+          "cut_m3": 2.8150773381696581e-05
+        }, 
+        {
+          "tool": "jaw1", 
+          "ok": true, 
+          "tool_volume_m3": 2.6945336263822346e-05, 
+          "cut_m3": 2.7520582882800682e-05
+        }, 
+        {
+          "tool": "pin4", 
+          "ok": true, 
+          "tool_volume_m3": 2.106403016515883e-05, 
+          "cut_m3": 2.0983958116005397e-05
+        }, 
+        {
+          "tool": "link3", 
+          "ok": true, 
+          "tool_volume_m3": 0.00043714424691236457, 
+          "cut_m3": 0.00043646256229123992
+        }, 
+        {
+          "tool": "l2", 
+          "error": "General Failure.", 
+          "ok": false
+        }
+      ], 
+      "result": "failed at l2"
+    }, 
+    {
+      "label": "chain_base_to_tip", 
+      "tolerance": 9.9999999999999995e-07, 
+      "steps": [
+        {
+          "tool": "hull", 
+          "ok": true, 
+          "tool_volume_m3": 0.44986767884316703, 
+          "cut_m3": 0.44987525834734754
+        }, 
+        {
+          "tool": "base0", 
+          "ok": true, 
+          "tool_volume_m3": 0.00064909765158032936, 
+          "cut_m3": 0.00064910921773275732
+        }, 
+        {
+          "tool": "l1", 
+          "ok": true, 
+          "tool_volume_m3": 0.00012302940303093003, 
+          "cut_m3": 0.00012251017679432152
+        }, 
+        {
+          "tool": "l2", 
+          "ok": true, 
+          "tool_volume_m3": 0.00062651545343011031, 
+          "cut_m3": 0.00062858211960303834
+        }, 
+        {
+          "tool": "link3", 
+          "error": "General Failure.", 
+          "ok": false
+        }
+      ], 
+      "result": "failed at link3"
+    }, 
+    {
+      "label": "chain_tip_to_base", 
+      "tolerance": 9.9999999999999995e-07, 
+      "steps": [
+        {
+          "tool": "jaw2", 
+          "ok": true, 
+          "tool_volume_m3": 2.7692392192252085e-05, 
+          "cut_m3": 2.8150773381696581e-05
+        }, 
+        {
+          "tool": "jaw1", 
+          "ok": true, 
+          "tool_volume_m3": 2.6945336263822346e-05, 
+          "cut_m3": 2.7520582882800682e-05
+        }, 
+        {
+          "tool": "pin4", 
+          "ok": true, 
+          "tool_volume_m3": 2.106403016515883e-05, 
+          "cut_m3": 2.0983958116005397e-05
+        }, 
+        {
+          "tool": "link3", 
+          "ok": true, 
+          "tool_volume_m3": 0.00043714424691236457, 
+          "cut_m3": 0.00043646256229123992
+        }, 
+        {
+          "tool": "l2", 
+          "error": "General Failure.", 
+          "ok": false
+        }
+      ], 
+      "result": "failed at l2"
+    }
+  ], 
+  "unions": [
+    {
+      "label": "arm_union", 
+      "error": "General Failure.", 
+      "ok": false
+    }
+  ]
+}

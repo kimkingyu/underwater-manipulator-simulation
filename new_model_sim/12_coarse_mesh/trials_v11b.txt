@@ -1,0 +1,17 @@
+sizings ['size_gap_faces', 'size_wall_jaw1', 'size_wall_jaw2', 'size_wall_l1', 'size_wall_l2', 'size_wall_link3', 'size_wall_pin4', 'soi_j3gap_0', 'soi_j3gap_1', 'soi_j3gap_2', 'soi_j3gap_3', 'soi_j3gap_4', 'soi_j3gap_5', 'soi_j3gap_6', 'soi_j3gap_7']
+COMBO A1 all set
+  global GrowthRate now 1.35 type 1 sf 0.0; local sample [('size_gap_faces', 1.34), ('size_wall_jaw1', 1.34), ('size_wall_jaw2', 1.34)]
+  RESULT A1 elements 0 nodes 0 skew max 0 avg 0 0s
+    [Error] 局部增长率不能大于全局增长率。
+COMBO A2 all set
+  global GrowthRate now 1.4 type 1 sf 0.0; local sample [('size_gap_faces', 1.39), ('size_wall_jaw1', 1.39), ('size_wall_jaw2', 1.39)]
+  RESULT A2 elements 0 nodes 0 skew max 0 avg 0 0s
+    [Error] 局部增长率不能大于全局增长率。
+COMBO A3 all set
+  global GrowthRate now 1.4 type 1 sf 0.0; local sample [('size_gap_faces', 1.39), ('size_wall_jaw1', 1.39), ('size_wall_jaw2', 1.39)]
+  RESULT A3 elements 0 nodes 0 skew max 0 avg 0 0s
+    [Error] 局部增长率不能大于全局增长率。
+COMBO A4 all set
+  global GrowthRate now 1.5 type 1 sf 0.0; local sample [('size_gap_faces', 1.49), ('size_wall_jaw1', 1.49), ('size_wall_jaw2', 1.49)]
+  RESULT A4 elements 0 nodes 0 skew max 0 avg 0 0s
+    [Error] 局部增长率不能大于全局增长率。

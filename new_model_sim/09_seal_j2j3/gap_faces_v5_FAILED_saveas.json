@@ -1,0 +1,68 @@
+{
+  "status": "error", 
+  "faces": [
+    {
+      "hi_mm": [
+        -10.619, 
+        -482.48
+      ], 
+      "lo_mm": [
+        -94.6, 
+        -539.2
+      ], 
+      "x_mm": 15.0, 
+      "area_mm2": 2524.117, 
+      "group": "wall_l1", 
+      "face_index": 399
+    }, 
+    {
+      "hi_mm": [
+        -95.59, 
+        -286.2
+      ], 
+      "lo_mm": [
+        -177.308, 
+        -341.2
+      ], 
+      "x_mm": 15.0, 
+      "area_mm2": 2383.185, 
+      "group": "wall_link3", 
+      "face_index": 510
+    }, 
+    {
+      "hi_mm": [
+        -69.302, 
+        -286.2
+      ], 
+      "lo_mm": [
+        -149.6, 
+        -341.2
+      ], 
+      "x_mm": 14.8, 
+      "area_mm2": 2769.255, 
+      "group": "wall_l2", 
+      "face_index": 586
+    }, 
+    {
+      "hi_mm": [
+        -39.6, 
+        -483.331
+      ], 
+      "lo_mm": [
+        -119.898, 
+        -538.2
+      ], 
+      "x_mm": 14.8, 
+      "area_mm2": 2765.183, 
+      "group": "wall_l2", 
+      "face_index": 588
+    }
+  ], 
+  "scdoc": "D:\\work4\\new_model_sim\\09_seal_j2j3\\fluid_domain_v5.scdoc", 
+  "traceback": "Traceback (most recent call last):\n  File \"eb03c1dd-18f0-44a7-84ea-55a3da3b6e98\", line 74, in <module>\nNameError: name 'DocumentSaveAs' is not defined\n", 
+  "planes_x_m": [
+    0.014800000000000001, 
+    0.014999999999999999
+  ], 
+  "total_area_mm2": 10441.74
+}

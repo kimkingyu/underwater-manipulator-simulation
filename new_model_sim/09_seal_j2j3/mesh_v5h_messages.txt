@@ -1,0 +1,24 @@
+sizings before ['size_wall_jaw1', 'size_wall_jaw2', 'size_wall_pin4', 'size_wall_link3', 'size_wall_l2', 'size_wall_l1', 'size_gap_faces']
+body FFF\water id 410
+sphere 0 centre (0.483 [mm], -122.603 [mm], -344 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 1 centre (0.483 [mm], -122.603 [mm], -351 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 2 centre (0.483 [mm], -122.603 [mm], -358 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 3 centre (0.483 [mm], -122.603 [mm], -365 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 4 centre (0.483 [mm], -122.603 [mm], -372 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 5 centre (0.483 [mm], -122.603 [mm], -379 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 6 centre (0.483 [mm], -122.603 [mm], -386 [mm]) r 4 [mm] size 0.2 [mm]
+sphere 7 centre (0.483 [mm], -122.603 [mm], -392 [mm]) r 4 [mm] size 0.2 [mm]
+GENERATE
+mesh_nodes 962163
+mesh_elements 4904718
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 54
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

@@ -1,0 +1,6 @@
+gap face ids [115, 238, 321, 323]
+sizing scoped to ids, size 1 [mm]
+named selections now ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+mesh_nodes 81603
+mesh_elements 380937
+skewness max 0.999921385088405 avg 0.30441064740331431

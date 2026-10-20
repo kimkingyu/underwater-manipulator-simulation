@@ -1,0 +1,68 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707739
+STEP H1_hull50_curv36_g1.2 ['ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=2 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=2 [mm]', 'ElementSize=2 [mm]', 'ElementSize=1 [mm]', 'ElementSize=1 [mm]', 'ElementSize=1 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.3 [mm]', 'ElementSize=50 [mm]', 'behavior Soft', 'CurvatureNormalAngle=36 [deg]', 'MaximumSize=300 [mm]', 'ElementSize=150 [mm]', 'MinimumSize=0.15 [mm]', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2']
+  RESULT H1_hull50_curv36_g1.2 nodes 0 elements 0 Skewness min 0 max 0 avg 0 seconds 0
+    [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“最小尺寸”和“特征清除尺寸”
+STEP H2_g1.3 ['GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3', 'GrowthRate=1.3']
+  RESULT H2_g1.3 nodes 0 elements 0 Skewness min 0 max 0 avg 0 seconds 0
+    [Error] 局部增长率不能大于全局增长率。
+STEP H3_hull80_hard ['ElementSize=80 [mm]', 'behavior Hard']
+  RESULT H3_hull80_hard nodes 0 elements 0 Skewness min 0 max 0 avg 0 seconds 0
+    [Error] 局部增长率不能大于全局增长率。
+STEP H4_g1.4 ['GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4', 'GrowthRate=1.4']
+  RESULT H4_g1.4 nodes 0 elements 0 Skewness min 0 max 0 avg 0 seconds 0
+    [Error] 局部增长率不能大于全局增长率。
+STEP H5_arm2.5_jaw1.2 ['ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=2.5 [mm]', 'ElementSize=1.2 [mm]', 'ElementSize=1.2 [mm]', 'ElementSize=1.2 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=3 [mm]', 'ElementSize=0.3 [mm]']
+  RESULT H5_arm2.5_jaw1.2 nodes 0 elements 0 Skewness min 0 max 0 avg 0 seconds 0
+    [Error] 局部增长率不能大于全局增长率。

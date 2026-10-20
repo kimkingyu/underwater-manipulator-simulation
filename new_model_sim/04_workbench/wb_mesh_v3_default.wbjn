@@ -1,0 +1,82 @@
+# encoding: utf-8
+# Opens auvm_water_v3.wbpj, meshes with default settings, reports named selections / mesh statistics
+# from inside Meshing (Mechanical ACT API via SendCommand), exports a Fluent mesh, saves the project.
+# Launch with run_wb_fullenv.py (full Windows environment). Trace is UTF-8 via .NET.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+TRACE = r"D:\work4\new_model_sim\04_workbench\wb_mesh_v3_default_trace.txt"
+PROJECT = r"D:\work4\new_model_sim\04_workbench\auvm_water_v3.wbpj"
+MESH_OUT = r"D:\work4\new_model_sim\04_workbench\auvm_water_v3_default.msh"
+NS_REPORT = r"D:\work4\new_model_sim\04_workbench\wb_mesh_v3_default_ns.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString())
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString())
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+# Runs inside Meshing (Mechanical scripting). Writes named selections, body and mesh statistics.
+REPORT_SCRIPT = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    out.write("unit_system %%s\n" %% ExtAPI.Application.ActiveUnitSystem)
+    bodies = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)
+    out.write("bodies %%d\n" %% len(bodies))
+    for b in bodies:
+        out.write("  body %%s volume %%s\n" %% (b.Name, b.Volume))
+    ns = m.NamedSelections
+    items = ns.Children if ns is not None else []
+    out.write("named_selections %%d\n" %% len(items))
+    for s in items:
+        loc = s.Location
+        ids = list(loc.Ids) if loc is not None else []
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(ids)))
+    mesh = m.Mesh
+    out.write("mesh_nodes %%s\n" %% mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% mesh.Elements)
+    out.write("element_order %%s physics %%s\n" %% (mesh.ElementOrder, mesh.PhysicsPreference))
+except Exception, e:
+    out.write("REPORT ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % NS_REPORT
+
+log("1 Open project")
+Open(FilePath=PROJECT)
+system1 = GetSystem(Name="FFF")
+meshComponent1 = system1.GetComponent(Name="Mesh")
+mesh1 = system1.GetContainer(ComponentName="Mesh")
+
+ok = step("2 Mesh.Refresh", lambda: meshComponent1.Refresh())
+ok = ok and step("3 Mesh.Update (default settings)", lambda: meshComponent1.Update(AllDependencies=True))
+if ok:
+    step("4 Open Meshing editor (hidden) and write report", lambda: (
+        mesh1.Edit(Interactive=False),
+        mesh1.SendCommand(Language="Python", Command=REPORT_SCRIPT)))
+    step("5 Export Fluent mesh", lambda: mesh1.ExportMesh(FilePath=MESH_OUT))
+    step("6 Close Meshing editor", lambda: mesh1.Exit())
+    step("7 Save project", lambda: Save(Overwrite=True))
+log("END")

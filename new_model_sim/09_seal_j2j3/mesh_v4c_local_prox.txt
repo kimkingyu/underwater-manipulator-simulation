@@ -1,0 +1,20 @@
+global: CaptureProximity=False; CaptureCurvature=True; CurvatureNormalAngle=18 [deg]; MinimumSize=0.02 [mm]; MaximumSize=100 [mm]; ElementSize=100 [mm]; GrowthRate=1.2
+unsuppress size_wall_l1: Suppressed=False
+unsuppress size_wall_link3: Suppressed=False
+unsuppress size_wall_l2: Suppressed=False
+unsuppress size_wall_jaw1: Suppressed=False
+unsuppress size_wall_jaw2: Suppressed=False
+unsuppress size_wall_pin4: Suppressed=False
+== combo I (local proximity on l2/l1/base0)
+   size_wall_l2: CaptureProximity=False; ProximityMinimumSize=0.02 [mm]; FAILED ProximityGapFactor:expected Quantity, got float; LocalMinimumSize=0.02 [mm]
+   size_wall_l1: CaptureProximity=False; ProximityMinimumSize=0.02 [mm]; FAILED ProximityGapFactor:expected Quantity, got float; LocalMinimumSize=0.02 [mm]
+   size_wall_base0: CaptureProximity=False; ProximityMinimumSize=0.02 [mm]; FAILED ProximityGapFactor:expected Quantity, got float; LocalMinimumSize=0.02 [mm]
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“最小尺寸”和“特征清除尺寸”
+   I: messages before 1 after 1 nodes 0 elements 0
+== combo H (no proximity anywhere)
+   size_wall_l2: CaptureProximity=False
+   size_wall_l1: CaptureProximity=False
+   size_wall_base0: CaptureProximity=False
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“最小尺寸”和“特征清除尺寸”
+   H: messages before 1 after 1 nodes 0 elements 0
+WINNER None

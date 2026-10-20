@@ -116,3 +116,16 @@ cfd/inspect_*.py
 cfd/eval_*.py
 cfd/debug_*.py
 cfd/debug_*.m
+
+# New-model (AUVM) CFD work tree: keep scripts, reports and exported loads; drop Workbench project
+# directories (multi-GB .mshdb mesh databases) and solver binaries already covered above.
+new_model_sim/**/*_files/
+new_model_sim/**/*.mshdb
+new_model_sim/**/*.wbpz
+new_model_sim/**/*.h5
+new_model_sim/_ABORTED_*/
+/new_model_sim/**/runs/_*/
+
+# Packaged hand-off copies of the repo (zip + unpacked build tree) and local tool installs
+/deliverables/
+/.pdftools/

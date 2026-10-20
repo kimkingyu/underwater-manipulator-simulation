@@ -1,0 +1,13 @@
+sizings ['size_gap_faces', 'size_wall_jaw1', 'size_wall_jaw2', 'size_wall_l1', 'size_wall_l2', 'size_wall_link3', 'size_wall_pin4', 'soi_j3gap_0', 'soi_j3gap_1', 'soi_j3gap_2', 'soi_j3gap_3', 'soi_j3gap_4', 'soi_j3gap_5', 'soi_j3gap_6', 'soi_j3gap_7']
+STEP H0_E3_hull_free all set
+  RESULT H0_E3_hull_free elements 384622 nodes 82410 skew max 0.999946416893696 avg 0.31174406132638455 39s
+  census <5cm,5-10,10-20,20-40,>40cm: [22452, 124245, 167651, 12058, 58216]
+STEP H1_E3_hull_soft40 all set
+  RESULT H1_E3_hull_soft40 elements 439764 nodes 92981 skew max 0.999948483347329 avg 0.30498228689621826 35s
+  census <5cm,5-10,10-20,20-40,>40cm: [22506, 124342, 167785, 15274, 109857]
+STEP H1_E3_hull_soft25 all set
+  RESULT H1_E3_hull_soft25 elements 519106 nodes 108690 skew max 0.99994049294820075 avg 0.29821187630469448 41s
+  census <5cm,5-10,10-20,20-40,>40cm: [22466, 124291, 168468, 20898, 182983]
+STEP H2_E3_hull_hard25 all set
+  RESULT H2_E3_hull_hard25 elements 502311 nodes 105256 skew max 0.99989344683628134 avg 0.29920460652861319 40s
+  census <5cm,5-10,10-20,20-40,>40cm: [22445, 109185, 166228, 20856, 183597]

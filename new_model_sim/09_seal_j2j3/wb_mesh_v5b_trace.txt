@@ -1,0 +1,11 @@
+﻿1 open v5
+  OK
+2 save as v5b (new file)
+  OK
+3 meshing: gap-wall sizing combos
+  OK
+4 update mesh component (writes FFF.msh)
+  OK
+5 save
+  OK
+END

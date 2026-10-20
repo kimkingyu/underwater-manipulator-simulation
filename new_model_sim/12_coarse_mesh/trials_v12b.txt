@@ -1,0 +1,12 @@
+metric enum: ['AspectRatio', 'AspectRatioEXD', 'CharacteristicLength', 'CharacteristicLengthLSD', 'CompareTo', 'ElementQuality', 'Equals', 'Format', 'GetHashCode', 'GetName', 'GetNames', 'GetType', 'GetTypeCode', 'GetUnderlyingType', 'GetValues', 'HasFlag', 'Hydrodynamics', 'IsDefined', 'JacobianRatio', 'JacobianRatioCornerNodes', 'JacobianRatioGaussPoints', 'MaxEdgeLength', 'MaxQuadAngle', 'MaxTriAngle', 'MaximumCornerAngle', 'MemberwiseClone', 'MinEdgeLength', 'MinQuadAngle', 'MinTriAngle', 'None', 'OrthogonalAngle', 'ParallelDeviation', 'Parse', 'ReferenceEquals', 'Skewness', 'TetCollapse', 'ToBoolean', 'ToByte', 'ToChar', 'ToDateTime', 'ToDecimal', 'ToDouble', 'ToInt16', 'ToInt32', 'ToInt64', 'ToObject', 'ToSByte', 'ToSingle', 'ToString', 'ToType', 'ToUInt16', 'ToUInt32', 'ToUInt64', 'TryParse', 'WarpingAngle', 'WarpingFactor', 'value__']
+STEP S1_r8_0.5 all set
+  RESULT S1_r8_0.5 elements 78743 | Skewness err float argument required; ElementQuality err float argument required | 7s
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 表面网格相互交叉或近似交叉，因此难以创建体积网格。请通过调整网格尺寸或调整几何结构来解决该问题。
+    [Error] 当前网格划分选项与设置无法生成网格。
+STEP S2_r12_0.5 all set
+  RESULT S2_r12_0.5 elements 583393 | Skewness err float argument required; ElementQuality err float argument required | 24s
+STEP S3_r12_0.3 all set
+  RESULT S3_r12_0.3 elements 760437 | Skewness err float argument required; ElementQuality err float argument required | 24s
+STEP S4_r20_0.5 all set
+  RESULT S4_r20_0.5 elements 1302033 | Skewness err float argument required; ElementQuality err float argument required | 31s

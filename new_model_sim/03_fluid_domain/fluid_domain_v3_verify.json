@@ -1,0 +1,84 @@
+{
+  "scdoc": "D:\\work4\\new_model_sim\\03_fluid_domain\\fluid_domain_v3.scdoc", 
+  "groups": {
+    "wall_base0": {
+      "faces": 18, 
+      "area_m2": 0.032510624902003404, 
+      "members": 18
+    }, 
+    "wall_link3": {
+      "faces": 159, 
+      "area_m2": 0.04532757405397761, 
+      "members": 159
+    }, 
+    "outlet": {
+      "faces": 1, 
+      "area_m2": 11.16049984, 
+      "members": 1
+    }, 
+    "wall_l1": {
+      "faces": 13, 
+      "area_m2": 0.01544546094583637, 
+      "members": 13
+    }, 
+    "wall_l2": {
+      "faces": 43, 
+      "area_m2": 0.052559292321825699, 
+      "members": 43
+    }, 
+    "wall_pin4": {
+      "faces": 29, 
+      "area_m2": 0.00077688270139702499, 
+      "members": 29
+    }, 
+    "tank_wall": {
+      "faces": 4, 
+      "area_m2": 41.71867728, 
+      "members": 4
+    }, 
+    "wall_jaw1": {
+      "faces": 134, 
+      "area_m2": 0.012026198321746473, 
+      "members": 134
+    }, 
+    "wall_jaw2": {
+      "faces": 153, 
+      "area_m2": 0.013107071969912891, 
+      "members": 153
+    }, 
+    "wall_auv": {
+      "faces": 362, 
+      "area_m2": 4.501575228356462, 
+      "members": 362
+    }, 
+    "inlet": {
+      "faces": 1, 
+      "area_m2": 11.16049984, 
+      "members": 1
+    }
+  }, 
+  "max_owner_dist_m": 1.519180755731588e-09, 
+  "status": "ok", 
+  "close_runner_up": [], 
+  "faces_not_in_exactly_one_group": {
+    "none": 0, 
+    "several": 0
+  }, 
+  "problems": [], 
+  "wall_faces_checked": 911, 
+  "samples_per_dir": 6, 
+  "bodies": [
+    {
+      "faces": 917, 
+      "volume_m3": 34.375664549751761, 
+      "manifold": true, 
+      "name": "water", 
+      "closed": true
+    }
+  ], 
+  "tol_m": 1.0000000000000001e-05, 
+  "root_members_with_group": [
+    "CurveGroups", 
+    "Groups"
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "status": "failed",
+  "tag": "r2",
+  "meshes": [
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF\\MECH\\FFF.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-1\\MECH\\FFF-1.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-2\\MECH\\FFF-2.msh",
+    "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_j3_v2_files\\dp0\\FFF\\MECH\\FFF.msh"
+  ],
+  "steps": [
+    {
+      "step": "read_background",
+      "ok": true,
+      "seconds": 30.2
+    },
+    {
+      "step": "append FFF-1/FFF-1.msh",
+      "ok": true,
+      "seconds": 1.2
+    },
+    {
+      "step": "append FFF-2/FFF-2.msh",
+      "ok": true,
+      "seconds": 3.2
+    },
+    {
+      "step": "append FFF/FFF.msh",
+      "ok": true,
+      "seconds": 6.7
+    },
+    {
+      "step": "list_zones",
+      "ok": true,
+      "result": {
+        "fluid": [
+          "fff-1_fluid_j1",
+          "fff-2_fluid_j2",
+          "fff_fluid_background",
+          "fff_fluid_j3"
+        ],
+        "overset": [
+          "overset_j1",
+          "overset_j2",
+          "overset_j3"
+        ],
+        "wall": [
+          "tank_wall",
+          "wall_auv",
+          "wall_base0",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_l1",
+          "wall_l2",
+          "wall_link3",
+          "wall_pin4"
+        ]
+      },
+      "seconds": 0.1
+    },
+    {
+      "step": "mesh_check_before",
+      "ok": true,
+      "result": "",
+      "seconds": 2.0
+    },
+    {
+      "step": "create_interface",
+      "ok": true,
+      "result": "",
+      "seconds": 0.6
+    },
+    {
+      "step": "intersect_all",
+      "ok": false,
+      "error": "RuntimeError('menu not found')",
+      "seconds": 0.4
+    },
+    {
+      "step": "mark_cells",
+      "ok": true,
+      "result": "",
+      "seconds": 0.4
+    },
+    {
+      "step": "list_interface",
+      "ok": true,
+      "result": "",
+      "seconds": 0.5
+    },
+    {
+      "step": "check_interface",
+      "ok": true,
+      "result": "",
+      "seconds": 0.4
+    },
+    {
+      "step": "mesh_check_after",
+      "ok": true,
+      "result": "",
+      "seconds": 2.0
+    },
+    {
+      "step": "write_case",
+      "ok": true,
+      "seconds": 17.2
+    }
+  ],
+  "background_zones": [
+    "fff_fluid_background"
+  ],
+  "component_zones": [
+    "fff-1_fluid_j1",
+    "fff-2_fluid_j2",
+    "fff_fluid_j3"
+  ],
+  "transcript_hits": [
+    "Reading \"D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF\\MECH\\FFF.msh\"...",
+    "Reading \"D:/work4/new_model_sim/06_overset_mesh/auvm_overset_cfd_files/dp0/FFF-1/MECH/FFF-1.msh\"...",
+    "1662 triangular overset faces, zone 10, binary.",
+    "overset_j1",
+    "Warning:",
+    "Reading \"D:/work4/new_model_sim/06_overset_mesh/auvm_overset_cfd_files/dp0/FFF-2/MECH/FFF-2.msh\"...",
+    "2556 triangular overset faces, zone 14, binary.",
+    "overset_j2",
+    "Warning:",
+    "Reading \"D:/work4/new_model_sim/06_overset_mesh/auvm_j3_v2_files/dp0/FFF/MECH/FFF.msh\"...",
+    "2780 triangular overset faces, zone 18, binary.",
+    "overset_j3",
+    "Warning:",
+    "WARNING: overset zone 10 does not belong to any overset interface.",
+    "WARNING: overset zone 14 does not belong to any overset interface.",
+    "WARNING: overset zone 18 does not belong to any overset interface.",
+    "WARNING: Mesh check failed.",
+    "Marked 0 solve cells in register overset-solve-cells-r0.",
+    "List of Overset Interfaces",
+    "Writing to KIM:\"D:\\work4\\new_model_sim\\07_overset_assembly\\auvm_overset_r2.cas.h5\" in NODE0 mode and compression level 1 ...",
+    "WARNING:   9864 overset orphan cells in interface ovs_auvm.",
+    "Writing overset connectivity ..."
+  ],
+  "orphan_counts_seen": [],
+  "case_written": true
+}

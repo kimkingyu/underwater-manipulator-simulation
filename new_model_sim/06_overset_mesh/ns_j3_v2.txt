@@ -1,0 +1,11 @@
+named_selections 5
+  ns overset_j3 entities 6
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_link3 entities 160
+  ns wall_pin4 entities 76
+mesh_nodes 470420
+mesh_elements 2515622
+  [Info] 网格成功平移至Fluent。
+  [Warning] Fluent中的所有单元区域都可能自动设置为“流体”。
+  [Warning] 一些受保护拓扑的边界已被清除特征。右键点击此消息并选择“显示问题几何结构”，以查看受影响的边。

@@ -1,0 +1,7 @@
+bodies 1
+  body FFF-2\fluid_j2 volume 11081376.328248709 [mm mm mm]
+named_selections 2
+  ns overset_j2 entities 6
+  ns wall_l2 entities 43
+mesh_nodes 209242
+mesh_elements 1149311

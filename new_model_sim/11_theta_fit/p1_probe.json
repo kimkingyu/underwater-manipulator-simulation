@@ -1,0 +1,76 @@
+{
+  "frame_enable": null,
+  "frame_state": "{'frame_motion': True, 'mrf_relative_to_thread': 'absolute', 'mrf_omega': {'option': 'value', 'value': 0}, 'reference_frame_velocity': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'reference_frame_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'reference_frame_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}], 'reference_frame_zone_motion_function': 'none'}",
+  "frame_children": [
+    "frame_motion",
+    "mrf_relative_to_thread",
+    "mrf_omega",
+    "reference_frame_velocity",
+    "reference_frame_axis_origin",
+    "reference_frame_axis_direction",
+    "reference_frame_zone_motion_function"
+  ],
+  "frame_disable": null,
+  "mesh_enable": null,
+  "mesh_state": "{'enable': False}",
+  "mesh_children": [
+    "enable",
+    "mgrid_enable_transient",
+    "mgrid_relative_to_thread",
+    "mgrid_omega",
+    "moving_mesh_velocity",
+    "moving_mesh_axis_origin",
+    "moving_mesh_axis_direction",
+    "moving_mesh_zone_motion_function"
+  ],
+  "mesh_expr_try": "ERR KeyError('mesh_translational_velocity')",
+  "mesh_attrs_full": "{'enable': False}",
+  "mesh_disable": null,
+  "to_vi": "",
+  "vi_state": "{'name': 'xmin', 'momentum': {'velocity_specification_method': 'Magnitude, Normal to Boundary', 'reference_frame': 'Absolute', 'velocity': {'option': 'value', 'value': 0}, 'initial_gauge_pressure': {'option': 'value', 'value': 0}}, 'turbulence': {'turbulence_specification': 'Intensity and Viscosity Ratio', 'turbulent_intensity': 0.05, 'turbulent_viscosity_ratio': 10}}",
+  "vi_momentum_children": [
+    "system_coupling",
+    "velocity_specification_method",
+    "reference_frame",
+    "velocity",
+    "initial_gauge_pressure",
+    "coordinate_system",
+    "velocity_components",
+    "flow_direction",
+    "axis_direction",
+    "axis_origin",
+    "swirl_angular_velocity",
+    "gauge_pressure",
+    "acoustic_wave_model",
+    "impedance_zero_order_term",
+    "real_pole_series",
+    "complex_pole_series",
+    "incoming_wave"
+  ],
+  "vi_method_allowed": [
+    "Magnitude and Direction",
+    "Components",
+    "Magnitude, Normal to Boundary"
+  ],
+  "vi_set_components": null,
+  "vi_state_comp": "{'name': 'xmin', 'momentum': {'velocity_specification_method': 'Components', 'reference_frame': 'Absolute', 'initial_gauge_pressure': {'option': 'value', 'value': 0}, 'coordinate_system': 'Cartesian (X, Y, Z)', 'velocity_components': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}]}, 'turbulence': {'turbulence_specification': 'Intensity and Viscosity Ratio', 'turbulent_intensity': 0.05, 'turbulent_viscosity_ratio': 10}}",
+  "vi_frame_allowed": [
+    "Absolute",
+    "Relative to Adjacent Cell Zone"
+  ],
+  "to_po": "",
+  "po_state": "{'name': 'xmax', 'momentum': {'backflow_reference_frame': 'Absolute', 'gauge_pressure': {'option': 'value', 'value': 0}, 'pressure_profile_multiplier': 1.0, 'backflow_dir_spec_method': 'Normal to Boundary', 'backflow_pressure_spec': 'Total Pressure', 'prevent_reverse_flow': False, 'radial_equ_pressure_distribution': False, 'avg_pressure_spec': False, 'target_mass_flow_rate': False}, 'turbulence': {'turbulence_specification': 'Intensity and Viscosity Ratio', 'backflow_turbulent_intensity': 0.05, 'backflow_turbulent_viscosity_ratio': 10}}",
+  "wall_shear_allowed": [
+    "No Slip",
+    "Specified Shear"
+  ],
+  "methods": "{'p_v_coupling': {'flow_scheme': 'Coupled'}, 'flux_type': {'pbns_cases': {'flux_auto_select': True}}, 'discretization_scheme': {'k': 'second-order-upwind', 'mom': 'second-order-upwind', 'omega': 'second-order-upwind', 'pressure': 'second-order'}, 'pseudo_time_method': {'formulation': {'coupled_solver': 'global-time-step'}}, 'expert': {'numerics_pbns': {'implicit_bodyforce_treatment': False, 'velocity_formulation': 'absolute', 'physical_velocity_formulation': False, 'disable_rhie_chow_flux': False, 'presto_pressure_scheme': False, 'first_to_second_order_blending': 1.0}}, 'gradient_scheme': 'least-square-cell-based', 'high_order_term_relaxation': {'enable': False}, 'warped_face_gradient_correction': {'enable': False}}",
+  "transient_controls": "ERR RuntimeError('api-get-var: the object is not active\\nError Object: solution/run-calculation/transient-controls')",
+  "general_time_allowed": [
+    "steady",
+    "unsteady-1st-order",
+    "unsteady-2nd-order",
+    "unsteady-2nd-order-bounded"
+  ],
+  "report_def_compute_force": "[{'fx': [0.0, 0], 'fx(wall_auv)': [0.0, 0], 'fx(wall_base0)': [0.0, 0], 'fx(wall_jaw1)': [0.0, 0], 'fx(wall_jaw2)': [0.0, 0], 'fx(wall_l1)': [0.0, 0], 'fx(wall_l2)': [0.0, 0], 'fx(wall_link3)': [0.0, 0], 'fx(wall_pin4)': [0.0, 0]}]"
+}

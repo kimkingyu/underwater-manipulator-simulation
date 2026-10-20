@@ -1,0 +1,82 @@
+[
+ {
+  "step": "time_unsteady",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "ne_create",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "ne_state",
+  "ok": true,
+  "result": "{'name': 'osc_rate', 'definition': '0.0628 [m s^-1] * cos(3.1416 [s^-1] * t)', 'description': '', 'parameterid': '', 'parametername': '', 'unit': '', 'input_parameter': False, 'output_parameter': False}"
+ },
+ {
+  "step": "mm_state0",
+  "ok": true,
+  "result": "{'enable': False}"
+ },
+ {
+  "step": "mm_enable",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "mm_origin",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "mm_vel_expr_list",
+  "ok": false,
+  "error": "Traceback (most recent call last):\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1063, in __setattr__\n    return attr.set_state(value)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 690, in set_state\n    return self.flproxy.set_var(self.path, self.to_scheme_keys(state))\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1390, in to_scheme_keys\n    return [cls.child_object_type.to_scheme_keys(v) for v in value]\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1390, in <listcomp>\n    return [cls.child_object_type.to_scheme_keys(v) for v in value]\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 921, in to_scheme_keys\n    raise RuntimeError(\"Key '\" + str(k) + \"' is invalid\")\nRuntimeError: Key 'expression' is invalid\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 20, in t\n    r = fn()\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 46, in <lambda>\n    t(\"mm_vel_expr_list\", lambda: setattr(mm, \"moving_mesh_velocity\",\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1065, in __setattr__\n    allowed = attr.allowed_values()\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1453, in __getattr__\n    return getattr(super(), name)\nAttributeError: 'super' object has no attribute 'allowed_values'\n"
+ },
+ {
+  "step": "mm_state1",
+  "ok": true,
+  "result": "{'enable': True, 'mgrid_relative_to_thread': 'absolute', 'mgrid_omega': {'option': 'value', 'value': 0}, 'moving_mesh_velocity': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'moving_mesh_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0.29386}, {'option': 'value', 'value': -0.0663}], 'moving_mesh_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}], 'moving_mesh_zone_motion_function': 'none'}"
+ },
+ {
+  "step": "mm_vel0_child",
+  "ok": true,
+  "result": "{'option': 'value', 'value': 0}"
+ },
+ {
+  "step": "mm_vel_child_type",
+  "ok": true,
+  "result": "(<class 'ansys.fluent.core.solver.flobject.moving_mesh_velocity'>, <class 'ansys.fluent.core.solver.flobject.ListObject'>, <class 'ansys.fluent.core.solver.flobject.SettingsBase'>, <class 'ansys.fluent.core.solver.flobject.Base'>, <class 'typing.Generic'>, <class 'object'>)"
+ },
+ {
+  "step": "mm_vel_set_child_value",
+  "ok": false,
+  "error": "Traceback (most recent call last):\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 20, in t\n    r = fn()\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 51, in <lambda>\n    t(\"mm_vel_set_child_value\", lambda: mm.moving_mesh_velocity[0].set_state(\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 689, in set_state\n    state = self._unalias(kwargs or state)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 673, in _unalias\n    ccls = cls._child_classes[k]\nKeyError: 'expression'\n"
+ },
+ {
+  "step": "mm_vel_str_expr",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "mm_state2",
+  "ok": true,
+  "result": "{'enable': True, 'mgrid_relative_to_thread': 'absolute', 'mgrid_omega': {'option': 'value', 'value': 0}, 'moving_mesh_velocity': [{'option': 'value', 'value': 'osc_rate'}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'moving_mesh_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0.29386}, {'option': 'value', 'value': -0.0663}], 'moving_mesh_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}], 'moving_mesh_zone_motion_function': 'none'}"
+ },
+ {
+  "step": "mm_omega_expr",
+  "ok": false,
+  "error": "Traceback (most recent call last):\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1063, in __setattr__\n    return attr.set_state(value)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 689, in set_state\n    state = self._unalias(kwargs or state)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 673, in _unalias\n    ccls = cls._child_classes[k]\nKeyError: 'expression'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 20, in t\n    r = fn()\n  File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_osc.py\", line 55, in <lambda>\n    t(\"mm_omega_expr\", lambda: setattr(mm, \"mgrid_omega\", {\"option\": \"expression\", \"expression\": \"osc_rate\"}))\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1065, in __setattr__\n    allowed = attr.allowed_values()\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 1036, in __getattribute__\n    attr = super().__getattribute__(name)\nAttributeError: 'mgrid_omega' object has no attribute 'allowed_values'.\nThe most similar names are: value.\n"
+ },
+ {
+  "step": "mm_omega_str",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "mm_state3",
+  "ok": true,
+  "result": "{'enable': True, 'mgrid_relative_to_thread': 'absolute', 'mgrid_omega': {'option': 'value', 'value': 'osc_rate'}, 'moving_mesh_velocity': [{'option': 'value', 'value': 'osc_rate'}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'moving_mesh_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0.29386}, {'option': 'value', 'value': -0.0663}], 'moving_mesh_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}], 'moving_mesh_zone_motion_function': 'none'}"
+ }
+]

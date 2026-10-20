@@ -1,0 +1,10 @@
+﻿1 open fork
+  OK
+  display text: mesh_j3
+2 meshing: settings + GenerateMesh
+  OK
+3 update j3 component (writes FFF-3.msh)
+  OK
+4 save
+  OK
+END

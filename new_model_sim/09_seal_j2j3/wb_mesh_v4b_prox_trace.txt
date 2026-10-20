@@ -1,0 +1,10 @@
+﻿1 open v4b
+  OK
+  system FFF / mesh_water_v4
+3 meshing: proximity sizing + GenerateMesh
+  OK
+4 update mesh component (writes FFF.msh)
+  OK
+5 save
+  OK
+END

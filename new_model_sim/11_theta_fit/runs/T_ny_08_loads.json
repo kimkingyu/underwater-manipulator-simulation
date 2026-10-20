@@ -1,0 +1,181 @@
+{
+  "case": "T_ny_08",
+  "spec": {
+    "v": [
+      0,
+      -0.8,
+      0
+    ]
+  },
+  "converged": true,
+  "iterations": 525,
+  "load_drift_last_window": 0.0005587447049002245,
+  "solve_seconds": 129.2,
+  "moment_scaling_applied": 1.0,
+  "conventions": {
+    "frame": "CAD frame of AUVM.step, metres; +Y up",
+    "auv_force": "total fluid force (pressure + viscous) on all 8 body walls (hull + arm), N, CAD axes",
+    "auv_moment_reference_point_m": [
+      0.0,
+      0.29386,
+      -0.0663
+    ],
+    "auv_moment_reference_note": "hull volume centroid (11_theta_fit/body_centroids.json, grid method)",
+    "joint_torque": "moment of the fluid force on all walls distal to the joint, about the joint centre, projected on the joint axis; positive = right-hand rule about that axis, N*m",
+    "joints": {
+      "tau_j1": {
+        "centre_m": [
+          -4e-06,
+          -0.0366,
+          -0.460702
+        ],
+        "axis": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "walls": [
+          "wall_l1",
+          "wall_l2",
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      },
+      "tau_j2": {
+        "centre_m": [
+          0.016686,
+          -0.0666,
+          -0.511202
+        ],
+        "axis": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "walls": [
+          "wall_l2",
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      },
+      "tau_j3": {
+        "centre_m": [
+          0.014796,
+          -0.1226,
+          -0.313202
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "walls": [
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      }
+    },
+    "joint_source": "old URDF mapped to the new CAD (02_ansys_read_check/joint_candidates_from_old_urdf.json)"
+  },
+  "auv": {
+    "Fx": -63.81243083601292,
+    "Fy": 213.8756231480133,
+    "Fz": 16.31659793329275,
+    "Mx": -6.31399914661155,
+    "My": 0.16647200799200057,
+    "Mz": -2.152885809065399
+  },
+  "auv_hull_only": {
+    "Fx": -63.08792236137854,
+    "Fy": 207.9002738349614,
+    "Fz": 20.99945117895268,
+    "Mx": -10.454395188635337,
+    "My": -0.0905218376137018,
+    "Mz": -1.8326691430297863
+  },
+  "joints": {
+    "tau_j1": {
+      "fluent_report": 0.08155088888886262,
+      "recombined_from_zones": 0.08155088888886264,
+      "abs_diff": 1.3877787807814457e-17
+    },
+    "tau_j2": {
+      "fluent_report": -0.1474278572327921,
+      "recombined_from_zones": -0.1474278572327954,
+      "abs_diff": 3.3029134982598407e-15
+    },
+    "tau_j3": {
+      "fluent_report": 0.5540424066057255,
+      "recombined_from_zones": 0.5540424066057266,
+      "abs_diff": 1.1102230246251565e-15
+    }
+  },
+  "history_last5": [
+    {
+      "iter": 425,
+      "fx": -63.79118274157046,
+      "fy": 213.8678001505531,
+      "fz": 16.32501308871473,
+      "mx": 12.66193673119539,
+      "my": 4.394016211650667,
+      "mz": 16.59472260877887,
+      "tau_j1": 0.08147031119102287,
+      "tau_j2": -0.1474350998156874,
+      "tau_j3": 0.5539171787050985
+    },
+    {
+      "iter": 450,
+      "fx": -63.79555935713437,
+      "fy": 213.8684987340715,
+      "fz": 16.32334957760896,
+      "mx": 12.66104319645544,
+      "my": 4.394139736429434,
+      "mz": 16.59584852408673,
+      "tau_j1": 0.0814047059309649,
+      "tau_j2": -0.1474170730407511,
+      "tau_j3": 0.5538803800650883
+    },
+    {
+      "iter": 475,
+      "fx": -63.8009278822086,
+      "fy": 213.8697700035855,
+      "fz": 16.3215177355951,
+      "mx": 12.66031265859128,
+      "my": 4.39479198472156,
+      "mz": 16.59701174916899,
+      "tau_j1": 0.08140941847708597,
+      "tau_j2": -0.1473941305770645,
+      "tau_j3": 0.5539447412135757
+    },
+    {
+      "iter": 500,
+      "fx": -63.8069125859295,
+      "fy": 213.8725010324771,
+      "fz": 16.31908298152729,
+      "mx": 12.66024281797021,
+      "my": 4.39602446241081,
+      "mz": 16.59801269517715,
+      "tau_j1": 0.0814883477253976,
+      "tau_j2": -0.1473989265573084,
+      "tau_j3": 0.5540339603821157
+    },
+    {
+      "iter": 525,
+      "fx": -63.81243083601292,
+      "fy": 213.8756231480133,
+      "fz": 16.31659793329275,
+      "mx": 12.66075013677914,
+      "my": 4.397236172419658,
+      "mz": 16.59903511640536,
+      "tau_j1": 0.08155088888886262,
+      "tau_j2": -0.1474278572327921,
+      "tau_j3": 0.5540424066057255
+    }
+  ]
+}

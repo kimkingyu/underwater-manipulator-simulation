@@ -1,0 +1,97 @@
+# encoding: utf-8
+# One Workbench project, four Fluid Flow (Fluent) systems (background, j1, j2, j3), each fed by its own overset
+# fluid .scdoc with named selections imported. Default CFD mesh settings, first pass only, to see
+# where quality fails. Inside Meshing, writes named selection / mesh statistics per system.
+# Launch with run_wb_fullenv.py. Trace is UTF-8 via .NET.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\06_overset_mesh"
+CAD = r"D:\work4\new_model_sim\05_overset_cad"
+TRACE = D + r"\wb_mesh_overset_cfd_trace.txt"
+PROJECT = D + r"\auvm_overset_cfd.wbpj"
+PARTS = ["background", "j1", "j2", "j3"]
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString())
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString())
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+REPORT = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    bodies = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)
+    out.write("bodies %%d\n" %% len(bodies))
+    for b in bodies:
+        out.write("  body %%s volume %%s\n" %% (b.Name, b.Volume))
+    items = m.NamedSelections.Children if m.NamedSelections is not None else []
+    out.write("named_selections %%d\n" %% len(items))
+    for s in items:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+    out.write("mesh_nodes %%s\n" %% m.Mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% m.Mesh.Elements)
+except Exception, e:
+    out.write("REPORT ERROR %%s\n" %% e)
+finally:
+    out.close()
+'''
+
+log("0 Start")
+systems = {}
+mesh_template = GetTemplate(TemplateName="Fluid Flow")
+previous = None
+for part in PARTS:
+    def create(part=part):
+        global previous
+        if previous is None:
+            s = mesh_template.CreateSystem()
+        else:
+            s = mesh_template.CreateSystem(Position="Below", RelativeTo=previous)
+        s.DisplayText = "mesh_" + part
+        geo = s.GetContainer(ComponentName="Geometry")
+        geo.SetFile(FilePath=CAD + "\\" + part + "_fluid.scdoc")
+        props = geo.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        s.GetComponent(Name="Geometry").Update(AllDependencies=True)
+        systems[part] = s
+        previous = s
+    step("1 create system + geometry: " + part, create)
+step("2 save project (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False))
+for part in PARTS:
+    if part not in systems:
+        continue
+    s = systems[part]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 refresh mesh: " + part, lambda: comp.Refresh())
+    ok = ok and step("4 update mesh (default): " + part, lambda: comp.Update(AllDependencies=True))
+    if ok:
+        step("5 report: " + part, lambda: (mesh.Edit(Interactive=False),
+                                           mesh.SendCommand(Language="Python", Command=REPORT % (D + "\\ns_cfd_" + part + ".txt")),
+                                           mesh.Exit()))
+    step("6 save", lambda: Save(Overwrite=True))
+log("END")

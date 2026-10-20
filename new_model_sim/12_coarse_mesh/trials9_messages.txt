@@ -1,0 +1,63 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707797
+SIZING PROPS ['Accept', 'Activate', 'Active', 'AddComment', 'AddFigure', 'AddImage', 'AwaitObjectDuplicate', 'BaseObject', 'Behavior', 'BiasFactor', 'BiasGrowthRate', 'BiasOption', 'BiasType', 'BodyOfInfluence', 'CaptureCurvature', 'CaptureProximity', 'Children', 'Comments', 'CopyTo', 'CreateObjRef', 'CreateParameter', 'CurvatureNormalAngle', 'DataModelObjectCategory', 'DefeatureSize', 'Delete', 'Duplicate', 'ElementSize', 'Equals', 'Figures', 'GenerateMesh', 'GetAPIName', 'GetAllProperties', 'GetChildren', 'GetEnumName', 'GetHashCode', 'GetIconFile', 'GetLifetimeService', 'GetObjectData', 'GetParameter', 'GetPath', 'GetPropertyName', 'GetPropertyValue', 'GetType', 'GetVisibleProperties', 'GetVisiblePropertyNames', 'GroupAllSimilarChildren', 'GroupSimilarObjects', 'GroupingFolder', 'GrowthRate', 'IconName', 'Images', 'InitializeLifetimeService', 'InternalObject', 'IsPropertyEditable', 'IsPropertyVisible', 'LocalMinimumSize', 'Location', 'MemberwiseClone', 'Name', 'NamedSelection', 'NumberOfDivisions', 'ObjectId', 'ObjectState', 'ObjectTags', 'OriginX', 'OriginY', 'OriginZ', 'Parent', 'Properties', 'PropertyByAPIName', 'PropertyById', 'PropertyByName', 'ProximityGapFactor', 'ProximityMinimumSize', 'ProximitySizeSources', 'ReferenceEquals', 'RemoveParameter', 'RenameBasedOnDefinition', 'ReverseBias', 'ScopingMethod', 'SphereCenter', 'SphereRadius', 'State', 'Suppressed', 'ToString', 'Type', 'VisibleProperties']
+STEP U1_globcurvOff_armcurv18_hullsoft80 ['ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=2 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=2 [mm]', 'ElementSize=2 [mm]', 'ElementSize=1 [mm]', 'ElementSize=1 [mm]', 'ElementSize=1 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.2 [mm]', 'SphereRadius=4 [mm]', 'ElementSize=0.3 [mm]', 'ElementSize=80 [mm]', 'behavior Soft', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'GrowthRate=1.2', 'MaximumSize=300 [mm]', 'ElementSize=150 [mm]', 'CaptureCurvature=False', 'size_wall_l1:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_wall_link3:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_wall_l2:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_wall_jaw1:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_wall_jaw2:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_wall_pin4:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]', 'size_gap_faces:CaptureCurvature=False', 'CurvatureNormalAngle=18 [deg]', 'LocalMinimumSize=0.02 [mm]']
+  RESULT U1_globcurvOff_armcurv18_hullsoft80 nodes 1403595 elements 7266754 Skewness min 2.9757307729028071E-11 max 0.99980000993563656 avg 0.23248512382159636 seconds 181
+STEP U2_hullhard80 ['ElementSize=80 [mm]', 'behavior Hard']
+  RESULT U2_hullhard80 nodes 38836 elements 77568 Skewness min 0 max 0 avg 0 seconds 14
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 无法以可接受的质量对一个或多个表面进行网格划分。请尝试使用不同的单元尺寸或虚拟拓扑。
+    [Error] 当前网格划分选项与设置无法生成网格。
+STEP U3_hullsoft150 ['ElementSize=150 [mm]', 'behavior Soft']
+  RESULT U3_hullsoft150 nodes 1137517 elements 5827595 Skewness min 3.02450287037459E-11 max 0.99981316916626883 avg 0.23365089061318303 seconds 149

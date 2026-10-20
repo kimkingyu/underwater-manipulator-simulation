@@ -1,0 +1,18 @@
+unit_system StandardNMM
+bodies 1
+  body FFF\water volume 34375664549.751762 [mm mm mm]
+named_selections 11
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 134
+  ns wall_jaw2 entities 153
+  ns wall_l1 entities 13
+  ns wall_l2 entities 43
+  ns wall_link3 entities 159
+  ns wall_pin4 entities 29
+mesh_nodes 330050
+mesh_elements 1779694
+element_order Linear physics CFD

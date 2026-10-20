@@ -1,0 +1,181 @@
+# encoding: utf-8
+# Coarsening trials on a COPY of v5h (auvm_water_v5h.wbpj untouched): save-as v5k_trials.wbpj,
+# inside Meshing dump global/local size settings, then for each combo set sizes, regenerate and
+# record nodes/elements and orthogonal-quality min/avg. No FFF.msh export, no component update.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_trials12_trace.txt"
+SOURCE_PROJECT = r"D:\work4\new_model_sim\09_seal_j2j3\auvm_water_v5h.wbpj"
+PROJECT = D + r"\v5k_trials12.wbpj"
+INNER = D + r"\trials12_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs, time
+out = codecs.open(r"%s", "w", "utf-8")
+# (name, growth, max_mm, min_mm, curv_deg, arm_mm, jaw_mm, gap_mm, soi_mm, soi_r_mm)
+COMBOS = [("C2", 1.30, 300, 0.15, 36, 5, 2.5, 0.4, 0.25, 2.0),
+          ("C3", 1.35, 300, 0.20, 45, 6, 3.0, 0.5, 0.30, 1.5),
+          ("C1", 1.25, 250, 0.10, 30, 4, 2.0, 0.3, 0.20, 2.0)]
+KEYS = ("ElementSize", "MaximumSize", "MinimumSize", "GrowthRate", "CaptureCurvature", "CurvatureNormalAngle",
+        "CaptureProximity", "ProximityMinimumSize", "ProximityGapFactor", "UseAdaptiveSizing", "PhysicsPreference")
+def w(s):
+    out.write(s + "\n"); out.flush()
+def put(obj, name, value):
+    try:
+        setattr(obj, name, value)
+        return "%%s=%%s" %% (name, getattr(obj, name))
+    except Exception, e:
+        return "FAILED %%s: %%s" %% (name, e)
+def quality(mesh):
+    res = []
+    for nm in ("OrthogonalQuality", "Orthogonal_Quality", "Skewness"):
+        try:
+            mesh.MeshMetric = getattr(MeshMetricType, nm)
+            res.append("%%s min %%s max %%s avg %%s" %% (nm, mesh.Minimum, mesh.Maximum, mesh.Average))
+        except Exception, e:
+            pass
+    if not res:
+        res.append("enum %%s" %% [x for x in dir(MeshMetricType) if not x.startswith("_")][:60])
+    return "; ".join(res)
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    w("ALLPROPS")
+    for k in dir(mesh):
+        if any(t in k for t in ("Size", "size", "Defeature", "Growth", "Curvature", "Proximity", "Transition", "Smoothing", "Span", "Relevance")):
+            try:
+                w("  %%s = %%s" %% (k, getattr(mesh, k)))
+            except Exception, e:
+                pass
+    w("GLOBAL BEFORE")
+    for k in KEYS:
+        try:
+            w("  %%s = %%s" %% (k, getattr(mesh, k)))
+        except Exception, e:
+            w("  %%s : %%s" %% (k, e))
+    sz = dict((c.Name, c) for c in mesh.Children if c.GetType().Name == "Sizing")
+    for n, c in sorted(sz.items()):
+        try:
+            w("  local %%s size %%s r %%s" %% (n, c.ElementSize, getattr(c, "SphereRadius", "")))
+        except Exception, e:
+            w("  local %%s %%s" %% (n, e))
+    w("baseline nodes %%s elements %%s %%s" %% (mesh.Nodes, mesh.Elements, quality(mesh)))
+    def loc(arm, jaw, gap, soi, soir):
+        r = []
+        for n, c in sz.items():
+            if n in ("size_wall_jaw1", "size_wall_jaw2", "size_wall_pin4"):
+                r.append(put(c, "ElementSize", Quantity("%%s [mm]" %% jaw)))
+            elif n in ("size_wall_link3", "size_wall_l2", "size_wall_l1"):
+                r.append(put(c, "ElementSize", Quantity("%%s [mm]" %% arm)))
+            elif n == "size_gap_faces":
+                r.append(put(c, "ElementSize", Quantity("%%s [mm]" %% gap)))
+            elif n.startswith("soi_"):
+                r.append(put(c, "ElementSize", Quantity("%%s [mm]" %% soi)))
+                r.append(put(c, "SphereRadius", Quantity("%%s [mm]" %% soir)))
+        return r
+    def gen(tag, r):
+        w("STEP %%s %%s" %% (tag, r))
+        t0 = time.time()
+        mesh.ClearGeneratedData()
+        try:
+            mesh.GenerateMesh()
+        except Exception, e:
+            w("  GenerateMesh raised %%s" %% e)
+        w("  RESULT %%s nodes %%s elements %%s %%s seconds %%.0f" %% (tag, mesh.Nodes, mesh.Elements, quality(mesh), time.time() - t0))
+        for msg in ExtAPI.Application.Messages:
+            if msg.Severity.ToString() == "Error":
+                w("    [Error] %%s" %% msg.DisplayString)
+        try:
+            ExtAPI.Application.Messages.Clear()
+        except Exception:
+            pass
+    ns = dict((x.Name, x) for x in m.NamedSelections.Children)
+    geo = ExtAPI.DataModel.GeoData
+    J1 = (0.0, -0.0366, -0.4607)
+    hull_ids = list(ns["wall_auv"].Location.Ids)
+    rows = []
+    for i in hull_ids:
+        f = geo.GeoEntityById(i)
+        c = f.Centroid
+        d = ((c[0]-J1[0])**2 + (c[1]-J1[1])**2 + (c[2]-J1[2])**2) ** 0.5
+        rows.append((d, i, f.Area))
+    rows.sort()
+    w("hull faces %%d, nearest 10 (d_m, id, area_m2): %%s" %% (len(rows), [(round(r[0],3), r[1], round(r[2],5)) for r in rows[:10]]))
+    sizings = {}
+    def far_sizing(name, rmin, mm):
+        if name in sizings:
+            c = sizings[name]
+        else:
+            c = mesh.AddSizing()
+            c.Name = name
+            sizings[name] = c
+        sel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+        ids = [r[1] for r in rows if r[0] >= rmin]
+        sel.Ids = ids
+        c.Location = sel
+        r = [put(c, "ElementSize", Quantity("%%s [mm]" %% mm)), put(c, "GrowthRate", 1.2), "faces %%d" %% len(ids)]
+        try:
+            c.Behavior = SizingBehavior.Hard
+            r.append("hard")
+        except Exception, e:
+            r.append("behavior FAILED %%s" %% e)
+        return r
+    gen("X1_es150_max300_nohull", [put(mesh, "MaximumSize", Quantity("300 [mm]")), put(mesh, "ElementSize", Quantity("150 [mm]"))])
+    gen("X2_es80", [put(mesh, "ElementSize", Quantity("80 [mm]"))])
+    gen("X3_es50", [put(mesh, "ElementSize", Quantity("50 [mm]"))])
+    gen("X4_es50_hullfar80", far_sizing("hull_far", 0.10, 80))
+    gen("X5_es80_hullfar120", [put(mesh, "ElementSize", Quantity("80 [mm]"))] + far_sizing("hull_far", 0.10, 120))
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v5h", lambda: Open(FilePath=SOURCE_PROJECT)):
+        return
+    if not step("2 save as v5k_trials (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("3 meshing trials", lambda: (mesh.Edit(Interactive=False),
+                                      mesh.SendCommand(Language="Python", Command=INSIDE),
+                                      mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

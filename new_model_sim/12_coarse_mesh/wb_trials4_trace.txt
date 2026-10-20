@@ -1,0 +1,7 @@
+﻿1 open v5h
+  OK
+2 save as v5k_trials (new file)
+  OK
+3 meshing trials
+  OK
+END

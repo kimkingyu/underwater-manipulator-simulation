@@ -1,0 +1,9 @@
+set UseAdaptiveSizing = False
+set CaptureCurvature = True
+set CurvatureNormalAngle = 12.000000000000002 [deg]
+FAILED CurvatureMinSize : 'Mesh' object has no attribute 'CurvatureMinSize'
+set CaptureProximity = True
+FAILED ProximityMinSize : 'Mesh' object has no attribute 'ProximityMinSize'
+FAILED NumberOfCellsAcrossGap : 'Mesh' object has no attribute 'NumberOfCellsAcrossGap'
+set GrowthRate = 1.15
+set MaximumSize = 4 [mm]

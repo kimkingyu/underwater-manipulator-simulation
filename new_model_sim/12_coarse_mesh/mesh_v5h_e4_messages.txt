@@ -1,0 +1,6 @@
+sizings ['size_gap_faces', 'size_wall_jaw1', 'size_wall_jaw2', 'size_wall_l1', 'size_wall_l2', 'size_wall_link3', 'size_wall_pin4', 'soi_j3gap_0', 'soi_j3gap_1', 'soi_j3gap_2', 'soi_j3gap_3', 'soi_j3gap_4', 'soi_j3gap_5', 'soi_j3gap_6', 'soi_j3gap_7']
+no gap_faces NS (already scoped by ids)
+named selections ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+STEP V5H_E4_arm3.5_jaw2 all set
+  RESULT V5H_E4_arm3.5_jaw2 elements 558243 nodes 116490 skew max 0.99989955807534048 avg 0.29235474163805808 18s
+  census <5cm,5-10,10-20,20-40,>40cm: [33062, 154545, 240129, 20036, 110471]

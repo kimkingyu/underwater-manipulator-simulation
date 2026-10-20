@@ -1,0 +1,37 @@
+[
+ {
+  "step": "defaults_state0",
+  "ok": false,
+  "error": " File \"D:\\work4\\new_model_sim\\11_theta_fit\\probe_init.py\", line 33, in <lambda>\n    t(\"defaults_state0\", lambda: ini.defaults.get_state())\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\solver\\flobject.py\", line 641, in get_state\n    return self.to_python_keys(self.flproxy.get_var(self.path))\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\services\\settings.py\", line 124, in _fn\n    return fn(self, *args, **kwds)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\services\\settings.py\", line 197, in get_var\n    response = self._service_impl.get_var(request)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\services\\settings.py\", line 43, in get_var\n    return self.__stub.GetVar(request, metadata=self.__metadata)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\grpc\\_interceptor.py\", line 216, in __call__\n    response, ignored_call = self._with_call(request,\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\grpc\\_interceptor.py\", line 254, in _with_call\n    call = self._interceptor.intercept_unary_unary(continuation,\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\services\\interceptors.py\", line 122, in intercept_unary_unary\n    return self._intercept_call(continuation, client_call_details, request)\n  File \"D:\\Program Files\\ANSYS Inc\\v242\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\lib\\site-packages\\ansys\\fluent\\core\\services\\interceptors.py\", line 112, in _intercept_call\n    raise ex from None\nRuntimeError: api-get-var: the object is not active\nError Object: solution/initialization/defaults\n"
+ },
+ {
+  "step": "init_type",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "set_defaults",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "defaults_state1",
+  "ok": true,
+  "result": "{'k': 1.5e-06, 'omega': 0.14642857142857146, 'pressure': 0, 'x-velocity': 0, 'y-velocity': 0, 'z-velocity': 0}"
+ },
+ {
+  "step": "standard_initialize",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "nut_ratio_max",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "nut_ratio_val",
+  "ok": true,
+  "result": "[{'nutr': [9.999999999999996, 0]}]"
+ }
+]

@@ -1,0 +1,7 @@
+1 CreateSystem Fluid Flow (Fluent)
+  system: ?|?¦Ì???¡è?????|?¦Ì???£¤???¡§?¡¥????Fluent?¡¥????
+2 SetFile geometry
+3 Geometry properties: import named selections
+  named selections on, filter empty
+4 Update Geometry
+ERROR: 'DataReference' object has no attribute 'State'

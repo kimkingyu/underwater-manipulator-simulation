@@ -1,0 +1,49 @@
+sizing wall_jaw1 1 [mm]
+sizing wall_jaw2 1 [mm]
+sizing wall_pin4 1 [mm]
+sizing wall_link3 2 [mm]
+sizing wall_l2 2 [mm]
+sizing wall_l1 2 [mm]
+sizing gap_faces 0.3 [mm]
+gap sizing scoped to ids [455, 578, 669, 671], helper NS deleted
+messages before generate 0
+GENERATE
+MESSAGES
+  [Warning] 一些受保护拓扑的边界已被清除特征。右键点击此消息并选择“显示问题几何结构”，以查看受影响的边。
+       id 1118 GeoEdge centroid_m [-1.5605, -1.3296, -0.080199999999999994]
+       id 1120 GeoEdge centroid_m [1.5601, -1.3296, -0.080199999999999994]
+       id 1121 GeoEdge centroid_m [-1.5605, 0.29199999999999998, 1.6404]
+       id 1122 GeoEdge centroid_m [-1.5605, 1.9136, -0.080199999999999994]
+       id 1123 GeoEdge centroid_m [-1.5605, 0.29199999999999998, -1.8008]
+       id 1125 GeoEdge centroid_m [1.5601, 1.9136, -0.080199999999999994]
+       id 1128 GeoEdge centroid_m [1.5601, 0.29199999999999998, 1.6404]
+       id 1129 GeoEdge centroid_m [1.5601, 0.29199999999999998, -1.8008]
+       id 1130 GeoEdge centroid_m [-0.019734999999999999, -0.035422000000000002, -0.4607]
+       id 1133 GeoEdge centroid_m [-0.003568, -0.066387000000000002, -0.45464300000000002]
+  [Error] 无法以可接受的质量对一个或多个表面进行网格划分。请尝试使用不同的单元尺寸或虚拟拓扑。
+       id 623 GeoFace centroid_m [0.019050000000000001, -0.155635, -0.36193199999999998]
+  [Warning] 发现指定的特征清除容差大于指定尺寸。一个或多个边上的单元可能被清除特征。
+       id 1137 GeoEdge centroid_m [-0.0099919999999999991, -0.15443000000000001, -0.539663]
+       id 1139 GeoEdge centroid_m [-0.0099839999999999998, -0.15459000000000001, -0.54577399999999998]
+       id 1140 GeoEdge centroid_m [-0.0099939999999999994, -0.15434, -0.55058300000000004]
+       id 1141 GeoEdge centroid_m [-0.01, -0.15409, -0.54309099999999999]
+       id 1142 GeoEdge centroid_m [-0.0099939999999999994, -0.15434, -0.53559999999999997]
+       id 1143 GeoEdge centroid_m [-0.0099839999999999998, -0.15459000000000001, -0.53686]
+       id 1144 GeoEdge centroid_m [-0.0099860000000000001, -0.154561, -0.53823699999999997]
+       id 1145 GeoEdge centroid_m [-0.0099919999999999991, -0.15459000000000001, -0.53808999999999996]
+       id 1146 GeoEdge centroid_m [-0.0099919999999999991, -0.15459000000000001, -0.53559999999999997]
+       id 1147 GeoEdge centroid_m [-0.01, -0.15459000000000001, -0.53683099999999995]
+  [Error] 当前网格划分选项与设置无法生成网格。
+mesh_nodes 42855
+mesh_elements 37680
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 61
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

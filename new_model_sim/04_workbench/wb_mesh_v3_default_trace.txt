@@ -1,0 +1,14 @@
+﻿1 Open project
+2 Mesh.Refresh
+  OK
+3 Mesh.Update (default settings)
+  OK
+4 Open Meshing editor (hidden) and write report
+  OK
+5 Export Fluent mesh
+  OK
+6 Close Meshing editor
+  OK
+7 Save project
+  OK
+END

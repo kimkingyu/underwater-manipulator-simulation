@@ -1,0 +1,122 @@
+{
+  "status": "ok", 
+  "all_ok": true, 
+  "parts": {
+    "background": {
+      "manifold": true, 
+      "owner_max_dist_m": 4.7102773760513248e-16, 
+      "closed": true, 
+      "volume_matches_manifest": true, 
+      "faces_not_in_one_group": 0, 
+      "ok": true, 
+      "group_mismatch": [], 
+      "faces": 387, 
+      "volume_m3": 34.376931433138921, 
+      "groups": {
+        "wall_base0": {
+          "faces": 19, 
+          "area_m2": 0.035338058290234217
+        }, 
+        "outlet": {
+          "faces": 1, 
+          "area_m2": 11.16049984
+        }, 
+        "tank_wall": {
+          "faces": 4, 
+          "area_m2": 41.71867728
+        }, 
+        "wall_auv": {
+          "faces": 362, 
+          "area_m2": 4.501575228356462
+        }, 
+        "inlet": {
+          "faces": 1, 
+          "area_m2": 11.16049984
+        }
+      }, 
+      "owner_problems": [], 
+      "bodies": 1
+    }, 
+    "j1": {
+      "manifold": true, 
+      "owner_max_dist_m": 2.7755575615628914e-17, 
+      "closed": true, 
+      "volume_matches_manifest": true, 
+      "faces_not_in_one_group": 0, 
+      "ok": true, 
+      "group_mismatch": [], 
+      "faces": 21, 
+      "volume_m3": 0.0052469245483133678, 
+      "groups": {
+        "overset_j1": {
+          "faces": 6, 
+          "area_m2": 0.1844106981381429
+        }, 
+        "wall_l1": {
+          "faces": 15, 
+          "area_m2": 0.01884544959518384
+        }
+      }, 
+      "owner_problems": [], 
+      "bodies": 1
+    }, 
+    "j2": {
+      "manifold": true, 
+      "owner_max_dist_m": 3.4471709787692932e-16, 
+      "closed": true, 
+      "volume_matches_manifest": true, 
+      "faces_not_in_one_group": 0, 
+      "ok": true, 
+      "group_mismatch": [], 
+      "faces": 49, 
+      "volume_m3": 0.01108137632824871, 
+      "groups": {
+        "wall_l2": {
+          "faces": 43, 
+          "area_m2": 0.053747610070485355
+        }, 
+        "overset_j2": {
+          "faces": 6, 
+          "area_m2": 0.32669932000000351
+        }
+      }, 
+      "owner_problems": [], 
+      "bodies": 1
+    }, 
+    "j3": {
+      "manifold": true, 
+      "owner_max_dist_m": 1.519180781057383e-09, 
+      "closed": true, 
+      "volume_matches_manifest": true, 
+      "faces_not_in_one_group": 0, 
+      "ok": true, 
+      "group_mismatch": [], 
+      "faces": 482, 
+      "volume_m3": 0.018313405589071439, 
+      "groups": {
+        "wall_link3": {
+          "faces": 160, 
+          "area_m2": 0.045943336541522724
+        }, 
+        "wall_pin4": {
+          "faces": 29, 
+          "area_m2": 0.00077688270138604484
+        }, 
+        "wall_jaw1": {
+          "faces": 134, 
+          "area_m2": 0.012026198321702741
+        }, 
+        "wall_jaw2": {
+          "faces": 153, 
+          "area_m2": 0.013107071969912936
+        }, 
+        "overset_j3": {
+          "faces": 6, 
+          "area_m2": 0.45588175189852742
+        }
+      }, 
+      "owner_problems": [], 
+      "bodies": 1
+    }
+  }
+}

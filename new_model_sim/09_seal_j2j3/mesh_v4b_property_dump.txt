@@ -1,0 +1,128 @@
+== Mesh (Mesh)
+  CaptureCurvature = True
+  CaptureProximity = True
+  ConnectionSize = 0.0
+  ConnectionToleranceType = 0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 150 [mm]
+  GetPhysicsPreference = CFD
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InflationElementType = Wedges
+  InitialSizeSeed = 0
+  MaximumFaceSize : <MaximumFaceSize property is obsolete. Use ElementSize instead.>
+  MaximumSize = 300 [mm]
+  MinimumSize = 0.02 [mm]
+  PhysicsPreference = CFD
+  ProximityGapFactor = 3.0
+  ProximityMinimumSize = 0.02 [mm]
+  ProximitySizeSources = Faces
+  RigidBodyBehavior = DimensionallyReduced
+  RigidBodyFaceMeshType = QuadAndTri
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseAdaptiveSizing = False
+  UseAdvancedSizeFunction : <值不在预期的范围内。>
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+== size_wall_jaw1 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 1 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_jaw1
+== size_wall_jaw2 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 1 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_jaw2
+== size_wall_pin4 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 1 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_pin4
+== size_wall_link3 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 2 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_link3
+== size_wall_l2 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 2 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_l2
+== size_wall_l1 (Sizing)
+  Behavior = Soft
+  BiasGrowthRate = 1.2
+  BiasType = NoBias
+  CaptureCurvature = False
+  CaptureProximity = False
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureSize = 0 [mm]
+  ElementSize = 2 [mm]
+  GrowthRate = 0.0
+  LocalMinimumSize = 0 [mm]
+  ProximityGapFactor = 0 [mm]
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Type = ElementSize
+  location wall_l1

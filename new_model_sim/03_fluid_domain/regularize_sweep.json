@@ -1,0 +1,300 @@
+{
+  "status": "ok", 
+  "baseline_l2_link3": {
+    "collision": "Touch", 
+    "Intersect": 0.0, 
+    "Unite": "FAIL: General Failure.", 
+    "distance_m": 5.9334643660679944e-16
+  }, 
+  "distal_group": [
+    "link3", 
+    "pin4", 
+    "jaw1", 
+    "jaw2"
+  ], 
+  "cases": [
+    {
+      "dir": "+Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636399234614626, 
+      "full": {
+        "box_m3": 34.827455800704, 
+        "main_closed": true, 
+        "order": [
+          "hull", 
+          "base0", 
+          "l2", 
+          "link3", 
+          "l1", 
+          "jaw2", 
+          "jaw1", 
+          "pin4"
+        ], 
+        "tol_m": 1.0000000000000001e-05, 
+        "result": "ok", 
+        "main_faces": 915, 
+        "pieces_m3": [
+          34.375664549751761, 
+          2.1161766097077743e-06, 
+          5.5611282450032711e-07
+        ], 
+        "expected_m3": 34.375676633347389, 
+        "main_manifold": true, 
+        "main_minus_expected_m3": -1.2083595628098465e-05
+      }, 
+      "distance_m": 1.7208456881689926e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 1.0000000000000001e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398660194939, 
+      "distance_m": 1.7208456881689926e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 2.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636397639920377, 
+      "distance_m": 1.7208456881689926e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 5.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636396674305686, 
+      "distance_m": 1.7208456881689926e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 0.0001, 
+      "unite_manifold": true
+    }, 
+    {
+      "distance_m": 1.7857121365794453e-09, 
+      "collision": "Touch", 
+      "Intersect": 0.0, 
+      "dir": "-Y", 
+      "delta_m": 1.0000000000000001e-05, 
+      "Unite": "FAIL: General Failure."
+    }, 
+    {
+      "distance_m": 7.1428541317878582e-09, 
+      "collision": "Touch", 
+      "Intersect": 0.0, 
+      "dir": "-Y", 
+      "delta_m": 2.0000000000000002e-05, 
+      "Unite": "FAIL: General Failure."
+    }, 
+    {
+      "dir": "-Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398010576333, 
+      "full": {
+        "box_m3": 34.827455800704, 
+        "main_closed": true, 
+        "order": [
+          "hull", 
+          "base0", 
+          "l2", 
+          "link3", 
+          "l1", 
+          "jaw2", 
+          "jaw1", 
+          "pin4"
+        ], 
+        "tol_m": 1.0000000000000001e-05, 
+        "result": "ok", 
+        "main_faces": 915, 
+        "pieces_m3": [
+          34.375664550673953, 
+          2.1161766097077743e-06, 
+          5.5611282450032711e-07
+        ], 
+        "expected_m3": 34.375676633347261, 
+        "main_manifold": true, 
+        "main_minus_expected_m3": -1.2082673308100311e-05
+      }, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 5.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "-Y", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398012312093, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 0.0001, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636392835104511, 
+      "full": {
+        "box_m3": 34.827455800704, 
+        "main_closed": true, 
+        "order": [
+          "hull", 
+          "base0", 
+          "l2", 
+          "link3", 
+          "l1", 
+          "jaw2", 
+          "jaw1", 
+          "pin4"
+        ], 
+        "tol_m": 1.0000000000000001e-05, 
+        "result": "ok", 
+        "main_faces": 915, 
+        "pieces_m3": [
+          34.375664545529951, 
+          2.1161766097077743e-06, 
+          5.5611282450032722e-07
+        ], 
+        "expected_m3": 34.37567663334724, 
+        "main_manifold": true, 
+        "main_minus_expected_m3": -1.2087817289341274e-05
+      }, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Intersect", 
+      "unite_pieces": 1, 
+      "Intersect": 3.8089195273910153e-11, 
+      "delta_m": 1.0000000000000001e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636390939313485, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Intersect", 
+      "unite_pieces": 1, 
+      "Intersect": 1.2794991464904088e-10, 
+      "delta_m": 2.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636383452478422, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Intersect", 
+      "unite_pieces": 1, 
+      "Intersect": 6.3426975027350628e-10, 
+      "delta_m": 5.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "+Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636366206531705, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Intersect", 
+      "unite_pieces": 1, 
+      "Intersect": 2.1266808333557304e-09, 
+      "delta_m": 0.0001, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "-Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398008976775, 
+      "full": {
+        "box_m3": 34.827455800704, 
+        "main_closed": true, 
+        "order": [
+          "hull", 
+          "base0", 
+          "l2", 
+          "link3", 
+          "l1", 
+          "jaw2", 
+          "jaw1", 
+          "pin4"
+        ], 
+        "tol_m": 1.0000000000000001e-05, 
+        "result": "ok", 
+        "main_faces": 915, 
+        "pieces_m3": [
+          34.375664549146812, 
+          2.1161766097077743e-06, 
+          5.5611282450032722e-07
+        ], 
+        "expected_m3": 34.375676633367789, 
+        "main_manifold": true, 
+        "main_minus_expected_m3": -1.2084220976760207e-05
+      }, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 1.0000000000000001e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "-Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398013481175, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 2.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "-Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398014370497, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 5.0000000000000002e-05, 
+      "unite_manifold": true
+    }, 
+    {
+      "dir": "-Z", 
+      "unite_closed": true, 
+      "Unite": 0.0010636398016429264, 
+      "distance_m": 1.0026701691145945e-15, 
+      "collision": "Touch", 
+      "unite_pieces": 1, 
+      "Intersect": 0.0, 
+      "delta_m": 0.0001, 
+      "unite_manifold": true
+    }
+  ], 
+  "tolerant_unmodified": [
+    {
+      "order": [
+        "hull", 
+        "base0", 
+        "l2"
+      ], 
+      "tol_m": 0.0001, 
+      "result": "failed at link3: General Failure."
+    }
+  ], 
+  "source": "D:\\work4\\简化模型_导出\\AUVM.step", 
+  "boolean_tol_m": 1.0000000000000001e-05
+}

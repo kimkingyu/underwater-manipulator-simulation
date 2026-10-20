@@ -1,0 +1,66 @@
+# encoding: utf-8
+# Workbench journal: Fluid Flow (Fluent) system, import fluid_domain_v3.scdoc, update geometry,
+# open the Mesh component and save the project. Every step is traced; no meshing settings yet.
+SetScriptVersion(Version="24.2.133")
+
+TRACE = r"D:\work4\new_model_sim\04_workbench\wb_import_v3b_trace.txt"
+SCDOC = r"D:\work4\new_model_sim\03_fluid_domain\fluid_domain_v3.scdoc"
+PROJECT = r"D:\work4\new_model_sim\04_workbench\auvm_water_v3.wbpj"
+
+f_trace = open(TRACE, "w")
+
+
+def log(msg):
+    if isinstance(msg, unicode):
+        msg = msg.encode("utf-8")
+    f_trace.write(msg + "\n")
+    f_trace.flush()
+
+
+def txt(value):
+    try:
+        return unicode(value).encode("utf-8")
+    except Exception:
+        return repr(value)
+
+
+try:
+    log("1 CreateSystem Fluid Flow (Fluent)")
+    template1 = GetTemplate(TemplateName="Fluid Flow")
+    system1 = template1.CreateSystem()
+    log("  system: " + txt(system1.DisplayText))
+
+    log("2 SetFile geometry")
+    geometry1 = system1.GetContainer(ComponentName="Geometry")
+    geometry1.SetFile(FilePath=SCDOC)
+
+    log("3 Geometry properties: import named selections")
+    try:
+        props = geometry1.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        log("  named selections on, filter empty")
+    except Exception, e:
+        log("  props error: " + str(e))
+
+    log("4 Update Geometry")
+    geometryComponent1 = system1.GetComponent(Name="Geometry")
+    geometryComponent1.Update(AllDependencies=True)
+    log("  geometry state: " + str(geometryComponent1.State))
+
+    log("5 Save project")
+    Save(FilePath=PROJECT, Overwrite=False)
+    log("  saved")
+
+    log("6 Refresh Mesh")
+    meshComponent1 = system1.GetComponent(Name="Mesh")
+    meshComponent1.Refresh()
+    log("  mesh state: " + str(meshComponent1.State))
+
+    log("7 Save project")
+    Save(Overwrite=True)
+    log("DONE")
+except Exception, e:
+    log("ERROR: " + str(e))
+finally:
+    f_trace.close()

@@ -1,0 +1,25 @@
+{
+  "status": "error", 
+  "samples_per_dir": 12, 
+  "region_lo_m": [
+    -0.080000000000000002, 
+    -0.20000000000000001, 
+    -0.67000000000000004
+  ], 
+  "region_hi_m": [
+    0.080000000000000002, 
+    0.050000000000000003, 
+    -0.27000000000000002
+  ], 
+  "ray_steps_m": [
+    5.0000000000000004e-06, 
+    1.0000000000000001e-05, 
+    2.0000000000000002e-05, 
+    5.0000000000000002e-05, 
+    0.0001, 
+    0.00014999999999999999, 
+    0.00020000000000000001
+  ], 
+  "scdoc": "D:\\work4\\new_model_sim\\03_fluid_domain\\fluid_domain_v3.scdoc", 
+  "traceback": "Traceback (most recent call last):\n  File \"afba7af3-ca90-4903-9c9f-f81f8884b993\", line 75, in <module>\nValueError: 已添加项。字典中的关键字:“WINDIR”所添加的关键字:“windir”\n"
+}

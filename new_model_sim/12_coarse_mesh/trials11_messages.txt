@@ -1,0 +1,60 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707733
+hull faces 362, nearest 10 (d_m, id, area_m2): [(0.056000000000000001, 688, 0.078189999999999996), (0.28199999999999997, 689, 0.26901999999999998), (0.40100000000000002, 704, 0.0053099999999999996), (0.40100000000000002, 693, 0.0053099999999999996), (0.41499999999999998, 685, 0.57513000000000003), (0.47099999999999997, 928, 0.01321), (0.48799999999999999, 701, 0.022610000000000002), (0.48799999999999999, 695, 0.022610000000000002), (0.52000000000000002, 975, 0.090490000000000001), (0.57499999999999996, 694, 0.048669999999999998)]
+STEP W1_far0.15_80 ['MaximumSize=300 [mm]', 'ElementSize=150 [mm]', 'ElementSize=80 [mm]', 'GrowthRate=1.2', 'faces 361', 'hard']
+  RESULT W1_far0.15_80 nodes 95884 elements 459483 Skewness min 1.9333248335584585E-09 max 0.99999995727451541 avg 0.25109516867074433 seconds 17
+STEP W2_far0.25_80 ['ElementSize=80 [mm]', 'GrowthRate=1.2', 'faces 361', 'hard']
+  RESULT W2_far0.25_80 nodes 95884 elements 459483 Skewness min 1.9333248335584585E-09 max 0.99999995727451541 avg 0.25109516867074394 seconds 17
+STEP W3_far0.10_60 ['ElementSize=60 [mm]', 'GrowthRate=1.2', 'faces 361', 'hard']
+  RESULT W3_far0.10_60 nodes 107859 elements 529007 Skewness min 4.8320148993141743E-09 max 0.99999994948300053 avg 0.24692015554622956 seconds 23

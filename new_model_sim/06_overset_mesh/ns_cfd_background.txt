@@ -1,0 +1,10 @@
+bodies 1
+  body FFF\fluid_background volume 34376931433.138916 [mm mm mm]
+named_selections 5
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 19
+mesh_nodes 282426
+mesh_elements 1524585

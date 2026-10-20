@@ -1,0 +1,7 @@
+bodies 1
+  body SYS-1\fluid_j1 volume 5246924.5483133672 [mm mm mm]
+named_selections 2
+  ns overset_j1 entities 6
+  ns wall_l1 entities 15
+mesh_nodes 4682
+mesh_elements 2669

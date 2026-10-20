@@ -1,0 +1,55 @@
+{
+  "J1": {
+    "base0": {
+      "coaxial_faces": 6,
+      "radii_mm": [
+        29.0,
+        30.0
+      ],
+      "best_offset_mm": 0.004
+    },
+    "l1": {
+      "coaxial_faces": 2,
+      "radii_mm": [
+        30.0
+      ],
+      "best_offset_mm": 0.004
+    }
+  },
+  "J2": {
+    "l1": {
+      "coaxial_faces": 5,
+      "radii_mm": [
+        13.5,
+        28.0,
+        29.0
+      ],
+      "best_offset_mm": 0.002
+    },
+    "l2": {
+      "coaxial_faces": 3,
+      "radii_mm": [
+        28.0,
+        29.0
+      ],
+      "best_offset_mm": 0.002
+    }
+  },
+  "J3": {
+    "l2": {
+      "coaxial_faces": 2,
+      "radii_mm": [
+        28.0
+      ],
+      "best_offset_mm": 0.002
+    },
+    "link3": {
+      "coaxial_faces": 4,
+      "radii_mm": [
+        14.0,
+        28.0
+      ],
+      "best_offset_mm": 0.002
+    }
+  }
+}

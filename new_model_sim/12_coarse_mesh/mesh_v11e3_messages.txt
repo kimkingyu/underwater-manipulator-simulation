@@ -1,0 +1,4 @@
+global before: Max 300 [mm] ES 150 [mm] Min 0 [mm] G 1.2 curv True
+COMBO E3_g1.4_gap1 all set
+  RESULT E3_g1.4_gap1 elements 380937 nodes 81603 skew max 0.999921385088405 avg 0.30441064740331442 18s
+  census <5cm,5-10,10-20,20-40,>40cm: [22442, 124524, 165802, 12018, 56151]

@@ -1,0 +1,7 @@
+﻿1 open v5h
+  OK
+2 save as v5h_e3_trials (new file)
+  OK
+3 trials
+  OK
+END

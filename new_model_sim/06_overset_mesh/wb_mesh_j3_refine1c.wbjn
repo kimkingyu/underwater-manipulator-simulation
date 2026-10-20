@@ -1,0 +1,112 @@
+# encoding: utf-8
+# Forks auvm_overset_cfd.wbpj into auvm_overset_j3r1c.wbpj (original untouched), then remeshes only
+# the j3 system (FFF-3) with curvature + proximity size functions. Each property set is guarded and
+# logged so unsupported names are visible. Launch with run_wb_fullenv.py.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\06_overset_mesh"
+TRACE = D + r"\wb_mesh_j3_refine1c_trace.txt"
+SRC = D + r"\auvm_overset_cfd.wbpj"
+DST = D + r"\auvm_overset_j3r1c.wbpj"
+NS = D + r"\ns_j3r1c.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString())
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString())
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+SETTINGS = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+mesh = ExtAPI.DataModel.Project.Model.Mesh
+def put(name, value):
+    try:
+        setattr(mesh, name, value)
+        out.write("set %%s = %%s\n" %% (name, getattr(mesh, name)))
+    except Exception, e:
+        out.write("FAILED %%s : %%s\n" %% (name, e))
+put("UseAdaptiveSizing", False)
+put("CaptureCurvature", True)
+put("CurvatureNormalAngle", Quantity("12 [deg]"))
+put("CurvatureMinSize", Quantity("0.05 [mm]"))
+put("CaptureProximity", True)
+put("ProximityMinSize", Quantity("0.05 [mm]"))
+put("NumberOfCellsAcrossGap", 3)
+put("GrowthRate", 1.15)
+put("MaximumSize", Quantity("4 [mm]"))
+out.close()
+''' % (D + r"\settings_j3r1c.txt")
+
+REPORT = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    items = m.NamedSelections.Children if m.NamedSelections is not None else []
+    out.write("named_selections %%d\n" %% len(items))
+    for s in items:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+    out.write("mesh_nodes %%s\n" %% m.Mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% m.Mesh.Elements)
+except Exception, e:
+    out.write("REPORT ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % NS
+
+def run():
+    # Fresh fork from the untouched original (the j3r1 fork is left as-is: locked by a killed session).
+    if not step("1 open original project", lambda: Open(FilePath=SRC)):
+        return
+    if not step("1b save as new project", lambda: Save(FilePath=DST, Overwrite=False)):
+        return
+    holder = {}
+
+    def find():
+        holder["s"] = GetSystem(Name="FFF 3")
+        log("  display text: " + holder["s"].DisplayText)
+    if not step("2 get system 'FFF 3'", find):
+        return
+    s = holder["s"]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 open j3 meshing + apply settings", lambda: (mesh.Edit(Interactive=False),
+                                                          mesh.SendCommand(Language="Python", Command=SETTINGS),
+                                                          mesh.Exit()))
+    ok = ok and step("4 update j3 mesh", lambda: comp.Update(AllDependencies=True))
+    if ok:
+        step("5 report", lambda: (mesh.Edit(Interactive=False),
+                                  mesh.SendCommand(Language="Python", Command=REPORT),
+                                  mesh.Exit()))
+    step("6 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

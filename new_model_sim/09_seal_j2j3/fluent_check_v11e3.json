@@ -1,0 +1,44 @@
+{
+  "status": "failed",
+  "mesh": "D:\\work4\\new_model_sim\\12_coarse_mesh\\auvm_water_v11e3_files\\dp0\\FFF\\MECH\\FFF.msh",
+  "mesh_bytes": 17919593,
+  "zones": {
+    "fluid": [
+      "fff_water"
+    ],
+    "velocity_inlet": [
+      "inlet"
+    ],
+    "pressure_outlet": [
+      "outlet"
+    ],
+    "wall": [
+      "tank_wall",
+      "wall_auv",
+      "wall_base0",
+      "wall_jaw1",
+      "wall_jaw2",
+      "wall_l1",
+      "wall_l2",
+      "wall_link3",
+      "wall_pin4"
+    ]
+  },
+  "seconds": 70.6,
+  "min_orth": 7.86149e-05,
+  "max_aspect": 8246.19,
+  "min_volume_m3": 5.919951e-13,
+  "total_volume_m3": 34.16465,
+  "cells": [
+    [
+      380937,
+      "tetrahedral"
+    ]
+  ],
+  "min_orth_location_m": "5.06633e-04, -5.85000e-03, -3.80055e-01",
+  "max_aspect_location_m": "-1.03505e-02, -1.54423e-01, -5.36777e-01",
+  "warnings_errors": [],
+  "walls_complete": true,
+  "inlet_outlet_ok": true,
+  "min_orth_ok": false
+}

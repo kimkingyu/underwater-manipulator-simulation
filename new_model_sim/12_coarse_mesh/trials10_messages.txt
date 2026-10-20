@@ -1,0 +1,70 @@
+ALLPROPS
+  CaptureCurvature = True
+  CaptureProximity = False
+  ConnectionSize = 0.0
+  CurvatureNormalAngle = 0 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.2
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  __sizeof__ = <built-in method __sizeof__ of Mesh object at 0x000000000000002B>
+GLOBAL BEFORE
+  ElementSize = 0 [mm]
+  MaximumSize = 0 [mm]
+  MinimumSize = 0 [mm]
+  GrowthRate = 1.2
+  CaptureCurvature = True
+  CurvatureNormalAngle = 0 [deg]
+  CaptureProximity = False
+  ProximityMinimumSize = 0 [mm]
+  ProximityGapFactor = 0.0
+  UseAdaptiveSizing = False
+  PhysicsPreference = CFD
+  local size_gap_faces size 0.3 [mm] r 0 [mm]
+  local size_wall_jaw1 size 1 [mm] r 0 [mm]
+  local size_wall_jaw2 size 1 [mm] r 0 [mm]
+  local size_wall_l1 size 2 [mm] r 0 [mm]
+  local size_wall_l2 size 2 [mm] r 0 [mm]
+  local size_wall_link3 size 2 [mm] r 0 [mm]
+  local size_wall_pin4 size 1 [mm] r 0 [mm]
+  local soi_j3gap_0 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_1 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_2 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_3 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_4 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_5 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_6 size 0.2 [mm] r 4 [mm]
+  local soi_j3gap_7 size 0.2 [mm] r 4 [mm]
+baseline nodes 962163 elements 4904718 Skewness min 6.9329986196464688E-11 max 0.96780144908967869 avg 0.23278279676707797
+calc max face size 283.27701861659472 [mm]
+STEP V1_hull80hard_globDefault ['ElementSize=80 [mm]', 'behavior Hard', 'GrowthRate=1.2']
+  RESULT V1_hull80hard_globDefault nodes 36383 elements 72821 Skewness min 0 max 0 avg 0 seconds 15
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 表面网格相互交叉或近似交叉，因此难以创建体积网格。请通过调整网格尺寸或调整几何结构来解决该问题。
+    [Error] 当前网格划分选项与设置无法生成网格。
+STEP V2_plus_max300 ['MaximumSize=300 [mm]']
+  RESULT V2_plus_max300 nodes 36384 elements 72823 Skewness min 0 max 0 avg 0 seconds 13
+    [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+    [Error] 表面网格相互交叉或近似交叉，因此难以创建体积网格。请通过调整网格尺寸或调整几何结构来解决该问题。
+    [Error] 当前网格划分选项与设置无法生成网格。
+STEP V3_plus_max300_es150 ['ElementSize=150 [mm]']
+  RESULT V3_plus_max300_es150 nodes 95759 elements 458768 Skewness min 8.5665399218726179E-09 max 0.99999994948300053 avg 0.25103329614540032 seconds 25
+STEP V4_hull50hard ['ElementSize=50 [mm]', 'behavior Hard']
+  RESULT V4_hull50hard nodes 135544 elements 684701 Skewness min 4.8320896173237315E-09 max 0.99999987109326194 avg 0.24330421528081503 seconds 24
+STEP V5_hull30hard ['ElementSize=30 [mm]', 'behavior Hard']
+  RESULT V5_hull30hard nodes 367401 elements 1933479 Skewness min 7.6654016467614383E-11 max 0.99999870995203244 avg 0.23271764268800826 seconds 43

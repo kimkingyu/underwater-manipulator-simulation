@@ -1,0 +1,125 @@
+# encoding: utf-8
+# Arm-region coarsening trials on a COPY of auvm_water_v11.wbpj (saved as v11_trials.wbpj, no msh export).
+# Gap face sizing (0.3 mm) and J3 spheres (0.2 mm, r 4 mm) are kept; growth rate is raised on the global
+# mesh AND every local sizing together; arm/jaw face sizes coarsened. Element census by distance after each.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_trials_v11_trace.txt"
+SOURCE_PROJECT = D + r"\auvm_water_v11.wbpj"
+PROJECT = D + r"\v11_trials.wbpj"
+INNER = D + r"\trials_v11.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+    return False
+
+
+INSIDE = r'''
+import codecs, math, time
+out = codecs.open(r"%s", "w", "utf-8")
+C = (0.0, -0.10, -0.45)
+R = [0.05, 0.1, 0.2, 0.4, 10.0]
+# (tag, growth, arm_mm, jaw_mm)
+COMBOS = [("A1", 1.35, 4, 2), ("A2", 1.40, 4, 2), ("A3", 1.40, 5, 2.5), ("A4", 1.50, 5, 2.5)]
+def w(s):
+    out.write(s + "\n"); out.flush()
+def put(obj, name, value):
+    try:
+        setattr(obj, name, value)
+        return "%%s=%%s" %% (name, getattr(obj, name))
+    except Exception, e:
+        return "FAILED %%s: %%s" %% (name, e)
+def census():
+    md = ExtAPI.DataModel.MeshDataByName("Global")
+    counts = [0] * len(R)
+    for eid in md.ElementIds:
+        el = md.ElementById(eid)
+        ps = [md.NodeById(k) for k in el.NodeIds]
+        cx = sum(p.X for p in ps) / len(ps); cy = sum(p.Y for p in ps) / len(ps); cz = sum(p.Z for p in ps) / len(ps)
+        d = math.sqrt((cx - C[0]) ** 2 + (cy - C[1]) ** 2 + (cz - C[2]) ** 2)
+        for i, r in enumerate(R):
+            if d < r:
+                counts[i] += 1
+                break
+    return counts
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    sz = dict((c.Name, c) for c in mesh.Children if c.GetType().Name == "Sizing")
+    w("sizings %%s" %% sorted(sz))
+    for (tag, g, arm, jaw) in COMBOS:
+        r = []
+        # raise local growth first is rejected (local > global), so set global first, then locals
+        r.append(put(mesh, "GrowthRate", g))
+        for n, c in sz.items():
+            r.append(n + ":" + put(c, "GrowthRate", g))
+            if n in ("size_wall_jaw1", "size_wall_jaw2", "size_wall_pin4"):
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% jaw)))
+            elif n in ("size_wall_link3", "size_wall_l2", "size_wall_l1"):
+                r.append(n + ":" + put(c, "ElementSize", Quantity("%%s [mm]" %% arm)))
+        w("COMBO %%s %%s" %% (tag, [x for x in r if "FAILED" in x] or "all set"))
+        t0 = time.time()
+        mesh.ClearGeneratedData()
+        try:
+            mesh.GenerateMesh()
+        except Exception, e:
+            w("  GenerateMesh raised %%s" %% e)
+        sk = ""
+        try:
+            mesh.MeshMetric = MeshMetricType.Skewness
+            sk = "skew max %%s avg %%s" %% (mesh.Maximum, mesh.Average)
+        except Exception, e:
+            sk = "metric err %%s" %% e
+        w("  RESULT %%s elements %%s nodes %%s %%s %%.0fs" %% (tag, mesh.Elements, mesh.Nodes, sk, time.time() - t0))
+        for msg in ExtAPI.Application.Messages:
+            if msg.Severity.ToString() == "Error":
+                w("    [Error] %%s" %% msg.DisplayString)
+        try:
+            ExtAPI.Application.Messages.Clear()
+        except Exception:
+            pass
+        if mesh.Elements > 0:
+            w("  census <5cm,5-10,10-20,20-40,>40cm: %%s" %% census())
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open v11", lambda: Open(FilePath=SOURCE_PROJECT)):
+        return
+    if not step("2 save as v11_trials (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("3 trials", lambda: (mesh.Edit(Interactive=False),
+                              mesh.SendCommand(Language="Python", Command=INSIDE),
+                              mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+log("END")

@@ -1,0 +1,123 @@
+PROPERTIES
+  CaptureCurvature = True
+  CaptureProximity = True
+  CheckMeshQuality = 2
+  ComputeMeshQualityMetrics = <built-in method ComputeMeshQualityMetrics of Mesh object at 0x000000000000002B>
+  ConnectionSize = 0.0
+  CoplanarAngleTol = 0 [deg]
+  CurvatureNormalAngle = 12.000000000000002 [deg]
+  DefeatureTolerance = 0 [mm]
+  ElementSize = 0 [mm]
+  GapFactor = 0.5
+  GetActiveSolidSurfaceMeshQuality = <built-in method GetActiveSolidSurfaceMeshQuality of Mesh object at 0x000000000000002B>
+  GetActiveSurfaceMeshQuality = <built-in method GetActiveSurfaceMeshQuality of Mesh object at 0x000000000000002B>
+  GetActiveVolumeMeshQuality = <built-in method GetActiveVolumeMeshQuality of Mesh object at 0x000000000000002B>
+  GetCalculatedMaxFaceSize = <built-in method GetCalculatedMaxFaceSize of Mesh object at 0x000000000000002B>
+  GetMeshQualityAdvancedView = <built-in method GetMeshQualityAdvancedView of Mesh object at 0x000000000000002B>
+  GetMeshQualityTabIndex = <built-in method GetMeshQualityTabIndex of Mesh object at 0x000000000000002B>
+  GetSolidMeshQualityState = <built-in method GetSolidMeshQualityState of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityAverageMetricValue = <built-in method GetSolidSurfaceMeshQualityAverageMetricValue of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityCountFailed = <built-in method GetSolidSurfaceMeshQualityCountFailed of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityDisplayMetric = <built-in method GetSolidSurfaceMeshQualityDisplayMetric of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityErrorLimit = <built-in method GetSolidSurfaceMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityErrorLimitIsDefault = <built-in method GetSolidSurfaceMeshQualityErrorLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityName = <built-in method GetSolidSurfaceMeshQualityName of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityPercentageFailed = <built-in method GetSolidSurfaceMeshQualityPercentageFailed of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityState = <built-in method GetSolidSurfaceMeshQualityState of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWarningCountFailed = <built-in method GetSolidSurfaceMeshQualityWarningCountFailed of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWarningLimit = <built-in method GetSolidSurfaceMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWarningLimitIsDefault = <built-in method GetSolidSurfaceMeshQualityWarningLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWarningPercentageFailed = <built-in method GetSolidSurfaceMeshQualityWarningPercentageFailed of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWorstMetricBackgroundColor = <built-in method GetSolidSurfaceMeshQualityWorstMetricBackgroundColor of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWorstMetricTooltip = <built-in method GetSolidSurfaceMeshQualityWorstMetricTooltip of Mesh object at 0x000000000000002B>
+  GetSolidSurfaceMeshQualityWorstMetricValue = <built-in method GetSolidSurfaceMeshQualityWorstMetricValue of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityAverageMetricValue = <built-in method GetSurfaceMeshQualityAverageMetricValue of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityCountFailed = <built-in method GetSurfaceMeshQualityCountFailed of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityDisplayMetric = <built-in method GetSurfaceMeshQualityDisplayMetric of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityErrorLimit = <built-in method GetSurfaceMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityErrorLimitIsDefault = <built-in method GetSurfaceMeshQualityErrorLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityName = <built-in method GetSurfaceMeshQualityName of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityPercentageFailed = <built-in method GetSurfaceMeshQualityPercentageFailed of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityState = <built-in method GetSurfaceMeshQualityState of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWarningCountFailed = <built-in method GetSurfaceMeshQualityWarningCountFailed of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWarningLimit = <built-in method GetSurfaceMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWarningLimitIsDefault = <built-in method GetSurfaceMeshQualityWarningLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWarningPercentageFailed = <built-in method GetSurfaceMeshQualityWarningPercentageFailed of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWorstMetricBackgroundColor = <built-in method GetSurfaceMeshQualityWorstMetricBackgroundColor of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWorstMetricTooltip = <built-in method GetSurfaceMeshQualityWorstMetricTooltip of Mesh object at 0x000000000000002B>
+  GetSurfaceMeshQualityWorstMetricValue = <built-in method GetSurfaceMeshQualityWorstMetricValue of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityAverageMetricValue = <built-in method GetVolumeMeshQualityAverageMetricValue of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityCountFailed = <built-in method GetVolumeMeshQualityCountFailed of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityDisplayMetric = <built-in method GetVolumeMeshQualityDisplayMetric of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityErrorLimit = <built-in method GetVolumeMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityErrorLimitIsDefault = <built-in method GetVolumeMeshQualityErrorLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityName = <built-in method GetVolumeMeshQualityName of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityPercentageFailed = <built-in method GetVolumeMeshQualityPercentageFailed of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWarningCountFailed = <built-in method GetVolumeMeshQualityWarningCountFailed of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWarningLimit = <built-in method GetVolumeMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWarningLimitIsDefault = <built-in method GetVolumeMeshQualityWarningLimitIsDefault of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWarningPercentageFailed = <built-in method GetVolumeMeshQualityWarningPercentageFailed of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWorstMetricBackgroundColor = <built-in method GetVolumeMeshQualityWorstMetricBackgroundColor of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWorstMetricTooltip = <built-in method GetVolumeMeshQualityWorstMetricTooltip of Mesh object at 0x000000000000002B>
+  GetVolumeMeshQualityWorstMetricValue = <built-in method GetVolumeMeshQualityWorstMetricValue of Mesh object at 0x000000000000002B>
+  GrowthRate = 1.15
+  GrowthRateSF = 0.0
+  GrowthRateType = 1
+  InitialSizeSeed = 0
+  MaximumAngle = 140 [deg]
+  MaximumFaceSize = <err MaximumFaceSize property is obsolete. Use ElementSize instead.>
+  MaximumSize = 4 [mm]
+  MinimizeNumTriangles = Conservative
+  MinimumSize = 0 [mm]
+  NumberOfShellMeshQualityMetrics = 0
+  NumberOfSolidMeshQualityMetrics = 4
+  NumberOfSolidSurfaceMeshQualityMetrics = 2
+  PreviewMeshOnWeldCurve = <built-in method PreviewMeshOnWeldCurve of Mesh object at 0x000000000000002B>
+  ProximityGapFactor = 0.0
+  ProximityMinimumSize = 0 [mm]
+  ProximitySizeSources = FacesAndEdges
+  RefreshMeshQualityGridInfo = <built-in method RefreshMeshQualityGridInfo of Mesh object at 0x000000000000002B>
+  ResetMeshQualityMetrics = <built-in method ResetMeshQualityMetrics of Mesh object at 0x000000000000002B>
+  SetActiveSolidSurfaceMeshQuality = <built-in method SetActiveSolidSurfaceMeshQuality of Mesh object at 0x000000000000002B>
+  SetActiveSurfaceMeshQuality = <built-in method SetActiveSurfaceMeshQuality of Mesh object at 0x000000000000002B>
+  SetActiveVolumeMeshQuality = <built-in method SetActiveVolumeMeshQuality of Mesh object at 0x000000000000002B>
+  SetMeshQualityAdvancedView = <built-in method SetMeshQualityAdvancedView of Mesh object at 0x000000000000002B>
+  SetMeshQualityTabIndex = <built-in method SetMeshQualityTabIndex of Mesh object at 0x000000000000002B>
+  SetSolidSurfaceMeshQualityErrorLimit = <built-in method SetSolidSurfaceMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  SetSolidSurfaceMeshQualityWarningLimit = <built-in method SetSolidSurfaceMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  SetSurfaceMeshQualityErrorLimit = <built-in method SetSurfaceMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  SetSurfaceMeshQualityWarningLimit = <built-in method SetSurfaceMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  SetVolumeMeshQualityErrorLimit = <built-in method SetVolumeMeshQualityErrorLimit of Mesh object at 0x000000000000002B>
+  SetVolumeMeshQualityWarningLimit = <built-in method SetVolumeMeshQualityWarningLimit of Mesh object at 0x000000000000002B>
+  Smoothing = 1
+  SmoothingIterations = 5
+  SpanAngleCenter = 2
+  TargetQuality = 0.0
+  TransitionOption = 1
+  TransitionRatio = 0.272
+  TriangleSurfaceMesher = 0
+  UseAdvancedSizeFunction = <err 值不在预期的范围内。>
+  UseFixedSizeFunctionForSheets = False
+  UsePostSmoothing = 1
+  ValidateMeshQualityMetrics = <built-in method ValidateMeshQualityMetrics of Mesh object at 0x000000000000002B>
+set UseAdaptiveSizing = False
+set CaptureCurvature = True
+set CurvatureNormalAngle = 12.000000000000002 [deg]
+set CaptureProximity = True
+set GrowthRate = 1.15
+set MaximumSize = 4 [mm]
+FAILED MinSize : 'Mesh' object has no attribute 'MinSize'
+FAILED CurvatureMinSize : 'Mesh' object has no attribute 'CurvatureMinSize'
+FAILED ProximityMinSize : 'Mesh' object has no attribute 'ProximityMinSize'
+FAILED ProximitySizeFunctionMinSize : 'Mesh' object has no attribute 'ProximitySizeFunctionMinSize'
+FAILED NumberOfCellsAcrossGap : 'Mesh' object has no attribute 'NumberOfCellsAcrossGap'
+FAILED NumCellsAcrossGap : 'Mesh' object has no attribute 'NumCellsAcrossGap'
+FAILED CellsAcrossGap : 'Mesh' object has no attribute 'CellsAcrossGap'
+GENERATE
+mesh_nodes 495043
+mesh_elements 2636774
+  ns overset_j3 entities 6
+  ns wall_jaw1 entities 134
+  ns wall_jaw2 entities 153
+  ns wall_link3 entities 160
+  ns wall_pin4 entities 29

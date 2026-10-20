@@ -1,0 +1,10 @@
+quantity,value,unit
+AUV_Fx,0.209268,N
+AUV_Fy,0.0692101,N
+AUV_Fz,-13.7446,N
+AUV_Mx,-0.480806,N*m
+AUV_My,0.0547386,N*m
+AUV_Mz,-0.0422736,N*m
+tau_j1,-0.0017993,N*m
+tau_j2,-0.0205678,N*m
+tau_j3,-0.00226342,N*m

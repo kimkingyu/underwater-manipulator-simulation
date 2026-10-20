@@ -1,0 +1,6 @@
+{
+  "mesh": "D:\\work4\\new_model_sim\\04_workbench\\auvm_water_v3_default.msh",
+  "status": "error",
+  "error": "RuntimeError('inquire-cell-threads: invalid grid\\nError Object: #f')",
+  "seconds": 39.4
+}

@@ -1,0 +1,49 @@
+{
+  "EnclosureOptions": {
+    "CushionProportion": "Get: CushionProportion(self: EnclosureOptions) -> float\r\n\r\nSet: CushionProportion(self: EnclosureOptions) = value\r\n", 
+    "Frame": "Get: Frame(self: EnclosureOptions) -> Frame\r\n\r\nSet: Frame(self: EnclosureOptions) = value\r\n", 
+    "Tolerance": "Get: Tolerance(self: EnclosureOptions) -> float\r\n\r\nSet: Tolerance(self: EnclosureOptions) = value\r\n", 
+    "EnclosureType": "Get: EnclosureType(self: EnclosureOptions) -> EnclosureType\r\n\r\nSet: EnclosureType(self: EnclosureOptions) = value\r\n", 
+    "Subtract": "Get: Subtract(self: EnclosureOptions) -> bool\r\n\r\nSet: Subtract(self: EnclosureOptions) = value\r\n", 
+    "CustomBody": "Get: CustomBody(self: EnclosureOptions) -> IDesignBody\r\n\r\nSet: CustomBody(self: EnclosureOptions) = value\r\n", 
+    "EnclosureCushion": "Get: EnclosureCushion(self: EnclosureOptions) -> IEnclosureCushion\r\n\r\nSet: EnclosureCushion(self: EnclosureOptions) = value\r\n", 
+    "CreateShareTopology": "Get: CreateShareTopology(self: EnclosureOptions) -> bool\r\n\r\nSet: CreateShareTopology(self: EnclosureOptions) = value\r\n"
+  }, 
+  "EnclosureOptions_defaults": {
+    "CushionProportion": "0.25", 
+    "Frame": "SpaceClaim.Api.V242.Geometry.Frame", 
+    "Tolerance": "0.0", 
+    "EnclosureType": "Box", 
+    "Subtract": "True", 
+    "CustomBody": "None", 
+    "EnclosureCushion": "None", 
+    "CreateShareTopology": "False"
+  }, 
+  "BoxEnclosureCushion": {
+    "YAxis": "Get: YAxis(self: BoxEnclosureCushion) -> AxisCushion\r\n\r\nSet: YAxis(self: BoxEnclosureCushion) = value\r\n", 
+    "XAxis": "Get: XAxis(self: BoxEnclosureCushion) -> AxisCushion\r\n\r\nSet: XAxis(self: BoxEnclosureCushion) = value\r\n", 
+    "ZAxis": "Get: ZAxis(self: BoxEnclosureCushion) -> AxisCushion\r\n\r\nSet: ZAxis(self: BoxEnclosureCushion) = value\r\n", 
+    "ConvertFrom": "ConvertFrom(other: IEnclosureCushion) -> BoxEnclosureCushion\r\n"
+  }, 
+  "EnclosureResult": {
+    "GetModified": "GetModified[TDocObject](self: CommandResult) -> ICollection[TDocObject]\r\n", 
+    "GetCreated": "GetCreated[TDoc](self: CommandResult) -> ICollection[TDoc]\r\n", 
+    "GetDeleted": "GetDeleted[TDocObject](self: CommandResult) -> ICollection[TDocObject]\r\n", 
+    "IsActiveDoc": "Get: IsActiveDoc(self: CommandResult) -> bool\r\n\r\n", 
+    "CreatedBodies": "Get: CreatedBodies(self: EnclosureResult) -> ICollection[IDesignBody]\r\n\r\n", 
+    "Success": "Get: Success(self: CommandResult) -> bool\r\n\r\n"
+  }, 
+  "BoxEnclosureCushion_ctor": "__new__(cls: type, value: float)\r\n__new__(cls: type, xLow: float, xHigh: float, yLow: float, yHigh: float, zLow: float, zHigh: float)\r\n", 
+  "Enclosure": {
+    "EnclosureCushion": "Get: EnclosureCushion(self: Enclosure) -> IEnclosureCushion\r\n\r\nSet: EnclosureCushion(self: Enclosure) = value\r\n", 
+    "Create": "Create(selection: ISelection, options: EnclosureOptions, commandInfo: ICommandInfo) -> EnclosureResult\r\nCreate(selection: ISelection, commandInfo: ICommandInfo) -> EnclosureResult\r\n", 
+    "Execute": "Execute(self: Enclosure, info: ICommandInfo) -> EnclosureResult\r\n"
+  }, 
+  "status": "ok", 
+  "EnclosureType_values": [
+    "Box", 
+    "CustomShape", 
+    "Cylinder", 
+    "Sphere"
+  ]
+}

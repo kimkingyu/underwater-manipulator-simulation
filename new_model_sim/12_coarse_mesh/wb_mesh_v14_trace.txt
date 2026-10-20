@@ -1,0 +1,13 @@
+﻿1 create system + geometry
+  OK
+2 save project (new file)
+  OK
+3 refresh mesh (attach geometry, no generation)
+  OK
+4 meshing: settings + GenerateMesh
+  OK
+5 update mesh component (writes FFF.msh)
+  OK
+6 save
+  OK
+END

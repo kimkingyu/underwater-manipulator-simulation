@@ -1,0 +1,48 @@
+# encoding: utf-8
+# Export FFF.msh of auvm_water_v11e3.wbpj: create dp0\FFF\MECH (missing after save-as), update the
+# mesh component, save.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File, Directory
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\12_coarse_mesh"
+TRACE = D + r"\wb_export_v11e3_trace.txt"
+PROJECT = D + r"\auvm_water_v11e3.wbpj"
+MECH = D + r"\auvm_water_v11e3_files\dp0\FFF\MECH"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+    return False
+
+
+def run():
+    if not step("1 open v11e3", lambda: Open(FilePath=PROJECT)):
+        return
+    step("2 mkdir MECH", lambda: Directory.CreateDirectory(MECH))
+    s = GetAllSystems()[0]
+    comp = s.GetComponent(Name="Mesh")
+    ok = step("3 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    step("4 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+log("END")

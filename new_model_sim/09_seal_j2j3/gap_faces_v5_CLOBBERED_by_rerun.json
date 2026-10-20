@@ -1,0 +1,9 @@
+{
+  "status": "error", 
+  "scdoc": "D:\\work4\\new_model_sim\\09_seal_j2j3\\fluid_domain_v5.scdoc", 
+  "traceback": "Traceback (most recent call last):\n  File \"6b2b592e-a648-4758-a572-b67a1d8f35e4\", line 40, in <module>\nException: Refusing to overwrite\n", 
+  "planes_x_m": [
+    0.014800000000000001, 
+    0.014999999999999999
+  ]
+}

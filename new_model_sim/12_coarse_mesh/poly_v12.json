@@ -1,0 +1,33 @@
+{
+  "tag": "v12",
+  "mesh": "D:/work4/new_model_sim/12_coarse_mesh/auvm_water_v12_files/dp0/FFF/MECH/FFF.msh",
+  "steps": [],
+  "tet": {
+    "label": "tet",
+    "min_orth": 5.69128e-05,
+    "max_aspect": 343.365,
+    "min_orth_location_m": "-1.04068e-02, -1.51685e-01, -5.36819e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  },
+  "convert_seconds": 35.1,
+  "poly": {
+    "label": "poly",
+    "min_orth": 0.0262977,
+    "max_aspect": 253.279,
+    "min_orth_location_m": "-1.01811e-02, -1.51092e-01, -5.36935e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  },
+  "poly_improved": {
+    "label": "poly_improved",
+    "min_orth": 0.0262977,
+    "max_aspect": 253.279,
+    "min_orth_location_m": "-1.01811e-02, -1.51092e-01, -5.36935e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  }
+}

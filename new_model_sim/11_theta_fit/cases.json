@@ -1,0 +1,31 @@
+{
+  "_frame": "CAD frame (+Y up). Body origin O_b = hull volume centroid. v_r = body velocity relative to water, expressed in CAD axes. Water velocity seen by the body = -v_r (translation) ; omega = body angular velocity about O_b.",
+  "origin_m": [0.0, 0.29386, -0.06630],
+  "steady": {
+    "T_px_03": {"v": [0.3, 0, 0]},   "T_px_08": {"v": [0.8, 0, 0]},
+    "T_nx_03": {"v": [-0.3, 0, 0]},  "T_nx_08": {"v": [-0.8, 0, 0]},
+    "T_py_03": {"v": [0, 0.3, 0]},   "T_py_08": {"v": [0, 0.8, 0]},
+    "T_ny_03": {"v": [0, -0.3, 0]},  "T_ny_08": {"v": [0, -0.8, 0]},
+    "T_pz_03": {"v": [0, 0, 0.3]},   "T_pz_08": {"v": [0, 0, 0.8]},
+    "T_nz_03": {"v": [0, 0, -0.3]},  "T_nz_08": {"v": [0, 0, -0.8]},
+    "T_xy_06": {"v": [0.42426, 0.42426, 0]},
+    "T_xz_06": {"v": [0.42426, 0, 0.42426]},
+    "T_yz_06": {"v": [0, 0.42426, -0.42426]},
+    "T_xyz_06": {"v": [0.34641, -0.34641, 0.34641]}
+  },
+  "dropped_rotation": {
+    "_note": "kim 2026-10-20: steady-rotation cases dropped (no steady state: MRF closed box spins up, MRF abs. walls drift, transient 2 rad still decaying). Rotational linear damping Dl_p/q/r comes from the velocity-phase part of O_p/O_q/O_r; Dq_p/q/r fixed to 0.",
+    "R_px_03": {"w": [0.3, 0, 0]},   "R_px_08": {"w": [0.8, 0, 0]},
+    "R_py_03": {"w": [0, 0.3, 0]},   "R_py_08": {"w": [0, 0.8, 0]},
+    "R_pz_03": {"w": [0, 0, 0.3]},   "R_pz_08": {"w": [0, 0, 0.8]}
+  },
+  "oscillation": {
+    "_note": "whole-domain rigid mesh motion, open (pressure-outlet) box faces, x(t)=X0 sin(2 pi t/T), 3 periods, last 2 used",
+    "O_x": {"dof": 0, "amp": 0.02, "period": 2.0},
+    "O_y": {"dof": 1, "amp": 0.02, "period": 2.0},
+    "O_z": {"dof": 2, "amp": 0.02, "period": 2.0},
+    "O_p": {"dof": 3, "amp": 0.05, "period": 2.0},
+    "O_q": {"dof": 4, "amp": 0.05, "period": 2.0},
+    "O_r": {"dof": 5, "amp": 0.05, "period": 2.0}
+  }
+}

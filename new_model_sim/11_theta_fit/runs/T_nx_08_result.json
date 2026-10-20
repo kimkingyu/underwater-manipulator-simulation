@@ -1,0 +1,293 @@
+{
+  "status": "ok",
+  "case": "T_nx_08",
+  "kind": "steady",
+  "spec": {
+    "v": [
+      -0.8,
+      0,
+      0
+    ]
+  },
+  "origin_m": [
+    0.0,
+    0.29386,
+    -0.0663
+  ],
+  "nproc": 18,
+  "steps": [
+    {
+      "step": "read_base",
+      "required": true,
+      "ok": true,
+      "seconds": 11.5
+    },
+    {
+      "step": "boundary_conditions",
+      "required": true,
+      "ok": true,
+      "result": {
+        "xmin": "inlet",
+        "xmax": "outlet",
+        "ymin": "slip_wall",
+        "ymax": "slip_wall",
+        "zmin": "slip_wall",
+        "zmax": "slip_wall"
+      },
+      "seconds": 4.2
+    },
+    {
+      "step": "init_values",
+      "required": false,
+      "ok": true,
+      "seconds": 0.0
+    },
+    {
+      "step": "write_case",
+      "required": true,
+      "ok": true,
+      "seconds": 2.6
+    },
+    {
+      "step": "hybrid_init",
+      "required": true,
+      "ok": true,
+      "seconds": 0.8
+    },
+    {
+      "step": "iterate_50",
+      "required": true,
+      "ok": true,
+      "seconds": 31.1
+    },
+    {
+      "step": "iterate_100",
+      "required": true,
+      "ok": true,
+      "seconds": 38.9
+    },
+    {
+      "step": "iterate_150",
+      "required": true,
+      "ok": true,
+      "seconds": 30.3
+    },
+    {
+      "step": "iterate_200",
+      "required": true,
+      "ok": true,
+      "seconds": 29.2
+    },
+    {
+      "step": "iterate_250",
+      "required": true,
+      "ok": true,
+      "seconds": 33.1
+    },
+    {
+      "step": "iterate_300",
+      "required": true,
+      "ok": true,
+      "seconds": 31.5
+    },
+    {
+      "step": "iterate_350",
+      "required": true,
+      "ok": true,
+      "seconds": 42.1
+    },
+    {
+      "step": "iterate_400",
+      "required": true,
+      "ok": true,
+      "seconds": 33.0
+    },
+    {
+      "step": "iterate_450",
+      "required": true,
+      "ok": true,
+      "seconds": 32.7
+    },
+    {
+      "step": "iterate_500",
+      "required": true,
+      "ok": true,
+      "seconds": 30.7
+    },
+    {
+      "step": "iterate_550",
+      "required": true,
+      "ok": true,
+      "seconds": 40.0
+    },
+    {
+      "step": "iterate_600",
+      "required": true,
+      "ok": true,
+      "seconds": 34.4
+    },
+    {
+      "step": "iterate_650",
+      "required": true,
+      "ok": true,
+      "seconds": 33.4
+    },
+    {
+      "step": "iterate_700",
+      "required": true,
+      "ok": true,
+      "seconds": 36.2
+    },
+    {
+      "step": "iterate_750",
+      "required": true,
+      "ok": true,
+      "seconds": 34.9
+    },
+    {
+      "step": "iterate_800",
+      "required": true,
+      "ok": true,
+      "seconds": 38.7
+    },
+    {
+      "step": "iterate_850",
+      "required": true,
+      "ok": true,
+      "seconds": 42.5
+    },
+    {
+      "step": "iterate_900",
+      "required": true,
+      "ok": true,
+      "seconds": 37.1
+    },
+    {
+      "step": "iterate_950",
+      "required": true,
+      "ok": true,
+      "seconds": 30.5
+    },
+    {
+      "step": "iterate_1000",
+      "required": true,
+      "ok": true,
+      "seconds": 37.1
+    },
+    {
+      "step": "iterate_1050",
+      "required": true,
+      "ok": true,
+      "seconds": 48.9
+    },
+    {
+      "step": "iterate_1100",
+      "required": true,
+      "ok": true,
+      "seconds": 40.6
+    },
+    {
+      "step": "iterate_1150",
+      "required": true,
+      "ok": true,
+      "seconds": 31.7
+    },
+    {
+      "step": "iterate_1200",
+      "required": true,
+      "ok": true,
+      "seconds": 30.8
+    },
+    {
+      "step": "iterate_1250",
+      "required": true,
+      "ok": true,
+      "seconds": 35.1
+    },
+    {
+      "step": "write_data",
+      "required": false,
+      "ok": true,
+      "seconds": 2.3
+    }
+  ],
+  "t_start": "2026-10-20 00:22:00",
+  "box_roles": {
+    "xmin": "inlet",
+    "xmax": "outlet",
+    "ymin": "slip_wall",
+    "ymax": "slip_wall",
+    "zmin": "slip_wall",
+    "zmax": "slip_wall"
+  },
+  "drift_last": 0.00494493055642524,
+  "drift_by_kind": {
+    "f": 0.00016855751229409496,
+    "m": 0.0003062706854284305,
+    "t": 0.00494493055642524
+  },
+  "iterations": 1250,
+  "converged": true,
+  "solve_seconds": 1026.8,
+  "loads_final": {
+    "fx": 210.3816172416571,
+    "fx(wall_auv)": 194.7236540382434,
+    "fx(wall_base0)": 3.703117797773093,
+    "fx(wall_jaw1)": 1.191696363737384,
+    "fx(wall_jaw2)": 0.4622802144872061,
+    "fx(wall_l1)": 0.2325443521359261,
+    "fx(wall_l2)": 6.675672658345214,
+    "fx(wall_link3)": 3.377580855114019,
+    "fx(wall_pin4)": 0.01507096182086296,
+    "fy": 8.441387324444879,
+    "fy(wall_auv)": 12.65622767872966,
+    "fy(wall_base0)": -0.08361561522937855,
+    "fy(wall_jaw1)": 0.04567306639138558,
+    "fy(wall_jaw2)": -0.08566587487853189,
+    "fy(wall_l1)": 0.5116401971687258,
+    "fy(wall_l2)": -1.653023721698586,
+    "fy(wall_link3)": -2.956199155332797,
+    "fy(wall_pin4)": 0.006350749294402797,
+    "fz": -1.274945182987415,
+    "fz(wall_auv)": -1.679289262392685,
+    "fz(wall_base0)": 1.117082591553344,
+    "fz(wall_jaw1)": -0.4114763044912325,
+    "fz(wall_jaw2)": 0.1213206934926917,
+    "fz(wall_l1)": -0.8777079304527877,
+    "fz(wall_l2)": 0.4125902129960665,
+    "fz(wall_link3)": 0.09826583259886101,
+    "fz(wall_pin4)": -0.05573101629167272,
+    "mx": -3.492304711215288,
+    "mx(wall_auv)": -1.875904769880589,
+    "mx(wall_base0)": -0.01193827001196013,
+    "mx(wall_jaw1)": 0.0881742296130705,
+    "mx(wall_jaw2)": -0.0696049437702855,
+    "mx(wall_l1)": 0.2766476605819073,
+    "mx(wall_l2)": -0.7993954660579348,
+    "mx(wall_link3)": -1.112173768990677,
+    "mx(wall_pin4)": 0.01189061730118037,
+    "my": -16.72414641741616,
+    "my(wall_auv)": -10.0190969746972,
+    "my(wall_base0)": -1.397917187687731,
+    "my(wall_jaw1)": -0.7228943100311362,
+    "my(wall_jaw2)": -0.2851093642515817,
+    "my(wall_l1)": -0.1113379799565255,
+    "my(wall_l2)": -2.728310157848715,
+    "my(wall_link3)": -1.451210599738127,
+    "my(wall_pin4)": -0.008269843205145094,
+    "mz": -78.21140737160997,
+    "mz(wall_auv)": -79.74141105247847,
+    "mz(wall_base0)": 0.1237720293743591,
+    "mz(wall_jaw1)": 0.1800224373149424,
+    "mz(wall_jaw2)": 0.06607810238595017,
+    "mz(wall_l1)": 0.01060422833034066,
+    "mz(wall_l2)": 0.6312122363320829,
+    "mz(wall_link3)": 0.5160285500815793,
+    "mz(wall_pin4)": 0.002286097049255981,
+    "tau_j1": -0.9686677847487485,
+    "tau_j2": -0.5033194724820924,
+    "tau_j3": -0.1756479272040436
+  },
+  "t_end": "2026-10-20 00:40:04",
+  "failed_required": []
+}

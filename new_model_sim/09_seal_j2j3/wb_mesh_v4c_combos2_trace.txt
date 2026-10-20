@@ -1,0 +1,8 @@
+﻿1 open v4c
+  OK
+2 meshing: combos G/F
+  OK
+3 skipped: no combination produced a mesh
+4 save
+  OK
+END

@@ -1,0 +1,67 @@
+[
+ {
+  "step": "zones",
+  "ok": true,
+  "result": "(['xmax', 'xmin', 'zmin', 'ymin', 'zmax', 'ymax', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4'], [], [])"
+ },
+ {
+  "step": "set_wall",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "wall_mom0",
+  "ok": true,
+  "result": "{'wall_motion': 'Stationary Wall', 'shear_condition': 'No Slip'}"
+ },
+ {
+  "step": "mrf_on",
+  "ok": true,
+  "result": "(None, {'frame_motion': True, 'mrf_relative_to_thread': 'absolute', 'mrf_omega': {'option': 'value', 'value': 0}, 'reference_frame_velocity': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'reference_frame_axis_origin': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}], 'reference_frame_axis_direction': [{'option': 'value', 'value': 0}, {'option': 'value', 'value': 0}, {'option': 'value', 'value': 1}], 'reference_frame_zone_motion_function': 'none'})"
+ },
+ {
+  "step": "wall_mom1",
+  "ok": true,
+  "result": "{'wall_motion': 'Stationary Wall', 'shear_condition': 'No Slip'}"
+ },
+ {
+  "step": "motion_moving",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "wall_mom2",
+  "ok": true,
+  "result": "{'wall_motion': 'Moving Wall', 'relative': True, 'rotating': False, 'components': False, 'speed': {'option': 'value', 'value': 0}, 'direction': [1, 0, 0], 'shear_condition': 'No Slip'}"
+ },
+ {
+  "step": "allowed_motion",
+  "ok": true,
+  "result": "['Stationary Wall', 'Moving Wall']"
+ },
+ {
+  "step": "relative_false",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "rotating_true",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "speed0",
+  "ok": true,
+  "result": "None"
+ },
+ {
+  "step": "wall_mom3",
+  "ok": true,
+  "result": "{'wall_motion': 'Moving Wall', 'relative': False, 'rotating': True, 'components': False, 'rotation_speed': {'option': 'value', 'value': 0}, 'rotation_axis_origin': [0, 0, 0], 'rotation_axis_direction': [1, 0, 0], 'shear_condition': 'No Slip'}"
+ },
+ {
+  "step": "body_wall_mom",
+  "ok": true,
+  "result": "{'wall_motion': 'Stationary Wall', 'shear_condition': 'No Slip'}"
+ }
+]

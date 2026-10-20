@@ -1,0 +1,94 @@
+# encoding: utf-8
+# New project with one Fluid Flow (Fluent) system for j3_fluid_v2.scdoc (sealed seams), default CFD
+# mesh settings, report named selections + counts from inside Meshing. Launch with run_wb_fullenv.py.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\06_overset_mesh"
+TRACE = D + r"\wb_mesh_j3_v2_trace.txt"
+PROJECT = D + r"\auvm_j3_v2.wbpj"
+CAD = r"D:\work4\new_model_sim\05_overset_cad\j3_fluid_v2.scdoc"
+NS = D + r"\ns_j3_v2.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString())
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString())
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+REPORT = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    items = m.NamedSelections.Children if m.NamedSelections is not None else []
+    out.write("named_selections %%d\n" %% len(items))
+    for s in items:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+    out.write("mesh_nodes %%s\n" %% m.Mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% m.Mesh.Elements)
+    for msg in ExtAPI.Application.Messages:
+        out.write("  [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+except Exception, e:
+    out.write("REPORT ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % NS
+
+
+def run():
+    holder = {}
+
+    def create():
+        s = GetTemplate(TemplateName="Fluid Flow").CreateSystem()
+        s.DisplayText = "mesh_j3_v2"
+        geo = s.GetContainer(ComponentName="Geometry")
+        geo.SetFile(FilePath=CAD)
+        props = geo.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        s.GetComponent(Name="Geometry").Update(AllDependencies=True)
+        holder["s"] = s
+    if not step("1 create system + geometry", create):
+        return
+    if not step("2 save project (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = holder["s"]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 refresh mesh", lambda: comp.Refresh())
+    ok = ok and step("4 update mesh (default CFD)", lambda: comp.Update(AllDependencies=True))
+    if ok:
+        step("5 report", lambda: (mesh.Edit(Interactive=False),
+                                  mesh.SendCommand(Language="Python", Command=REPORT),
+                                  mesh.Exit()))
+    step("6 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

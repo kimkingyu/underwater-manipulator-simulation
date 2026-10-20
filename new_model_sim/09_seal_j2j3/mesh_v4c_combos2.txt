@@ -1,0 +1,20 @@
+global: CaptureCurvature=True; CurvatureNormalAngle=18 [deg]; MinimumSize=0.02 [mm]; ProximityMinimumSize=0.02 [mm]; MaximumSize=100 [mm]; ElementSize=100 [mm]; CaptureProximity=True; ProximityGapFactor=3.0; ProximitySizeSources=Faces; GrowthRate=1.2
+== combo G (local sizings completed)
+   size_wall_jaw1: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   size_wall_jaw2: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   size_wall_pin4: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   size_wall_link3: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   size_wall_l2: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   size_wall_l1: LocalMinimumSize=0.02 [mm]; GrowthRate=1.2
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   G: messages before 1 after 1 nodes 0 elements 0
+== combo F (local sizings suppressed)
+   size_wall_jaw1: Suppressed=True
+   size_wall_jaw2: Suppressed=True
+   size_wall_pin4: Suppressed=True
+   size_wall_link3: Suppressed=True
+   size_wall_l2: Suppressed=True
+   size_wall_l1: Suppressed=True
+   [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+   F: messages before 1 after 1 nodes 0 elements 0
+WINNER None

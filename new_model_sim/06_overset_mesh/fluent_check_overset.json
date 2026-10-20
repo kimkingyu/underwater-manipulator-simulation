@@ -1,0 +1,140 @@
+{
+  "status": "ok",
+  "parts": {
+    "background": {
+      "mesh": "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF\\MECH\\FFF.msh",
+      "bytes": 68861882,
+      "zones": {
+        "velocity_inlet": [
+          "inlet"
+        ],
+        "pressure_outlet": [
+          "outlet"
+        ],
+        "wall": [
+          "tank_wall",
+          "wall_auv",
+          "wall_base0"
+        ],
+        "symmetry": [],
+        "overset": [],
+        "interior": [
+          "interior-fff_fluid_background"
+        ],
+        "fluid": [
+          "fff_fluid_background"
+        ]
+      },
+      "seconds": 43.6,
+      "min_orth": 0.102022,
+      "max_aspect": 17.8089,
+      "min_volume_m3": 5.702446e-10,
+      "total_volume_m3": 34.37748,
+      "tet_cells": 1524585,
+      "min_orth_location_m": "-7.35623e-04, -6.38092e-03, -3.64813e-01",
+      "max_aspect_location_m": "-1.89394e-01,  6.67249e-01, -5.44938e-01",
+      "other_cell_types": [],
+      "errors": [],
+      "min_orth_ok": true
+    },
+    "j1": {
+      "mesh": "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-1\\MECH\\FFF-1.msh",
+      "bytes": 919604,
+      "zones": {
+        "velocity_inlet": [],
+        "pressure_outlet": [],
+        "wall": [
+          "wall_l1"
+        ],
+        "symmetry": [],
+        "overset": [
+          "overset_j1"
+        ],
+        "interior": [
+          "interior-fff-1_fluid_j1"
+        ],
+        "fluid": [
+          "fff-1_fluid_j1"
+        ]
+      },
+      "seconds": 21.6,
+      "min_orth": 0.0506153,
+      "max_aspect": 68.8707,
+      "min_volume_m3": 1.730919e-10,
+      "total_volume_m3": 0.005248244,
+      "tet_cells": 19959,
+      "min_orth_location_m": "1.49500e-02, -7.84479e-02, -5.02011e-01",
+      "max_aspect_location_m": "1.49500e-02, -5.18014e-02, -5.06978e-01",
+      "other_cell_types": [],
+      "errors": [],
+      "min_orth_ok": true
+    },
+    "j2": {
+      "mesh": "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-2\\MECH\\FFF-2.msh",
+      "bytes": 51669088,
+      "zones": {
+        "velocity_inlet": [],
+        "pressure_outlet": [],
+        "wall": [
+          "wall_l2"
+        ],
+        "symmetry": [],
+        "overset": [
+          "overset_j2"
+        ],
+        "interior": [
+          "interior-fff-2_fluid_j2"
+        ],
+        "fluid": [
+          "fff-2_fluid_j2"
+        ]
+      },
+      "seconds": 37.3,
+      "min_orth": 0.054143,
+      "max_aspect": 58.8761,
+      "min_volume_m3": 4.173375e-13,
+      "total_volume_m3": 0.01108483,
+      "tet_cells": 1149311,
+      "min_orth_location_m": "1.00703e-03, -6.66472e-02, -4.82634e-01",
+      "max_aspect_location_m": "4.39515e-03, -1.22664e-01, -3.41659e-01",
+      "other_cell_types": [],
+      "errors": [],
+      "min_orth_ok": true
+    },
+    "j3": {
+      "mesh": "D:\\work4\\new_model_sim\\06_overset_mesh\\auvm_overset_cfd_files\\dp0\\FFF-3\\MECH\\FFF-3.msh",
+      "bytes": 119513450,
+      "zones": {
+        "velocity_inlet": [],
+        "pressure_outlet": [],
+        "wall": [
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_link3",
+          "wall_pin4"
+        ],
+        "symmetry": [],
+        "overset": [
+          "overset_j3"
+        ],
+        "interior": [
+          "interior-fff-3_fluid_j3"
+        ],
+        "fluid": [
+          "fff-3_fluid_j3"
+        ]
+      },
+      "seconds": 30.2,
+      "min_orth": 0.000371386,
+      "max_aspect": 182.852,
+      "min_volume_m3": 8.098489e-14,
+      "total_volume_m3": 0.01831543,
+      "tet_cells": 2636774,
+      "min_orth_location_m": "-1.63362e-03, -1.45104e-01, -5.57777e-01",
+      "max_aspect_location_m": "-9.30484e-03, -1.54915e-01, -5.38641e-01",
+      "other_cell_types": [],
+      "errors": [],
+      "min_orth_ok": false
+    }
+  }
+}

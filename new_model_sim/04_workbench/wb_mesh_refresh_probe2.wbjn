@@ -1,0 +1,49 @@
+# encoding: utf-8
+# Same as wb_mesh_refresh_probe.wbjn, but the exception is caught as a .NET System.Exception and
+# written with ex.ToString() straight to a UTF-8 file, with no Python string formatting at all.
+# Saves nothing.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+TRACE = r"D:\work4\new_model_sim\04_workbench\wb_mesh_refresh_probe2_trace.txt"
+PROJECT = r"D:\work4\new_model_sim\04_workbench\auvm_water_v3.wbpj"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+log("1 Open project")
+Open(FilePath=PROJECT)
+system1 = GetSystem(Name="FFF")
+meshComponent1 = system1.GetComponent(Name="Mesh")
+log("2 Mesh.Refresh")
+try:
+    meshComponent1.Refresh()
+    log("  refresh OK")
+except System.Exception, ex:
+    log("  refresh .NET ERROR:")
+    log(ex.ToString())
+except Exception, e:
+    log("  refresh python ERROR (no text)")
+    try:
+        log(e.clsException.ToString())
+    except Exception:
+        log("  (no clsException)")
+log("3 Mesh.Update")
+try:
+    meshComponent1.Update(AllDependencies=True)
+    log("  update OK")
+except System.Exception, ex:
+    log("  update .NET ERROR:")
+    log(ex.ToString())
+except Exception, e:
+    log("  update python ERROR (no text)")
+    try:
+        log(e.clsException.ToString())
+    except Exception:
+        log("  (no clsException)")
+log("END")

@@ -1,0 +1,28 @@
+﻿1 open v11e3
+  OK
+2 mkdir MECH
+  OK
+3 update mesh component (writes FFF.msh)
+  .NET ERROR:
+Ansys.Core.Commands.CommandFailedException: mesh_water_v11中网格组件的更新失败。在系统mesh_water_v11中更新单元网格出错。 ---> Ansys.Core.Commands.UserReadableFailureException: mesh_water_v11中网格组件的更新失败。在系统mesh_water_v11中更新单元网格出错。 ---> Ansys.Core.Commands.CommandFailedException: 在系统mesh_water_v11中更新单元网格出错。 ---> Ansys.Core.Commands.UserReadableFailureException: 在系统mesh_water_v11中更新单元网格出错。 ---> Ansys.Addins.Infrastructure.Exceptions.AddinUserException: 无法在D:\work4\new_model_sim\12_coarse_mesh\auvm_water_v11e3_files\dp0\FFF\MECH中写入网格文件。 无法写入网格文件。
+   at Ansys.Addins.Infrastructure.Remoting.RemotingApiHelper.FatalApiMethodUserError[TReturn](String message, DataContainerReference container, RemotingApiMethod`1 callback)
+   at Ansys.Meshing.Core.ISimulationHelperWrapper.WriteMeshFile(String workDirectory, String EntityType, Int32 dsid)
+   at Ansys.Meshing.Core.Commands.MeshDataCreator.CreateData(IFullContext context, DataContainerReference container, String meshType)
+   at Ansys.Meshing.Core.Commands.DataTransferHelper.GenerateTransferData(IFullContext context, DataContainerReference container, DataTransferCreator creator, Dictionary`2 transferDataMap)
+   at Ansys.Meshing.Core.Commands.UpdateModel.ExecuteCommand(IFullContext context)
+   --- End of inner exception stack trace ---
+   at Ansys.Addins.Infrastructure.CommandUtilities.CommandHelper.Execute(IFullContext context)
+   at Ansys.Core.Commands.Concurrency.CommandWorkUnit.executeInContext(CommandContext subContext, IExecutionEngineCallback tracer)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.doExecute(IExecutionEngineCallback executionEngine, CommandContext subContext)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.Execute(IExecutionEngineCallback executionEngine, Boolean dontCatchExceptions)
+   --- End of inner exception stack trace ---
+   at Ansys.Core.Commands.CommandAsyncResult.RethrowFailureException(Exception e)
+   at Ansys.Core.Commands.CommandAsyncResult.WaitForSuspendOrComplete(Int32 milliSecondsTimeout, Boolean exitContext)
+   at Ansys.ProjectSchematic.Data.ComponentTemplateEntity.Update(IFullContext context, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, DataContainerReference container, String dataGroup, UpdateOptions updateOptions, IEnumerable`1 downstream, IEnumerable`1 allRemaining)
+   at Ansys.ProjectSchematic.Update.UpdateTask.Update(IFullContext context, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, UpdateOptions updateOptions, IEnumerable`1 downstream, IEnumerable`1 allRemaining)
+   at Ansys.ProjectSchematic.Update.ComponentUpdatePlugin.updateComponent(IContextForUpdatePlugin callbacks, UpdateTask task, String trackToken, IProgressMonitor progressMonitor, Int32 milliSecondsTimeout, TaskHolder remainingTasksInThisDp, List`1 dependentTasks)
+   at Ansys.ProjectSchematic.Update.ComponentUpdatePlugin.<>c__DisplayClass0_0.<UpdateComponent>b__0()
+   at Ansys.ProjectSchematic.Update.ExecuteWithErrorBehaviour.Execute(IContextForUpdatePlugin callbacks, UpdateEr
+4 save
+  OK
+END

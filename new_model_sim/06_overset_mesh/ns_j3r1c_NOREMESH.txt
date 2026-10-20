@@ -1,0 +1,8 @@
+named_selections 5
+  ns overset_j3 entities 6
+  ns wall_jaw1 entities 134
+  ns wall_jaw2 entities 153
+  ns wall_link3 entities 160
+  ns wall_pin4 entities 29
+mesh_nodes 495043
+mesh_elements 2636774

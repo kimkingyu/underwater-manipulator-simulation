@@ -1,0 +1,640 @@
+{
+  "faces": [
+    {
+      "bbox_mm": [
+        -30.01, 
+        -66.61, 
+        -489.86, 
+        0.01, 
+        -6.6, 
+        -448.586
+      ], 
+      "edges": [
+        {
+          "bbox_mm": [
+            0.0, 
+            -6.6, 
+            -489.85, 
+            0.0, 
+            -6.6, 
+            -448.586
+          ], 
+          "length_mm": 41.263900945142318, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            -30.0, 
+            -66.6, 
+            -448.586, 
+            0.0, 
+            -6.6, 
+            -448.586
+          ], 
+          "length_mm": 94.247779607693786, 
+          "type": "Circle"
+        }, 
+        {
+          "bbox_mm": [
+            0.0, 
+            -66.6, 
+            -482.2, 
+            0.0, 
+            -66.6, 
+            -448.586
+          ], 
+          "length_mm": 33.613900945142326, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            -23.595, 
+            -66.61, 
+            -484.57, 
+            0.01, 
+            -55.131, 
+            -482.19
+          ], 
+          "length_mm": 27.362924126207847, 
+          "type": "ProceduralCurve"
+        }, 
+        {
+          "bbox_mm": [
+            -30.01, 
+            -55.151, 
+            -489.86, 
+            -23.575, 
+            -29.446, 
+            -484.55
+          ], 
+          "length_mm": 27.848825779569115, 
+          "type": "ProceduralCurve"
+        }, 
+        {
+          "bbox_mm": [
+            -29.137, 
+            -29.456, 
+            -489.85, 
+            0.0, 
+            -6.6, 
+            -489.85
+          ], 
+          "length_mm": 39.910576009385906, 
+          "type": "Circle"
+        }
+      ], 
+      "samples": [
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 0.0, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 0.0, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 1.2509268882771003e-17, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 1.2509268882771003e-17, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 7.7579192288977285e-18, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 7.7579192288977285e-18, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 7.7579192288977285e-18, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 7.7579192288977285e-18, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 7.7579192288977285e-18, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 7.7579192288977285e-18, 
+          "to_base0_m": 0.025849346627418945, 
+          "z_mm": -486.549, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 7.7579192288977285e-18, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 7.7579192288977285e-18, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.0971354589302191e-17, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.0971354589302191e-17, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.0971354589302191e-17, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.0971354589302191e-17, 
+          "to_base0_m": 0.025849346627418945, 
+          "z_mm": -486.549, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 0.0, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 0.0, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.471961680016039e-17, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.471961680016039e-17, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.471961680016039e-17, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.471961680016039e-17, 
+          "to_base0_m": 0.025849346627418945, 
+          "z_mm": -486.549, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0086626966203640077, 
+          "to_base0_m": 0.0, 
+          "z_mm": -452.037, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.001760287970807406, 
+          "to_base0_m": 0.0, 
+          "z_mm": -458.94, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.6841118637620292e-17, 
+          "to_base0_m": 0.0051421206787491958, 
+          "z_mm": -465.842, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.6841118637620292e-17, 
+          "to_base0_m": 0.012044529328305797, 
+          "z_mm": -472.745, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.6841118637620292e-17, 
+          "to_base0_m": 0.018946937977862344, 
+          "z_mm": -479.647, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 1.6841118637620292e-17, 
+          "to_base0_m": 0.025849346627418945, 
+          "z_mm": -486.549, 
+          "water_minus": false
+        }
+      ], 
+      "uv_range": [
+        -3.1606767057924854, 
+        -1.2246467991473096e-16, 
+        0.085886099054857667, 
+        0.12730055095219722
+      ], 
+      "face_index": 254
+    }, 
+    {
+      "bbox_mm": [
+        -0.01, 
+        -66.61, 
+        -520.569, 
+        30.01, 
+        -6.6, 
+        -448.586
+      ], 
+      "edges": [
+        {
+          "bbox_mm": [
+            0.0, 
+            -6.6, 
+            -489.85, 
+            0.0, 
+            -6.6, 
+            -448.586
+          ], 
+          "length_mm": 41.263900945142318, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            0.0, 
+            -10.619, 
+            -489.85, 
+            15.0, 
+            -6.6, 
+            -489.85
+          ], 
+          "length_mm": 15.707963267948946, 
+          "type": "Circle"
+        }, 
+        {
+          "bbox_mm": [
+            15.0, 
+            -10.619, 
+            -493.964, 
+            15.0, 
+            -10.619, 
+            -489.85
+          ], 
+          "length_mm": 4.114289032755403, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            14.99, 
+            -36.61, 
+            -520.569, 
+            30.01, 
+            -10.609, 
+            -493.954
+          ], 
+          "length_mm": 41.337127926094823, 
+          "type": "ProceduralCurve"
+        }, 
+        {
+          "bbox_mm": [
+            30.0, 
+            -36.6, 
+            -520.559, 
+            30.0, 
+            -36.6, 
+            -483.2
+          ], 
+          "length_mm": 37.3594714145329, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            15.0, 
+            -62.581, 
+            -483.2, 
+            30.0, 
+            -36.6, 
+            -483.2
+          ], 
+          "length_mm": 31.415926535897949, 
+          "type": "Circle"
+        }, 
+        {
+          "bbox_mm": [
+            15.0, 
+            -62.581, 
+            -483.2, 
+            15.0, 
+            -62.581, 
+            -482.48
+          ], 
+          "length_mm": 0.72012755563579789, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            -0.01, 
+            -66.61, 
+            -482.49, 
+            15.01, 
+            -62.571, 
+            -482.19
+          ], 
+          "length_mm": 15.713646270104441, 
+          "type": "ProceduralCurve"
+        }, 
+        {
+          "bbox_mm": [
+            0.0, 
+            -66.6, 
+            -482.2, 
+            0.0, 
+            -66.6, 
+            -448.586
+          ], 
+          "length_mm": 33.613900945142326, 
+          "type": "Line"
+        }, 
+        {
+          "bbox_mm": [
+            0.0, 
+            -66.6, 
+            -448.586, 
+            30.0, 
+            -6.6, 
+            -448.586
+          ], 
+          "length_mm": 94.247779607693786, 
+          "type": "Circle"
+        }
+      ], 
+      "samples": [
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 3.4694469519536142e-18, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 4.9065389333867974e-18, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 4.9065389333867974e-18, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 0.0, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 4.9065389333867974e-18, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 4.9065389333867974e-18, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 4.9065389333867974e-18, 
+          "to_base0_m": 0.030243645140044295, 
+          "z_mm": -490.944, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 0.0, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.030243645140044295, 
+          "z_mm": -490.944, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 3.4694469519536142e-18, 
+          "to_base0_m": 0.042345801164383357, 
+          "z_mm": -503.046, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 7.7579192288977285e-18, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 0.0, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 6.9388939039072284e-18, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 6.9388939039072284e-18, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 0.0060628229329727779, 
+          "to_base0_m": 1.3010426069826053e-17, 
+          "z_mm": -454.637, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 8.6736173798840355e-19, 
+          "to_base0_m": 0.006039333091366228, 
+          "z_mm": -466.739, 
+          "water_minus": false
+        }, 
+        {
+          "water_plus": true, 
+          "to_l1_m": 8.6736173798840355e-19, 
+          "to_base0_m": 0.018141489115705234, 
+          "z_mm": -478.841, 
+          "water_minus": false
+        }
+      ], 
+      "uv_range": [
+        -1.2248509069471666e-16, 
+        3.1524568655765015, 
+        0.085886099054857667, 
+        0.15849903520089184
+      ], 
+      "face_index": 263
+    }
+  ], 
+  "base0_bbox_mm": [
+    -30.0, 
+    -66.6, 
+    -460.7, 
+    30.0, 
+    33.4, 
+    -294.2
+  ], 
+  "l1_bbox_mm": [
+    -30.01, 
+    -94.6, 
+    -539.2, 
+    30.01, 
+    -6.6, 
+    -460.7
+  ], 
+  "status": "ok"
+}

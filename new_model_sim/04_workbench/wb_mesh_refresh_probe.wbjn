@@ -1,0 +1,56 @@
+# encoding: utf-8
+# Opens auvm_water_v3.wbpj (geometry already updated), retries only Mesh.Refresh and records the
+# full .NET exception text in UTF-8 via System.IO (IronPython str() mangles Chinese messages).
+# Saves nothing.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+TRACE = r"D:\work4\new_model_sim\04_workbench\wb_mesh_refresh_probe_trace.txt"
+PROJECT = r"D:\work4\new_model_sim\04_workbench\auvm_water_v3.wbpj"
+
+
+def log(msg):
+    File.AppendAllText(TRACE, System.String(msg) + u"\r\n", Encoding.UTF8)
+
+
+def describe(e):
+    parts = []
+    clse = getattr(e, 'clsException', None)
+    depth = 0
+    while clse is not None and depth < 6:
+        parts.append(u"[%s] %s" % (clse.GetType().FullName, clse.Message))
+        clse = clse.InnerException
+        depth += 1
+    if not parts:
+        try:
+            parts.append(unicode(e))
+        except Exception:
+            parts.append(repr(e))
+    return u"\r\n    ".join(parts)
+
+
+try:
+    log(u"1 Open project")
+    Open(FilePath=PROJECT)
+    system1 = GetSystem(Name="FFF")
+    log(u"  system FFF found")
+    geometryComponent1 = system1.GetComponent(Name="Geometry")
+    log(u"  geometry component ok")
+    meshComponent1 = system1.GetComponent(Name="Mesh")
+    log(u"2 Mesh.Refresh")
+    try:
+        meshComponent1.Refresh()
+        log(u"  refresh OK")
+    except Exception, e:
+        log(u"  refresh ERROR:\r\n    " + describe(e))
+    log(u"3 Mesh.Update")
+    try:
+        meshComponent1.Update(AllDependencies=True)
+        log(u"  update OK")
+    except Exception, e:
+        log(u"  update ERROR:\r\n    " + describe(e))
+    log(u"END")
+except Exception, e:
+    log(u"FATAL:\r\n    " + describe(e))

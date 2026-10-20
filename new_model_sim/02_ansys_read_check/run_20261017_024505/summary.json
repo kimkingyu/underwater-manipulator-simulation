@@ -1,0 +1,34 @@
+[
+  {
+    "input": "D:\\work4\\简化模型_导出\\AUVM.x_t",
+    "status": "failed_no_bodies",
+    "body_count": 0,
+    "component_count": 8,
+    "overall_size_m": null,
+    "total_volume_m3": null,
+    "exit_code": 0,
+    "elapsed_s": 22.4,
+    "source_unchanged": true,
+    "open_or_nonmanifold_count": 0,
+    "unchecked_count": 0,
+    "warnings": []
+  },
+  {
+    "input": "D:\\work4\\简化模型_导出\\AUVM.step",
+    "status": "ok",
+    "body_count": 8,
+    "component_count": 10,
+    "overall_size_m": [
+      0.8268,
+      0.9180000000000033,
+      1.1482841305465004
+    ],
+    "total_volume_m3": 0.45178899970182906,
+    "exit_code": 0,
+    "elapsed_s": 24.4,
+    "source_unchanged": true,
+    "open_or_nonmanifold_count": 0,
+    "unchecked_count": 0,
+    "warnings": []
+  }
+]

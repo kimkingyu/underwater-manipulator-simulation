@@ -1,0 +1,44 @@
+﻿0 Start
+1 create system + geometry: background
+  OK
+1 create system + geometry: j1
+  OK
+1 create system + geometry: j2
+  OK
+1 create system + geometry: j3
+  OK
+2 save project (new file)
+  OK
+3 refresh mesh: background
+  OK
+4 update mesh (default): background
+  OK
+5 report: background
+  OK
+6 save
+  OK
+3 refresh mesh: j1
+  OK
+4 update mesh (default): j1
+  OK
+5 report: j1
+  OK
+6 save
+  OK
+3 refresh mesh: j2
+  OK
+4 update mesh (default): j2
+  OK
+5 report: j2
+  OK
+6 save
+  OK
+3 refresh mesh: j3
+  OK
+4 update mesh (default): j3
+  OK
+5 report: j3
+  OK
+6 save
+  OK
+END

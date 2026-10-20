@@ -1,0 +1,19 @@
+BEFORE nodes 495043 elements 2636774
+set UseAdaptiveSizing = False
+set CaptureCurvature = True
+set CurvatureNormalAngle = 12.000000000000002 [deg]
+set CaptureProximity = True
+set GrowthRate = 1.15
+set MaximumSize = 4 [mm]
+set MinimumSize = 0.05 [mm]
+set ProximityMinimumSize = 0.05 [mm]
+set ProximityGapFactor = 3.0
+set ProximitySizeSources = FacesAndEdges
+CLEAR + GENERATE
+mesh_nodes 0
+mesh_elements 0
+  ns overset_j3 entities 6
+  ns wall_jaw1 entities 134
+  ns wall_jaw2 entities 153
+  ns wall_link3 entities 160
+  ns wall_pin4 entities 29

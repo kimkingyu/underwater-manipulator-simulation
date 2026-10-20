@@ -1,0 +1,9 @@
+﻿1 open v5g
+  OK
+2 meshing: rescope sizing, drop helper NS, regenerate
+  OK
+3 update mesh component (writes FFF.msh)
+  OK
+4 save
+  OK
+END

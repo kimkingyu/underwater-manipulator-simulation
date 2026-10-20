@@ -1,0 +1,35 @@
+﻿1 open v5h
+  OK
+2 save as v5k_trials (new file)
+  .NET ERROR:
+Ansys.Core.Commands.CommandFailedException: 保存项目失败：文件D:\work4\new_model_sim\12_coarse_mesh\v5k_trials.wbpj已经存在 ---> Ansys.Core.Commands.UserReadableFailureException: 保存项目失败：文件D:\work4\new_model_sim\12_coarse_mesh\v5k_trials.wbpj已经存在
+   at Ansys.Core.Persistence.ProjectSaveHandler.validate(Boolean overwrite)
+   at Ansys.Core.Persistence.Commands.SaveCommand.DoSave(IFullContext context, String filePath, Boolean overwrite, Boolean revertibleSave)
+   at Ansys.Core.Persistence.Commands.SaveCommand.Execute(IFullContext context)
+   at Ansys.Core.Commands.Concurrency.CommandWorkUnit.executeInContext(CommandContext subContext, IExecutionEngineCallback tracer)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.doExecute(IExecutionEngineCallback executionEngine, CommandContext subContext)
+   at Ansys.Core.Commands.Concurrency.BaseWorkUnit.Execute(IExecutionEngineCallback executionEngine, Boolean dontCatchExceptions)
+   --- End of inner exception stack trace ---
+   at Microsoft.Scripting.Runtime.LightExceptions.ThrowException(LightException lightEx)
+   at Microsoft.Scripting.Runtime.LightExceptions.CheckAndThrow(Object value)
+   at __call__$78(Closure , PythonFunction , Object , Object , Object )
+   at Microsoft.Scripting.Interpreter.FuncCallInstruction`6.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.LightLambda.Run6[T0,T1,T2,T3,T4,T5,TRet](T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute5[T0,T1,T2,T3,T4,TRet](CallSite site, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+   at Microsoft.Scripting.Interpreter.DynamicInstruction`6.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.LightLambda.Run5[T0,T1,T2,T3,T4,TRet](T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute4[T0,T1,T2,T3,TRet](CallSite site, T0 arg0, T1 arg1, T2 arg2, T3 arg3)
+   at Microsoft.Scripting.Interpreter.DynamicInstruction`5.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.LightLambda.Run5[T0,T1,T2,T3,T4,TRet](T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute4[T0,T1,T2,T3,TRet](CallSite site, T0 arg0, T1 arg1, T2 arg2, T3 arg3)
+   at Microsoft.Scripting.Interpreter.DynamicInstruction`5.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.LightLambda.Run1[T0,TRet](T0 arg0)
+   at Microsoft.Scripting.Interpreter.FuncCallInstruction`3.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.Interpreter.Run(InterpretedFrame frame)
+   at Microsoft.Scripting.Interpreter.LightLambda.Run3[T0,T1,T2,TRet](T0 arg0, T1 arg1, T2 arg2)
+   at Micro
+END

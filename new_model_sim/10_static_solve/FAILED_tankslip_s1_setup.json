@@ -1,0 +1,254 @@
+{
+  "status": "failed",
+  "tag": "s1",
+  "mode": "setup",
+  "config": {
+    "_note": "Static arm, steady current. Values marked PENDING wait for kim's answer; setup_only mode does not iterate.",
+    "mesh": "D:\\work4\\new_model_sim\\09_seal_j2j3\\auvm_water_v5h_files\\dp0\\FFF\\MECH\\FFF.1.msh",
+    "processors": 18,
+    "density_kg_m3": 1025.0,
+    "viscosity_pa_s": 0.00105,
+    "current_speed_m_s": 0.25,
+    "current_direction": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "_current_PENDING": "inlet is the x_min face; any direction other than +x needs re-assigned inlet/outlet faces",
+    "turbulence_intensity": 0.01,
+    "turbulent_viscosity_ratio": 10.0,
+    "tank_wall": "free_slip",
+    "hull_walls": [
+      "wall_auv",
+      "wall_base0"
+    ],
+    "arm_walls": [
+      "wall_l1",
+      "wall_l2",
+      "wall_link3",
+      "wall_jaw1",
+      "wall_jaw2",
+      "wall_pin4"
+    ],
+    "moment_center_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "_moment_center_PENDING": "hull centroid / CG / origin, to be confirmed by kim",
+    "joints": {
+      "J1": {
+        "center_m": [
+          -4e-06,
+          -0.0366,
+          -0.460702
+        ],
+        "axis": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "walls": [
+          "wall_l1",
+          "wall_l2",
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      },
+      "J2": {
+        "center_m": [
+          0.016686,
+          -0.0666,
+          -0.511202
+        ],
+        "axis": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "walls": [
+          "wall_l2",
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      },
+      "J3": {
+        "center_m": [
+          0.014796,
+          -0.1226,
+          -0.313202
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "walls": [
+          "wall_link3",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_pin4"
+        ]
+      }
+    },
+    "_joints_source": "02_ansys_read_check/joint_candidates_from_old_urdf.json, coaxial-face check joint_axis_check.json (<=0.004 mm)",
+    "max_iterations": 3000,
+    "residual_target": 0.0001,
+    "load_window_iterations": 200,
+    "load_rel_tolerance": 0.005
+  },
+  "config_path": "D:\\work4\\new_model_sim\\10_static_solve\\case_static.json",
+  "steps": [
+    {
+      "step": "read_mesh",
+      "required": true,
+      "ok": true,
+      "seconds": 18.0
+    },
+    {
+      "step": "zones",
+      "required": true,
+      "ok": true,
+      "result": {
+        "fluid": [
+          "fff_water"
+        ],
+        "velocity_inlet": [
+          "inlet"
+        ],
+        "pressure_outlet": [
+          "outlet"
+        ],
+        "wall": [
+          "tank_wall",
+          "wall_auv",
+          "wall_base0",
+          "wall_jaw1",
+          "wall_jaw2",
+          "wall_l1",
+          "wall_l2",
+          "wall_link3",
+          "wall_pin4"
+        ]
+      },
+      "seconds": 0.1
+    },
+    {
+      "step": "solver_steady_pressure_based",
+      "required": true,
+      "ok": true,
+      "result": "settings",
+      "seconds": 0.0
+    },
+    {
+      "step": "viscous_kw_sst",
+      "required": true,
+      "ok": true,
+      "result": "settings",
+      "seconds": 0.0
+    },
+    {
+      "step": "material_water",
+      "required": true,
+      "ok": true,
+      "result": {
+        "density": 1025.0,
+        "viscosity": 0.00105,
+        "zone_material": "water-liquid"
+      },
+      "seconds": 1.5
+    },
+    {
+      "step": "inlet",
+      "required": true,
+      "ok": true,
+      "result": {
+        "api": "momentum.velocity",
+        "state": "{'name': 'inlet', 'momentum': {'velocity_specification_method': 'Magnitude, Normal to Boundary', 'reference_frame': 'Absolute', 'velocity': {'option': 'value', 'value': 0.25}, 'initial_gauge_pressure': {'option': 'value', 'value': 0}}, 'turbulence': {'turbulence_specification': 'Intensity and Viscosity Ratio', 'turbulent_intensity': 0.01, 'turbulent_viscosity_ratio': 10}}"
+      },
+      "seconds": 0.1
+    },
+    {
+      "step": "outlet",
+      "required": true,
+      "ok": true,
+      "result": "{'name': 'outlet', 'momentum': {'backflow_reference_frame': 'Absolute', 'gauge_pressure': {'option': 'value', 'value': 0}, 'pressure_profile_multiplier': 1.0, 'backflow_dir_spec_method': 'Normal to Boundary', 'backflow_pressure_spec': 'Total Pressure', 'prevent_reverse_flow': False, 'radial_equ_pressure_distribution': False, 'avg_pressure_spec': False, 'target_mass_flow_rate': False}, 'turbulence': {'turbulence_specification': 'Intensity and Viscosity Ratio', 'backflow_turbulent_intensity': 0.05, 'backflow_turbulent_viscosity_ratio': 10}}",
+      "seconds": 0.0
+    },
+    {
+      "step": "tank_wall_free_slip",
+      "required": true,
+      "ok": false,
+      "error": "RuntimeError('momentum: AttributeError(\\'value\\'); flat: AttributeError(\"\\'child_object_type\\' object has no attribute \\'shear_bc\\'.\\\\nThe most similar names are: thermal..\\\\nThe most similar names are: thermal.\")')",
+      "seconds": 0.6
+    },
+    {
+      "step": "reference_values",
+      "required": false,
+      "ok": true,
+      "result": "settings",
+      "seconds": 0.0
+    },
+    {
+      "step": "report_definitions",
+      "required": true,
+      "ok": true,
+      "result": [
+        "hull_fx",
+        "hull_fy",
+        "hull_fz",
+        "hull_mx",
+        "hull_my",
+        "hull_mz",
+        "arm_fx",
+        "arm_fy",
+        "arm_fz",
+        "arm_mx",
+        "arm_my",
+        "arm_mz",
+        "whole_fx",
+        "whole_fy",
+        "whole_fz",
+        "whole_mx",
+        "whole_my",
+        "whole_mz",
+        "tau_j1",
+        "tau_j2",
+        "tau_j3"
+      ],
+      "seconds": 12.4
+    },
+    {
+      "step": "report_file",
+      "required": true,
+      "ok": true,
+      "result": {
+        "report_file": "D:\\\\work4\\\\new_model_sim\\\\10_static_solve\\\\s1_loads.out",
+        "defs": 21
+      },
+      "seconds": 0.4
+    },
+    {
+      "step": "residual_targets",
+      "required": false,
+      "ok": true,
+      "result": "tui",
+      "seconds": 0.7
+    },
+    {
+      "step": "write_case",
+      "required": true,
+      "ok": true,
+      "seconds": 3.2
+    }
+  ],
+  "case_written": true,
+  "failed_required": [
+    "tank_wall_free_slip"
+  ],
+  "failed_optional": []
+}

@@ -1,0 +1,103 @@
+# encoding: utf-8
+# Opens auvm_water_v4.wbpj (mesh update failed with no reason). Inside Meshing: default settings,
+# GenerateMesh(), dump every message with its location ids, node/element counts and named selections.
+# Does not change sizing. Launch with run_wb_fullenv.py.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v4_diag_trace.txt"
+PROJECT = D + r"\auvm_water_v4.wbpj"
+INNER = D + r"\mesh_v4_diag_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    out.write("physics %%s element_size %%s\n" %% (mesh.PhysicsPreference, mesh.ElementSize))
+    bodies = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)
+    for b in bodies:
+        out.write("body %%s volume %%s\n" %% (b.Name, b.Volume))
+    out.write("GENERATE\n")
+    try:
+        mesh.GenerateMesh()
+    except Exception, e:
+        out.write("GenerateMesh raised %%s\n" %% e)
+    out.write("MESSAGES\n")
+    for msg in ExtAPI.Application.Messages:
+        out.write("  [%%s] %%s\n" %% (msg.Severity, msg.DisplayString))
+        try:
+            loc = msg.Location
+            ids = list(loc.Ids) if loc is not None else []
+            if ids:
+                out.write("     location ids %%s\n" %% ids[:40])
+                geo = ExtAPI.DataModel.GeoData
+                for i in ids[:40]:
+                    ent = geo.GeoEntityById(i)
+                    try:
+                        c = ent.Centroid
+                        out.write("       id %%d type %%s centroid_m %%s area %%s\n" %% (
+                            i, ent.Type, [round(v, 6) for v in c], getattr(ent, "Area", "")))
+                    except Exception, e2:
+                        out.write("       id %%d %%s\n" %% (i, e2))
+        except Exception, e:
+            out.write("     location error %%s\n" %% e)
+    out.write("mesh_nodes %%s\n" %% mesh.Nodes)
+    out.write("mesh_elements %%s\n" %% mesh.Elements)
+    items = m.NamedSelections.Children if m.NamedSelections is not None else []
+    for s in items:
+        out.write("  ns %%s entities %%d\n" %% (s.Name, len(list(s.Location.Ids))))
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    if not step("1 open project", lambda: Open(FilePath=PROJECT)):
+        return
+    for s in GetAllSystems():
+        log("  system %s / %s" % (s.Name, s.DisplayText))
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    step("2 meshing: GenerateMesh + messages", lambda: (mesh.Edit(Interactive=False),
+                                                       mesh.SendCommand(Language="Python", Command=INSIDE),
+                                                       mesh.Exit()))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

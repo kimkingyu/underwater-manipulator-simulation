@@ -1,0 +1,13 @@
+﻿1 create system + geometry
+  OK
+2 save project (new file)
+  OK
+3 refresh mesh
+  OK
+4 update mesh (default CFD)
+  OK
+5 report
+  OK
+6 save
+  OK
+END

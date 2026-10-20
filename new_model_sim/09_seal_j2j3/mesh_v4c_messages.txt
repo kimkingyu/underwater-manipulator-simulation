@@ -1,0 +1,34 @@
+set UseAdaptiveSizing = False
+set CaptureCurvature = True
+set CurvatureNormalAngle = 18 [deg]
+set CaptureProximity = True
+set GrowthRate = 1.2
+set ElementSize = 200 [mm]
+set MaximumSize = 200 [mm]
+set MinimumSize = 0.02 [mm]
+set ProximityMinimumSize = 0.02 [mm]
+set ProximityGapFactor = 3.0
+set ProximitySizeSources = Faces
+sizing wall_jaw1 1 [mm]
+sizing wall_jaw2 1 [mm]
+sizing wall_pin4 1 [mm]
+sizing wall_link3 2 [mm]
+sizing wall_l2 2 [mm]
+sizing wall_l1 2 [mm]
+messages before generate 0
+GENERATE
+MESSAGES
+  [Error] “单元尺寸”必须小于或等于“最大尺寸”，而且必须大于或等于“邻近最小尺寸”
+mesh_nodes 0
+mesh_elements 0
+  ns inlet entities 1
+  ns outlet entities 1
+  ns tank_wall entities 4
+  ns wall_auv entities 362
+  ns wall_base0 entities 18
+  ns wall_jaw1 entities 140
+  ns wall_jaw2 entities 163
+  ns wall_l1 entities 13
+  ns wall_l2 entities 44
+  ns wall_link3 entities 161
+  ns wall_pin4 entities 76

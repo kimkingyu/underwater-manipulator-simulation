@@ -1,0 +1,328 @@
+{
+  "status": "ok",
+  "case": "T_ny_08",
+  "kind": "steady",
+  "spec": {
+    "v": [
+      0,
+      -0.8,
+      0
+    ]
+  },
+  "origin_m": [
+    0.0,
+    0.29386,
+    -0.0663
+  ],
+  "nproc": 18,
+  "steps": [
+    {
+      "step": "read_base",
+      "required": true,
+      "ok": true,
+      "seconds": 10.6
+    },
+    {
+      "step": "boundary_conditions",
+      "required": true,
+      "ok": true,
+      "result": {
+        "xmin": "slip_wall",
+        "xmax": "slip_wall",
+        "ymin": "inlet",
+        "ymax": "outlet",
+        "zmin": "slip_wall",
+        "zmax": "slip_wall"
+      },
+      "seconds": 1.8
+    },
+    {
+      "step": "init_values",
+      "required": false,
+      "ok": true,
+      "seconds": 0.0
+    },
+    {
+      "step": "write_case",
+      "required": true,
+      "ok": true,
+      "seconds": 1.3
+    },
+    {
+      "step": "hybrid_init",
+      "required": true,
+      "ok": true,
+      "seconds": 0.8
+    },
+    {
+      "step": "iterate_25",
+      "required": true,
+      "ok": true,
+      "seconds": 11.8
+    },
+    {
+      "step": "iterate_50",
+      "required": true,
+      "ok": true,
+      "seconds": 12.3
+    },
+    {
+      "step": "iterate_75",
+      "required": true,
+      "ok": true,
+      "seconds": 11.9
+    },
+    {
+      "step": "iterate_100",
+      "required": true,
+      "ok": true,
+      "seconds": 11.4
+    },
+    {
+      "step": "iterate_125",
+      "required": true,
+      "ok": true,
+      "seconds": 11.0
+    },
+    {
+      "step": "iterate_150",
+      "required": true,
+      "ok": true,
+      "seconds": 11.4
+    },
+    {
+      "step": "iterate_175",
+      "required": true,
+      "ok": true,
+      "seconds": 13.1
+    },
+    {
+      "step": "iterate_200",
+      "required": true,
+      "ok": true,
+      "seconds": 8.9
+    },
+    {
+      "step": "iterate_225",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_250",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_275",
+      "required": true,
+      "ok": true,
+      "seconds": 0.9
+    },
+    {
+      "step": "iterate_300",
+      "required": true,
+      "ok": true,
+      "seconds": 0.6
+    },
+    {
+      "step": "iterate_325",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_350",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_375",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_400",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_425",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_450",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_475",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_500",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "iterate_525",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "write_data",
+      "required": false,
+      "ok": true,
+      "seconds": 1.6
+    }
+  ],
+  "t_start": "2026-10-20 01:04:15",
+  "box_roles": {
+    "xmin": "slip_wall",
+    "xmax": "slip_wall",
+    "ymin": "inlet",
+    "ymax": "outlet",
+    "zmin": "slip_wall",
+    "zmax": "slip_wall"
+  },
+  "loads_mean_last_window": {
+    "fx": -63.793142560660876,
+    "fx(wall_auv)": -63.06999144835736,
+    "fx(wall_base0)": -0.09229144864988481,
+    "fx(wall_jaw1)": -0.20082426287828542,
+    "fx(wall_jaw2)": 0.07807914546549898,
+    "fx(wall_l1)": 0.22737578724360497,
+    "fx(wall_l2)": -0.2128449192045411,
+    "fx(wall_link3)": -0.5304826443178564,
+    "fx(wall_pin4)": 0.007837230037944003,
+    "fy": 213.86859063998054,
+    "fy(wall_auv)": 207.89327348661024,
+    "fy(wall_base0)": 2.150960445511039,
+    "fy(wall_jaw1)": 0.6304722079885459,
+    "fy(wall_jaw2)": 0.7706805614617679,
+    "fy(wall_l1)": 0.786490984453706,
+    "fy(wall_l2)": 0.7436006002692241,
+    "fy(wall_link3)": 0.8354351742237662,
+    "fy(wall_pin4)": 0.0576771794622056,
+    "fz": 16.323812387865257,
+    "fz(wall_auv)": 21.006100764412427,
+    "fz(wall_base0)": -1.1090903481043788,
+    "fz(wall_jaw1)": -0.0344609409435709,
+    "fz(wall_jaw2)": -0.11135273590165692,
+    "fz(wall_l1)": -0.9256338408274095,
+    "fz(wall_l2)": -1.5287908353338455,
+    "fz(wall_link3)": -0.9545753778617285,
+    "fz(wall_pin4)": -0.018384297574575437,
+    "mx": 12.661200232816238,
+    "mx(wall_auv)": 9.500766329321593,
+    "mx(wall_base0)": 0.8628685600771862,
+    "mx(wall_jaw1)": 0.3691593327049965,
+    "mx(wall_jaw2)": 0.45950753376830206,
+    "mx(wall_l1)": 0.4208647876695179,
+    "mx(wall_l2)": 0.4670043346341115,
+    "mx(wall_link3)": 0.5474439384955813,
+    "mx(wall_pin4)": 0.03358541614494779,
+    "my": 4.394572662020716,
+    "my(wall_auv)": 4.090177708834465,
+    "my(wall_base0)": 0.027982772114319952,
+    "my(wall_jaw1)": 0.115317199657122,
+    "my(wall_jaw2)": -0.04288651256477171,
+    "my(wall_l1)": -0.10290947088743141,
+    "my(wall_l2)": 0.07910559650335516,
+    "my(wall_link3)": 0.23208317109383175,
+    "my(wall_pin4)": -0.004297802730174185,
+    "mz": 16.59517440111458,
+    "mz(wall_auv)": 16.7023376815058,
+    "mz(wall_base0)": -0.0026077439471995567,
+    "mz(wall_jaw1)": -0.053246456660783904,
+    "mz(wall_jaw2)": 0.033104870261150894,
+    "mz(wall_l1)": 0.016459412150534234,
+    "mz(wall_l2)": -0.022457865808323697,
+    "mz(wall_link3)": -0.07951656811020995,
+    "mz(wall_pin4)": 0.0011010717236129392,
+    "tau_j1": 0.0814507753274652,
+    "tau_j2": -0.14740974731641057,
+    "tau_j3": 0.5539661830275807
+  },
+  "drift_last": 0.0005587447049002245,
+  "drift_by_kind": {
+    "f": 0.0001264912992177017,
+    "m": 0.0005587447049002245,
+    "t": 0.0003331762950543068
+  },
+  "iterations": 525,
+  "converged": true,
+  "solve_seconds": 129.2,
+  "loads_final": {
+    "fx": -63.81243083601292,
+    "fx(wall_auv)": -63.08792236137854,
+    "fx(wall_base0)": -0.09249675029831489,
+    "fx(wall_jaw1)": -0.2009360392335999,
+    "fx(wall_jaw2)": 0.07800917292134517,
+    "fx(wall_l1)": 0.2278026295740479,
+    "fx(wall_l2)": -0.2142485275987008,
+    "fx(wall_link3)": -0.5304771934903745,
+    "fx(wall_pin4)": 0.007838233491210093,
+    "fy": 213.8756231480133,
+    "fy(wall_auv)": 207.9002738349614,
+    "fy(wall_base0)": 2.151296940294317,
+    "fy(wall_jaw1)": 0.6305328212215113,
+    "fy(wall_jaw2)": 0.7706877259877511,
+    "fy(wall_l1)": 0.7865486961180816,
+    "fy(wall_l2)": 0.7428162032201818,
+    "fy(wall_link3)": 0.8357894332190976,
+    "fy(wall_pin4)": 0.05767749299094803,
+    "fz": 16.31659793329275,
+    "fz(wall_auv)": 20.99945117895268,
+    "fz(wall_base0)": -1.109092849966382,
+    "fz(wall_jaw1)": -0.03439940774962594,
+    "fz(wall_jaw2)": -0.1113670859939996,
+    "fz(wall_l1)": -0.9268001291666434,
+    "fz(wall_l2)": -1.528207305678555,
+    "fz(wall_link3)": -0.9546009145796749,
+    "fz(wall_pin4)": -0.01838555252504552,
+    "mx": 12.66075013677914,
+    "mx(wall_auv)": 9.50029169006964,
+    "mx(wall_base0)": 0.8630172404410275,
+    "mx(wall_jaw1)": 0.3691841952386525,
+    "mx(wall_jaw2)": 0.4595143066990244,
+    "mx(wall_l1)": 0.4209478407795251,
+    "mx(wall_l2)": 0.4665911398333399,
+    "mx(wall_link3)": 0.5476179470132456,
+    "mx(wall_pin4)": 0.03358577670468522,
+    "my": 4.397236172419658,
+    "my(wall_auv)": 4.092207414945695,
+    "my(wall_base0)": 0.02806292771818236,
+    "my(wall_jaw1)": 0.1153837181725405,
+    "my(wall_jaw2)": -0.04284585623702637,
+    "my(wall_l1)": -0.1031226558995244,
+    "my(wall_l2)": 0.0797807456955883,
+    "my(wall_link3)": 0.2320682310866345,
+    "my(wall_pin4)": -0.004298353062431717,
+    "mz": 16.59903511640536,
+    "mz(wall_auv)": 16.70634772208491,
+    "mz(wall_base0)": -0.002614791470499761,
+    "mz(wall_jaw1)": -0.05326522914282399,
+    "mz(wall_jaw2)": 0.03309456863534462,
+    "mz(wall_l1)": 0.0164850117342115,
+    "mz(wall_l2)": -0.02259717325208917,
+    "mz(wall_link3)": -0.07951621492286998,
+    "mz(wall_pin4)": 0.001101222739173118,
+    "tau_j1": 0.08155088888886262,
+    "tau_j2": -0.1474278572327921,
+    "tau_j3": 0.5540424066057255
+  },
+  "t_end": "2026-10-20 01:07:16",
+  "failed_required": []
+}

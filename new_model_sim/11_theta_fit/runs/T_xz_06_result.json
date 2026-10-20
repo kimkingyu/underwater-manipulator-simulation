@@ -1,0 +1,304 @@
+{
+  "status": "ok",
+  "case": "T_xz_06",
+  "kind": "steady",
+  "spec": {
+    "v": [
+      0.42426,
+      0,
+      0.42426
+    ]
+  },
+  "origin_m": [
+    0.0,
+    0.29386,
+    -0.0663
+  ],
+  "nproc": 18,
+  "steps": [
+    {
+      "step": "read_base",
+      "required": true,
+      "ok": true,
+      "seconds": 18.1
+    },
+    {
+      "step": "boundary_conditions",
+      "required": true,
+      "ok": true,
+      "result": {
+        "xmin": "outlet",
+        "xmax": "inlet",
+        "ymin": "slip_wall",
+        "ymax": "slip_wall",
+        "zmin": "outlet",
+        "zmax": "inlet"
+      },
+      "seconds": 2.4
+    },
+    {
+      "step": "init_values",
+      "required": false,
+      "ok": true,
+      "seconds": 0.2
+    },
+    {
+      "step": "write_case",
+      "required": true,
+      "ok": true,
+      "seconds": 1.6
+    },
+    {
+      "step": "hybrid_init",
+      "required": true,
+      "ok": true,
+      "seconds": 1.1
+    },
+    {
+      "step": "iterate_25",
+      "required": true,
+      "ok": true,
+      "seconds": 22.0
+    },
+    {
+      "step": "iterate_50",
+      "required": true,
+      "ok": true,
+      "seconds": 22.4
+    },
+    {
+      "step": "iterate_75",
+      "required": true,
+      "ok": true,
+      "seconds": 14.3
+    },
+    {
+      "step": "iterate_100",
+      "required": true,
+      "ok": true,
+      "seconds": 13.0
+    },
+    {
+      "step": "iterate_125",
+      "required": true,
+      "ok": true,
+      "seconds": 2.2
+    },
+    {
+      "step": "iterate_150",
+      "required": true,
+      "ok": true,
+      "seconds": 1.4
+    },
+    {
+      "step": "iterate_175",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_200",
+      "required": true,
+      "ok": true,
+      "seconds": 0.6
+    },
+    {
+      "step": "iterate_225",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_250",
+      "required": true,
+      "ok": true,
+      "seconds": 1.1
+    },
+    {
+      "step": "iterate_275",
+      "required": true,
+      "ok": true,
+      "seconds": 1.3
+    },
+    {
+      "step": "iterate_300",
+      "required": true,
+      "ok": true,
+      "seconds": 1.1
+    },
+    {
+      "step": "iterate_325",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_350",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_375",
+      "required": true,
+      "ok": true,
+      "seconds": 0.9
+    },
+    {
+      "step": "iterate_400",
+      "required": true,
+      "ok": true,
+      "seconds": 0.7
+    },
+    {
+      "step": "iterate_425",
+      "required": true,
+      "ok": true,
+      "seconds": 0.5
+    },
+    {
+      "step": "write_data",
+      "required": false,
+      "ok": true,
+      "seconds": 2.3
+    }
+  ],
+  "t_start": "2026-10-20 01:47:40",
+  "box_roles": {
+    "xmin": "outlet",
+    "xmax": "inlet",
+    "ymin": "slip_wall",
+    "ymax": "slip_wall",
+    "zmin": "outlet",
+    "zmax": "inlet"
+  },
+  "loads_mean_last_window": {
+    "fx": -118.64232854705496,
+    "fx(wall_auv)": -115.11227189494542,
+    "fx(wall_base0)": -0.9842160930268825,
+    "fx(wall_jaw1)": 0.08940830987045191,
+    "fx(wall_jaw2)": -0.4119927049817915,
+    "fx(wall_l1)": 0.10280870916271333,
+    "fx(wall_l2)": -1.6191291824429128,
+    "fx(wall_link3)": -0.7058919748674733,
+    "fx(wall_pin4)": -0.0010437158236514116,
+    "fy": 2.87287805901206,
+    "fy(wall_auv)": 4.374522373946657,
+    "fy(wall_base0)": 0.15535112586976288,
+    "fy(wall_jaw1)": -0.08240214344389074,
+    "fy(wall_jaw2)": -0.033316149682075843,
+    "fy(wall_l1)": 0.11495817688512887,
+    "fy(wall_l2)": -0.2573314012011561,
+    "fy(wall_link3)": -1.3880490578587243,
+    "fy(wall_pin4)": -0.010854865503641994,
+    "fz": -55.53721267628472,
+    "fz(wall_auv)": -54.453127405612754,
+    "fz(wall_base0)": -0.18550412191543136,
+    "fz(wall_jaw1)": -0.033041601997468,
+    "fz(wall_jaw2)": -0.17106169132630686,
+    "fz(wall_l1)": -0.1795154119028054,
+    "fz(wall_l2)": -0.2533718188897124,
+    "fz(wall_link3)": -0.2378106094166196,
+    "fz(wall_pin4)": -0.023780015223618747,
+    "mx": -18.31510240845278,
+    "mx(wall_auv)": -17.798036573197994,
+    "mx(wall_base0)": 0.08359077566178647,
+    "mx(wall_jaw1)": -0.041013153733342606,
+    "mx(wall_jaw2)": 0.007550080938105229,
+    "mx(wall_l1)": 0.06292535065090758,
+    "mx(wall_l2)": -0.08821509520981913,
+    "mx(wall_link3)": -0.5397260563140915,
+    "mx(wall_pin4)": -0.0021777372483287793,
+    "my": 1.1162388268307584,
+    "my(wall_auv)": -0.26012178149255716,
+    "my(wall_base0)": 0.3429909680160493,
+    "my(wall_jaw1)": -0.05180750914898907,
+    "my(wall_jaw2)": 0.24573632981880555,
+    "my(wall_l1)": -0.04784023893860604,
+    "my(wall_l2)": 0.6274627809702193,
+    "my(wall_link3)": 0.2593219862815351,
+    "my(wall_pin4)": 0.0004962913243017037,
+    "mz": 41.69741017908009,
+    "mz(wall_auv)": 42.03347525894547,
+    "mz(wall_base0)": -0.032150622609234195,
+    "mz(wall_jaw1)": 0.015605619663910258,
+    "mz(wall_jaw2)": -0.06315078609875394,
+    "mz(wall_l1)": 0.004502999894914398,
+    "mz(wall_l2)": -0.15713118370932647,
+    "mz(wall_link3)": -0.1035891965925557,
+    "mz(wall_pin4)": -0.00015191041434533972,
+    "tau_j1": 0.21074332077549446,
+    "tau_j2": -0.1943544936281676,
+    "tau_j3": -0.15807823325146678
+  },
+  "drift_last": 0.002694668305546746,
+  "drift_by_kind": {
+    "f": 0.0012778143193888064,
+    "m": 0.0011893066773026153,
+    "t": 0.002694668305546746
+  },
+  "iterations": 425,
+  "converged": true,
+  "solve_seconds": 175.2,
+  "loads_final": {
+    "fx": -118.6382183870534,
+    "fx(wall_auv)": -115.108272681169,
+    "fx(wall_base0)": -0.9846654400976596,
+    "fx(wall_jaw1)": 0.08939392102237931,
+    "fx(wall_jaw2)": -0.4119414359088343,
+    "fx(wall_l1)": 0.1023753166378345,
+    "fx(wall_l2)": -1.617471342436335,
+    "fx(wall_link3)": -0.7065890871142494,
+    "fx(wall_pin4)": -0.001047637987546897,
+    "fy": 2.869035104341269,
+    "fy(wall_auv)": 4.369397546525288,
+    "fy(wall_base0)": 0.1552101534737061,
+    "fy(wall_jaw1)": -0.08241910082323099,
+    "fy(wall_jaw2)": -0.03333714900099111,
+    "fy(wall_l1)": 0.1149500624680537,
+    "fy(wall_l2)": -0.2568085666879171,
+    "fy(wall_link3)": -1.38710639015553,
+    "fy(wall_pin4)": -0.01085145145811068,
+    "fz": -55.53934072332591,
+    "fz(wall_auv)": -54.45470117397646,
+    "fz(wall_base0)": -0.185550937860441,
+    "fz(wall_jaw1)": -0.03304445585781574,
+    "fz(wall_jaw2)": -0.1710486030833858,
+    "fz(wall_l1)": -0.1795413741700871,
+    "fz(wall_l2)": -0.253482568855173,
+    "fz(wall_link3)": -0.2381918285398772,
+    "fz(wall_pin4)": -0.02377978098267714,
+    "mx": -18.31484698546136,
+    "mx(wall_auv)": -17.79826829450345,
+    "mx(wall_base0)": 0.0835422951940897,
+    "mx(wall_jaw1)": -0.04102222368689946,
+    "mx(wall_jaw2)": 0.007535975095855699,
+    "mx(wall_l1)": 0.06292270945363046,
+    "mx(wall_l2)": -0.08803826351431238,
+    "mx(wall_link3)": -0.5393432254623218,
+    "mx(wall_pin4)": -0.002175958037951903,
+    "my": 1.114690228169964,
+    "my(wall_auv)": -0.2617743994300113,
+    "my(wall_base0)": 0.3431585373060148,
+    "my(wall_jaw1)": -0.05180030809976017,
+    "my(wall_jaw2)": 0.2457056598090898,
+    "my(wall_l1)": -0.04762013662308728,
+    "my(wall_l2)": 0.6269169405023075,
+    "my(wall_link3)": 0.259605523961202,
+    "my(wall_pin4)": 0.0004984107442084532,
+    "mz": 41.69504480629519,
+    "mz(wall_auv)": 42.03105827352142,
+    "mz(wall_base0)": -0.03216560285218707,
+    "mz(wall_jaw1)": 0.01560393133825268,
+    "mz(wall_jaw2)": -0.06314367528478415,
+    "mz(wall_l1)": 0.004475999735010058,
+    "mz(wall_l2)": -0.1569507888501298,
+    "mz(wall_link3)": -0.103680793523055,
+    "mz(wall_pin4)": -0.0001525377893419291,
+    "tau_j1": 0.2106972289366361,
+    "tau_j2": -0.1941291822681445,
+    "tau_j3": -0.1580466795784524
+  },
+  "t_end": "2026-10-20 01:51:38",
+  "failed_required": []
+}

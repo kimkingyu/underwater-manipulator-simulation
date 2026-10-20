@@ -1,0 +1,482 @@
+{
+  "component_padding_m": 0.050000000000000003, 
+  "geometry_modified": false, 
+  "tank_lo_m": [
+    -1.5605, 
+    -1.3296, 
+    -1.8008
+  ], 
+  "owner_tol_m": 1.0000000000000001e-05, 
+  "source_sha256_after": "2bdd3e5e2ab19d94abaa1481a2af0f0e9c34004e2f138d7f0fdf4a852bf59068", 
+  "boolean_tol_m": 9.9999999999999995e-08, 
+  "source_unchanged": true, 
+  "status": "ok", 
+  "bodies": {
+    "l2": {
+      "volume_m3": 0.00062651545343011031, 
+      "bbox_m": [
+        [
+          -0.025209999999999008, 
+          -0.1506000000000034, 
+          -0.53920000000000101
+        ], 
+        [
+          0.030800000000001, 
+          -0.038600000000000009, 
+          -0.28520000000000101
+        ]
+      ], 
+      "area_m2": 0.053747610070485362
+    }, 
+    "pin4": {
+      "volume_m3": 2.106403016515883e-05, 
+      "bbox_m": [
+        [
+          -0.010249999999998023, 
+          -0.16085000000000302, 
+          -0.55858278880273626
+        ], 
+        [
+          0.0062500000000019814, 
+          -0.14435000000000284, 
+          -0.44154678509870798
+        ]
+      ], 
+      "area_m2": 0.0060981359902342073
+    }, 
+    "link3": {
+      "volume_m3": 0.00043714424691236457, 
+      "bbox_m": [
+        [
+          -0.031999999999998002, 
+          -0.18260000000000301, 
+          -0.54764999999999897
+        ], 
+        [
+          0.028010000000001999, 
+          -0.094600000000003015, 
+          -0.2851999999999989
+        ]
+      ], 
+      "area_m2": 0.051335438793556586
+    }, 
+    "base0": {
+      "volume_m3": 0.00064909765158032936, 
+      "bbox_m": [
+        [
+          -0.029999999999998, 
+          -0.066599999999999993, 
+          -0.46070000000000105
+        ], 
+        [
+          0.030000000000001997, 
+          0.033400000000000006, 
+          -0.29420000000000102
+        ]
+      ], 
+      "area_m2": 0.049471058290234224
+    }, 
+    "jaw2": {
+      "volume_m3": 2.7692392192252085e-05, 
+      "bbox_m": [
+        [
+          -0.01000962076668109, 
+          -0.16510000000000263, 
+          -0.64895063953451371
+        ], 
+        [
+          0.055982822090532014, 
+          -0.14010000000000261, 
+          -0.53268089018498743
+        ]
+      ], 
+      "area_m2": 0.013457966827747289
+    }, 
+    "l1": {
+      "volume_m3": 0.00012302940303093003, 
+      "bbox_m": [
+        [
+          -0.030010052030206583, 
+          -0.09459999999999999, 
+          -0.53920000000000101
+        ], 
+        [
+          0.030010000000001997, 
+          -0.0066000000000000017, 
+          -0.460700000000001
+        ]
+      ], 
+      "area_m2": 0.01884544959518384
+    }, 
+    "jaw1": {
+      "volume_m3": 2.6945336263822346e-05, 
+      "bbox_m": [
+        [
+          -0.059982835906065742, 
+          -0.16260145189693848, 
+          -0.64895063396237873
+        ], 
+        [
+          0.006009619456987584, 
+          -0.14259854810306755, 
+          -0.53268089041795463
+        ]
+      ], 
+      "area_m2": 0.012848040151539881
+    }, 
+    "hull": {
+      "volume_m3": 0.44986767884316703, 
+      "bbox_m": [
+        [
+          -0.41340000000000021, 
+          -0.0056000000000001465, 
+          -0.60060000000002001
+        ], 
+        [
+          0.41339999999999977, 
+          0.73540000000000028, 
+          0.49529999999998886
+        ]
+      ], 
+      "area_m2": 4.515708228356463
+    }
+  }, 
+  "source": "D:\\work4\\简化模型_导出\\AUVM.step", 
+  "source_sha256_before": "2bdd3e5e2ab19d94abaa1481a2af0f0e9c34004e2f138d7f0fdf4a852bf59068", 
+  "parts": {
+    "background": {
+      "valid_for_meshing": true, 
+      "scdoc": "D:\\work4\\new_model_sim\\05_overset_cad\\background_fluid.scdoc", 
+      "box_lo_m": [
+        -1.5605, 
+        -1.3296, 
+        -1.8008
+      ], 
+      "box_hi_m": [
+        1.5601, 
+        1.9136, 
+        1.6404
+      ], 
+      "wall_vs_part_area": {
+        "hull": {
+          "wall_m2": 4.501575228356462, 
+          "part_m2": 4.515708228356463
+        }, 
+        "base0": {
+          "wall_m2": 0.035338058290234217, 
+          "part_m2": 0.049471058290234224
+        }
+      }, 
+      "unassigned_faces": [], 
+      "close_second_owner": [], 
+      "pieces": [
+        {
+          "volume_m3": 34.376931433138921, 
+          "reaches_all_box_sides": true
+        }
+      ], 
+      "expected_names": [
+        "inlet", 
+        "outlet", 
+        "tank_wall", 
+        "wall_auv", 
+        "wall_base0"
+      ], 
+      "material_volume_m3": 0.45051678826658415, 
+      "owner_max_dist_m": 4.7102773760513248e-16, 
+      "fluid": {
+        "faces": 387, 
+        "volume_m3": 34.376931433138921, 
+        "manifold": true, 
+        "box_minus_material_m3": 34.376939012437418, 
+        "sealed_cavities_m3": 0, 
+        "closed": true
+      }, 
+      "scdoc_sha256": "2fb15f833f8dda043a921441bc107d7ef753d8a1464e2c0a62dd0e4369078bef", 
+      "box_volume_m3": 34.827455800704, 
+      "members": [
+        "hull", 
+        "base0"
+      ], 
+      "unions": [
+        {
+          "union_volume_m3": 0.45051678826658415, 
+          "added": "base0"
+        }
+      ], 
+      "imprint_faces": [
+        387, 
+        387
+      ], 
+      "sum_member_volumes_m3": 0.45051677649474736, 
+      "named_selections": {
+        "wall_base0": {
+          "faces": 19, 
+          "area_m2": 0.035338058290234217
+        }, 
+        "outlet": {
+          "faces": 1, 
+          "area_m2": 11.16049984
+        }, 
+        "tank_wall": {
+          "faces": 4, 
+          "area_m2": 41.71867728
+        }, 
+        "wall_auv": {
+          "faces": 362, 
+          "area_m2": 4.501575228356462
+        }, 
+        "inlet": {
+          "faces": 1, 
+          "area_m2": 11.16049984
+        }
+      }
+    }, 
+    "j1": {
+      "valid_for_meshing": true, 
+      "scdoc": "D:\\work4\\new_model_sim\\05_overset_cad\\j1_fluid.scdoc", 
+      "box_lo_m": [
+        -0.080010052030206585, 
+        -0.14460000000000001, 
+        -0.58920000000000106
+      ], 
+      "box_hi_m": [
+        0.080010000000001996, 
+        0.043400000000000001, 
+        -0.41070000000000101
+      ], 
+      "wall_vs_part_area": {
+        "l1": {
+          "wall_m2": 0.01884544959518384, 
+          "part_m2": 0.01884544959518384
+        }
+      }, 
+      "unassigned_faces": [], 
+      "close_second_owner": [], 
+      "pieces": [
+        {
+          "volume_m3": 0.0052469245483133678, 
+          "reaches_all_box_sides": true
+        }
+      ], 
+      "expected_names": [
+        "overset_j1", 
+        "wall_l1"
+      ], 
+      "material_volume_m3": 0.00012302940303093003, 
+      "owner_max_dist_m": 2.7755575615628914e-17, 
+      "fluid": {
+        "faces": 21, 
+        "volume_m3": 0.0052469245483133678, 
+        "manifold": true, 
+        "box_minus_material_m3": 0.0052469235029988107, 
+        "sealed_cavities_m3": 0, 
+        "closed": true
+      }, 
+      "scdoc_sha256": "c69eb2c03157e2daca8cbfbf73cb643cc16d299e6c08aeee194b3f0277eea9ef", 
+      "box_volume_m3": 0.0053699529060297407, 
+      "members": [
+        "l1"
+      ], 
+      "unions": [], 
+      "imprint_faces": [
+        21, 
+        21
+      ], 
+      "sum_member_volumes_m3": 0.00012302940303093003, 
+      "named_selections": {
+        "overset_j1": {
+          "faces": 6, 
+          "area_m2": 0.1844106981381429
+        }, 
+        "wall_l1": {
+          "faces": 15, 
+          "area_m2": 0.01884544959518384
+        }
+      }
+    }, 
+    "j2": {
+      "valid_for_meshing": true, 
+      "scdoc": "D:\\work4\\new_model_sim\\05_overset_cad\\j2_fluid.scdoc", 
+      "box_lo_m": [
+        -0.075209999999999014, 
+        -0.20060000000000339, 
+        -0.58920000000000106
+      ], 
+      "box_hi_m": [
+        0.08080000000000101, 
+        0.011399999999999993, 
+        -0.23520000000000102
+      ], 
+      "wall_vs_part_area": {
+        "l2": {
+          "wall_m2": 0.053747610070485362, 
+          "part_m2": 0.053747610070485362
+        }
+      }, 
+      "unassigned_faces": [], 
+      "close_second_owner": [], 
+      "pieces": [
+        {
+          "volume_m3": 0.01108137632824871, 
+          "reaches_all_box_sides": true
+        }
+      ], 
+      "expected_names": [
+        "overset_j2", 
+        "wall_l2"
+      ], 
+      "material_volume_m3": 0.00062651545343011031, 
+      "owner_max_dist_m": 3.4471709787692932e-16, 
+      "fluid": {
+        "faces": 49, 
+        "volume_m3": 0.01108137632824871, 
+        "manifold": true, 
+        "box_minus_material_m3": 0.011081723026570079, 
+        "sealed_cavities_m3": 0, 
+        "closed": true
+      }, 
+      "scdoc_sha256": "98676c9fa107f7c703dac760176240dd3ef14d5268c0eeb8bf03752c51beb43d", 
+      "box_volume_m3": 0.01170823848000019, 
+      "members": [
+        "l2"
+      ], 
+      "unions": [], 
+      "imprint_faces": [
+        49, 
+        49
+      ], 
+      "sum_member_volumes_m3": 0.00062651545343011031, 
+      "named_selections": {
+        "wall_l2": {
+          "faces": 43, 
+          "area_m2": 0.053747610070485362
+        }, 
+        "overset_j2": {
+          "faces": 6, 
+          "area_m2": 0.32669932000000351
+        }
+      }
+    }, 
+    "j3": {
+      "valid_for_meshing": true, 
+      "scdoc": "D:\\work4\\new_model_sim\\05_overset_cad\\j3_fluid.scdoc", 
+      "box_lo_m": [
+        -0.10998283590606575, 
+        -0.23260000000000303, 
+        -0.69895063953451375
+      ], 
+      "box_hi_m": [
+        0.10598282209053202, 
+        -0.044600000000003012, 
+        -0.23519999999999891
+      ], 
+      "wall_vs_part_area": {
+        "jaw1": {
+          "wall_m2": 0.012026198321702741, 
+          "part_m2": 0.012848040151539881
+        }, 
+        "link3": {
+          "wall_m2": 0.045943336541522724, 
+          "part_m2": 0.051335438793556586
+        }, 
+        "jaw2": {
+          "wall_m2": 0.013107071969912936, 
+          "part_m2": 0.013457966827747289
+        }, 
+        "pin4": {
+          "wall_m2": 0.00077688270138604495, 
+          "part_m2": 0.0060981359902342073
+        }
+      }, 
+      "unassigned_faces": [], 
+      "close_second_owner": [], 
+      "pieces": [
+        {
+          "volume_m3": 0.018313405589071439, 
+          "reaches_all_box_sides": true
+        }, 
+        {
+          "volume_m3": 2.1161766097077743e-06, 
+          "reaches_all_box_sides": false
+        }, 
+        {
+          "volume_m3": 5.5611282450032711e-07, 
+          "reaches_all_box_sides": false
+        }
+      ], 
+      "expected_names": [
+        "overset_j3", 
+        "wall_jaw1", 
+        "wall_jaw2", 
+        "wall_link3", 
+        "wall_pin4"
+      ], 
+      "material_volume_m3": 0.00051288421573184408, 
+      "owner_max_dist_m": 1.519180781057383e-09, 
+      "fluid": {
+        "faces": 482, 
+        "volume_m3": 0.018313405589071439, 
+        "manifold": true, 
+        "box_minus_material_m3": 0.018316107642790087, 
+        "sealed_cavities_m3": 2.6722894342081014e-06, 
+        "closed": true
+      }, 
+      "scdoc_sha256": "79e9cc5deeb11ff8a1df70bf8ba468d2e58f01cd4409c25bbfb07ad785fb9821", 
+      "box_volume_m3": 0.01882899185852193, 
+      "members": [
+        "link3", 
+        "pin4", 
+        "jaw1", 
+        "jaw2"
+      ], 
+      "unions": [
+        {
+          "union_volume_m3": 0.00046487314788984071, 
+          "added": "jaw2"
+        }, 
+        {
+          "union_volume_m3": 0.00049181070218268317, 
+          "added": "jaw1"
+        }, 
+        {
+          "union_volume_m3": 0.00051288421573184408, 
+          "added": "pin4"
+        }
+      ], 
+      "imprint_faces": [
+        482, 
+        482
+      ], 
+      "sum_member_volumes_m3": 0.00051284600553359785, 
+      "named_selections": {
+        "wall_link3": {
+          "faces": 160, 
+          "area_m2": 0.045943336541522724
+        }, 
+        "wall_pin4": {
+          "faces": 29, 
+          "area_m2": 0.00077688270138604495
+        }, 
+        "wall_jaw1": {
+          "faces": 134, 
+          "area_m2": 0.012026198321702741
+        }, 
+        "wall_jaw2": {
+          "faces": 153, 
+          "area_m2": 0.013107071969912936
+        }, 
+        "overset_j3": {
+          "faces": 6, 
+          "area_m2": 0.45588175189852742
+        }
+      }
+    }
+  }, 
+  "valid_for_meshing": true, 
+  "tank_hi_m": [
+    1.5601, 
+    1.9136, 
+    1.6404
+  ]
+}

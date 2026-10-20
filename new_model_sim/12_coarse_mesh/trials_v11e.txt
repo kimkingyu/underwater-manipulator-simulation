@@ -1,0 +1,10 @@
+global before: Max 300 [mm] ES 150 [mm] Min 0 [mm] G 1.2 curv True
+COMBO E1_g1.3 all set
+  RESULT E1_g1.3 elements 662136 nodes 140781 skew max 0.99995164952007742 avg 0.2884182605474398 20s
+  census <5cm,5-10,10-20,20-40,>40cm: [46640, 226844, 310361, 20284, 58007]
+COMBO E2_g1.4 all set
+  RESULT E2_g1.4 elements 546544 nodes 120229 skew max 0.999948218117424 avg 0.30912116377934273 18s
+  census <5cm,5-10,10-20,20-40,>40cm: [39632, 191418, 247519, 12079, 55896]
+COMBO E3_g1.4_gap1 all set
+  RESULT E3_g1.4_gap1 elements 380937 nodes 81603 skew max 0.999921385088405 avg 0.304410647403312 18s
+  census <5cm,5-10,10-20,20-40,>40cm: [22442, 124524, 165802, 12018, 56151]

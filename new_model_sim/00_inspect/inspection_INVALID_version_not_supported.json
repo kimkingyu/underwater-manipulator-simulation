@@ -1,0 +1,440 @@
+{
+  "old_folder": "D:\\work4\\\u673a\u5668\u4eba\\L", 
+  "stage": "complete", 
+  "files": [
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\AUV.SLDPRT", 
+      "status": "ok", 
+      "bodies": [], 
+      "components": [], 
+      "name": "AUV.SLDPRT", 
+      "total_volume_m3": 0, 
+      "body_count": 0, 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\AUV.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "AUV.SLDPRT", 
+      "components": [], 
+      "version": "old", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\0.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "0.SLDPRT", 
+      "components": [], 
+      "version": "new", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\0.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "0.SLDPRT", 
+      "components": [], 
+      "version": "old", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\3.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "3.SLDPRT", 
+      "components": [], 
+      "version": "new", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\3.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "3.SLDPRT", 
+      "components": [], 
+      "version": "old", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\l1.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "l1.SLDPRT", 
+      "components": [], 
+      "version": "new", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\l1.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "l1.SLDPRT", 
+      "components": [], 
+      "version": "old", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\l2.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "l2.SLDPRT", 
+      "components": [], 
+      "version": "new", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\l2.SLDPRT", 
+      "total_volume_m3": 0.054250422311975209, 
+      "status": "ok", 
+      "name": "l2.SLDPRT", 
+      "components": [], 
+      "version": "old", 
+      "overall_bbox_m": [
+        0.53877050441823082, 
+        1.1278888161819614, 
+        1.8736358129379873, 
+        1.6346705044182368, 
+        1.8688888161819617, 
+        2.700435812937988
+      ], 
+      "body_count": 1, 
+      "bodies": [
+        {
+          "faces": 1806, 
+          "volume_m3": 0.054250422311975209, 
+          "bbox_m": [
+            0.53877050441823082, 
+            1.1278888161819614, 
+            1.8736358129379873, 
+            1.6346705044182368, 
+            1.8688888161819617, 
+            2.700435812937988
+          ], 
+          "manifold": true, 
+          "name": "\u5207\u9664-\u62c9\u4f381", 
+          "path": [
+            "AUV"
+          ], 
+          "closed": true, 
+          "area_m2": 7.416050592208241
+        }
+      ]
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\\u5939\u72ea1.SLDPRT", 
+      "status": "missing", 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\\u5939\u72ea1.SLDPRT", 
+      "status": "missing", 
+      "version": "old"
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\\u5939\u72ea2.SLDPRT", 
+      "status": "missing", 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\\u5939\u72ea2.SLDPRT", 
+      "status": "missing", 
+      "version": "old"
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\\u5939\u72ea4.SLDPRT", 
+      "status": "missing", 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\\u5939\u72ea4.SLDPRT", 
+      "status": "missing", 
+      "version": "old"
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\l3.SLDASM", 
+      "status": "ok", 
+      "bodies": [], 
+      "components": [], 
+      "name": "l3.SLDASM", 
+      "total_volume_m3": 0, 
+      "body_count": 0, 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\l3.SLDASM", 
+      "status": "ok", 
+      "bodies": [], 
+      "components": [], 
+      "name": "l3.SLDASM", 
+      "total_volume_m3": 0, 
+      "body_count": 0, 
+      "version": "old"
+    }, 
+    {
+      "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\bl.SLDASM", 
+      "status": "ok", 
+      "bodies": [], 
+      "components": [], 
+      "name": "bl.SLDASM", 
+      "total_volume_m3": 0, 
+      "body_count": 0, 
+      "version": "new"
+    }, 
+    {
+      "file": "D:\\work4\\\u673a\u5668\u4eba\\L\\bl.SLDASM", 
+      "status": "ok", 
+      "bodies": [], 
+      "components": [], 
+      "name": "bl.SLDASM", 
+      "total_volume_m3": 0, 
+      "body_count": 0, 
+      "version": "old"
+    }
+  ], 
+  "errors": [], 
+  "preview_stl": "saved", 
+  "working_copy_scdoc": "saved", 
+  "new_folder": "D:\\work4\\\u7b80\u5316\u6a21\u578b", 
+  "assembly": {
+    "file": "D:\\work4\\\u7b80\u5316\u6a21\u578b\\AUVM.SLDASM", 
+    "status": "ok", 
+    "bodies": [], 
+    "components": [], 
+    "total_volume_m3": 0, 
+    "body_count": 0
+  }
+}

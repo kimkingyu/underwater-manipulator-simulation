@@ -1,0 +1,66 @@
+# encoding: utf-8
+# Read-only: open auvm_water_v4b.wbpj, dump every size-related Mesh property and every local Sizing's
+# properties from inside Meshing. No generation, no save.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\09_seal_j2j3"
+TRACE = D + r"\wb_mesh_v4b_dump_trace.txt"
+PROJECT = D + r"\auvm_water_v4b.wbpj"
+INNER = D + r"\mesh_v4b_property_dump.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+INSIDE = r'''
+import codecs
+out = codecs.open(r"%s", "w", "utf-8")
+KEYS = ("size", "Size", "Proximity", "Curvature", "Growth", "Adaptive", "Defeature", "Physics",
+        "Span", "Transition", "Smoothing", "Behavior", "Type")
+def dump(obj, label):
+    out.write("== %%s (%%s)\n" %% (label, obj.GetType().Name))
+    for n in sorted(dir(obj)):
+        if n.startswith("_") or not any(k in n for k in KEYS):
+            continue
+        try:
+            v = getattr(obj, n)
+            if callable(v):
+                continue
+            out.write("  %%s = %%s\n" %% (n, v))
+        except Exception, e:
+            out.write("  %%s : <%%s>\n" %% (n, e))
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    dump(mesh, "Mesh")
+    for c in mesh.Children:
+        if c.GetType().Name == "Sizing":
+            dump(c, c.Name)
+            try:
+                out.write("  location %%s\n" %% c.Location.Name)
+            except Exception:
+                pass
+except Exception, e:
+    out.write("INSIDE ERROR %%s\n" %% e)
+finally:
+    out.close()
+''' % INNER
+
+try:
+    Open(FilePath=PROJECT)
+    s = GetAllSystems()[0]
+    mesh = s.GetContainer(ComponentName="Mesh")
+    mesh.Edit(Interactive=False)
+    mesh.SendCommand(Language="Python", Command=INSIDE)
+    mesh.Exit()
+    log("OK")
+except System.Exception, ex:
+    log("ERROR .NET: " + ex.ToString()[:3000])
+except Exception, e:
+    log("ERROR python")
+log("END")

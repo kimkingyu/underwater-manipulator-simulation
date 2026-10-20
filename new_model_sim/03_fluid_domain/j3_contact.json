@@ -1,0 +1,110 @@
+{
+  "volumes": {
+    "link3": 0.00043714424691236457, 
+    "l2": 0.00062651545343011031
+  }, 
+  "as_is": {
+    "label": "l2 vs link3 as exported", 
+    "Intersect": 0.0, 
+    "Unite": "FAIL: General Failure.", 
+    "Subtract": 0.00062651545343011031
+  }, 
+  "status": "ok", 
+  "axis_shift_sweep": [
+    {
+      "label": "link3 shifted +1.000000e-006 m along J3 axis", 
+      "Intersect": 0.0, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651545343011031
+    }, 
+    {
+      "label": "link3 shifted -1e-06 m along J3 axis", 
+      "Intersect": 6.1575193620556333e-10, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651483767795087
+    }, 
+    {
+      "label": "link3 shifted +1.000000e-005 m along J3 axis", 
+      "Intersect": 0.0, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651545343011031
+    }, 
+    {
+      "label": "link3 shifted -1e-05 m along J3 axis", 
+      "Intersect": 6.157522525275179e-09, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062650929590850996
+    }, 
+    {
+      "label": "link3 shifted +5.000000e-005 m along J3 axis", 
+      "Intersect": 0.0, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651545343011031
+    }, 
+    {
+      "label": "link3 shifted -5e-05 m along J3 axis", 
+      "Intersect": 3.0787612628846544e-08, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062648466582210585
+    }, 
+    {
+      "label": "link3 shifted +1.000000e-004 m along J3 axis", 
+      "Intersect": 0.0, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651545343011031
+    }, 
+    {
+      "label": "link3 shifted -1e-04 m along J3 axis", 
+      "Intersect": 6.1575193681723409e-08, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062645387821410063
+    }, 
+    {
+      "label": "link3 shifted +2.000000e-004 m along J3 axis", 
+      "Intersect": 0.0, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.00062651545343011031
+    }, 
+    {
+      "label": "link3 shifted -2e-04 m along J3 axis", 
+      "Intersect": 1.2315043202010302e-07, 
+      "Unite": "FAIL: General Failure.", 
+      "Subtract": 0.0006263923029980903
+    }
+  ], 
+  "coplanar_planar_faces": [
+    {
+      "facing": "opposite (touching)", 
+      "link3_area_m2": 0.00061575216010360053, 
+      "l2_area_m2": 0.0033850070890765723, 
+      "normal": [
+        1.0, 
+        -0.0, 
+        -0.0
+      ], 
+      "offset_m": 0.014800000000001
+    }, 
+    {
+      "facing": "opposite (touching)", 
+      "link3_area_m2": 0.0023761389053683808, 
+      "l2_area_m2": 8.1169743452609742e-06, 
+      "normal": [
+        -0.0, 
+        -6.93889390390723e-15, 
+        -1.0
+      ], 
+      "offset_m": 0.3412000000000015
+    }, 
+    {
+      "facing": "opposite (touching)", 
+      "link3_area_m2": 0.0023761389053683808, 
+      "l2_area_m2": 0.00014520990446705327, 
+      "normal": [
+        -0.0, 
+        -6.93889390390723e-15, 
+        -1.0
+      ], 
+      "offset_m": 0.3412000000000015
+    }
+  ]
+}

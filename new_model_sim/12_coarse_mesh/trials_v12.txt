@@ -1,0 +1,9 @@
+metric enum: ['AspectRatio', 'AspectRatioEXD', 'CharacteristicLength', 'CharacteristicLengthLSD', 'CompareTo', 'ElementQuality', 'Equals', 'Format', 'GetHashCode', 'GetName', 'GetNames', 'GetType', 'GetTypeCode', 'GetUnderlyingType', 'GetValues', 'HasFlag', 'Hydrodynamics', 'IsDefined', 'JacobianRatio', 'JacobianRatioCornerNodes', 'JacobianRatioGaussPoints', 'MaxEdgeLength', 'MaxQuadAngle', 'MaxTriAngle', 'MaximumCornerAngle', 'MemberwiseClone', 'MinEdgeLength', 'MinQuadAngle', 'MinTriAngle', 'None', 'OrthogonalAngle', 'ParallelDeviation', 'Parse', 'ReferenceEquals', 'Skewness', 'TetCollapse', 'ToBoolean', 'ToByte', 'ToChar', 'ToDateTime', 'ToDecimal', 'ToDouble', 'ToInt16', 'ToInt32', 'ToInt64', 'ToObject', 'ToSByte', 'ToSingle', 'ToString', 'ToType', 'ToUInt16', 'ToUInt32', 'ToUInt64', 'TryParse', 'WarpingAngle', 'WarpingFactor', 'value__']
+COMBO J1_jaw1.5 all set
+  RESULT J1_jaw1.5 elements 537717 nodes 112698 |  | 21s
+COMBO J2_jaw1.0 all set
+  RESULT J2_jaw1.0 elements 791324 nodes 162725 |  | 28s
+COMBO J3_jaw1.0_min0.1 all set
+  RESULT J3_jaw1.0_min0.1 elements 791324 nodes 162725 |  | 29s
+COMBO J4_jaw0.8_min0.1 all set
+  RESULT J4_jaw0.8_min0.1 elements 1071817 nodes 218732 |  | 36s

@@ -1,0 +1,40 @@
+{
+  "source": "D:/work4/简化模型/AUVM.SLDASM (SolidWorks 2025 file, newer than ANSYS 2024 R2 reader)",
+  "exported_with": "SolidWorks 2025 (33.0.0) via COM, read-only open, SaveAs copy; source hashes unchanged",
+  "recommended_cad_for_ansys": "D:/work4/简化模型_导出/AUVM.step",
+  "parasolid_note": "AUVM.x_t (assembly-format Parasolid 36.1) loads in SpaceClaim 2024 R2 as 8 empty components; not used",
+  "units": "metres (SolidWorks length unit mm, exported/read in SI)",
+  "solidworks_volume_m3": 0.45178326956639786,
+  "ansys_step_volume_m3": 0.45178899970182906,
+  "ansys_vs_solidworks_volume_rel_diff": 1.2683372353967232e-05,
+  "overall_size_m": [
+    0.8268,
+    0.9180000000000033,
+    1.1482841305465004
+  ],
+  "overall_bbox_m": [
+    -0.4134000000000002,
+    -0.182600000000003,
+    -0.6529841305465115,
+    0.41339999999999977,
+    0.7354000000000003,
+    0.49529999999998886
+  ],
+  "bodies": 8,
+  "all_closed_manifold": true,
+  "hull": {
+    "volume_m3": 0.44987751308773627,
+    "faces": 367,
+    "size_m": [
+      0.8268,
+      0.741,
+      1.0959
+    ]
+  },
+  "hull_change_vs_old": "same outer size; faces 1806 -> 367; volume 0.0543 -> 0.4499 m3 (old hull was a hollow shell, new is essentially solid)",
+  "arm_change_vs_old": "7 bodies kept; total volume +0.15%; only gripper jaws simplified (faces 226->142, 326->153)",
+  "assembly_mates": 0,
+  "all_components_fixed": true,
+  "joint_definition": "NOT in the SolidWorks file: no mates, every component fixed. Joint centres/axes must come from the user or be re-derived.",
+  "coordinate_change_vs_old_3STEP": "old model sat at x~-0.75, y~0.75 with arm along +y; new model is re-origined (hull centred near x=0) with arm hanging along -z/-y. Old joint centres/axes cannot be reused."
+}

@@ -1,0 +1,7 @@
+﻿1 open v12
+  OK
+2 save as v12_trials (new file)
+  OK
+3 trials
+  OK
+END
