@@ -1,0 +1,1393 @@
+{
+  "audit_date": "2026-09-29",
+  "scope": "Existing local artifacts only. No new solver run. Hashes identify snapshots, not authenticity certificates.",
+  "case_count": 52,
+  "row_count_distribution": {
+    "6": 7,
+    "3": 36,
+    "8": 9
+  },
+  "selected_step_distribution": {
+    "6": 8,
+    "3": 33,
+    "2": 1,
+    "1": 3,
+    "4": 2,
+    "8": 4,
+    "7": 1
+  },
+  "duplicate_csv_groups": [
+    [
+      "case_01_v000_psi00",
+      "case_05_v000_psi60",
+      "case_06_v000_psi75",
+      "case_07_v000_psi90"
+    ]
+  ],
+  "historical_csv_matches": [
+    {
+      "matrix52": "case_43_v025_psi00",
+      "historical9": "case_01_v025_psi00"
+    },
+    {
+      "matrix52": "case_45_v025_psi45",
+      "historical9": "case_02_v025_psi45"
+    },
+    {
+      "matrix52": "case_47_v025_psi90",
+      "historical9": "case_03_v025_psi90"
+    },
+    {
+      "matrix52": "case_48_v050_psi00",
+      "historical9": "case_04_v050_psi00"
+    },
+    {
+      "matrix52": "case_50_v050_psi45",
+      "historical9": "case_05_v050_psi45"
+    },
+    {
+      "matrix52": "case_52_v050_psi90",
+      "historical9": "case_06_v050_psi90"
+    },
+    {
+      "matrix52": "case_36_v100_psi00",
+      "historical9": "case_07_v100_psi00"
+    },
+    {
+      "matrix52": "case_39_v100_psi45",
+      "historical9": "case_08_v100_psi45"
+    },
+    {
+      "matrix52": "case_42_v100_psi90",
+      "historical9": "case_09_v100_psi90"
+    }
+  ],
+  "summary_csv_mismatches": [
+    "case_32_v080_psi45",
+    "case_40_v100_psi60",
+    "case_41_v100_psi75",
+    "case_42_v100_psi90"
+  ],
+  "recorded_step_seconds_summary": {
+    "n": 222,
+    "min": 4.245577812194824,
+    "max": 304.53657722473145,
+    "mean": 13.380693697714591
+  },
+  "short_30_step_metrics": [
+    {
+      "joint": 1,
+      "mae_nm": 0.00709018241403514,
+      "rmse_nm": 0.008732589425797013,
+      "stored_r2": -60.5199319691148
+    },
+    {
+      "joint": 2,
+      "mae_nm": 0.03306395041338017,
+      "rmse_nm": 0.03308831510146403,
+      "stored_r2": -206.7978105187259
+    },
+    {
+      "joint": 3,
+      "mae_nm": 0.030298246643456542,
+      "rmse_nm": 0.030384213341374068,
+      "stored_r2": -241.10941489427634
+    }
+  ],
+  "matlab_archive": {
+    "model_kind": "small_sample_gpr_cfd",
+    "model_val_mae_nm": [
+      0.4497980345827371,
+      2.134258353189188,
+      0.6518705862800129
+    ],
+    "model_test_mae_nm": [
+      0.499573370673335,
+      3.144521971553804,
+      0.4857841553640529
+    ],
+    "stored_report_note": "Analytical-model reproduction only; not CFD/physical validation.",
+    "stored_audit_note": "Fresh seed after model freeze; no audit-based selection; nominal case excluded.",
+    "load_time_s": [
+      0.0,
+      10.0
+    ],
+    "load_samples": 1001,
+    "load_peak_total_nm": [
+      2.319677647761325,
+      1.6328320516959676,
+      1.2077580857502306
+    ],
+    "load_rms_total_nm": [
+      1.1599895234728077,
+      0.7352147829451811,
+      0.9713418551127087
+    ],
+    "load_peak_drag_nm": [
+      1.4385042129269245,
+      0.32901966671274757,
+      0.22198190873051038
+    ],
+    "current_speed_mps": 0.25,
+    "current_azimuth_rad": 0.0,
+    "base_link3_min_clearance_m": 0.03188620727837327,
+    "link2_link4_nan_samples": 196,
+    "tcp_extent_m": [
+      0.2719623542909243,
+      0.10994638886188812,
+      0.1559692300814597
+    ],
+    "absolute_mechanical_work_J": 6.59552227191545,
+    "net_mechanical_work_J": 1.725614075913844,
+    "control_samples": 2001,
+    "control_time_s": [
+      0.0,
+      10.0
+    ],
+    "control_max_joint_error_deg": [
+      0.0027923569692237687,
+      0.0023191854343050135,
+      0.0026541986470049184
+    ],
+    "control_torque_limit_assumption_nm": 10.0,
+    "mesh_cell_zone_ids": [
+      1,
+      8,
+      13,
+      18
+    ],
+    "mesh_zone_cell_counts": [
+      212901,
+      29319,
+      39649,
+      133460
+    ],
+    "mesh_total_cells": 415329
+  },
+  "cases": [
+    {
+      "case_id": "case_01_v000_psi00",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "4719046c3ac99881b0a34634f7babfed221a03a8a3f8d397c988b35ed0a8cf20",
+      "sidecar_sha256": "91c23d79e2f0133638a94c21ff39282cef8a6019d6b0bd5992bd2deb4d26bf49",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.014118223440509715,
+      "recorded_step_seconds": [
+        6.608478307723999,
+        6.5395827293396,
+        6.578973054885864,
+        6.300703048706055,
+        7.644881248474121,
+        7.18507719039917
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_02_v000_psi15",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "64e85bb70fb9dbfd88b4695fdbf1dfacce4e920876cc098ac49f534f4f2a298a",
+      "sidecar_sha256": "fbada76428dc2ffac7c973803b30d97e7b14eedc6503f30b9f0e8a2548cc3e96",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.015065874728467793,
+      "recorded_step_seconds": [
+        8.501614093780518,
+        6.9470367431640625,
+        6.845258474349976,
+        6.417365789413452,
+        6.11137056350708,
+        6.080142974853516
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_03_v000_psi30",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "b2ed8a46d9e8d3db71a20fa062b57c43b9fac04506a5ae7774d628560aa0ba12",
+      "sidecar_sha256": "6554a0621ed6b3008c2cfa8c1e797cc5a8b208914f6cb9053a8a687fdab6b286",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.014776483690861564,
+      "recorded_step_seconds": [
+        7.862618684768677,
+        13.255682468414307,
+        11.35016131401062,
+        14.403027057647705,
+        14.847483396530151,
+        12.34986686706543
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_04_v000_psi45",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "10588ffcb9ad1955156cdb3d764b0695c54de728219df6235b7fab82adf1eeb6",
+      "sidecar_sha256": "fd399e8e444006baa3057716d794a990923e22948955de9933e7d7dbcd59e8a5",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.015164380453265269,
+      "recorded_step_seconds": [
+        15.471179008483887,
+        14.127066850662231,
+        12.8934645652771,
+        14.596740484237671,
+        11.428357601165771,
+        15.8726327419281
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_05_v000_psi60",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "4719046c3ac99881b0a34634f7babfed221a03a8a3f8d397c988b35ed0a8cf20",
+      "sidecar_sha256": "a90f5c2224b367394a7e997146ce9cd9c5efbfa0d3f282d628e6901ff74e17b8",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.014118223440509715,
+      "recorded_step_seconds": [
+        6.608478307723999,
+        6.5395827293396,
+        6.578973054885864,
+        6.300703048706055,
+        7.644881248474121,
+        7.18507719039917
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_06_v000_psi75",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "4719046c3ac99881b0a34634f7babfed221a03a8a3f8d397c988b35ed0a8cf20",
+      "sidecar_sha256": "609fca659c6f2d5cee9b52bd31484fde8247b59fc9c85e2085aace248e9fbe0c",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.014118223440509715,
+      "recorded_step_seconds": [
+        6.608478307723999,
+        6.5395827293396,
+        6.578973054885864,
+        6.300703048706055,
+        7.644881248474121,
+        7.18507719039917
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_07_v000_psi90",
+      "rows": 6,
+      "time_end_s": 0.06,
+      "csv_sha256": "4719046c3ac99881b0a34634f7babfed221a03a8a3f8d397c988b35ed0a8cf20",
+      "sidecar_sha256": "ef16db24ea3b3f2ef939da0f7204311457d20aaa6bc36fb69746cc46ad45b162",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 0.014118223440509715,
+      "recorded_step_seconds": [
+        6.608478307723999,
+        6.5395827293396,
+        6.578973054885864,
+        6.300703048706055,
+        7.644881248474121,
+        7.18507719039917
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_08_v020_psi00",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "4355dc5cf27d902c3edec3c1760f519a95424590af758c215428b60bd1b337fa",
+      "sidecar_sha256": "717a31f7b9fed2760b33ff3307b218af6e5e3c1fe0a3bd35b4e90ec60c4a465f",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 2.06440423458295,
+      "recorded_step_seconds": [
+        9.999131202697754,
+        12.210341215133667,
+        10.098178386688232
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_09_v020_psi15",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "05323648f20b7b09bf20e091bcaa4542549a53cf2a604f5fd9473adda241bbb9",
+      "sidecar_sha256": "83aaccdd184bd26e6a599c7eef0f0dd0601bace243c217813a7f0e0f72dcee07",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.885732775825442,
+      "recorded_step_seconds": [
+        10.457727909088135,
+        15.57253122329712,
+        11.642055034637451
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_10_v020_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "8c4aa45598424eecab52e143d6c38b363d06dd6080f5665a2fd7e9a773decf46",
+      "sidecar_sha256": "cbf9bf33d5855945636be8f886c84e431116d84533c285e839cc2264e4fc88f1",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.60765206555471,
+      "recorded_step_seconds": [
+        11.738879680633545,
+        11.612154006958008,
+        9.236875295639038
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_11_v020_psi45",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "8179dbb95dc1359c5c1a6f1e416de9cfc5887f529473b20ed1d171bc24fa721a",
+      "sidecar_sha256": "5cf4b4ffd9a74e16e82e3c2eebda8be31cb85e055bf145ff522b311819b527db",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.429678795242623,
+      "recorded_step_seconds": [
+        13.348300457000732,
+        12.291312456130981,
+        9.813683271408081
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_12_v020_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "ef0f171423ff89f18ba45f431b9c78d6d0a5cd994c0b40151a4f81c3017dec3d",
+      "sidecar_sha256": "6b138e8bc581e31c73199134227da8640ee2ff68d30029ca7b08960d453ef6a3",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.7466041372974104,
+      "recorded_step_seconds": [
+        13.697916030883789,
+        10.867507696151733,
+        12.983642816543579
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_13_v020_psi75",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "227d106da39ff45d03342b20c02792bdff816111313dde70311ad38c45f07ebe",
+      "sidecar_sha256": "820329f7bdaf5f814cf47c9fea915ad6da60bf47483c3afcd5c8562408d036c4",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.8515861075730025,
+      "recorded_step_seconds": [
+        13.129076719284058,
+        12.216086387634277,
+        13.107229232788086
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_14_v020_psi90",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "4e1c93dccf602d81ec0e5c70bee7185808eb8270536aafe511a34f42d5ce2711",
+      "sidecar_sha256": "c5793605d77974c81b269f06de2c5e0eda001fe916356d1890133d77b84094ac",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 1.9308856589727021,
+      "recorded_step_seconds": [
+        11.857374429702759,
+        14.368916988372803,
+        14.245869636535645
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_15_v040_psi00",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "12b109d7ca170302c233e4cca545239c24a9162199e4816a6417c472c024fc13",
+      "sidecar_sha256": "3a50062c1e8e7f80b72793456ac4ebea3130049a563a0c82f404122686ed743e",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 4.718335605367326,
+      "recorded_step_seconds": [
+        12.410100936889648,
+        13.05332326889038,
+        13.892672777175903
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_16_v040_psi15",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "a258f7a82a6bd30ae0eb21656262a44bf389826503cd831879d655f346953f8c",
+      "sidecar_sha256": "517b2624e84c7c3883fd7b817dcf14e8e3134971feb13fd2ef457ac87912eaea",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 4.281600330468948,
+      "recorded_step_seconds": [
+        11.900173664093018,
+        13.629523038864136,
+        10.782975196838379
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_17_v040_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "afb959341689b2a1ec50f611fedfb3e02220f2fb2e9346ac09083a460c919f55",
+      "sidecar_sha256": "a21dac40359ca37137847419f9ed3b1e6003efa9c8500468ae2af04ed241f872",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.671581073408281,
+      "recorded_step_seconds": [
+        11.824618816375732,
+        12.364986896514893,
+        10.881190776824951
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_18_v040_psi45",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "8024601502a4407d5eb3ec6a9435b189fe47a5195c9d917d4015472b55910b00",
+      "sidecar_sha256": "328ae6a22021022c288fe85a4a6d8b502fb423d854f9b64d495200409ba47f76",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.0162064963859625,
+      "recorded_step_seconds": [
+        11.737812280654907,
+        13.318235397338867,
+        11.710820436477661
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_19_v040_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "0ea7646e809e30144a61fcb213913d4679681517a25e7f121b06d68cb4fda2b7",
+      "sidecar_sha256": "d45e12391d2faea23897979c192c46bfa27a6fb8437e3dae0aba83bbc1faceb4",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.580866403854079,
+      "recorded_step_seconds": [
+        9.087660551071167,
+        9.456511974334717,
+        12.039252281188965
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_20_v040_psi75",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "8e268f1250ad63972aee14459aa42132d2a0e4ad9d7700b46b88670d711c05f5",
+      "sidecar_sha256": "edac7acbbc24987e671cc33a2f2c51eb9cfa557cc1e47a52fe2f92b119e03ba9",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.850086419828434,
+      "recorded_step_seconds": [
+        12.817061424255371,
+        10.188310146331787,
+        9.339660167694092
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_21_v040_psi90",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "b43b4f1b441f2a072858328f74c842140a5a83c6bc986f363cff614b6527cf0f",
+      "sidecar_sha256": "1c2c99b92fdfed68ed37d988e50049afe840cd0c7fe813d57c9c46b603d01e44",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 4.022951633677052,
+      "recorded_step_seconds": [
+        11.983475685119629,
+        10.561975955963135,
+        12.686378717422485
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_22_v060_psi00",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "61c1fb8b9e0b21ee2ae272f8250595eafb6eb800ca8f4ceb3ff6c349a35b4274",
+      "sidecar_sha256": "c998258228f221f254c2b952ceaf49ca580b1ec3cf40199c2aa6102fb2852004",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 7.607172295273733,
+      "recorded_step_seconds": [
+        9.577128171920776,
+        10.657883167266846,
+        10.065828800201416
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_23_v060_psi15",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "f9eff9b6080cf49b02501f49613240a95a5c88211ba833adfb386793fb389185",
+      "sidecar_sha256": "712b34ee960360135a3c672e1f6a44a1080fdee924f89cf90ded79560b6c4116",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 7.055758411551397,
+      "recorded_step_seconds": [
+        10.411422491073608,
+        12.071707487106323,
+        11.90081262588501
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_24_v060_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "4480a6702d4607d176750fda8afaf88668ca956bd06ede6eb8eb070a7decb15a",
+      "sidecar_sha256": "e9b84496f33fe949a24b0b41b4ca0355d26310685bac8eefa2e748d3999cc52e",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 6.172351285587494,
+      "recorded_step_seconds": [
+        11.6551992893219,
+        13.551340341567993,
+        14.494431018829346
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_25_v060_psi45",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "950f012cf8535ef8c2b7362bf13487837d3564dc61a6b19ab3747e31b36acf39",
+      "sidecar_sha256": "53068633de7f122db30e430fe5deee9909623c6692a5e9c7bdbef00779032ee4",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 2,
+      "max_abs_recorded_torque_nm": 1.014976364959287e+23,
+      "recorded_step_seconds": [
+        11.842609643936157,
+        14.748265266418457,
+        47.77753210067749
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_26_v060_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "b9ed3a1d881fe6a33e4b08234eac76e9401a8ab28b62a97ca7cda530f53c3f31",
+      "sidecar_sha256": "fe19dd0e488e797ed181f382ec2cead909f40b185d80c80bd90a8cd443ff27af",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 10.639670939659673,
+      "recorded_step_seconds": [
+        14.049454689025879,
+        16.6336772441864,
+        15.320024967193604
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_27_v060_psi75",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "c2a35a531bd3d64c3803eaa0cf025ebd1c279ade8fe8118214c4ade9c87bea11",
+      "sidecar_sha256": "61d4e7137c290fbe0c45e41b6d405de42d5203cc5860b9643dbf99a2b3b73c6d",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 6.052178793475903,
+      "recorded_step_seconds": [
+        14.95622706413269,
+        18.338746547698975,
+        13.968228816986084
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_28_v060_psi90",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "b7c4de89fc75c1079b1d3e5b8cbe562cbc58bda22f308364a456d225cbe23b30",
+      "sidecar_sha256": "995a537725c777d944d1273ee15785afc0723deff95037d3ad76208c55f03625",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 6.0478190290689495,
+      "recorded_step_seconds": [
+        15.140572786331177,
+        11.793457984924316,
+        14.609758377075195
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_29_v080_psi00",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "a1832cdf27250228145a97c9e82c7440f33d827a51db35c4e91fd8b817c9bb1d",
+      "sidecar_sha256": "9ec14062dd21c5ad7e764a549c1c7892ae5b610be73738de91b6b923158b08bd",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 11.03639649702041,
+      "recorded_step_seconds": [
+        13.502310276031494,
+        13.056793451309204,
+        13.130964756011963
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_30_v080_psi15",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "4673118314abc54b0b83900fd3edcae54f3e17dc50c44aedca8599fcf6da776c",
+      "sidecar_sha256": "32d31296f0e6dabe0f1227f5f1cf22d2c4143d191b236cf6d0d0f992a840ee3b",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 10.25771851881473,
+      "recorded_step_seconds": [
+        12.196964740753174,
+        16.994077682495117,
+        14.933563947677612
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_31_v080_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "1488a319d6967a25a2e93aeb410f79d0664457e7214f2399afb904673070e153",
+      "sidecar_sha256": "5162cddf402cb6f7482f9ae905cf0fce16ff6b922a2fa8b303d32e688decd580",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 1,
+      "max_abs_recorded_torque_nm": 1.2395649792851418e+52,
+      "recorded_step_seconds": [
+        11.56268310546875,
+        14.255820512771606,
+        304.53657722473145
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_32_v080_psi45",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "a9f12b647c5c673e26d54a1ddd8ac6d912de9f44576a86d06c79d21969614074",
+      "sidecar_sha256": "ea41bb1df2e5bc78bc9d6365095b99b8202d063212894494662b6b19f23dce49",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.8685516411947784e+43,
+      "recorded_step_seconds": [
+        45.42304039001465,
+        65.68684267997742,
+        22.689072132110596
+      ],
+      "summary_matches_selected_csv": false,
+      "summary_minus_csv_nm": [
+        1.149381665547289e+42,
+        1.2118956149180229e+43,
+        -3.8685516411947784e+43
+      ]
+    },
+    {
+      "case_id": "case_33_v080_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "c839699dab9f41238dc4ebb0562beb52d844fc21c3f124a2d8dcbfd8d6f9165f",
+      "sidecar_sha256": "da9308237f89f0b2054c1a3cbc56a3951233b7a1453646f163ad232b91291557",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 7.5975878262175085,
+      "recorded_step_seconds": [
+        10.077600717544556,
+        12.422986507415771,
+        13.76607370376587
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_34_v080_psi75",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "d593a597f83250f703b6736b0496503733645dda380d8f0035158c31b7e35af7",
+      "sidecar_sha256": "9dafa851fc0be39d3d572931528240f93827adf515fe977b2d38cf9ed6875e75",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 8.104039765672653,
+      "recorded_step_seconds": [
+        12.46955156326294,
+        12.66123080253601,
+        9.653308868408203
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_35_v080_psi90",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "ec0cfc759bcf5f728857c08550a8b18209d84ea51600f2460ba9c5900d204ab2",
+      "sidecar_sha256": "385c09a446a48c1ff533d5ab2b51daae9e7e4235779719a1fbb5c292e5c66a65",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 7.93780095637745,
+      "recorded_step_seconds": [
+        10.770077228546143,
+        10.16479229927063,
+        12.752269983291626
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_36_v100_psi00",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "d04aadab7a8768df07dd0844be4e20c3281c3d61b87d14a240c5355b336c2b79",
+      "sidecar_sha256": "24009339af24621d8c98da8b111fb61255f4ceb64c7648aea316e25c8ac831a1",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 4,
+      "max_abs_recorded_torque_nm": 3.183062960878036e+40,
+      "recorded_step_seconds": [
+        9.685303449630737,
+        9.991746664047241,
+        11.878087282180786,
+        12.686755180358887,
+        29.936815977096558,
+        14.155395984649658,
+        5.039098501205444,
+        7.050203800201416
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_37_v100_psi15",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "46f0abdc950eee2aae23e7e98e59a056b43286d5740e9a2b370fe0a5099a0775",
+      "sidecar_sha256": "b284042953f31390d4bb3fd5669828b748b12ee142e246d017fbeae329b2a1c9",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 13.73010508932724,
+      "recorded_step_seconds": [
+        12.213303565979004,
+        12.737786293029785,
+        11.912950277328491
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_38_v100_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "49a2355c0d43a01ab204c07ff3df7014dcc9175e76238531c9718925afb352b2",
+      "sidecar_sha256": "38ce12d5780d08d75b68ff8f4365eb36a4570df288569c65420015c0f1dca40b",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 12.15960490697412,
+      "recorded_step_seconds": [
+        11.252067565917969,
+        12.74836015701294,
+        13.933136701583862
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_39_v100_psi45",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "40f9ee540fda53bd3940da7f9d69b3f12d0d0dcadc7b29aed297c90e66f1661b",
+      "sidecar_sha256": "d26ec520969dfc6e4af5c048cc641721847f23acabe4e5af9d3ee4d705de4933",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 4,
+      "max_abs_recorded_torque_nm": 455.46794532743576,
+      "recorded_step_seconds": [
+        11.608489751815796,
+        11.430498361587524,
+        10.719136714935303,
+        10.856813669204712,
+        11.49513292312622,
+        8.40310025215149,
+        12.580119132995605,
+        12.282331943511963
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_40_v100_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "da66a513e5ba99faae28f2f0fab4c6b9e5ef31b1b86a1638373064b8565950a2",
+      "sidecar_sha256": "3563f8ad77caafb779449b9602d6999f6744725622bbb1b04a56de46de8c62d0",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 1,
+      "max_abs_recorded_torque_nm": 3.078485845571096e+19,
+      "recorded_step_seconds": [
+        11.445560932159424,
+        14.740883350372314,
+        49.54812693595886
+      ],
+      "summary_matches_selected_csv": false,
+      "summary_minus_csv_nm": [
+        6.747458733714587,
+        11.964458471422406,
+        5.6424614143176335
+      ]
+    },
+    {
+      "case_id": "case_41_v100_psi75",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "7f32ec5d009161b02dbff731fff5d31c4e0fc41e9d6383a02aab809f94b220d1",
+      "sidecar_sha256": "241cc6209176fef578f7dc6acf05044154295a27c1df2ab6802bb1a4b1496718",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 1,
+      "max_abs_recorded_torque_nm": 2.339885103643558e+35,
+      "recorded_step_seconds": [
+        11.598063707351685,
+        68.37749314308167,
+        21.600695610046387
+      ],
+      "summary_matches_selected_csv": false,
+      "summary_minus_csv_nm": [
+        1.106518341172207,
+        13.062057811055947,
+        6.679681012157118
+      ]
+    },
+    {
+      "case_id": "case_42_v100_psi90",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "cc45bb1af8db89664c65570b01342073e843f8776e92073fd9e710c5615b176f",
+      "sidecar_sha256": "c3887f4b54e288ff2291eab9820170881e30d0f858706a21e1b5a858ad606f44",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 6,
+      "max_abs_recorded_torque_nm": 879.3367972171209,
+      "recorded_step_seconds": [
+        9.709476709365845,
+        10.778391361236572,
+        9.03983998298645,
+        9.941428422927856,
+        10.545296430587769,
+        10.391027688980103,
+        10.69457721710205,
+        8.27248477935791
+      ],
+      "summary_matches_selected_csv": false,
+      "summary_minus_csv_nm": [
+        -24.5450395387173,
+        2.1362591085547704,
+        0.19415679335164782
+      ]
+    },
+    {
+      "case_id": "case_43_v025_psi00",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "a60aa6979691cc3f4208f4a32015d3b6ef44c3c34c2da9683ce88cb07355e1d7",
+      "sidecar_sha256": "ddea1fc26c55953ea11411a5587eb37c7f16de8d4b4b49d3aa0e3eef036481f4",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 8,
+      "max_abs_recorded_torque_nm": 2.928485430338282,
+      "recorded_step_seconds": [
+        11.203535318374634,
+        10.16384768486023,
+        9.9263334274292,
+        8.755614280700684,
+        8.947277307510376,
+        10.77960205078125,
+        10.561225891113281,
+        10.287398099899292
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_44_v025_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "85c4e68760f7648c03bde13551fc48f539ba94e5d5ca438b7678d83ec24e98b5",
+      "sidecar_sha256": "e6032c13808003893745b28bf1e8f504fa8053525c0e3dbb0672739911eacb5d",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 2.228468310107711,
+      "recorded_step_seconds": [
+        11.352625608444214,
+        13.239154577255249,
+        11.059460878372192
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_45_v025_psi45",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "5c1b47c67002b10cc47f349d0fe82d73fe306d43dc465c0fd8f9eaf921b6a027",
+      "sidecar_sha256": "6bbbbead58fe3f3b478890747f643730289f9324300be70852c563d1609d34f1",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 8,
+      "max_abs_recorded_torque_nm": 4.564378588817712,
+      "recorded_step_seconds": [
+        11.112889051437378,
+        9.378456354141235,
+        8.393049001693726,
+        8.619231939315796,
+        8.392910242080688,
+        8.321513891220093,
+        9.007476806640625,
+        8.077485084533691
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_46_v025_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "bef0d5adcfc77e09abedd1e4b5b4016ee47addfb2e5af4bb46b2630617b41c82",
+      "sidecar_sha256": "b5e67477f3149fa30bb7d34ff388fc31611c574b5ab95808ef1460712f0cba9e",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 2.080716003064725,
+      "recorded_step_seconds": [
+        10.133441686630249,
+        9.70087218284607,
+        9.404993772506714
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_47_v025_psi90",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "0d196a552e4742a83b151d4230b019d735f8159f2d8d3c7c58f5fa1216de8c09",
+      "sidecar_sha256": "0d9a30079e54def6995b59a692876c63642d44b6df9e0b280966b21154c06332",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 8,
+      "max_abs_recorded_torque_nm": 8.130971661854428,
+      "recorded_step_seconds": [
+        12.19581151008606,
+        11.674349069595337,
+        11.040881872177124,
+        11.682206869125366,
+        8.763344526290894,
+        8.269062757492065,
+        8.208420515060425,
+        10.216352462768555
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_48_v050_psi00",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "8561756ce2d6ca868e8a4316a695dfa50f21286715b91ab5e84a615135a0d373",
+      "sidecar_sha256": "72f73334ade6d99e8c6eabedca9dd3dff9253412ab63244ea85af009962e5195",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 3.8894364024689046e+40,
+      "recorded_step_seconds": [
+        9.906554698944092,
+        9.895377159118652,
+        8.55698275566101,
+        14.314628839492798,
+        35.49012637138367,
+        4.245577812194824,
+        4.761591672897339,
+        15.917988300323486
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_49_v050_psi30",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "ad05e7aaf7775bdd09a540b4d51eed49c44b3f62c69c6a5c683063baf40b6e19",
+      "sidecar_sha256": "00993831508cfa96d674ea7891dd7308c015071f8dbaafaa6859c7bd60efb512",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 5.090976418508664,
+      "recorded_step_seconds": [
+        9.182637691497803,
+        10.763283491134644,
+        8.786533117294312
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_50_v050_psi45",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "217d3930c8da19d8e645ea444b5e46762c8242dd5c79d4cd3fc3fb8e93b8698e",
+      "sidecar_sha256": "17c87a771fba72d657af3f4b0052e074c5bea7320c079a72f8ed40a98fce8083",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 8,
+      "max_abs_recorded_torque_nm": 9.328387808494796,
+      "recorded_step_seconds": [
+        8.311217069625854,
+        8.61508560180664,
+        10.80774188041687,
+        8.571319818496704,
+        7.9048779010772705,
+        7.492254734039307,
+        9.420267105102539,
+        13.50536036491394
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_51_v050_psi60",
+      "rows": 3,
+      "time_end_s": 0.03,
+      "csv_sha256": "e15664b490673cf8be0ad85bdfa49c542585b8098af05adc09394b8a03f481e1",
+      "sidecar_sha256": "79fc20cf5bb38eff6aa0ea66f1f40f17d27b589727db4fa12611f10447de73c2",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 3,
+      "max_abs_recorded_torque_nm": 4.491510171707338,
+      "recorded_step_seconds": [
+        8.962186574935913,
+        10.57496428489685,
+        10.715954303741455
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "case_id": "case_52_v050_psi90",
+      "rows": 8,
+      "time_end_s": 0.08,
+      "csv_sha256": "026c63ef43f46e4bf9b4b66960ad03cd6445da47346d28aba4618407277e50e4",
+      "sidecar_sha256": "91fa98a35196fbcd61799f1a75a1c6b394752a88157b73b973d1074c4ccb7902",
+      "valid_flag": true,
+      "status_flag": "completed",
+      "selected_step": 7,
+      "max_abs_recorded_torque_nm": 113.17740198948646,
+      "recorded_step_seconds": [
+        11.939656734466553,
+        12.24161148071289,
+        7.933440446853638,
+        9.240108966827393,
+        10.304656505584717,
+        11.011208534240723,
+        10.940783977508545,
+        10.826943635940552
+      ],
+      "summary_matches_selected_csv": true,
+      "summary_minus_csv_nm": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "source_sha256": {
+    "cfd/parametric_cfd_matrix_52/cfd_52_matrix_summary.json": "f27917c9e583bb079670faa63aa9ced7e9846a2ee866340f8934faa126b15ef2",
+    "cfd/wetted_arm_rebuild/cfd_vs_matlab_report.json": "59cf5aacad7688c81343358315ec92f6c0fc4f622052a7dfa428c1ee974719e7",
+    "src/cfd/cfd_case_parameters.m": "7b049ff7238134a4fa41655d4d368bcdda41dbd025475f3e9698a0b38df7213f",
+    "src/dynamics/underwater_hydro_defaults.m": "4583b57a60ec04997f6d97ee0d6b95c10ed7fd8f14d269626d051d2f1279046b",
+    "scripts/generate_full_comparison_excel.py": "9217d6f1921f93e2b1b1c9fbdcb258bf131ce6a020d60b734694abe577f0396e",
+    "cfd/verify_and_clean_52_matrix.py": "d0faa94fd5ac08d26a16a55963df84e15bd3255df7a8e624a3fb97830966ca11",
+    "data/joint_loads_data.mat": "fc095720d958a22f9efc541422734393d8984f6665ce0a7879cea47b0f406603",
+    "data/underarm_3dof_sim_data.mat": "818e132415120bcd477c34efcba5e2d3b9c648f76db4792990dba324b58df623",
+    "data/hydro_surrogate/full/model.mat": "092dc41e6f4e7313552b15463d31494c740cfac33c9618df3ff6a31f83eb1da1",
+    "data/hydro_surrogate/full/report.mat": "6f8b22b665ae7f4a0f51019245b0f84452ed9534ef8a1ece14e7d6688817df55",
+    "fluent-20260924-014845-33960.trn": "f6645ef6a79bc79cf3e17d95c2c60b709b050a4869c37a8465c17ce231a5d272",
+    "cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/reduced_412k_system/assembled_reduced_415k_t0.cas.h5": "9d51f03597a7a6f03c28c09ed036ab4866212c6f05840de19d4ed177a7cd33c2"
+  }
+}

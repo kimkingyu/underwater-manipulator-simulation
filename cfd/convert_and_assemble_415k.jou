@@ -1,0 +1,16 @@
+/file/read-case "D:/work4/cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/reduced_412k_system/bg_212k.cas.h5"
+/mesh/modify-zones/append-mesh "D:/work4/cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/focused_lightweight_350k/j1.cas.h5"
+/mesh/modify-zones/append-mesh "D:/work4/cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/focused_lightweight_350k/j2.cas.h5"
+/mesh/modify-zones/append-mesh "D:/work4/cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/reduced_412k_system/j3_defeatured.cas.h5"
+
+/define/boundary-conditions/zone-type output pressure-outlet
+/define/boundary-conditions/zone-type overset_j1 overset
+/define/boundary-conditions/zone-type overset_j2 overset
+/define/boundary-conditions/zone-type overset_j3 overset
+
+/define/overset-interfaces/create arm_interface 1 () 8 13 18 () no
+/define/overset-interfaces/grid-priorities arm_interface 0 3 2 1
+/mesh/check
+/mesh/quality
+/file/write-case "D:/work4/cfd/wetted_arm_rebuild/articulated_mesh_v2/cad_attempt04/reduced_412k_system/assembled_reduced_415k_t0.cas.h5"
+/exit yes

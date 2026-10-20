@@ -1,0 +1,150 @@
+{
+  "status": "inspected", 
+  "bodies": [
+    {
+      "faces": 32, 
+      "volume": 0.0068556449479703612, 
+      "name": "\u5207\u9664-\u62c9\u4f383", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.00040441162791576683, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 19, 
+      "volume": 0.0017806758356665947, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 19, 
+      "volume": 0.0017806758356665483, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 19, 
+      "volume": 0.0017806758356665657, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 4, 
+      "volume": 0.0050775135480719963, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.00040452997359237105, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 4, 
+      "volume": 0.0050768949207719988, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 70, 
+      "volume": 0.0082377014234032812, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.00040448375533573024, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 40, 
+      "volume": 0.0045500866797365605, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 40, 
+      "volume": 0.004550086679736387, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.00040458178905624395, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 19, 
+      "volume": 0.0017806758356665171, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.0018262901192592708, 
+      "name": "\u51f8\u53f0-\u62c9\u4f381", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 12, 
+      "volume": 0.00012301679424043044, 
+      "name": "\u51f8\u53f0-\u62c9\u4f383", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 37, 
+      "volume": 0.00062648802954337905, 
+      "name": "\u5706\u89d23", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 207, 
+      "volume": 2.6079863360115386e-05, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 139, 
+      "volume": 0.00043640648711437235, 
+      "name": "\u5706\u89d22", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 27, 
+      "volume": 2.1063985490385895e-05, 
+      "name": "NONE", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 257, 
+      "volume": 2.6406193348274949e-05, 
+      "name": "\u5207\u9664-\u62c9\u4f381", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 13, 
+      "volume": 0.00064909691967887314, 
+      "name": "\u5706\u89d22", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 264, 
+      "name": "\u5916\u58f3", 
+      "properties_error": "Operation failed.", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }, 
+    {
+      "faces": 3, 
+      "volume": 0.0018262901192592708, 
+      "name": "\u51f8\u53f0-\u62c9\u4f381", 
+      "bbox": "SpaceClaim.Api.V242.Geometry.Box"
+    }
+  ], 
+  "source": "D:\\work4\\cfd\\1_files\\dp0\\FFF\\DM\\FFF.dsco"
+}
