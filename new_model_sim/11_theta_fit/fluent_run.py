@@ -25,7 +25,7 @@ from run_wb_fullenv import full_environment  # noqa: E402
 CID = sys.argv[1]
 NP = int(sys.argv[2]) if len(sys.argv) > 2 else 18
 D = Path(r"D:\work4\new_model_sim\11_theta_fit")
-RUN = D / "runs"
+RUN = D / os.environ.get("THETA_RUNDIR", "runs")   # e.g. runs_qb for the pose-qb cases
 RUN.mkdir(exist_ok=True)
 CASES = json.loads((D / "cases.json").read_text(encoding="utf-8"))
 O = CASES["origin_m"]

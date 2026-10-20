@@ -1,0 +1,13 @@
+{
+  "max_theta_absolute": 0,
+  "max_theta_relative": 0,
+  "max_fit_error_delta": 0,
+  "max_loo_error_delta": 0,
+  "cond_scaled_delta": 0,
+  "root_restored_byte_exact": true,
+  "multi_pose_theta_delta": 0,
+  "multi_pose_loo_delta": 0,
+  "per_case_pose_theta_delta": 0,
+  "per_case_pose_loo_delta": 0,
+  "passed": true
+}
