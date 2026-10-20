@@ -7,12 +7,12 @@ G = uvms_geometry();
 rng(1);
 for trial = 1:20
     q = randn(3, 1); zeta = randn(9, 1); a = randn(9, 1);
-    th = rand(60, 1); th(43:60) = randn(18, 1);
+    th = rand(87, 1); th(43:87) = randn(45, 1);
     Y = Y_uvms(q, zeta, a, G);
     ref = direct(q, zeta, a, th, G);
     assert(norm(Y * th - ref) < 1e-6 * max(1, norm(ref)), 'Y*theta mismatch (trial %d): %g', trial, norm(Y * th - ref));
     % Coriolis-only: a = 0, no damping, no friction
-    th2 = th; th2(7:18) = 0; th2([22:24 28:30 34:36]) = 0; th2(37:60) = 0;
+    th2 = th; th2(7:18) = 0; th2([22:24 28:30 34:36]) = 0; th2(37:87) = 0;
     Yc = Y_uvms(q, zeta, zeros(9, 1), G);
     [~, Jd] = uvms_link_kin(q, zeta(7:9), G);
     acc = zeros(9, 1);              % remove the Jd*zeta (inertial) part, keep only b(.)
@@ -46,8 +46,10 @@ for i = 1:3
     c0 = 18 + 6 * (i - 1);
     Ai = blkdiag(diag(th(c0 + (1:3))), zeros(3));
     Di = blkdiag(diag(th(c0 + (4:6))), zeros(3));
-    Vi = J{i} * zeta;
-    tau = tau + J{i}' * (Ai * (J{i} * a + Jd{i} * zeta) + b(Ai, Vi) + Di * (abs(Vi) .* Vi));
+    Ei = reshape(th(60 + 9 * (i - 1) + (1:9)), 3, 3);          % moment axis j (row) per drag axis k (column)
+    Vi = J{i} * zeta; vi = Vi(1:3);
+    wr = Ai * (J{i} * a + Jd{i} * zeta) + b(Ai, Vi) + Di * (abs(Vi) .* Vi) + [zeros(3, 1); Ei * (abs(vi) .* vi)];
+    tau = tau + J{i}' * wr;
 end
 tau(7:9) = tau(7:9) + th(37:39) .* zeta(7:9) + th(40:42) .* sign(zeta(7:9));
 v = zeta(1:3);

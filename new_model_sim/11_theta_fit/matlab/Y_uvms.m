@@ -3,10 +3,11 @@ function [Y, Ylink] = Y_uvms(q, zeta, a, G)
 %   q    : 3x1 joint angles [rad]           (q = 0 is the CAD pose used in the CFD cases)
 %   zeta : 9x1 [nu; qdot], nu = [u v w p q r] in the body frame B (CAD axes, origin = hull centroid)
 %   a    : 9x1 reference acceleration (the control document's a = Jcal^-1 (xi_dd_d - Ks s - Lambda e_dot - Jcal_dot zeta))
-%   Y    : 9 x 60 so that  tau_hat = Y * theta  (generalised force the actuators must supply)
-%   Ylink: 9 x 60, translational force of links 1..3 in their own frames (used by fit_theta only)
+%   Y    : 9 x 87 so that  tau_hat = Y * theta  (generalised force the actuators must supply)
+%   Ylink: 18 x 87, wrench of links 1..3 in their own frames, per link force (3) then moment about the
+%          link reference point (3) (used by fit_theta only)
 %
-%   theta (60 x 1), see theta_names():
+%   theta (87 x 1), see theta_names():
 %     1- 6  AUV added mass, diagonal of M_A,V   (X_udot..N_rdot, written positive)
 %     7-12  AUV linear damping, diag(D_V,l)
 %    13-18  AUV quadratic damping, diag(D_V,q)  (D_V(nu) nu = D_l nu + D_q |nu|.*nu)
@@ -17,14 +18,21 @@ function [Y, Ylink] = Y_uvms(q, zeta, a, G)
 %               C_lin(j,k) * v_k  +  C_quad(j,k) * |v_k| v_k,   k = u, v, w
 %           43-51 C_lin (j,k) column-major over k: K_u M_u N_u K_v M_v N_v K_w M_w N_w
 %           52-60 C_quad, same order. Sign is free (no lower bound): tau_hat(4:6) += C v.
-%           These act only on the AUV moment rows; joint torques are still explained by the links.
+%    61-87  link i (9 each, i = 1..3): centre-of-pressure moment of the link's quadratic drag. The link
+%           wrench about its reference point gets the moment  E_i(j,k) * |v_ik| v_ik  on axis j for
+%           drag along k (j, k = x, y, z, link frame), column-major over k. Equivalent to the drag of
+%           direction k acting at an offset from the centroid; sign free. Enters the joint torques
+%           through J_i' like every other link term.
+%           Chosen by leave-one-case-out (scan_link_terms.m), joint-torque nrms: none 0.686,
+%           CoP moment 0.635, cross-flow force 0.910, link-3 cross-flow 0.873, direct joint |u|u 0.894.
+%           The cross-flow forms fit better but over-fit the 16 steady cases at a single pose.
 %   Added-Coriolis terms use b(K,V) = [w x p; v x p + w x l], [p; l] = K V, from the dynamics document.
 if nargin < 4, G = uvms_geometry(); end
 q = q(:); zeta = zeta(:); a = a(:);
 n = G.n; N = 6 + n;
-np = 18 + 6 * n + 2 * n + 18;
+np = 18 + 6 * n + 2 * n + 18 + 9 * n;
 Y = zeros(N, np);
-Ylink = zeros(3 * n, np);
+Ylink = zeros(6 * n, np);
 
 % ---- AUV body: M_A,V a + b(M_A,V, nu) + D_V(nu) nu, padded with zeros for the joint rows ----
 v = zeta(1:3); w = zeta(4:6);
@@ -46,21 +54,29 @@ nu = zeta(1:6);
 Y(1:6, 7:12) = diag(nu);
 Y(1:6, 13:18) = diag(abs(nu) .* nu);
 
-% ---- links: sum_i J_i' [ A_i (J_i a + Jd_i zeta) + b(A_i, V_i) + D_i(V_i) V_i ] ----
+% ---- links: sum_i J_i' [ A_i (J_i a + Jd_i zeta) + b(A_i, V_i) + D_i(V_i) V_i + E_i(V_i) ] ----
 [J, Jd] = uvms_link_kin(q, zeta(7:end), G);
+cE = 18 + 6 * n + 2 * n + 18;                              % first centre-of-pressure entry (61)
 for i = 1:n
     Vi = J{i} * zeta;  vi = Vi(1:3); wi = Vi(4:6);
     Ai = J{i} * a + Jd{i} * zeta;
     c0 = 18 + 6 * (i - 1);
+    rl = 6 * (i - 1) + (1:6);
     for k = 1:3
         e = zeros(3, 1); e(k) = 1;
         p = e * vi(k);
         wr = [e * Ai(k) + cross(wi, p); cross(vi, p)];      % added mass + added Coriolis (6x1 wrench)
         Y(:, c0 + k) = J{i}' * wr;
-        Ylink(3 * (i - 1) + (1:3), c0 + k) = wr(1:3);
+        Ylink(rl, c0 + k) = wr;
         wr = [e * abs(vi(k)) * vi(k); zeros(3, 1)];         % quadratic damping
         Y(:, c0 + 3 + k) = J{i}' * wr;
-        Ylink(3 * (i - 1) + (1:3), c0 + 3 + k) = wr(1:3);
+        Ylink(rl, c0 + 3 + k) = wr;
+        for j = 1:3                                         % centre-of-pressure moment of that drag
+            col = cE + 9 * (i - 1) + 3 * (k - 1) + j;
+            wr = zeros(6, 1); wr(3 + j) = abs(vi(k)) * vi(k);
+            Y(:, col) = J{i}' * wr;
+            Ylink(rl, col) = wr;
+        end
     end
 end
 

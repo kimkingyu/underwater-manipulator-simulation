@@ -1,9 +1,12 @@
-function out = fit_theta(dataset_file, out_dir, coupling)
+function out = fit_theta(dataset_file, out_dir, coupling, link_cop, pose_dataset_files)
 %FIT_THETA  Least-squares fit of theta (Y_uvms) to the Fluent CFD dataset, plus leave-one-case-out check.
 %   dataset_file : theta_dataset.json written by ../build_dataset.py
-%   out_dir      : where theta_fit.mat / theta_fit.json / theta_table.csv / loo_errors.csv go
-%
-%   Every CFD sample is a rigid motion of the whole vehicle at q = 0, qdot = 0:
+%   out_dir      : existing directory for theta_fit.mat/json, theta_table.csv, loo_errors.csv
+%   pose_dataset_files : optional filename, string array, or cell array of pose datasets.
+%       Their cases are steady (nudot = 0), including cases with status = 'failed'.
+%       Appended ids receive '@qb'; further collisions receive '@qb2', '@qb3', ... .
+%   q is taken from each case, otherwise the dataset q, otherwise zeros(3,1).
+%   A case may give one q or one q row per sample. All samples have qdot = 0:
 %       zeta = [nu; 0], a = [nudot; 0].
 %   CFD gives the FLUID load on the vehicle, which is the negative of what Y*theta represents
 %   (Y*theta sits on the left-hand side with M zeta_dot + C zeta + D), so the targets are
@@ -24,12 +27,41 @@ G = uvms_geometry();
 S = jsondecode(fileread(dataset_file));
 C = S.cases;
 if isstruct(C), C = num2cell(C); end
+C = C(:);
+for c = 1:numel(C)
+    if ~isfield(C{c}, 'q') || isempty(C{c}.q)
+        if isfield(S, 'q') && ~isempty(S.q), C{c}.q = S.q; else, C{c}.q = zeros(3, 1); end
+    end
+end
+if nargin < 5 || isempty(pose_dataset_files), pose_dataset_files = {}; end
+if ischar(pose_dataset_files), pose_dataset_files = {pose_dataset_files}; end
+if isstring(pose_dataset_files), pose_dataset_files = cellstr(pose_dataset_files); end
+if ~iscell(pose_dataset_files), error('fit_theta:poseFiles', 'Pose datasets must be filenames.'); end
+ids_used = cellfun(@(k) k.id, C, 'UniformOutput', false);
+for d = 1:numel(pose_dataset_files)
+    P = jsondecode(fileread(pose_dataset_files{d}));
+    PC = P.cases; if isstruct(PC), PC = num2cell(PC); end
+    for c = 1:numel(PC)
+        k = PC{c};
+        if ~isfield(k, 'q') || isempty(k.q)
+            if isfield(P, 'q') && ~isempty(P.q), k.q = P.q; else, k.q = zeros(3, 1); end
+        end
+        k.nudot = zeros(size(k.nu)); % pose datasets contain steady loads, regardless of status
+        base_id = [k.id '@qb']; k.id = base_id; suffix = 2;
+        while any(strcmp(ids_used, k.id))
+            k.id = sprintf('%s%d', base_id, suffix); suffix = suffix + 1;
+        end
+        ids_used{end + 1} = k.id; %#ok<AGROW>
+        C{end + 1, 1} = k; %#ok<AGROW>
+    end
+end
 nc = numel(C);
 [names, units] = theta_names(G.n);
 np = numel(names);
 fixed = false(np, 1); fixed(37:42) = true;
 fixed(16:18) = true;   % Dq_p, Dq_q, Dq_r: no steady-rotation data (kim 2026-10-20), fixed to 0
 signed = false(np, 1); signed(43:60) = true;   % translation -> moment coupling: no sign constraint
+signed(61:np) = true;                           % link centre-of-pressure moments: no sign constraint
 % Coupling form: 'lin' (default) | 'quad' | 'both' | 'none'. Leave-one-case-out moment error
 % (data-set RMS normalised): none 1.067, lin 0.715, quad 0.775, both 0.798 -> 'lin' generalises best;
 % 'both' fits tighter but over-fits. Unused coupling entries stay 0 in theta.
@@ -41,27 +73,39 @@ switch coupling
     case 'both'
     otherwise, error('fit_theta: unknown coupling ''%s''', coupling);
 end
+if nargin < 4 || isempty(link_cop), link_cop = true; end
+if ~link_cop, fixed(61:np) = true; end
 
 % ---------- assemble ----------
+% rows per sample: 1-3 AUV force, 4-6 AUV moment, 7-9 joint torques, then per link i force (3) and
+% moment about the link reference point (3): rows 10-27
+nr = 27;
 H = cell(nc, 1); y = cell(nc, 1); ch = cell(nc, 1);
 for c = 1:nc
     k = C{c};
     nu = reshape(k.nu, [], 6); nd = reshape(k.nudot, [], 6);
-    F = reshape(k.F, [], 3); M = reshape(k.M, [], 3); T = reshape(k.tau, [], 3); L = reshape(k.flink, [], 9);
+    F = reshape(k.F, [], 3); M = reshape(k.M, [], 3); T = reshape(k.tau, [], 3); L = reshape(k.flink, [], 18);
     m = size(nu, 1);
-    Hc = zeros(18 * m, np); yc = zeros(18 * m, 1);
-    for s = 1:m
-        [Yg, Yl] = Y_uvms(zeros(3, 1), [nu(s, :)'; 0; 0; 0], [nd(s, :)'; 0; 0; 0], G);
-        r = 18 * (s - 1);
-        Hc(r + (1:9), :) = Yg;   yc(r + (1:9)) = -[F(s, :)'; M(s, :)'; T(s, :)'];
-        Hc(r + (10:18), :) = Yl; yc(r + (10:18)) = -L(s, :)';
+    q = reshape(k.q, [], G.n);
+    if size(q, 1) == 1, q = repmat(q, m, 1); end
+    if size(q, 1) ~= m
+        error('fit_theta:poseSize', 'Case %s: q must have one row or one row per sample.', k.id);
     end
-    H{c} = Hc; y{c} = yc; ch{c} = repmat((1:18)', m, 1);
+    Hc = zeros(nr * m, np); yc = zeros(nr * m, 1);
+    for s = 1:m
+        [Yg, Yl] = Y_uvms(q(s, :)', [nu(s, :)'; 0; 0; 0], [nd(s, :)'; 0; 0; 0], G);
+        r = nr * (s - 1);
+        Hc(r + (1:9), :) = Yg;   yc(r + (1:9)) = -[F(s, :)'; M(s, :)'; T(s, :)'];
+        Hc(r + (10:27), :) = Yl; yc(r + (10:27)) = -L(s, :)';
+    end
+    H{c} = Hc; y{c} = yc; ch{c} = repmat((1:nr)', m, 1);
 end
 chall = vertcat(ch{:}); yall = vertcat(y{:});
-grp = [1 1 1 2 2 2 3 3 3 4 4 4 4 4 4 4 4 4];         % F, M, tau, link force share one scale per group
-scale = zeros(18, 1);
-for g = 1:4
+% groups: 1 AUV force, 2 AUV moment, 3 joint torque, 4 link force, 5 link moment
+grp = [1 1 1 2 2 2 3 3 3 repmat([4 4 4 5 5 5], 1, 3)];
+ng = 5;
+scale = zeros(nr, 1);
+for g = 1:ng
     idx = ismember(chall, find(grp == g));
     scale(grp == g) = max(sqrt(mean(yall(idx) .^ 2)), eps);
 end
@@ -76,7 +120,7 @@ excited = false(np, 1); excited(~fixed) = cn' > 1e-9 * max(cn);
 
 % ---------- fit residual and leave-one-case-out ----------
 resid = case_errors(theta, 1:nc);
-loo = nan(nc, 8); loo_theta = nan(np, nc);
+loo = nan(nc, 2 * ng); loo_theta = nan(np, nc);
 for c = 1:nc
     keep = setdiff(1:nc, c);
     th = solve(keep);
@@ -95,24 +139,27 @@ for i = 1:np
     fprintf(fid, '%d,%s,%.6g,%s,%d,%d\n', i, names{i}, theta(i), units{i}, excited(i), fixed(i));
 end
 fclose(fid);
+gn = {'F', 'M', 'tau', 'link', 'linkM'};
+hdr = [strjoin(strcat('fit_rel_', gn), ','), ',', strjoin(strcat('fit_nrms_', gn), ','), ',', ...
+       strjoin(strcat('loo_rel_', gn), ','), ',', strjoin(strcat('loo_nrms_', gn), ',')];
 fid = fopen(fullfile(out_dir, 'loo_errors.csv'), 'w');
-fprintf(fid, ['case,fit_rel_F,fit_rel_M,fit_rel_tau,fit_rel_link,fit_nrms_F,fit_nrms_M,fit_nrms_tau,fit_nrms_link,' ...
-    'loo_rel_F,loo_rel_M,loo_rel_tau,loo_rel_link,loo_nrms_F,loo_nrms_M,loo_nrms_tau,loo_nrms_link\n']);
+fprintf(fid, 'case,%s\n', hdr);
 for c = 1:nc
     fprintf(fid, '%s%s\n', ids{c}, sprintf(',%.4f', [resid(c, :), loo(c, :)]));
 end
 fclose(fid);
 J = out; J = rmfield(J, {'loo_theta', 'singular_values_scaled'});
-J.note = ['error columns 1-4 (rel): ||pred - CFD|| / ||CFD|| of the case; columns 5-8 (nrms): RMS(pred - CFD) ' ...
+J.note = ['error columns 1-5 (rel): ||pred - CFD|| / ||CFD|| of the case; columns 6-10 (nrms): RMS(pred - CFD) ' ...
     '/ data-set RMS of the channel group. Groups: F AUV force, M AUV moment about O_b, tau joint torques, ' ...
-    'link link forces. theta(16:18), theta(37:42) fixed to 0; coupling form: ' coupling '.'];
-J.coupling = coupling;
+    'link link forces, linkM link moments about their reference points. theta(16:18), theta(37:42) fixed ' ...
+    'to 0; coupling form: ' coupling '; link centre-of-pressure terms (61:87): ' mat2str(link_cop) '.'];
+J.coupling = coupling; J.link_cop = link_cop;
 fid = fopen(fullfile(out_dir, 'theta_fit.json'), 'w'); fprintf(fid, '%s', jsonencode(J, 'PrettyPrint', true)); fclose(fid);
 
     function [Hw, yw] = stack(cs)
         Hw = []; yw = [];
         for cc = cs
-            m_ = numel(y{cc}) / 18;
+            m_ = numel(y{cc}) / nr;
             w = 1 ./ (scale(ch{cc}) * sqrt(m_));
             Hw = [Hw; H{cc} .* w]; %#ok<AGROW>
             yw = [yw; y{cc} .* w]; %#ok<AGROW>
@@ -133,16 +180,16 @@ fid = fopen(fullfile(out_dir, 'theta_fit.json'), 'w'); fprintf(fid, '%s', jsonen
     end
 
     function e = case_errors(th, cs)
-        % columns 1-4: ||pred - CFD|| / ||CFD|| of this case (relative to the case's own load)
-        % columns 5-8: RMS(pred - CFD) / RMS of that channel group over the whole data set
-        e = nan(numel(cs), 8);
+        % columns 1..ng: ||pred - CFD|| / ||CFD|| of this case (relative to the case's own load)
+        % columns ng+1..2ng: RMS(pred - CFD) / RMS of that channel group over the whole data set
+        e = nan(numel(cs), 2 * ng);
         for ii = 1:numel(cs)
             cc = cs(ii);
             p = H{cc} * th;
-            for g_ = 1:4
+            for g_ = 1:ng
                 idx_ = ismember(ch{cc}, find(grp == g_));
                 e(ii, g_) = norm(p(idx_) - y{cc}(idx_)) / max(norm(y{cc}(idx_)), eps);
-                e(ii, 4 + g_) = sqrt(mean((p(idx_) - y{cc}(idx_)) .^ 2)) / scale(find(grp == g_, 1));
+                e(ii, ng + g_) = sqrt(mean((p(idx_) - y{cc}(idx_)) .^ 2)) / scale(find(grp == g_, 1));
             end
         end
     end

@@ -7,7 +7,8 @@ pose (q = 0). For every sample this writes, in BODY axes:
   F, M   total fluid force on all 8 body walls and its moment about O_b
   tau    J1..J3 fluid torques (distal walls, about the joint centre, on the joint axis), recombined from
          the per-zone reports so that moving joints in the oscillation cases are handled exactly
-  flink  fluid force on link 1 (l1), link 2 (l2), link 3 (link3 + jaw1 + jaw2 + pin4), 3 x 3 = 9 values
+  flink  per link 1 (l1), 2 (l2), 3 (link3 + jaw1 + jaw2 + pin4): fluid force (3) and fluid moment
+         about the link reference point (3), body axes, 3 x 6 = 18 values
 Oscillation: Fluent reports are in fixed global axes about the global origin while the whole mesh moves,
 so per-zone loads are moved to the current O_b(t) and rotated into the body frame; first period dropped.
 Only cases whose CASE_result.json has status ok are taken."""
@@ -72,8 +73,13 @@ def link_centroids():
     return out
 
 
+LINK_REF = link_centroids()
+
+
 def sample(L, Ot, R):
-    """Per-zone global loads L (moments about the global origin) -> body-frame quantities about O_b(t)."""
+    """Per-zone global loads L (moments about the global origin) -> body-frame quantities about O_b(t).
+    flink: per link i the fluid force (3) then the fluid moment about the link reference point (3),
+    body axes -- 6 values per link, 18 in total."""
     f, m = {}, {}
     for z in WALLS:
         fg = [L["f%s(%s)" % (q, z)] for q in "xyz"]
@@ -87,8 +93,11 @@ def sample(L, Ot, R):
         cb = sub(c, O)                                   # joint centre relative to O_b, body frame
         tau.append(sum(dot(a, sub(m[z], cross(cb, f[z]))) for z in zs))
     flink = []
-    for zs in LINKS:
-        flink += [sum(f[z][i] for z in zs) for i in range(3)]
+    for zs, ref in zip(LINKS, LINK_REF):
+        rb = sub(ref, O)                                 # link reference point relative to O_b
+        fl = [sum(f[z][i] for z in zs) for i in range(3)]
+        ml = [sum(m[z][i] for z in zs) for i in range(3)]
+        flink += fl + sub(ml, cross(rb, fl))
     return F, M, tau, flink
 
 
@@ -121,7 +130,7 @@ for group in ("steady", "oscillation"):
             th_end = ang(hist[-1]["t"])
             tail = [h for h in hist if h["t"] >= ramp and ang(h["t"]) >= th_end / 2]
             vals = [sum(sample(h["loads"], O, axang(ax, ang(h["t"]))), []) for h in tail]
-            acc = [sum(v[i] for v in vals) / len(vals) for i in range(18)]
+            acc = [sum(v[i] for v in vals) / len(vals) for i in range(27)]
             rec["t"].append(0.0)
             rec["nu"].append([0.0, 0.0, 0.0] + list(w))
             rec["nudot"].append([0.0] * 6)
@@ -129,7 +138,7 @@ for group in ("steady", "oscillation"):
             rec["tail_rel_std"] = dict(("q%d" % i, (sum((v[i] - acc[i]) ** 2 for v in vals) / len(vals)) ** 0.5
                                         / max(abs(acc[i]), 1e-9)) for i in (3, 4, 5, 6, 7, 8))
             rec["F"].append(acc[0:3]); rec["M"].append(acc[3:6])
-            rec["tau"].append(acc[6:9]); rec["flink"].append(acc[9:18])
+            rec["tau"].append(acc[6:9]); rec["flink"].append(acc[9:27])
         elif group == "steady":
             # T_* (uniform current) and R_* (steady MRF rotation, loads at the instant frames coincide)
             nu = list(spec.get("v", [0, 0, 0])) + list(spec.get("w", [0, 0, 0]))
@@ -184,8 +193,8 @@ for group in ("steady", "oscillation"):
                 F, M, tau, fl = sample(h["loads"], Ot, R)
                 rows.append((t, F + M + tau + fl))
             n = len(rows)
-            sinp = [sum(v[i] * math.sin(om * t) for t, v in rows) * 2 / n for i in range(18)]
-            cosp = [sum(v[i] * math.cos(om * t) for t, v in rows) * 2 / n for i in range(18)]
+            sinp = [sum(v[i] * math.sin(om * t) for t, v in rows) * 2 / n for i in range(27)]
+            cosp = [sum(v[i] * math.cos(om * t) for t, v in rows) * 2 / n for i in range(27)]
             g = -1.0 / (A * om * om)          # load = -MA * a, a = -A om^2 sin -> sin amp = MA A om^2
             unit = [g * c for c in sinp]      # fluid load per unit +acceleration
             nd = [0.0] * 6
@@ -194,7 +203,7 @@ for group in ("steady", "oscillation"):
             rec["nu"].append([0.0] * 6)
             rec["nudot"].append(nd)
             rec["F"].append(unit[0:3]); rec["M"].append(unit[3:6])
-            rec["tau"].append(unit[6:9]); rec["flink"].append(unit[9:18])
+            rec["tau"].append(unit[6:9]); rec["flink"].append(unit[9:27])
             rec["osc_samples"] = n
             rec["out_of_phase_per_unit_velocity"] = [-c / (A * om) for c in cosp]
             if dof >= 3:
@@ -207,7 +216,7 @@ for group in ("steady", "oscillation"):
                 rec["nu"].append(nu)
                 rec["nudot"].append([0.0] * 6)
                 rec["F"].append(cosp[0:3]); rec["M"].append(cosp[3:6])
-                rec["tau"].append(cosp[6:9]); rec["flink"].append(cosp[9:18])
+                rec["tau"].append(cosp[6:9]); rec["flink"].append(cosp[9:27])
                 rec["velocity_sample_laminar"] = True
             rec["spec"] = spec
         cases.append(rec)

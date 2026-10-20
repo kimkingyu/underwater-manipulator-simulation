@@ -1,5 +1,5 @@
 function [names, units] = theta_names(n)
-%THETA_NAMES  Names and units of the 60 entries of theta (see Y_uvms).
+%THETA_NAMES  Names and units of the 87 entries of theta (see Y_uvms).
 if nargin < 1, n = 3; end
 dof = {'u', 'v', 'w', 'p', 'q', 'r'};
 names = {}; units = {};
@@ -36,6 +36,13 @@ end
 for k = 1:3
     for j = 1:3
         names{end + 1} = sprintf('Cq_%c%c', mom(j), tr(k)); units{end + 1} = 'N*s^2/m';
+    end
+end
+for i = 1:n
+    for k = 1:3
+        for j = 1:3
+            names{end + 1} = sprintf('L%d_E%c%c', i, ax(j), ax(k)); units{end + 1} = 'N*s^2/m';
+        end
     end
 end
 names = names(:); units = units(:);
