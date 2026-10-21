@@ -1,0 +1,48 @@
+pyfluent.settings_api WARNING: Mismatch between generated file and server object info. Dynamically created settings classes will be used.
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.quality()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.check()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.quality()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.check()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.repair_improve.improve_quality()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.quality()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.check()
+The following solver settings object method could also be used to execute the above command:
+<solver_session>.mesh.mesh_info(print_level = 0)
+{
+ "tet": {
+  "label": "tet",
+  "min_orth": 0.000100632,
+  "max_aspect": 235.858,
+  "min_orth_location_m": "-1.91470e-03, -5.85000e-03, -3.78643e-01",
+  "cells_lines": [],
+  "neg_volume": false,
+  "errors": []
+ },
+ "poly": {
+  "label": "poly",
+  "min_orth": 0.0224598,
+  "max_aspect": 576.361,
+  "min_orth_location_m": "2.67690e-01,  4.56263e-01,  4.24533e-01",
+  "cells_lines": [],
+  "neg_volume": false,
+  "errors": []
+ },
+ "poly_improved": {
+  "label": "poly_improved",
+  "min_orth": 0.0224598,
+  "max_aspect": 576.361,
+  "min_orth_location_m": "2.67690e-01,  4.56263e-01,  4.24533e-01",
+  "cells_lines": [],
+  "neg_volume": false,
+  "errors": []
+ },
+ "written": true,
+ "convert_error": null
+}

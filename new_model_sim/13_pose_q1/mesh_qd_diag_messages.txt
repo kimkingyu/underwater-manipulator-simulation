@@ -1,0 +1,9 @@
+named selections ['gap_faces', 'inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+settings all set
+named selections now ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+RESULT elements 97350 nodes 48646 skew max 0 avg 0 6s
+  [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+     id 523 GeoFace ns wall_pin4 area_mm2 0.7412 centroid_mm [-9.996, -305.151, -445.609]
+  [Error] 无法以可接受的质量对一个或多个表面进行网格划分。请尝试使用不同的单元尺寸或虚拟拓扑。
+     id 523 GeoFace ns wall_pin4 area_mm2 0.7412 centroid_mm [-9.996, -305.151, -445.609]
+  [Error] 当前网格划分选项与设置无法生成网格。

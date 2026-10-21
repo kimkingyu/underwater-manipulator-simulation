@@ -1,0 +1,50 @@
+{
+  "tag": "qc",
+  "mesh": "D:/work4/new_model_sim/13_pose_q1/auvm_water_qc_files/dp0/FFF/MECH/FFF.msh",
+  "steps": [],
+  "tet": {
+    "label": "tet",
+    "min_orth": 0.000104612,
+    "max_aspect": 393.288,
+    "min_orth_location_m": "2.11298e-03, -5.85000e-03, -3.78401e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  },
+  "convert_seconds": 37.0,
+  "poly": {
+    "label": "poly",
+    "min_orth": 0.0227288,
+    "max_aspect": 500.489,
+    "min_orth_location_m": "2.92748e-01,  4.61320e-01,  4.41172e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  },
+  "poly_improved": {
+    "label": "poly_improved",
+    "min_orth": 0.0410333,
+    "max_aspect": 290.4,
+    "min_orth_location_m": "3.16986e-01,  4.60664e-01,  4.16703e-01",
+    "cells_lines": [],
+    "neg_volume": false,
+    "errors": []
+  },
+  "mesh_info": [
+    "286457 polyhedra cells, zone  2.",
+    "1287792 polygonal interior faces, zone  1.",
+    "571 polygonal velocity-inlet faces, zone  5.",
+    "572 polygonal pressure-outlet faces, zone  6.",
+    "2220 polygonal wall faces, zone  7.",
+    "10537 polygonal wall faces, zone  8.",
+    "653 polygonal wall faces, zone  9.",
+    "10951 polygonal wall faces, zone 10.",
+    "12808 polygonal wall faces, zone 11.",
+    "15502 polygonal wall faces, zone 12.",
+    "37432 polygonal wall faces, zone 13.",
+    "26237 polygonal wall faces, zone 14.",
+    "875 polygonal wall faces, zone 15.",
+    "966265 nodes."
+  ],
+  "written": true
+}

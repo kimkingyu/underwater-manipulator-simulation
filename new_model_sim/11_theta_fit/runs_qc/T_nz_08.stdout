@@ -1,0 +1,2 @@
+pyfluent.settings_api WARNING: Mismatch between generated file and server object info. Dynamically created settings classes will be used.
+{"status": "ok", "case": "T_nz_08", "iterations": 575, "drift_last": 0.0036091049863942364, "converged": true, "solve_seconds": 395.5, "failed_required": []}

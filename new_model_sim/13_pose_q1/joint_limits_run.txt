@@ -1,0 +1,1 @@
+{"script": "D:\\work4\\new_model_sim\\13_pose_q1\\sc_joint_limits.py", "exit_code": 0, "seconds": 3044.5}

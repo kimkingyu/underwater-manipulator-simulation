@@ -1,4 +1,4 @@
-function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_suffix, tEnd)
+function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_suffix, tEnd, joint_check)
 %SIMULATE_UVMS_THETA  9-DOF UVMS simulation of experiments/simulate_uvms_dynamics.m with the
 %   hydrodynamics replaced by the CFD-fitted theta model (Y_uvms * theta).
 %   hydro_model: 'theta' (default) | 'handset' (the original hand-set M_added / D_* of that script,
@@ -13,6 +13,8 @@ function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_su
 %   tEnd: duration in seconds (default 8). Nonempty suffixes never overwrite a result.
 %   Example: simulate_uvms_theta('theta', 'gm', [0.45 -0.50 -0.40]);
 %   Regression: simulate_uvms_theta('theta', 'gm', [], '_regression_default', 0.5);
+%   joint_check: 'warn' (default) | 'error' -- desired path vs the new-CAD collision scan
+%   (uvms_joint_check, 13_pose_q1/joint_limits.json). Only J2, J3 in [-1.57, 0] are reachable.
 if nargin < 1, hydro_model = 'theta'; end
 if nargin < 2 || isempty(buoyancy), buoyancy = 'gm'; end
 if nargin < 3 || isempty(qArm_target), qArm_target = [0.45, -0.50, 0.40]; end
@@ -31,6 +33,8 @@ output_suffix = char(output_suffix);
 assert(isempty(output_suffix) || ~isempty(regexp(output_suffix, '^_[A-Za-z0-9_-]+$', 'once')), ...
     'simulate_uvms_theta:InvalidSuffix', 'Use a suffix such as _qb (letters, digits, underscores, hyphens only).');
 if nargin < 5 || isempty(tEnd), tEnd = 8.0; end
+if nargin < 6 || isempty(joint_check), joint_check = 'warn'; end
+assert(any(strcmp(joint_check, {'warn', 'error'})), 'simulate_uvms_theta:JointCheck', 'joint_check: warn | error');
 validateattributes(tEnd, {'numeric'}, {'real', 'finite', 'scalar', 'positive'});
 here = fileparts(mfilename('fullpath'));
 if strcmp(buoyancy, 'gm'), sfx = ''; else, sfx = ['_' buoyancy]; end
@@ -82,6 +86,16 @@ for k = 1:nSteps
     else
         qArm_des(k, :) = qArm_target;
     end
+end
+% Collision check of the desired arm path against the new-CAD joint scan (uvms_joint_check). The
+% default target [0.45 -0.50 0.40] runs link3 into l2 (J3 > 0 is past the stop at q = 0); kept as a
+% warning so the reference results stay reproducible, an error with joint_check = 'error'.
+free = uvms_joint_check(qArm_des(1:10:end, :));
+if ~all(free)
+    msg = sprintf(['Desired arm path leaves the collision-free range of the new CAD (%d of %d samples; ' ...
+        'J2, J3 must stay in [-1.57, 0]). Target %s.'], nnz(~free), numel(free), mat2str(qArm_target, 4));
+    if strcmp(joint_check, 'error'), error('simulate_uvms_theta:JointCollision', '%s', msg); end
+    warning('simulate_uvms_theta:JointCollision', '%s', msg);
 end
 
 q = zeros(1, 9); qd = zeros(1, 9); q(7:9) = qArm_0;

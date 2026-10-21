@@ -1,0 +1,4 @@
+named selections ['gap_faces', 'inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+settings all set
+named selections now ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+RESULT elements 645890 nodes 133572 skew max 0.99989538823724855 avg 0.28869003414177763 19s
