@@ -27,10 +27,17 @@ function [Y, Ylink] = Y_uvms(q, zeta, a, G)
 %           CoP moment 0.635, cross-flow force 0.910, link-3 cross-flow 0.873, direct joint |u|u 0.894.
 %           The cross-flow forms fit better but over-fit the 16 steady cases at a single pose.
 %   Added-Coriolis terms use b(K,V) = [w x p; v x p + w x l], [p; l] = K V, from the dynamics document.
+%    88-105 (only when G.hull_K is true, v5_hullK): full quadratic hull damping  [F; M] += K * |v| v,
+%           K 6x3 (rows F_x..M_z, columns u v w), |v| the translational speed, row-major: K(r,k) at
+%           87 + 3*(r-1) + k. Steady q = 0 loads are purely quadratic (0.8/0.3 ratio 7.0-7.1) and
+%           oblique flow is not the sum of the axial drags, so it replaces Dl_uvw (7:9), Dq_uvw (13:15)
+%           and C_lin (43:51), which fit_theta fixes to 0 in that case. scan_hull_terms.m: LOO F 0.307
+%           -> 0.277, M 0.659 -> 0.650, steady F 0.262 -> 0.206, leave-one-pose-out M 0.481 -> 0.461.
 if nargin < 4, G = uvms_geometry(); end
 q = q(:); zeta = zeta(:); a = a(:);
 n = G.n; N = 6 + n;
-np = 18 + 6 * n + 2 * n + 18 + 9 * n;
+hull_K = isfield(G, 'hull_K') && G.hull_K;
+np = 18 + 6 * n + 2 * n + 18 + 9 * n + 18 * hull_K;
 Y = zeros(N, np);
 Ylink = zeros(6 * n, np);
 
@@ -94,6 +101,16 @@ for k = 1:3
     for j = 1:3
         Y(3 + j, c0 + 3 * (k - 1) + j) = v(k);
         Y(3 + j, c0 + 9 + 3 * (k - 1) + j) = abs(v(k)) * v(k);
+    end
+end
+
+% ---- full quadratic hull damping K * |v| v (theta 88..105, G.hull_K only) ----
+if hull_K
+    c0 = 87; sp = norm(v);
+    for r = 1:6
+        for k = 1:3
+            Y(r, c0 + 3 * (r - 1) + k) = sp * v(k);
+        end
     end
 end
 end

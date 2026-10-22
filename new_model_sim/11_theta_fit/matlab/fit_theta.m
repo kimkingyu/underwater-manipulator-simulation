@@ -1,4 +1,4 @@
-function out = fit_theta(dataset_file, out_dir, coupling, link_cop, pose_dataset_files)
+function out = fit_theta(dataset_file, out_dir, coupling, link_cop, pose_dataset_files, hull_K)
 %FIT_THETA  Least-squares fit of theta (Y_uvms) to the Fluent CFD dataset, plus leave-one-case-out check.
 %   dataset_file : theta_dataset.json written by ../build_dataset.py
 %   out_dir      : existing directory for theta_fit.mat/json, theta_table.csv, loo_errors.csv
@@ -21,9 +21,13 @@ function out = fit_theta(dataset_file, out_dir, coupling, link_cop, pose_dataset
 %   laminar rotary oscillations O_p/O_q/O_r.
 %   Oscillation cases enter as one unit-acceleration sample (in-phase part); rotary ones add one
 %   peak-rate sample (velocity-phase part). See ../build_dataset.py.
-if nargin < 1, dataset_file = fullfile(fileparts(mfilename('fullpath')), '..', 'theta_dataset.json'); end
-if nargin < 2, out_dir = fileparts(mfilename('fullpath')); end
+if nargin < 1 || isempty(dataset_file), dataset_file = fullfile(fileparts(mfilename('fullpath')), '..', 'theta_dataset.json'); end
+if nargin < 2 || isempty(out_dir), out_dir = fileparts(mfilename('fullpath')); end
+%   hull_K       : true -> full quadratic hull damping K*|v|v (theta 88:105, see Y_uvms), replacing
+%                  Dl_uvw, Dq_uvw and the translation->moment coupling (fixed to 0). Default false.
+if nargin < 6 || isempty(hull_K), hull_K = false; end
 G = uvms_geometry();
+G.hull_K = logical(hull_K);
 S = jsondecode(fileread(dataset_file));
 C = S.cases;
 if isstruct(C), C = num2cell(C); end
@@ -56,7 +60,7 @@ for d = 1:numel(pose_dataset_files)
     end
 end
 nc = numel(C);
-[names, units] = theta_names(G.n);
+[names, units] = theta_names(G.n, G.hull_K);
 np = numel(names);
 fixed = false(np, 1); fixed(37:42) = true;
 fixed(16:18) = true;   % Dq_p, Dq_q, Dq_r: no steady-rotation data (kim 2026-10-20), fixed to 0
@@ -74,7 +78,8 @@ switch coupling
     otherwise, error('fit_theta: unknown coupling ''%s''', coupling);
 end
 if nargin < 4 || isempty(link_cop), link_cop = true; end
-if ~link_cop, fixed(61:np) = true; end
+if ~link_cop, fixed(61:87) = true; end
+if G.hull_K, fixed([7:9 13:15 43:60]) = true; end   % replaced by K (88:105, sign-free via signed(61:np))
 
 % ---------- assemble ----------
 % rows per sample: 1-3 AUV force, 4-6 AUV moment, 7-9 joint torques, then per link i force (3) and
@@ -153,7 +158,7 @@ J.note = ['error columns 1-5 (rel): ||pred - CFD|| / ||CFD|| of the case; column
     '/ data-set RMS of the channel group. Groups: F AUV force, M AUV moment about O_b, tau joint torques, ' ...
     'link link forces, linkM link moments about their reference points. theta(16:18), theta(37:42) fixed ' ...
     'to 0; coupling form: ' coupling '; link centre-of-pressure terms (61:87): ' mat2str(link_cop) '.'];
-J.coupling = coupling; J.link_cop = link_cop;
+J.coupling = coupling; J.link_cop = link_cop; J.hull_K = G.hull_K;
 fid = fopen(fullfile(out_dir, 'theta_fit.json'), 'w'); fprintf(fid, '%s', jsonencode(J, 'PrettyPrint', true)); fclose(fid);
 
     function [Hw, yw] = stack(cs)

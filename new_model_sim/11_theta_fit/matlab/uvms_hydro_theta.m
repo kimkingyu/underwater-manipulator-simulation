@@ -18,6 +18,7 @@ if isempty(R_bc)
     O = [0.0; 0.29386; -0.06630];
 end
 if nargin < 5, G = uvms_geometry(); end
+G.hull_K = numel(theta) == 105;               % v5_hullK theta carries the K block 88:105
 q9 = q9(:); qd9 = qd9(:); qdd9 = qdd9(:);
 r_b = R_bc' * (O - t_bc);                     % O_b expressed in base_link [m]
 
