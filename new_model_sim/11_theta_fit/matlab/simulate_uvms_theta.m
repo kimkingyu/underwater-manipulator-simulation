@@ -1,4 +1,4 @@
-function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_suffix, tEnd, joint_check)
+function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_suffix, tEnd, joint_check, arm_ff)
 %SIMULATE_UVMS_THETA  9-DOF UVMS simulation of experiments/simulate_uvms_dynamics.m with the
 %   hydrodynamics replaced by the CFD-fitted theta model (Y_uvms * theta).
 %   hydro_model: 'theta' (default) | 'handset' (the original hand-set M_added / D_* of that script,
@@ -36,6 +36,8 @@ assert(isempty(output_suffix) || ~isempty(regexp(output_suffix, '^_[A-Za-z0-9_-]
     'simulate_uvms_theta:InvalidSuffix', 'Use a suffix such as _qb (letters, digits, underscores, hyphens only).');
 if nargin < 5 || isempty(tEnd), tEnd = 8.0; end
 if nargin < 6 || isempty(joint_check), joint_check = 'warn'; end
+if nargin < 7 || isempty(arm_ff), arm_ff = 'none'; end
+assert(any(strcmp(arm_ff, {'none', 'static', 'full'})), 'simulate_uvms_theta:ArmFF', 'arm_ff: none | static | full');
 assert(any(strcmp(joint_check, {'warn', 'error'})), 'simulate_uvms_theta:JointCheck', 'joint_check: warn | error');
 validateattributes(tEnd, {'numeric'}, {'real', 'finite', 'scalar', 'positive'});
 here = fileparts(mfilename('fullpath'));
@@ -109,6 +111,27 @@ if ~all(free)
     warning('simulate_uvms_theta:JointCollision', '%s', msg);
 end
 
+% Joint feedforward (arm_ff), evaluated once along the DESIRED trajectory with the controller's model
+% (new-CAD rigid body + per-body buoyancy + CFD theta, AUV held at its set point 0), so it never sees
+% the simulated state: 'static' = gravity + buoyancy; 'full' = + rigid inertia/Coriolis + theta hydro.
+ff_arm = zeros(nSteps, 3);
+if ~strcmp(arm_ff, 'none')
+    [ff_robot, ff_info] = build_chain_cad(fullfile(root, 'model', 'robot.urdf'));
+    ff_robot.DataFormat = 'row';
+    ff_buoy.per_body = ff_info.buoy;
+    qdd_des = [zeros(1, 3); diff(qdArm_des) / dt];
+    for k = 1:nSteps
+        qk = [zeros(1, 6) qArm_des(k, :)];
+        f = gravity_buoyancy(ff_robot, qk, ff_buoy);
+        if strcmp(arm_ff, 'full')
+            qdk = [zeros(1, 6) qdArm_des(k, :)];
+            ak = [zeros(1, 6) qdd_des(k, :)];
+            f = f + ak * massMatrix(ff_robot, qk)' + velocityProduct(ff_robot, qk, qdk) ...
+                + uvms_hydro_theta(qk, qdk, ak(:), theta, G);
+        end
+        ff_arm(k, :) = f(7:9);
+    end
+end
 q = zeros(1, 9); qd = zeros(1, 9); q(7:9) = qArm_0;
 L.q = zeros(nSteps, 9); L.qd = zeros(nSteps, 9); L.tau_auv = zeros(nSteps, 6); L.tau_arm = zeros(nSteps, 3);
 L.tau_hydro = zeros(nSteps, 9); L.tcp = zeros(nSteps, 3);
@@ -117,7 +140,7 @@ acc = @(q_, qd_, tc_) accel(uvms, q_, qd_, tc_, hydro_model, theta, G, hs, K_res
 tic;
 for k = 1:nSteps
     tau_auv = [-Kp_auv_pos .* q(1:3) - Kd_auv_pos .* qd(1:3), -Kp_auv_att .* q(4:6) - Kd_auv_att .* qd(4:6)];
-    tau_arm = Kp_arm .* (qArm_des(k, :) - q(7:9)) + Kd_arm .* (qdArm_des(k, :) - qd(7:9));
+    tau_arm = Kp_arm .* (qArm_des(k, :) - q(7:9)) + Kd_arm .* (qdArm_des(k, :) - qd(7:9)) + ff_arm(k, :);
     tau_arm = max(min(tau_arm, 15), -15);
     tau_cmd = [tau_auv, tau_arm];
     L.q(k, :) = q; L.qd(k, :) = qd; L.tau_auv(k, :) = tau_auv; L.tau_arm(k, :) = tau_arm;
@@ -133,6 +156,7 @@ for k = 1:nSteps
 end
 fprintf('[%s, buoyancy %s] simulated %.1f s in %.1f s\n', hydro_model, buoyancy, tEnd, toc);
 out = L; out.time = time; out.qArm_des = qArm_des; out.hydro_model = hydro_model; out.buoyancy = buoyancy;
+if ~strcmp(arm_ff, 'none'), out.arm_ff = arm_ff; out.ff_arm = ff_arm; end
 save(output_path, '-struct', 'out');
 end
 
@@ -146,15 +170,7 @@ if isempty(buoy)
     G_term(4) = G_term(4) + K_restore * q(4);
     G_term(5) = G_term(5) + K_restore * q(5);
 elseif isfield(buoy, 'per_body')
-    % new CAD: every body's buoyancy rho_w*V_i*g straight up at its own centre of buoyancy
-    for i = 1:numel(buoy.per_body)
-        bb = buoy.per_body(i);
-        T = getTransform(robot, q, bb.body);
-        Jb = geometricJacobian(robot, q, bb.body);         % [w; v] world, of the body origin
-        r = T(1:3, 1:3) * bb.cob_body(:);
-        Jp = Jb(4:6, :) - skew(r) * Jb(1:3, :);
-        G_term = G_term - (Jp' * [0; 0; bb.mass_displaced * 9.81])';
-    end
+    G_term = gravity_buoyancy(robot, q, buoy);
 else
     % neutral buoyancy: force W (= total weight) straight up, applied at the body-fixed centre of
     % buoyancy p_B (base_link frame) = q-0 total COM + GM along base_link +z. Generalised force on the
@@ -184,6 +200,19 @@ qdd = ((M_rigid + MA) \ (tau - C_term - G_term - h).').';
 h_now = h + qdd * MA';                                            % total hydrodynamic force at this state
 end
 
+function f = gravity_buoyancy(robot, q, buoy)
+% new CAD: gravity + every body's buoyancy rho_w*V_i*g straight up at its own centre of buoyancy,
+% generalised force on the left-hand side (shared by the simulation and the joint feedforward)
+f = gravityTorque(robot, q);
+for i = 1:numel(buoy.per_body)
+    bb = buoy.per_body(i);
+    T = getTransform(robot, q, bb.body);
+    Jb = geometricJacobian(robot, q, bb.body);         % [w; v] world, of the body origin
+    r = T(1:3, 1:3) * bb.cob_body(:);
+    Jp = Jb(4:6, :) - skew(r) * Jb(1:3, :);
+    f = f - (Jp' * [0; 0; bb.mass_displaced * 9.81])';
+end
+end
 function [cg, mt] = total_com(robot)
 % total COM of all bodies at q = 0, expressed in base_link (= world at q = 0)
 q = zeros(1, numel(homeConfiguration(robot)));
