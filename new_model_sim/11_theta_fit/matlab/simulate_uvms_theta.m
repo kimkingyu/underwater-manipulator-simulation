@@ -2,7 +2,9 @@ function out = simulate_uvms_theta(hydro_model, buoyancy, qArm_target, output_su
 %SIMULATE_UVMS_THETA  9-DOF UVMS simulation of experiments/simulate_uvms_dynamics.m with the
 %   hydrodynamics replaced by the CFD-fitted theta model (Y_uvms * theta).
 %   hydro_model: 'theta' (default) | 'handset' (the original hand-set M_added / D_* of that script,
-%   for comparison). Rigid body: old model/robot.urdf (kim 2026-10-20). Everything else -- chain,
+%   for comparison). Rigid body: old model/robot.urdf (kim 2026-10-20), or with buoyancy = 'cad' the new
+%   CAD (build_chain_cad: aluminium arm, hull mass for neutral buoyancy, buoyancy of every body at its
+%   own centre of buoyancy; output files sim_uvms_<model>_cad*.mat). Everything else -- chain,
 %   PD gains, arm trajectory, metacentric restoring, integration -- is copied unchanged.
 %
 %   Hydrodynamics with theta enter as  (M_rb + M_A(q)) qdd = tau - C - G - h(q, qd), where the
@@ -42,12 +44,19 @@ output_path = fullfile(here, sprintf('sim_uvms_%s%s%s.mat', hydro_model, sfx, ou
 assert(isempty(output_suffix) || ~isfile(output_path), 'simulate_uvms_theta:OutputExists', ...
     'Refusing to overwrite %s; choose a different output_suffix.', output_path);
 root = fullfile(here, '..', '..', '..');
-uvms = build_chain(fullfile(root, 'model', 'robot.urdf'));
+if strcmp(buoyancy, 'cad')
+    % new-CAD rigid body (aluminium arm, hull mass for neutral buoyancy, kim 2026-10-22) with the
+    % buoyancy of every body at its own centre of buoyancy, so it follows the arm pose
+    [uvms, cadinfo] = build_chain_cad(fullfile(root, 'model', 'robot.urdf'));
+else
+    uvms = build_chain(fullfile(root, 'model', 'robot.urdf'));
+end
 uvms.DataFormat = 'row';
 S = load(fullfile(here, 'theta_fit.mat')); theta = S.theta;
 G = uvms_geometry();
 
 m_auv = uvms.getBody('auv_base').Mass;
+if strcmp(buoyancy, 'cad'), m_auv = 127.84851; end   % hand-set added mass stays that of the original script
 hs.M_added = zeros(9);
 hs.M_added(1:3, 1:3) = diag([0.4, 0.4, 0.5] * m_auv);
 hs.M_added(4:6, 4:6) = diag([0.3, 0.3, 0.3] * 20.0);
@@ -60,6 +69,8 @@ if strcmp(buoyancy, 'gm')
     [cg, mt] = total_com(uvms);
     buoy.W = mt * 9.81;
     buoy.p_B = cg + [0 0 0.03];
+elseif strcmp(buoyancy, 'cad')
+    buoy.per_body = cadinfo.buoy;          % body, mass_displaced, cob_body (body frame)
 else
     buoy = [];                      % 'script': original handling (unbalanced roll gravity, -17 deg list)
 end
@@ -134,6 +145,16 @@ if isempty(buoy)
     G_term(1:3) = 0;
     G_term(4) = G_term(4) + K_restore * q(4);
     G_term(5) = G_term(5) + K_restore * q(5);
+elseif isfield(buoy, 'per_body')
+    % new CAD: every body's buoyancy rho_w*V_i*g straight up at its own centre of buoyancy
+    for i = 1:numel(buoy.per_body)
+        bb = buoy.per_body(i);
+        T = getTransform(robot, q, bb.body);
+        Jb = geometricJacobian(robot, q, bb.body);         % [w; v] world, of the body origin
+        r = T(1:3, 1:3) * bb.cob_body(:);
+        Jp = Jb(4:6, :) - skew(r) * Jb(1:3, :);
+        G_term = G_term - (Jp' * [0; 0; bb.mass_displaced * 9.81])';
+    end
 else
     % neutral buoyancy: force W (= total weight) straight up, applied at the body-fixed centre of
     % buoyancy p_B (base_link frame) = q-0 total COM + GM along base_link +z. Generalised force on the
