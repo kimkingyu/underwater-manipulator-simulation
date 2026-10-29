@@ -1,0 +1,29 @@
+{
+  "status": "passed_two_representative_pairs",
+  "scope": "two representative final case/data pairs only; not a restart verification of all nine cases",
+  "all_nine_restarted": false,
+  "initialization_called": false,
+  "iterations_called": false,
+  "all_inputs_unchanged_at_end": true,
+  "cases": [
+    {
+      "case_id": "T_V_qe_XY_p055",
+      "status": "passed",
+      "channels_compared": 57,
+      "passing_channels": 57,
+      "maximum_absolute_error": 4.973799150320701e-13,
+      "final_case_sha256": "3176e997ad0b5541b36f1178160ebbadc8e1faea473a180b9ea7a6e981ffe697",
+      "final_data_sha256": "58474e4a34a182844dfe6607edc8d53373a2779f54f84b6bfb29b7c32bd9e40e"
+    },
+    {
+      "case_id": "O_V_q0_YZ",
+      "status": "passed",
+      "channels_compared": 57,
+      "passing_channels": 57,
+      "maximum_absolute_error": 1.3322676295501878e-14,
+      "final_case_sha256": "22d0ac8b45e6f5205e7050d7fb1ea57620ecc4e5b438cbcd84ff2cd0d5c5c368",
+      "final_data_sha256": "73b6d56145cd77d539098ef5522061f4dfb7ab35f6c353606855f3542d540395"
+    }
+  ],
+  "source_sha256": "ff2a3c4b925a5ae8f4b71c12bbdc1ac3586b70dce290350003527b21bc6ad426"
+}

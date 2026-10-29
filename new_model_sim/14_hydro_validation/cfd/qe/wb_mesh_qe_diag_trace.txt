@@ -1,0 +1,11 @@
+﻿1 create system + geometry
+  OK
+2 save project (new file)
+  OK
+3 refresh mesh
+  OK
+4 meshing: settings + GenerateMesh
+  OK
+7 save
+  OK
+END

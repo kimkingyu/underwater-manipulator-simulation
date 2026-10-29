@@ -1,0 +1,145 @@
+{
+  "status": "api_compatible_no_initialization_no_solve",
+  "flow_initialized": false,
+  "flow_solved": false,
+  "processor_count": 1,
+  "steps": [
+    {
+      "name": "launch_one_rank_prepare_only",
+      "ok": true,
+      "required": true,
+      "seconds": 27.844
+    },
+    {
+      "name": "transcript_start",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_q0_uninitialized_case",
+      "ok": true,
+      "required": true,
+      "seconds": 17.984
+    },
+    {
+      "name": "set_and_read_SST",
+      "ok": true,
+      "required": true,
+      "seconds": 0.016
+    },
+    {
+      "name": "set_and_read_laminar",
+      "ok": true,
+      "required": true,
+      "seconds": 0.187
+    },
+    {
+      "name": "mass_flow_report_fields_without_compute",
+      "ok": true,
+      "required": true,
+      "seconds": 0.5
+    },
+    {
+      "name": "geometry_surface_report_fields",
+      "ok": true,
+      "required": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "compute_mesh_geometric_centroid_only",
+      "ok": true,
+      "required": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "restore_SST_in_memory_only",
+      "ok": true,
+      "required": true,
+      "seconds": 0.203
+    }
+  ],
+  "failed_required": [],
+  "purpose": "actual 24.2 API checks before blind CFD; no solution/load computation",
+  "base_case": "D:\\work4\\new_model_sim\\11_theta_fit\\b5.cas.h5",
+  "base_sha256_before": "99bf2d4d81a31d7346e962ce876553d356ebd822256ad00027a44aa5883bc9ae",
+  "flow_loads_computed": false,
+  "case_written": false,
+  "allowed_compute_definitions": [
+    "runtime_geom_x",
+    "runtime_geom_y",
+    "runtime_geom_z"
+  ],
+  "probe_script_sha256": "3973d5e2408b1dc762ba9127d331a3457410a4d4c307d56c6507e9695e1686e3",
+  "verification_reason": "Final real setup and geometry API verification after sole approved qe_v3 passed and uninitialized bqe was saved; no flow or load computation",
+  "previous_failed_attempt_retained": "runtime_api_probe_attempt1.json",
+  "repair_reason": "Actual Fluent 24.2 rejected mass-flow and reported allowed enum flux-massflow; use that verified enum in both runner and probe",
+  "previous_pass_retained": "runtime_api_probe_pre_v3_pass.json",
+  "sst_settings": {
+    "model": "k-omega",
+    "k_omega_model": "sst"
+  },
+  "laminar_model": "laminar",
+  "mass_flow_definition_state": {
+    "name": "runtime_mass_xmin",
+    "report_type": "flux-massflow",
+    "boundaries": [
+      "xmin"
+    ],
+    "per_zone": false,
+    "average_over": 1,
+    "retain_instantaneous_values": false,
+    "output_parameter": false
+  },
+  "mass_flow_computed": false,
+  "geometry_report_definition_states": {
+    "runtime_geom_x": {
+      "name": "runtime_geom_x",
+      "report_type": "surface-areaavg",
+      "field": "x-coordinate",
+      "surface_names": [
+        "wall_auv"
+      ],
+      "per_surface": false,
+      "average_over": 1,
+      "retain_instantaneous_values": false,
+      "output_parameter": false
+    },
+    "runtime_geom_y": {
+      "name": "runtime_geom_y",
+      "report_type": "surface-areaavg",
+      "field": "y-coordinate",
+      "surface_names": [
+        "wall_auv"
+      ],
+      "per_surface": false,
+      "average_over": 1,
+      "retain_instantaneous_values": false,
+      "output_parameter": false
+    },
+    "runtime_geom_z": {
+      "name": "runtime_geom_z",
+      "report_type": "surface-areaavg",
+      "field": "z-coordinate",
+      "surface_names": [
+        "wall_auv"
+      ],
+      "per_surface": false,
+      "average_over": 1,
+      "retain_instantaneous_values": false,
+      "output_parameter": false
+    }
+  },
+  "hull_surface_area_centroid_m": [
+    0.0001627522499391927,
+    0.3618156875008493,
+    -0.06482302114860888
+  ],
+  "computed_definitions": [
+    "runtime_geom_x",
+    "runtime_geom_y",
+    "runtime_geom_z"
+  ],
+  "centroid_note": "geometry API test only; does not replace the original Ob",
+  "base_source_unchanged": true
+}

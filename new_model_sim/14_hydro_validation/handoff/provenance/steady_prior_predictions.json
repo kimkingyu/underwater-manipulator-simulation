@@ -1,0 +1,2790 @@
+{
+  "cases": [
+    {
+      "id": "T_V_q0_XY_p055",
+      "pose_id": "q0",
+      "q": [
+        0,
+        0,
+        0
+      ],
+      "nu": [
+        0.49193495504995377,
+        0.24596747752497689,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": true,
+      "models": {
+        "A": {
+          "hull": [
+            -74.8041416316963,
+            -20.487561279113045,
+            0.0,
+            0.3076418162735792,
+            -0.8617877110153245,
+            7.509323547898369
+          ],
+          "base0": [
+            -1.1385376915375183,
+            -0.1514054744935496,
+            0.0,
+            -0.055842471135085926,
+            0.35852045662171284,
+            -0.37131266380382244
+          ],
+          "links": [
+            [
+              -0.3867184563978867,
+              -0.03131570946121436,
+              0.0,
+              -0.00014567698969233537,
+              0.003520151510025746,
+              -0.001609836372547201
+            ],
+            [
+              -2.1786094704529146,
+              -0.07460800220242601,
+              0.0,
+              -0.0011814758336114008,
+              -0.0069497726992983,
+              -0.001617642860208681
+            ],
+            [
+              -2.0429041673944006,
+              -0.2219862307214623,
+              0.0,
+              -0.019577146836453764,
+              0.08131653241293864,
+              0.0026094462970908646
+            ]
+          ],
+          "total": [
+            -80.55091141747901,
+            -20.966876695991697,
+            0.0,
+            0.10988393121200449,
+            1.245848070788363,
+            5.250785164291604
+          ],
+          "tau_hydro": [
+            0.3643906535784414,
+            -0.0033756305909157756,
+            -0.046782508692366505
+          ],
+          "generalized": [
+            -80.55091141747901,
+            -20.966876695991697,
+            0.0,
+            0.10988393121200449,
+            1.245848070788363,
+            5.250785164291604,
+            0.3643906535784414,
+            -0.0033756305909157756,
+            -0.046782508692366505
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -73.97608073278622,
+            -22.23876838338873,
+            -4.140062471783792,
+            0.038376893298412096,
+            -0.8504770999417381,
+            7.450660978320562
+          ],
+          "base0": [
+            -0.9888100311170666,
+            -0.45340391116466106,
+            0.07212107872559416,
+            -0.17217591087757395,
+            0.31192006508122916,
+            -0.3248331188985787
+          ],
+          "links": [
+            [
+              -0.4050612753738847,
+              -0.015118643781951796,
+              -0.40072812611359704,
+              0.002301839645169738,
+              0.0005199428885027894,
+              -0.0018229266641240586
+            ],
+            [
+              -2.1725106605493227,
+              -0.0802226265475989,
+              -0.11678066054619897,
+              -0.001181475833611407,
+              -0.006487875424465411,
+              -0.0016239992359011607
+            ],
+            [
+              -1.919846505547079,
+              -0.48009668846637754,
+              -0.17075366571285783,
+              -0.03037822243520244,
+              0.07689758278710528,
+              0.0015540472667059328
+            ]
+          ],
+          "total": [
+            -79.46230920537357,
+            -23.26761025334932,
+            -4.756203845430852,
+            -0.11741583213227869,
+            1.1669776537809557,
+            5.288404891246631
+          ],
+          "tau_hydro": [
+            0.35120837175891667,
+            -0.03031095729726646,
+            -0.08434097543414365
+          ],
+          "generalized": [
+            -79.46230920537357,
+            -23.26761025334932,
+            -4.756203845430852,
+            -0.11741583213227869,
+            1.1669776537809557,
+            5.288404891246631,
+            0.35120837175891667,
+            -0.03031095729726646,
+            -0.08434097543414365
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -73.97608073278622,
+            -22.23876838338873,
+            -4.140062471783792,
+            0.038376893298412096,
+            -0.8504770999417381,
+            7.450660978320562
+          ],
+          "base0": [
+            -0.9888100311170666,
+            -0.45340391116466106,
+            0.07212107872559416,
+            -0.17217591087757395,
+            0.31192006508122916,
+            -0.3248331188985787
+          ],
+          "links": [
+            [
+              -0.4050612753738847,
+              -0.015118643781951796,
+              -0.40072812611359704,
+              0.002301839645169738,
+              0.0005199428885027894,
+              -0.0018229266641240586
+            ],
+            [
+              -2.172336026470526,
+              -0.08062294029226359,
+              -0.11721716793409678,
+              -0.01690300982902969,
+              -0.013731606238338384,
+              -0.0016255791392145516
+            ],
+            [
+              -1.8023723967377858,
+              -0.7270582323747716,
+              -0.2045465558655238,
+              0.009983522176571266,
+              0.0964123406122384,
+              0.0005175260186068625
+            ]
+          ],
+          "total": [
+            -79.34466046248548,
+            -23.514972111002383,
+            -4.790433242971416,
+            -0.16894781660197716,
+            1.1357838178636428,
+            5.339729709758965
+          ],
+          "tau_hydro": [
+            0.33876274626881137,
+            -0.07649242938365756,
+            -0.07328061096295604
+          ],
+          "generalized": [
+            -79.34466046248548,
+            -23.514972111002383,
+            -4.790433242971416,
+            -0.16894781660197716,
+            1.1357838178636428,
+            5.339729709758965,
+            0.33876274626881137,
+            -0.07649242938365756,
+            -0.07328061096295604
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              -0.21412599896024392,
+              -0.028129593765247207,
+              -0.0,
+              0.0014139977551471835,
+              0.0028418942887883146,
+              0.0031578536559784464
+            ],
+            [
+              -2.3975577442356,
+              -0.049506245841199996,
+              -0.0,
+              -0.005831503633931581,
+              -0.0014153300025924961,
+              0.005416952044454735
+            ],
+            [
+              -1.990194533305191,
+              -0.16754895333527917,
+              -0.0,
+              -0.03132299266037187,
+              0.08337011909307494,
+              0.004658486780767709
+            ]
+          ],
+          "total": [
+            -106.26199556897873,
+            -60.44403735169634,
+            0.0,
+            -0.501028975168666,
+            1.0487264763439583,
+            5.070030581284764
+          ],
+          "tau_hydro": [
+            0.3557623694682394,
+            0.01961242690494102,
+            -0.05185683338216491
+          ],
+          "generalized": [
+            -106.26199556897873,
+            -60.44403735169634,
+            0.0,
+            -0.501028975168666,
+            1.0487264763439583,
+            5.070030581284764,
+            0.3557623694682394,
+            0.01961242690494102,
+            -0.05185683338216491
+          ],
+          "hull_plus_base0": [
+            -101.66011729247771,
+            -60.19885255875461,
+            -0.0,
+            -0.37441422763543103,
+            -0.6908639546205926,
+            6.946528665266364
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_q0_XY_n055",
+      "pose_id": "q0",
+      "q": [
+        0,
+        0,
+        0
+      ],
+      "nu": [
+        -0.49193495504995377,
+        -0.24596747752497689,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": true,
+      "models": {
+        "A": {
+          "hull": [
+            74.8041416316963,
+            20.487561279113045,
+            0.0,
+            -0.3076418162735792,
+            0.8617877110153245,
+            -7.509323547898369
+          ],
+          "base0": [
+            1.1385376915375183,
+            0.1514054744935496,
+            0.0,
+            0.055842471135085926,
+            -0.35852045662171284,
+            0.37131266380382244
+          ],
+          "links": [
+            [
+              0.3867184563978867,
+              0.03131570946121436,
+              0.0,
+              0.00014567698969233537,
+              -0.003520151510025746,
+              0.001609836372547201
+            ],
+            [
+              2.1786094704529146,
+              0.07460800220242601,
+              0.0,
+              0.0011814758336114008,
+              0.0069497726992983,
+              0.001617642860208681
+            ],
+            [
+              2.0429041673944006,
+              0.2219862307214623,
+              0.0,
+              0.019577146836453764,
+              -0.08131653241293864,
+              -0.0026094462970908646
+            ]
+          ],
+          "total": [
+            80.55091141747901,
+            20.966876695991697,
+            0.0,
+            -0.10988393121200449,
+            -1.245848070788363,
+            -5.250785164291604
+          ],
+          "tau_hydro": [
+            -0.3643906535784414,
+            0.0033756305909157756,
+            0.046782508692366505
+          ],
+          "generalized": [
+            80.55091141747901,
+            20.966876695991697,
+            0.0,
+            -0.10988393121200449,
+            -1.245848070788363,
+            -5.250785164291604,
+            -0.3643906535784414,
+            0.0033756305909157756,
+            0.046782508692366505
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            75.72293154343508,
+            18.745066762090996,
+            -4.140062471783792,
+            -0.5789079421587942,
+            0.8743216135070639,
+            -7.574757259909057
+          ],
+          "base0": [
+            1.2912260312362274,
+            -0.15142808907366076,
+            0.07212107872559416,
+            -0.06079898619887644,
+            -0.4060168035183067,
+            0.41872119029557214
+          ],
+          "links": [
+            [
+              0.3892169643022835,
+              0.04680726592515427,
+              -0.40072812611359704,
+              0.0026008099680069107,
+              -0.007083295762700356,
+              0.0014664970848733546
+            ],
+            [
+              2.1768011364683324,
+              0.07164167470957972,
+              -0.11678066054619897,
+              0.0011814758336113798,
+              0.007427904223187648,
+              0.0015894629444875887
+            ],
+            [
+              2.1732169984821526,
+              -0.026644297403769973,
+              -0.17075366571285783,
+              0.009199430746171036,
+              -0.08600419497538138,
+              -0.0037542555277061546
+            ]
+          ],
+          "total": [
+            81.75339267392405,
+            18.685443316248296,
+            -4.756203845430852,
+            -0.33494063032806837,
+            -1.3339302020680592,
+            -5.211840158129182
+          ],
+          "tau_hydro": [
+            -0.37806864780380617,
+            -0.023005648788199405,
+            0.010809207373025109
+          ],
+          "generalized": [
+            81.75339267392405,
+            18.685443316248296,
+            -4.756203845430852,
+            -0.33494063032806837,
+            -1.3339302020680592,
+            -5.211840158129182,
+            -0.37806864780380617,
+            -0.023005648788199405,
+            0.010809207373025109
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            75.72293154343508,
+            18.745066762090996,
+            -4.140062471783792,
+            -0.5789079421587942,
+            0.8743216135070639,
+            -7.574757259909057
+          ],
+          "base0": [
+            1.2912260312362274,
+            -0.15142808907366076,
+            0.07212107872559416,
+            -0.06079898619887644,
+            -0.4060168035183067,
+            0.41872119029557214
+          ],
+          "links": [
+            [
+              0.3892169643022835,
+              0.04680726592515427,
+              -0.40072812611359704,
+              0.0026008099680069107,
+              -0.007083295762700356,
+              0.0014664970848733546
+            ],
+            [
+              2.177031108913588,
+              0.07123277540613926,
+              -0.11721716793409678,
+              -0.014596061784970952,
+              -0.001074387092987003,
+              0.0015877859576362771
+            ],
+            [
+              2.3008343717197737,
+              -0.2698657175892045,
+              -0.2045465558655238,
+              0.04874719352192478,
+              -0.0652707497977343,
+              -0.004846049606516883
+            ]
+          ],
+          "total": [
+            81.88124001960693,
+            18.44181299675942,
+            -4.790433242971416,
+            -0.38596375781812386,
+            -1.3689305453813925,
+            -5.15603560296573
+          ],
+          "tau_hydro": [
+            -0.3916237945916167,
+            -0.06803580906191173,
+            0.02151395816435407
+          ],
+          "generalized": [
+            81.88124001960693,
+            18.44181299675942,
+            -4.790433242971416,
+            -0.38596375781812386,
+            -1.3689305453813925,
+            -5.15603560296573,
+            -0.3916237945916167,
+            -0.06803580906191173,
+            0.02151395816435407
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              0.21412599896024392,
+              0.028129593765247207,
+              -0.0,
+              -0.0014139977551471835,
+              -0.0028418942887883146,
+              0.006167091176419504
+            ],
+            [
+              2.3975577442356,
+              0.049506245841199996,
+              -0.0,
+              0.005831503633931581,
+              0.0014153300025924961,
+              0.005583488034617653
+            ],
+            [
+              1.990194533305191,
+              0.16754895333527917,
+              -0.0,
+              0.03132299266037187,
+              -0.08337011909307494,
+              -0.0033043346218632388
+            ]
+          ],
+          "total": [
+            106.26199556897873,
+            60.44403735169634,
+            0.0,
+            0.501028975168666,
+            -1.0487264763439583,
+            -15.557692329970118
+          ],
+          "tau_hydro": [
+            -0.3774419065386142,
+            -0.01961242690494102,
+            0.05185683338216491
+          ],
+          "generalized": [
+            106.26199556897873,
+            60.44403735169634,
+            0.0,
+            0.501028975168666,
+            -1.0487264763439583,
+            -15.557692329970118,
+            -0.3774419065386142,
+            -0.01961242690494102,
+            0.05185683338216491
+          ],
+          "hull_plus_base0": [
+            101.66011729247771,
+            60.19885255875461,
+            -0.0,
+            0.37441422763543103,
+            0.6908639546205926,
+            -17.455869951022088
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_q0_YZ_p055",
+      "pose_id": "q0",
+      "q": [
+        0,
+        0,
+        0
+      ],
+      "nu": [
+        0.0,
+        0.24596747752497689,
+        0.49193495504995377,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": true,
+      "models": {
+        "A": {
+          "hull": [
+            0.0,
+            -20.487561279113045,
+            -35.61840182614618,
+            -3.3530662997584324,
+            -0.19000478302262236,
+            -0.17909559705562716
+          ],
+          "base0": [
+            0.0,
+            -0.1514054744935496,
+            -0.23108905608159316,
+            0.013160958867865731,
+            0.0026981487043463985,
+            0.0018168656939222942
+          ],
+          "links": [
+            [
+              0.0,
+              -0.03131570946121436,
+              -0.12633423093958893,
+              0.0005649146022584793,
+              0.0019673393288936938,
+              -8.743452707640306e-05
+            ],
+            [
+              0.0,
+              -0.07460800220242601,
+              -0.5184975738564881,
+              -0.0063327528883915865,
+              -0.003721380336991296,
+              -0.0006251031318168971
+            ],
+            [
+              0.0,
+              -0.2219862307214623,
+              -0.6010012297801246,
+              -0.01712847210966438,
+              0.0060013831659305565,
+              0.00014268594885379787
+            ]
+          ],
+          "total": [
+            0.0,
+            -20.966876695991697,
+            -37.09532391680398,
+            -2.9721386783510653,
+            -0.18267343919515844,
+            -0.17800540568855855
+          ],
+          "tau_hydro": [
+            0.0007279859666232118,
+            -0.06600607910860187,
+            -0.027174784055569917
+          ],
+          "generalized": [
+            0.0,
+            -20.966876695991697,
+            -37.09532391680398,
+            -2.9721386783510653,
+            -0.18267343919515844,
+            -0.17800540568855855,
+            0.0007279859666232118,
+            -0.06600607910860187,
+            -0.027174784055569917
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -0.47815057307443165,
+            -20.77400362390499,
+            -35.39297391337979,
+            -3.333448429109013,
+            -0.197081655481246,
+            -0.1449613764203388
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.4687473680910158,
+            -0.07355815670598782,
+            -0.1336120393928082,
+            -0.006890389594408996,
+            0.01229374094030281
+          ],
+          "links": [
+            [
+              0.27227165954412047,
+              0.2540812704811352,
+              -0.25833595173632645,
+              0.004853985029551343,
+              -0.0027900568076846314,
+              -0.000961300571999828
+            ],
+            [
+              -0.25154490785092243,
+              -0.13412832546948827,
+              -0.4871950497243196,
+              -0.006332752888391385,
+              -0.003822671455815922,
+              -0.0008646877686065849
+            ],
+            [
+              -0.004658419265325905,
+              -0.4136585898873648,
+              -0.4778354035269544,
+              -0.022634552667016857,
+              0.006411291704310641,
+              0.0005865954542269756
+            ]
+          ],
+          "total": [
+            -0.4283198042368522,
+            -21.536456636871723,
+            -36.68989847507338,
+            -3.093948909404226,
+            -0.22857580400734895,
+            -0.13910265847957834
+          ],
+          "tau_hydro": [
+            0.011746138956236479,
+            -0.06956325290591717,
+            -0.05968761147131055
+          ],
+          "generalized": [
+            -0.4283198042368522,
+            -21.536456636871723,
+            -36.68989847507338,
+            -3.093948909404226,
+            -0.22857580400734895,
+            -0.13910265847957834,
+            0.011746138956236479,
+            -0.06956325290591717,
+            -0.05968761147131055
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -0.47815057307443165,
+            -20.77400362390499,
+            -35.39297391337979,
+            -3.333448429109013,
+            -0.197081655481246,
+            -0.1449613764203388
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.4687473680910158,
+            -0.07355815670598782,
+            -0.1336120393928082,
+            -0.006890389594408996,
+            0.01229374094030281
+          ],
+          "links": [
+            [
+              0.27227165954412047,
+              0.2540812704811352,
+              -0.25833595173632645,
+              0.004853985029551343,
+              -0.0027900568076846314,
+              -0.000961300571999828
+            ],
+            [
+              -0.2506024388588945,
+              -0.13397704866218269,
+              -0.4867035736131938,
+              0.0002883218092626372,
+              -0.005025563909891671,
+              -0.0008640789721731997
+            ],
+            [
+              0.13833321655047104,
+              -0.5899063234083737,
+              -0.37397009684663646,
+              0.01107384851190132,
+              0.01787175312265424,
+              -0.0008885725787081537
+            ]
+          ],
+          "total": [
+            -0.2843856994290273,
+            -21.712553093585427,
+            -36.58554169228193,
+            -3.1650950374768563,
+            -0.2714654931424052,
+            -0.07656609528705266
+          ],
+          "tau_hydro": [
+            -0.003225255575668533,
+            -0.11437923654313104,
+            -0.050544558557224284
+          ],
+          "generalized": [
+            -0.2843856994290273,
+            -21.712553093585427,
+            -36.58554169228193,
+            -3.1650950374768563,
+            -0.2714654931424052,
+            -0.07656609528705266,
+            -0.003225255575668533,
+            -0.11437923654313104,
+            -0.050544558557224284
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              -0.0,
+              -0.028129593765247207,
+              -0.13591907171697884,
+              0.0025775902858157372,
+              0.010267245386707733,
+              0.0005333188773744451
+            ],
+            [
+              -0.0,
+              -0.049506245841199996,
+              -0.2811488715992157,
+              0.028632561852922747,
+              -0.030117641813481956,
+              -0.009205532336533524
+            ],
+            [
+              -0.0,
+              -0.16754895333527917,
+              -0.5658034031445823,
+              0.044482741522128985,
+              0.013027592387146717,
+              -0.00024489770349213076
+            ]
+          ],
+          "total": [
+            0.0,
+            -60.44403735169634,
+            -50.40870131594534,
+            7.58972235451881,
+            -0.17315015078497953,
+            -0.20327757479787137
+          ],
+          "tau_hydro": [
+            0.00908273056524973,
+            -0.14636865648370584,
+            0.04010302553875239
+          ],
+          "generalized": [
+            0.0,
+            -60.44403735169634,
+            -50.40870131594534,
+            7.58972235451881,
+            -0.17315015078497953,
+            -0.20327757479787137,
+            0.00908273056524973,
+            -0.14636865648370584,
+            0.04010302553875239
+          ],
+          "hull_plus_base0": [
+            -0.0,
+            -60.19885255875461,
+            -49.42582996948457,
+            7.1978458291385765,
+            -0.16708840717772744,
+            -0.19419582497179344
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_q0_YZ_n055",
+      "pose_id": "q0",
+      "q": [
+        0,
+        0,
+        0
+      ],
+      "nu": [
+        0.0,
+        -0.24596747752497689,
+        -0.49193495504995377,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": true,
+      "models": {
+        "A": {
+          "hull": [
+            0.0,
+            20.487561279113045,
+            35.61840182614618,
+            3.3530662997584324,
+            0.19000478302262236,
+            0.17909559705562716
+          ],
+          "base0": [
+            0.0,
+            0.1514054744935496,
+            0.23108905608159316,
+            -0.013160958867865731,
+            -0.0026981487043463985,
+            -0.0018168656939222942
+          ],
+          "links": [
+            [
+              0.0,
+              0.03131570946121436,
+              0.12633423093958893,
+              -0.0005649146022584793,
+              -0.0019673393288936938,
+              8.743452707640306e-05
+            ],
+            [
+              0.0,
+              0.07460800220242601,
+              0.5184975738564881,
+              0.0063327528883915865,
+              0.003721380336991296,
+              0.0006251031318168971
+            ],
+            [
+              0.0,
+              0.2219862307214623,
+              0.6010012297801246,
+              0.01712847210966438,
+              -0.0060013831659305565,
+              -0.00014268594885379787
+            ]
+          ],
+          "total": [
+            0.0,
+            20.966876695991697,
+            37.09532391680398,
+            2.9721386783510653,
+            0.18267343919515844,
+            0.17800540568855855
+          ],
+          "tau_hydro": [
+            -0.0007279859666232118,
+            0.06600607910860187,
+            0.027174784055569917
+          ],
+          "generalized": [
+            0.0,
+            20.966876695991697,
+            37.09532391680398,
+            2.9721386783510653,
+            0.18267343919515844,
+            0.17800540568855855,
+            -0.0007279859666232118,
+            0.06600607910860187,
+            0.027174784055569917
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -0.47815057307443165,
+            20.20983152157474,
+            35.675059964544914,
+            3.3611887713805837,
+            0.18402814483632923,
+            0.21289700984275406
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.16677154600001548,
+            0.3913176137515035,
+            -0.16278127176096763,
+            -0.014119974583352587,
+            0.008670031075211406
+          ],
+          "links": [
+            [
+              0.27227165954412047,
+              0.3160071801882413,
+              -0.026708273598361795,
+              0.003850120172059339,
+              -0.006397077941007174,
+              -0.0007848041884449739
+            ],
+            [
+              -0.25154490785092243,
+              0.017735975787690345,
+              0.5453912245652185,
+              0.006332752888391982,
+              0.003588445685595758,
+              0.0003962362281714376
+            ],
+            [
+              -0.004658419265325905,
+              0.03979380117524284,
+              0.6647677978830154,
+              0.012517621086284238,
+              -0.005739272399292089,
+              0.00025320835858285307
+            ]
+          ],
+          "total": [
+            -0.4283198042368522,
+            20.4165969327259,
+            37.2498283271463,
+            2.8764035775384253,
+            0.13635413310545216,
+            0.21653982252923912
+          ],
+          "tau_hydro": [
+            0.010335665375012432,
+            0.05738538094260649,
+            -0.0015851131540914904
+          ],
+          "generalized": [
+            -0.4283198042368522,
+            20.4165969327259,
+            37.2498283271463,
+            2.8764035775384253,
+            0.13635413310545216,
+            0.21653982252923912,
+            0.010335665375012432,
+            0.05738538094260649,
+            -0.0015851131540914904
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -0.47815057307443165,
+            20.20983152157474,
+            35.675059964544914,
+            3.3611887713805837,
+            0.18402814483632923,
+            0.21289700984275406
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.16677154600001548,
+            0.3913176137515035,
+            -0.16278127176096763,
+            -0.014119974583352587,
+            0.008670031075211406
+          ],
+          "links": [
+            [
+              0.27227165954412047,
+              0.3160071801882413,
+              -0.026708273598361795,
+              0.003850120172059339,
+              -0.006397077941007174,
+              -0.0007848041884449739
+            ],
+            [
+              -0.2506024388588945,
+              0.017878667036220153,
+              0.544752764426175,
+              0.003863907811173177,
+              0.002377443410461143,
+              0.0003968105832851368
+            ],
+            [
+              0.13833321655047104,
+              -0.13271380862280663,
+              0.7352801628622266,
+              0.04535811142192642,
+              0.006666115193531285,
+              -0.0011866138511578373
+            ]
+          ],
+          "total": [
+            -0.2843856994290273,
+            20.24423201417638,
+            37.31970223198646,
+            2.811959814702981,
+            0.09439752827262705,
+            0.2791114449793673
+          ],
+          "tau_hydro": [
+            -0.004670803340647767,
+            0.019956899046846152,
+            0.008100649352803399
+          ],
+          "generalized": [
+            -0.2843856994290273,
+            20.24423201417638,
+            37.31970223198646,
+            2.811959814702981,
+            0.09439752827262705,
+            0.2791114449793673,
+            -0.004670803340647767,
+            0.019956899046846152,
+            0.008100649352803399
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": true,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": false,
+            "out_of_sample_configuration": false,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              -0.0,
+              0.028129593765247207,
+              0.13591907171697884,
+              0.0005721225449312815,
+              -0.010267245386707733,
+              -0.0005333188773744451
+            ],
+            [
+              -0.0,
+              0.049506245841199996,
+              0.2811488715992157,
+              0.028308021255338156,
+              0.030117641813481956,
+              0.009205532336533524
+            ],
+            [
+              -0.0,
+              0.16754895333527917,
+              0.5658034031445823,
+              0.03045743682528294,
+              -0.013027592387146717,
+              0.00024489770349213076
+            ]
+          ],
+          "total": [
+            0.0,
+            60.44403735169634,
+            50.40870131594534,
+            16.044761382261157,
+            0.17315015078497953,
+            0.20327757479787137
+          ],
+          "tau_hydro": [
+            -0.00908273056524973,
+            0.01448789502803299,
+            0.03483715280865954
+          ],
+          "generalized": [
+            0.0,
+            60.44403735169634,
+            50.40870131594534,
+            16.044761382261157,
+            0.17315015078497953,
+            0.20327757479787137,
+            -0.00908273056524973,
+            0.01448789502803299,
+            0.03483715280865954
+          ],
+          "hull_plus_base0": [
+            -0.0,
+            60.19885255875461,
+            49.42582996948457,
+            16.301607433354977,
+            0.16708840717772744,
+            0.19419582497179344
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_qe_XY_p055",
+      "pose_id": "qe",
+      "q": [
+        0.225,
+        -0.25,
+        -0.2
+      ],
+      "nu": [
+        0.49193495504995377,
+        0.24596747752497689,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": false,
+      "models": {
+        "A": {
+          "hull": [
+            -74.8041416316963,
+            -20.487561279113045,
+            0.0,
+            0.3076418162735792,
+            -0.8617877110153245,
+            7.509323547898369
+          ],
+          "base0": [
+            -1.1385376915375183,
+            -0.1514054744935496,
+            0.0,
+            -0.055842471135085926,
+            0.35852045662171284,
+            -0.37131266380382244
+          ],
+          "links": [
+            [
+              -0.288176752838457,
+              -0.06323457247307114,
+              0.0,
+              -0.0002941597786174379,
+              0.002623163738052597,
+              -0.0013110239407874626
+            ],
+            [
+              -1.6234668723756889,
+              -0.14143170920451875,
+              0.01602110105039236,
+              -0.0020805115368727825,
+              -0.005063878397887134,
+              -0.0019246111624265753
+            ],
+            [
+              -1.5223413301850548,
+              -0.447128321820887,
+              0.0007578543840801009,
+              -0.03943569932049779,
+              0.060588284113154686,
+              0.002125592942446652
+            ]
+          ],
+          "total": [
+            -79.43531430032769,
+            -20.50725844504711,
+            -0.04105791582268465,
+            0.2862184708601818,
+            0.879527190768947,
+            5.612369936994621
+          ],
+          "tau_hydro": [
+            0.3714642657362543,
+            0.0010611546059318255,
+            -0.0942548245458382
+          ],
+          "generalized": [
+            -79.43531430032769,
+            -20.50725844504711,
+            -0.04105791582268465,
+            0.2862184708601818,
+            0.879527190768947,
+            5.612369936994621,
+            0.3714642657362543,
+            0.0010611546059318255,
+            -0.0942548245458382
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -73.97608073278622,
+            -22.23876838338873,
+            -4.140062471783792,
+            0.038376893298412096,
+            -0.8504770999417381,
+            7.450660978320562
+          ],
+          "base0": [
+            -0.9888100311170666,
+            -0.45340391116466106,
+            0.07212107872559416,
+            -0.17217591087757395,
+            0.31192006508122916,
+            -0.3248331188985787
+          ],
+          "links": [
+            [
+              -0.26250004101917945,
+              -0.10315336349922577,
+              -0.4007281261135971,
+              0.001446037849811463,
+              -0.0009639846960990137,
+              -0.0008072034558048626
+            ],
+            [
+              -1.6739402770444167,
+              -0.11707679616781248,
+              -0.1411718519605883,
+              -0.0020805115368729456,
+              -0.004438025911273645,
+              -0.0018145196856939137
+            ],
+            [
+              -1.3747649102179478,
+              -0.6483532358441493,
+              -0.1764068106813787,
+              -0.04847457816610321,
+              0.05533614417725184,
+              0.0006738572180157911
+            ]
+          ],
+          "total": [
+            -78.375668413746,
+            -22.7531330182981,
+            -4.843008447265976,
+            0.09907614428184,
+            0.7973877675282774,
+            5.644953714562416
+          ],
+          "tau_hydro": [
+            0.35374880653543767,
+            -0.025789509375625998,
+            -0.12289648890177685
+          ],
+          "generalized": [
+            -78.375668413746,
+            -22.7531330182981,
+            -4.843008447265976,
+            0.09907614428184,
+            0.7973877675282774,
+            5.644953714562416,
+            0.35374880653543767,
+            -0.025789509375625998,
+            -0.12289648890177685
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -73.97608073278622,
+            -22.23876838338873,
+            -4.140062471783792,
+            0.038376893298412096,
+            -0.8504770999417381,
+            7.450660978320562
+          ],
+          "base0": [
+            -0.9888100311170666,
+            -0.45340391116466106,
+            0.07212107872559416,
+            -0.17217591087757395,
+            0.31192006508122916,
+            -0.3248331188985787
+          ],
+          "links": [
+            [
+              -0.26250004101917945,
+              -0.10315336349922577,
+              -0.4007281261135971,
+              0.001446037849811463,
+              -0.0009639846960990137,
+              -0.0008072034558048626
+            ],
+            [
+              -1.6736168536629865,
+              -0.11758041444593022,
+              -0.1415039589381295,
+              -0.018786449187538037,
+              -0.008264748386435164,
+              -0.0018165233971251266
+            ],
+            [
+              -1.2065268852793065,
+              -0.8631283035598182,
+              -0.21141473362310512,
+              -0.015524669729200264,
+              0.08120419146706201,
+              -0.0010789403411777384
+            ]
+          ],
+          "total": [
+            -78.25891368082036,
+            -22.998529976809838,
+            -4.889153278616231,
+            0.04621384358187191,
+            0.7682082076254083,
+            5.708355748710117
+          ],
+          "tau_hydro": [
+            0.3289305230181768,
+            -0.05935730324295686,
+            -0.11526868018302333
+          ],
+          "generalized": [
+            -78.25891368082036,
+            -22.998529976809838,
+            -4.889153278616231,
+            0.04621384358187191,
+            0.7682082076254083,
+            5.708355748710117,
+            0.3289305230181768,
+            -0.05935730324295686,
+            -0.11526868018302333
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              -0.15956346033602736,
+              -0.05680097517157121,
+              -0.0,
+              0.0010561491075621215,
+              0.001768871148561628,
+              0.004858956180476738
+            ],
+            [
+              -1.786623819075336,
+              -0.09384721154472007,
+              0.008687243121684392,
+              -0.013887714702452737,
+              0.010863793355163597,
+              0.0072118288716196376
+            ],
+            [
+              -1.483062906970872,
+              -0.33747986117954476,
+              0.0007134704029764417,
+              -0.049090094580782055,
+              0.06482276596699238,
+              0.004462310038874037
+            ]
+          ],
+          "total": [
+            -105.11157710104321,
+            -59.90846413778694,
+            -0.030955378286720812,
+            -0.30204234675267616,
+            0.687594758857836,
+            5.449863434711922
+          ],
+          "tau_hydro": [
+            0.3560946606622024,
+            0.03364276933951054,
+            -0.09047006486719592
+          ],
+          "generalized": [
+            -105.11157710104321,
+            -59.90846413778694,
+            -0.030955378286720812,
+            -0.30204234675267616,
+            0.687594758857836,
+            5.449863434711922,
+            0.3560946606622024,
+            0.03364276933951054,
+            -0.09047006486719592
+          ],
+          "hull_plus_base0": [
+            -101.66011729247771,
+            -60.19885255875461,
+            -0.0,
+            -0.37441422763543103,
+            -0.6908639546205926,
+            6.946528665266364
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_qe_XY_n055",
+      "pose_id": "qe",
+      "q": [
+        0.225,
+        -0.25,
+        -0.2
+      ],
+      "nu": [
+        -0.49193495504995377,
+        -0.24596747752497689,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": false,
+      "models": {
+        "A": {
+          "hull": [
+            74.8041416316963,
+            20.487561279113045,
+            0.0,
+            -0.3076418162735792,
+            0.8617877110153245,
+            -7.509323547898369
+          ],
+          "base0": [
+            1.1385376915375183,
+            0.1514054744935496,
+            0.0,
+            0.055842471135085926,
+            -0.35852045662171284,
+            0.37131266380382244
+          ],
+          "links": [
+            [
+              0.288176752838457,
+              0.06323457247307114,
+              0.0,
+              0.0002941597786174379,
+              -0.002623163738052597,
+              0.0013110239407874626
+            ],
+            [
+              1.6234668723756889,
+              0.14143170920451875,
+              -0.01602110105039236,
+              0.0020805115368727825,
+              0.005063878397887134,
+              0.0019246111624265753
+            ],
+            [
+              1.5223413301850548,
+              0.447128321820887,
+              -0.0007578543840801009,
+              0.03943569932049779,
+              -0.060588284113154686,
+              -0.002125592942446652
+            ]
+          ],
+          "total": [
+            79.43531430032769,
+            20.50725844504711,
+            0.04105791582268465,
+            -0.2862184708601818,
+            -0.879527190768947,
+            -5.612369936994621
+          ],
+          "tau_hydro": [
+            -0.3714642657362543,
+            -0.0010611546059318255,
+            0.0942548245458382
+          ],
+          "generalized": [
+            79.43531430032769,
+            20.50725844504711,
+            0.04105791582268465,
+            -0.2862184708601818,
+            -0.879527190768947,
+            -5.612369936994621,
+            -0.3714642657362543,
+            -0.0010611546059318255,
+            0.0942548245458382
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            75.72293154343508,
+            18.745066762090996,
+            -4.140062471783792,
+            -0.5789079421587942,
+            0.8743216135070639,
+            -7.574757259909057
+          ],
+          "base0": [
+            1.2912260312362274,
+            -0.15142808907366076,
+            0.07212107872559416,
+            -0.06079898619887644,
+            -0.4060168035183067,
+            0.41872119029557214
+          ],
+          "links": [
+            [
+              0.3293841066684113,
+              0.02189117461621408,
+              -0.4007281261135971,
+              0.0020497367878846854,
+              -0.006629803302142522,
+              0.001868895160933678
+            ],
+            [
+              1.5671011835084123,
+              0.1708069034342432,
+              -0.17307782390293674,
+              0.002080511536872582,
+              0.005702806157930375,
+              0.002030770595530586
+            ],
+            [
+              1.6753241926904243,
+              0.26499803816299905,
+              -0.177847617792155,
+              0.03124896314748206,
+              -0.06604047849988459,
+              -0.0037048885998185966
+            ]
+          ],
+          "total": [
+            80.60832931442235,
+            18.28781121694543,
+            -4.758489441271154,
+            -0.4691267433606163,
+            -0.9703579847213621,
+            -5.578737698936249
+          ],
+          "tau_hydro": [
+            -0.38956715424928723,
+            -0.02710112497620789,
+            0.06880329296799827
+          ],
+          "generalized": [
+            80.60832931442235,
+            18.28781121694543,
+            -4.758489441271154,
+            -0.4691267433606163,
+            -0.9703579847213621,
+            -5.578737698936249,
+            -0.38956715424928723,
+            -0.02710112497620789,
+            0.06880329296799827
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            75.72293154343508,
+            18.745066762090996,
+            -4.140062471783792,
+            -0.5789079421587942,
+            0.8743216135070639,
+            -7.574757259909057
+          ],
+          "base0": [
+            1.2912260312362274,
+            -0.15142808907366076,
+            0.07212107872559416,
+            -0.06079898619887644,
+            -0.4060168035183067,
+            0.41872119029557214
+          ],
+          "links": [
+            [
+              0.3293841066684113,
+              0.02189117461621408,
+              -0.4007281261135971,
+              0.0020497367878846854,
+              -0.006629803302142522,
+              0.001868895160933678
+            ],
+            [
+              1.5674658442047145,
+              0.1702870098208224,
+              -0.17337501688327286,
+              -0.014452450419303795,
+              0.0009384739913975426,
+              0.0020286549148921685
+            ],
+            [
+              1.851120825080503,
+              0.05775638924638904,
+              -0.21281348312761095,
+              0.06255940396851362,
+              -0.03926547534070264,
+              -0.005454019672038125
+            ]
+          ],
+          "total": [
+            80.73416507001897,
+            18.04802719841258,
+            -4.804185951539658,
+            -0.5214388491777101,
+            -1.0027450542631569,
+            -5.51133857693794
+          ],
+          "tau_hydro": [
+            -0.4153816333170492,
+            -0.05874307888119283,
+            0.0757136859827219
+          ],
+          "generalized": [
+            80.73416507001897,
+            18.04802719841258,
+            -4.804185951539658,
+            -0.5214388491777101,
+            -1.0027450542631569,
+            -5.51133857693794,
+            -0.4153816333170492,
+            -0.05874307888119283,
+            0.0757136859827219
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              0.15956346033602736,
+              0.05680097517157121,
+              -0.0,
+              -0.0010561491075621215,
+              -0.001768871148561628,
+              0.006579685580640854
+            ],
+            [
+              1.786623819075336,
+              0.09384721154472007,
+              -0.008687243121684392,
+              0.00010688343351341126,
+              0.009755174243895902,
+              0.00586260133622377
+            ],
+            [
+              1.483062906970872,
+              0.33747986117954476,
+              -0.0007134704029764417,
+              0.04531330319443013,
+              -0.06014531237487432,
+              -0.0028032864553094146
+            ]
+          ],
+          "total": [
+            105.11157710104321,
+            59.90846413778694,
+            0.030955378286720812,
+            0.28968658443812906,
+            -0.6628832342287421,
+            -15.928106161170692
+          ],
+          "tau_hydro": [
+            -0.38719321995915923,
+            -0.016085146684219287,
+            0.08669327348084399
+          ],
+          "generalized": [
+            105.11157710104321,
+            59.90846413778694,
+            0.030955378286720812,
+            0.28968658443812906,
+            -0.6628832342287421,
+            -15.928106161170692,
+            -0.38719321995915923,
+            -0.016085146684219287,
+            0.08669327348084399
+          ],
+          "hull_plus_base0": [
+            101.66011729247771,
+            60.19885255875461,
+            -0.0,
+            0.37441422763543103,
+            0.6908639546205926,
+            -17.455869951022088
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_qe_YZ_p055",
+      "pose_id": "qe",
+      "q": [
+        0.225,
+        -0.25,
+        -0.2
+      ],
+      "nu": [
+        0.0,
+        0.24596747752497689,
+        0.49193495504995377,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": false,
+      "models": {
+        "A": {
+          "hull": [
+            0.0,
+            -20.487561279113045,
+            -35.61840182614618,
+            -3.3530662997584324,
+            -0.19000478302262236,
+            -0.17909559705562716
+          ],
+          "base0": [
+            0.0,
+            -0.1514054744935496,
+            -0.23108905608159316,
+            0.013160958867865731,
+            0.0026981487043463985,
+            0.0018168656939222942
+          ],
+          "links": [
+            [
+              0.004812367863513698,
+              -0.029756924651841578,
+              -0.12633423093958893,
+              0.0005721658854806848,
+              0.001923534168521111,
+              -6.413740742643211e-05
+            ],
+            [
+              0.027110860703185975,
+              -0.15455635870435916,
+              -0.3731425746030342,
+              -0.006154694449200297,
+              -0.0025916492044754024,
+              -0.0012825991453356417
+            ],
+            [
+              0.02542212868498807,
+              -0.2558337351286329,
+              -0.570612783261643,
+              -0.02023732357131659,
+              0.00468602296230431,
+              0.00013374544525472567
+            ]
+          ],
+          "total": [
+            -0.014197159184149563,
+            -20.95802831546148,
+            -36.95829146726117,
+            -2.999742291859881,
+            -0.19840227885339487,
+            -0.17750526299466707
+          ],
+          "tau_hydro": [
+            -0.0044637853447845105,
+            -0.0848576398445109,
+            -0.03529940557438968
+          ],
+          "generalized": [
+            -0.014197159184149563,
+            -20.95802831546148,
+            -36.95829146726117,
+            -2.999742291859881,
+            -0.19840227885339487,
+            -0.17750526299466707,
+            -0.0044637853447845105,
+            -0.0848576398445109,
+            -0.03529940557438968
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -0.47815057307443165,
+            -20.77400362390499,
+            -35.39297391337979,
+            -3.333448429109013,
+            -0.197081655481246,
+            -0.1449613764203388
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.4687473680910158,
+            -0.07355815670598782,
+            -0.1336120393928082,
+            -0.006890389594408996,
+            0.01229374094030281
+          ],
+          "links": [
+            [
+              0.24552406782316089,
+              0.264977531121559,
+              -0.23246548088339714,
+              0.004832435318898474,
+              -0.0022244188054964574,
+              -0.001194698260408015
+            ],
+            [
+              -0.2392421147611021,
+              -0.19322294899010717,
+              -0.37610001914937297,
+              -0.006154694449200181,
+              -0.002561873797649597,
+              -0.0014384865318755047
+            ],
+            [
+              -0.009275928022226628,
+              -0.4355780248888445,
+              -0.4503851145899726,
+              -0.02536005480648266,
+              0.006090645468078736,
+              0.000934184802215052
+            ]
+          ],
+          "total": [
+            -0.5012345195572202,
+            -21.477704148825612,
+            -36.58280173223886,
+            -3.101520889327223,
+            -0.21503999076357416,
+            -0.16997297244780987
+          ],
+          "tau_hydro": [
+            0.01852082108974704,
+            -0.07973709034528095,
+            -0.06588316108295286
+          ],
+          "generalized": [
+            -0.5012345195572202,
+            -21.477704148825612,
+            -36.58280173223886,
+            -3.101520889327223,
+            -0.21503999076357416,
+            -0.16997297244780987,
+            0.01852082108974704,
+            -0.07973709034528095,
+            -0.06588316108295286
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -0.47815057307443165,
+            -20.77400362390499,
+            -35.39297391337979,
+            -3.333448429109013,
+            -0.197081655481246,
+            -0.1449613764203388
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.4687473680910158,
+            -0.07355815670598782,
+            -0.1336120393928082,
+            -0.006890389594408996,
+            0.01229374094030281
+          ],
+          "links": [
+            [
+              0.24552406782316089,
+              0.264977531121559,
+              -0.23246548088339714,
+              0.004832435318898474,
+              -0.0022244188054964574,
+              -0.001194698260408015
+            ],
+            [
+              -0.23834394788698213,
+              -0.19296055787399868,
+              -0.37579041816274567,
+              0.007230197492139861,
+              0.0007463909135193292,
+              -0.0014374309773443651
+            ],
+            [
+              0.11816598395660917,
+              -0.5974765459594086,
+              -0.33197033174414925,
+              0.006518043901002787,
+              0.014599834548501217,
+              -0.00037658421542717535
+            ]
+          ],
+          "total": [
+            -0.41348558791459655,
+            -21.669554067300165,
+            -36.47226159778353,
+            -3.1830068111943417,
+            -0.24408075290137227,
+            -0.12112042281815005
+          ],
+          "tau_hydro": [
+            -0.0013334491896174697,
+            -0.12020189814484142,
+            -0.05722725208961486
+          ],
+          "generalized": [
+            -0.41348558791459655,
+            -21.669554067300165,
+            -36.47226159778353,
+            -3.1830068111943417,
+            -0.24408075290137227,
+            -0.12112042281815005,
+            -0.0013334491896174697,
+            -0.12020189814484142,
+            -0.05722725208961486
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              0.0026646079572649963,
+              -0.026729402480760993,
+              -0.13591907171697884,
+              0.0025202266146166262,
+              0.011633690567825296,
+              3.7395390839725456e-05
+            ],
+            [
+              0.029835477589429196,
+              -0.10255609136374774,
+              -0.20233192802615937,
+              0.031894812715083945,
+              -0.014443912657374922,
+              -0.006984668107147021
+            ],
+            [
+              0.024766204084049205,
+              -0.19309609613779163,
+              -0.5371946655838882,
+              0.042197152744961205,
+              0.019687822846320105,
+              -0.0002502363299644231
+            ]
+          ],
+          "total": [
+            0.001820886787317227,
+            -60.44757383855415,
+            -50.32933783723289,
+            7.581033188636002,
+            -0.1880338194637995,
+            -0.19700473735623958
+          ],
+          "tau_hydro": [
+            0.0034116375173021797,
+            -0.16752033199801508,
+            0.033869723581080674
+          ],
+          "generalized": [
+            0.001820886787317227,
+            -60.44757383855415,
+            -50.32933783723289,
+            7.581033188636002,
+            -0.1880338194637995,
+            -0.19700473735623958,
+            0.0034116375173021797,
+            -0.16752033199801508,
+            0.033869723581080674
+          ],
+          "hull_plus_base0": [
+            -0.0,
+            -60.19885255875461,
+            -49.42582996948457,
+            7.1978458291385765,
+            -0.16708840717772744,
+            -0.19419582497179344
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    },
+    {
+      "id": "T_V_qe_YZ_n055",
+      "pose_id": "qe",
+      "q": [
+        0.225,
+        -0.25,
+        -0.2
+      ],
+      "nu": [
+        0.0,
+        -0.24596747752497689,
+        -0.49193495504995377,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "role": "prospective research predictions, not CFD truth or a claim of improvement",
+      "geometry_verified": false,
+      "models": {
+        "A": {
+          "hull": [
+            0.0,
+            20.487561279113045,
+            35.61840182614618,
+            3.3530662997584324,
+            0.19000478302262236,
+            0.17909559705562716
+          ],
+          "base0": [
+            0.0,
+            0.1514054744935496,
+            0.23108905608159316,
+            -0.013160958867865731,
+            -0.0026981487043463985,
+            -0.0018168656939222942
+          ],
+          "links": [
+            [
+              -0.004812367863513698,
+              0.029756924651841578,
+              0.12633423093958893,
+              -0.0005721658854806848,
+              -0.001923534168521111,
+              6.413740742643211e-05
+            ],
+            [
+              -0.027110860703185975,
+              0.15455635870435916,
+              0.3731425746030342,
+              0.006154694449200297,
+              0.0025916492044754024,
+              0.0012825991453356417
+            ],
+            [
+              -0.02542212868498807,
+              0.2558337351286329,
+              0.570612783261643,
+              0.02023732357131659,
+              -0.00468602296230431,
+              -0.00013374544525472567
+            ]
+          ],
+          "total": [
+            0.014197159184149563,
+            20.95802831546148,
+            36.95829146726117,
+            2.999742291859881,
+            0.19840227885339487,
+            0.17750526299466707
+          ],
+          "tau_hydro": [
+            0.0044637853447845105,
+            0.0848576398445109,
+            0.03529940557438968
+          ],
+          "generalized": [
+            0.014197159184149563,
+            20.95802831546148,
+            36.95829146726117,
+            2.999742291859881,
+            0.19840227885339487,
+            0.17750526299466707,
+            0.0044637853447845105,
+            0.0848576398445109,
+            0.03529940557438968
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B": {
+          "hull": [
+            -0.47815057307443165,
+            20.20983152157474,
+            35.675059964544914,
+            3.3611887713805837,
+            0.18402814483632923,
+            0.21289700984275406
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.16677154600001548,
+            0.3913176137515035,
+            -0.16278127176096763,
+            -0.014119974583352587,
+            0.008670031075211406
+          ],
+          "links": [
+            [
+              0.23563998028591374,
+              0.3238209889532706,
+              -0.0008378027454324505,
+              0.0038136887804319716,
+              -0.0057368243839150766,
+              -0.0010657248574811715
+            ],
+            [
+              -0.2933654387817013,
+              0.1213759241416028,
+              0.3670122350167353,
+              0.006154694449200535,
+              0.0025984499685698208,
+              0.0011493193352515858
+            ],
+            [
+              -0.06021046953230359,
+              0.08701483382822711,
+              0.6344446005817148,
+              0.016050514723791126,
+              -0.0034183812303573797,
+              0.000611872687233511
+            ]
+          ],
+          "total": [
+            -0.46881026598103176,
+            20.464963588672475,
+            37.08917201231543,
+            2.9265522009401734,
+            0.1776111344940594,
+            0.1859795080210239
+          ],
+          "tau_hydro": [
+            0.027515308428622286,
+            0.08323239267428642,
+            0.008600670700790633
+          ],
+          "generalized": [
+            -0.46881026598103176,
+            20.464963588672475,
+            37.08917201231543,
+            2.9265522009401734,
+            0.1776111344940594,
+            0.1859795080210239,
+            0.027515308428622286,
+            0.08323239267428642,
+            0.008600670700790633
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "B_pair": {
+          "hull": [
+            -0.47815057307443165,
+            20.20983152157474,
+            35.675059964544914,
+            3.3611887713805837,
+            0.18402814483632923,
+            0.21289700984275406
+          ],
+          "base0": [
+            0.03376243640970735,
+            -0.16677154600001548,
+            0.3913176137515035,
+            -0.16278127176096763,
+            -0.014119974583352587,
+            0.008670031075211406
+          ],
+          "links": [
+            [
+              0.23563998028591374,
+              0.3238209889532706,
+              -0.0008378027454324505,
+              0.0038136887804319716,
+              -0.0057368243839150766,
+              -0.0010657248574811715
+            ],
+            [
+              -0.29246796054442287,
+              0.12162052959581637,
+              0.366508664750912,
+              0.012922211733390454,
+              0.0059165400244736805,
+              0.001150304321400414
+            ],
+            [
+              0.0671052185258518,
+              -0.07057328556211512,
+              0.7211928677017808,
+              0.04693931695762049,
+              0.005972790206678695,
+              -0.0006570334596242924
+            ]
+          ],
+          "total": [
+            -0.3798304286725672,
+            20.279060574330387,
+            37.16750834426841,
+            2.855636906554362,
+            0.14954560676564152,
+            0.23530673619240813
+          ],
+          "tau_hydro": [
+            0.007593100906250547,
+            0.046722229372962554,
+            0.017699644893065414
+          ],
+          "generalized": [
+            -0.3798304286725672,
+            20.279060574330387,
+            37.16750834426841,
+            2.855636906554362,
+            0.14954560676564152,
+            0.23530673619240813,
+            0.007593100906250547,
+            0.046722229372962554,
+            0.017699644893065414
+          ],
+          "scope_flags": {
+            "supported_static_kinematics": true,
+            "empirical_status": "development_data_only_not_blind",
+            "blind_validated": false,
+            "observed_training_pose": false,
+            "within_training_max_speed": true,
+            "within_training_speed": true,
+            "new_configuration": true,
+            "out_of_sample_configuration": true,
+            "configuration_range_status": "not_assessed; an unseen configuration is not necessarily outside the geometric range",
+            "outside_training_speed": false,
+            "unvalidated_reasons": [],
+            "inertial_model_included": false,
+            "independent_joint_motion_validated": false,
+            "candidate_retention_status": "eligible_for_comparison",
+            "full_fit_identified": true,
+            "complete_development_identifiability": true,
+            "existing_dynamic_branch_unchanged": true
+          }
+        },
+        "legacy87": {
+          "links": [
+            [
+              -0.0026646079572649963,
+              0.026729402480760993,
+              0.13591907171697884,
+              0.0005500948917550067,
+              -0.00885051507776212,
+              -0.0010514027932351576
+            ],
+            [
+              -0.029835477589429196,
+              0.10255609136374774,
+              0.20233192802615937,
+              0.03762949627928773,
+              0.027302938688102914,
+              0.005218456428426503
+            ],
+            [
+              -0.024766204084049205,
+              0.19309609613779163,
+              0.5371946655838882,
+              0.036193391133936256,
+              -0.003101989805249882,
+              8.806827311013722e-05
+            ]
+          ],
+          "total": [
+            -0.001820886787317227,
+            60.44757383855415,
+            50.32933783723289,
+            16.072795297573126,
+            0.18578773369794985,
+            0.19812778023916444
+          ],
+          "tau_hydro": [
+            -0.004534680400227,
+            0.019605479124745917,
+            0.04452082029781679
+          ],
+          "generalized": [
+            -0.001820886787317227,
+            60.44757383855415,
+            50.32933783723289,
+            16.072795297573126,
+            0.18578773369794985,
+            0.19812778023916444,
+            -0.004534680400227,
+            0.019605479124745917,
+            0.04452082029781679
+          ],
+          "hull_plus_base0": [
+            -0.0,
+            60.19885255875461,
+            49.42582996948457,
+            16.301607433354977,
+            0.16708840717772744,
+            0.19419582497179344
+          ],
+          "scope_flags": {
+            "pure_hull_available": false,
+            "role": "frozen deployment reference, not same-data refit",
+            "added_coriolis_retained": true,
+            "blind_validated": false
+          }
+        }
+      }
+    }
+  ],
+  "default_model_changed": false,
+  "selection_note": "No steady candidate passed the development acceptance gate. A is the matched reference; B and B_pair are labelled research challengers, not approved replacements. C excluded due development identifiability gaps."
+}

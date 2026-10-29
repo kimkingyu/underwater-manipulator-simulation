@@ -1,0 +1,2628 @@
+{
+  "schema_version": "split_hydro_static_v1",
+  "candidate": "C",
+  "load_sign": "fluid load ON bodies",
+  "body_order": [
+    "hull",
+    "base0",
+    "link1",
+    "link2",
+    "link3"
+  ],
+  "geometry": {
+    "origin_Ob_CAD_m": [
+      0.0,
+      0.29386,
+      -0.0663
+    ],
+    "joint_centres_CAD0_m": [
+      [
+        -4e-06,
+        -0.0366,
+        -0.460702
+      ],
+      [
+        0.016686,
+        -0.0666,
+        -0.511202
+      ],
+      [
+        0.014796,
+        -0.1226,
+        -0.313202
+      ]
+    ],
+    "joint_axes_CAD0": [
+      [
+        0,
+        0,
+        -1
+      ],
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    "link_reference_CAD0_m": [
+      [
+        0.008435498615527,
+        -0.044975304407476,
+        -0.487494357028531
+      ],
+      [
+        -0.001229762295081,
+        -0.094600000000002,
+        -0.412200000000006
+      ],
+      [
+        -7.0233630796e-05,
+        -0.151150773375763,
+        -0.435756276305762
+      ]
+    ]
+  },
+  "bodies": [
+    {
+      "id": "hull",
+      "reference_CAD0_m": [
+        0.0,
+        0.29386,
+        -0.0663
+      ],
+      "bbox_local_min_m": [
+        -0.4134000000000002,
+        -0.29946000000000006,
+        -0.53430000000002
+      ],
+      "bbox_local_max_m": [
+        0.41339999999999977,
+        0.44154000000000027,
+        0.5615999999999889
+      ],
+      "walls": [
+        "wall_auv"
+      ],
+      "bbox_source": "new_model_sim/11_theta_fit/body_centroids.json",
+      "bbox_source_part_ids": [
+        "0:56"
+      ],
+      "bbox_note": "Union of original q0 part AABBs, relative to this body's original reference; envelope not an exact solid-membership test."
+    },
+    {
+      "id": "base0",
+      "reference_CAD0_m": [
+        0.0,
+        0.29386,
+        -0.0663
+      ],
+      "bbox_local_min_m": [
+        -0.029999999999998,
+        -0.36046,
+        -0.39440000000000097
+      ],
+      "bbox_local_max_m": [
+        0.030000000000001997,
+        -0.26046,
+        -0.22790000000000102
+      ],
+      "walls": [
+        "wall_base0"
+      ],
+      "bbox_source": "new_model_sim/11_theta_fit/body_centroids.json",
+      "bbox_source_part_ids": [
+        "0:916"
+      ],
+      "bbox_note": "Union of original q0 part AABBs, relative to this body's original reference; envelope not an exact solid-membership test."
+    },
+    {
+      "id": "link1",
+      "reference_CAD0_m": [
+        0.008435498615527,
+        -0.044975304407476,
+        -0.487494357028531
+      ],
+      "bbox_local_min_m": [
+        -0.03844555064573359,
+        -0.04962469559252399,
+        -0.05170564297147001
+      ],
+      "bbox_local_max_m": [
+        0.021574501384474996,
+        0.038375304407475996,
+        0.026794357028530003
+      ],
+      "walls": [
+        "wall_l1"
+      ],
+      "bbox_source": "new_model_sim/11_theta_fit/body_centroids.json",
+      "bbox_source_part_ids": [
+        "0:7955"
+      ],
+      "bbox_note": "Union of original q0 part AABBs, relative to this body's original reference; envelope not an exact solid-membership test."
+    },
+    {
+      "id": "link2",
+      "reference_CAD0_m": [
+        -0.001229762295081,
+        -0.094600000000002,
+        -0.412200000000006
+      ],
+      "bbox_local_min_m": [
+        -0.023980237704918007,
+        -0.056000000000001396,
+        -0.126999999999995
+      ],
+      "bbox_local_max_m": [
+        0.032029762295082,
+        0.056000000000002,
+        0.127000000000005
+      ],
+      "walls": [
+        "wall_l2"
+      ],
+      "bbox_source": "new_model_sim/11_theta_fit/body_centroids.json",
+      "bbox_source_part_ids": [
+        "0:8167"
+      ],
+      "bbox_note": "Union of original q0 part AABBs, relative to this body's original reference; envelope not an exact solid-membership test."
+    },
+    {
+      "id": "link3",
+      "reference_CAD0_m": [
+        -7.0233630796e-05,
+        -0.151150773375763,
+        -0.435756276305762
+      ],
+      "bbox_local_min_m": [
+        -0.08382028950741494,
+        -0.03144922662424002,
+        -0.21722785424074947
+      ],
+      "bbox_local_max_m": [
+        0.07995327498420621,
+        0.05655077337575998,
+        0.15055627630576307
+      ],
+      "walls": [
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ],
+      "bbox_source": "new_model_sim/11_theta_fit/body_centroids.json",
+      "bbox_source_part_ids": [
+        "0:1425",
+        "0:2393",
+        "0:4783",
+        "0:7716"
+      ],
+      "bbox_note": "Union of original q0 part AABBs, relative to this body's original reference; envelope not an exact solid-membership test."
+    }
+  ],
+  "dictionary_policy": "fixed bbox interior triangle ports; virtual axis normals, not actual CAD faces",
+  "point_source": "bbox midpoint + 0.8*half-extent transverse triangle (angles 0,120,240 deg)",
+  "parameters": [
+    {
+      "name": "hull.one_sided_drag.axis0.port0.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        0.36744000000000027,
+        0.013649999999984452
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis0.port0.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        0.36744000000000027,
+        0.013649999999984452
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis0.port1.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        -0.07715999999999992,
+        0.39328089600293403
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis0.port1.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        -0.07715999999999992,
+        0.39328089600293403
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis0.port2.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        -0.07716000000000012,
+        -0.3659808960029651
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis0.port2.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -2.220446049250313e-16,
+        -0.07716000000000012,
+        -0.3659808960029651
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port0.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.3307199999999998,
+        0.0710400000000001,
+        0.013649999999984452
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port0.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.3307199999999998,
+        0.0710400000000001,
+        0.013649999999984452
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port1.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000015,
+        0.0710400000000001,
+        0.39328089600293403
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port1.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000015,
+        0.0710400000000001,
+        0.39328089600293403
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port2.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000037,
+        0.0710400000000001,
+        -0.3659808960029651
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis1.port2.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000037,
+        0.0710400000000001,
+        -0.3659808960029651
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port0.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.3307199999999998,
+        0.0710400000000001,
+        0.013649999999984452
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port0.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.3307199999999998,
+        0.0710400000000001,
+        0.013649999999984452
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port1.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000015,
+        0.3277299296817079,
+        0.013649999999984452
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port1.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000015,
+        0.3277299296817079,
+        0.013649999999984452
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port2.sign+1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000037,
+        -0.18564992968170763,
+        0.013649999999984452
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "hull.one_sided_drag.axis2.port2.sign-1",
+      "unit": "kg/m",
+      "block": "hull.one_sided_drag",
+      "body_index": 0,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.16536000000000037,
+        -0.18564992968170763,
+        0.013649999999984452
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port0.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.27046000000000003,
+        -0.311150000000001
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port0.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.27046000000000003,
+        -0.311150000000001
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port1.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.33046,
+        -0.2534727081079574
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port1.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.33046,
+        -0.2534727081079574
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port2.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.33046000000000003,
+        -0.36882729189204455
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis0.port2.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        1.9984014443252818e-15,
+        -0.33046000000000003,
+        -0.36882729189204455
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port0.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.024000000000002,
+        -0.31046,
+        -0.311150000000001
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port0.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.024000000000002,
+        -0.31046,
+        -0.311150000000001
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port1.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999997997,
+        -0.31046,
+        -0.2534727081079574
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port1.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999997997,
+        -0.31046,
+        -0.2534727081079574
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port2.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999998012,
+        -0.31046,
+        -0.36882729189204455
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis1.port2.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999998012,
+        -0.31046,
+        -0.36882729189204455
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port0.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.024000000000002,
+        -0.31046,
+        -0.311150000000001
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port0.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.024000000000002,
+        -0.31046,
+        -0.311150000000001
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port1.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999997997,
+        -0.27581898384862247,
+        -0.311150000000001
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port1.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999997997,
+        -0.27581898384862247,
+        -0.311150000000001
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port2.sign+1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999998012,
+        -0.34510101615137756,
+        -0.311150000000001
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "base0.one_sided_drag.axis2.port2.sign-1",
+      "unit": "kg/m",
+      "block": "base0.one_sided_drag",
+      "body_index": 1,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.011999999999998012,
+        -0.34510101615137756,
+        -0.311150000000001
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        0.029575304407476005,
+        -0.012455642971470005
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        0.029575304407476005,
+        -0.012455642971470005
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        -0.023224695592523992,
+        0.014737554707361374
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        -0.023224695592523992,
+        0.014737554707361374
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        -0.023224695592524016,
+        -0.03964884065030137
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis0.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.008435524630629295,
+        -0.023224695592524016,
+        -0.03964884065030137
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.015572496181454138,
+        -0.005624695592523998,
+        -0.012455642971470005
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.015572496181454138,
+        -0.005624695592523998,
+        -0.012455642971470005
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671008,
+        -0.005624695592523998,
+        0.014737554707361374
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671008,
+        -0.005624695592523998,
+        0.014737554707361374
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671022,
+        -0.005624695592523998,
+        -0.03964884065030137
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis1.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671022,
+        -0.005624695592523998,
+        -0.03964884065030137
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.015572496181454138,
+        -0.005624695592523998,
+        -0.012455642971470005
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.015572496181454138,
+        -0.005624695592523998,
+        -0.012455642971470005
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671008,
+        0.024859398620688245,
+        -0.012455642971470005
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671008,
+        0.024859398620688245,
+        -0.012455642971470005
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671022,
+        -0.03610878980573623,
+        -0.012455642971470005
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link1.one_sided_drag.axis2.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link1.one_sided_drag",
+      "body_index": 2,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.020439535036671022,
+        -0.03610878980573623,
+        -0.012455642971470005
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        0.04480000000000167,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        0.04480000000000167,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        -0.02240000000000037,
+        0.08798818102450398
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        -0.02240000000000037,
+        0.08798818102450398
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        -0.022400000000000402,
+        -0.08798818102449396
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis0.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.004024762295081995,
+        -0.022400000000000402,
+        -0.08798818102449396
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.026428762295082,
+        3.0184188481996443e-16,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.026428762295082,
+        3.0184188481996443e-16,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.007177237704918002,
+        3.0184188481996443e-16,
+        0.08798818102450398
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.007177237704918002,
+        3.0184188481996443e-16,
+        0.08798818102450398
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0071772377049180176,
+        3.0184188481996443e-16,
+        -0.08798818102449396
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis1.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0071772377049180176,
+        3.0184188481996443e-16,
+        -0.08798818102449396
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.026428762295082,
+        3.0184188481996443e-16,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.026428762295082,
+        3.0184188481996443e-16,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.007177237704918002,
+        0.038797938089544334,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.007177237704918002,
+        0.038797938089544334,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0071772377049180176,
+        -0.038797938089543724,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link2.one_sided_drag.axis2.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link2.one_sided_drag",
+      "body_index": 3,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0071772377049180176,
+        -0.038797938089543724,
+        4.9960036108132044e-15
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        0.04775077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        0.04775077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        -0.005049226624240014,
+        0.09406837109732771
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        -0.005049226624240014,
+        0.09406837109732771
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        -0.0050492266242400385,
+        -0.1607399490323141
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis0.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.0019335072616043641,
+        -0.0050492266242400385,
+        -0.1607399490323141
+      ],
+      "direction": [
+        -1.0,
+        -0.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.0635759185350441,
+        0.01255077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.0635759185350441,
+        0.01255077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.03468822015992858,
+        0.01255077337575998,
+        0.09406837109732771
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.03468822015992858,
+        0.01255077337575998,
+        0.09406837109732771
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.034688220159928625,
+        0.01255077337575998,
+        -0.1607399490323141
+      ],
+      "direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis1.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.034688220159928625,
+        0.01255077337575998,
+        -0.1607399490323141
+      ],
+      "direction": [
+        -0.0,
+        -1.0,
+        -0.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port0.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.0635759185350441,
+        0.01255077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port0.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        0.0635759185350441,
+        0.01255077337575998,
+        -0.0333357889674932
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port1.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.03468822015992858,
+        0.04303486758897222,
+        -0.0333357889674932
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port1.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.03468822015992858,
+        0.04303486758897222,
+        -0.0333357889674932
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port2.sign+1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.034688220159928625,
+        -0.017933320837452256,
+        -0.0333357889674932
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    },
+    {
+      "name": "link3.one_sided_drag.axis2.port2.sign-1",
+      "unit": "kg/m",
+      "block": "link3.one_sided_drag",
+      "body_index": 4,
+      "kind": "one_sided_drag",
+      "point_m": [
+        -0.034688220159928625,
+        -0.017933320837452256,
+        -0.0333357889674932
+      ],
+      "direction": [
+        -0.0,
+        -0.0,
+        -1.0
+      ],
+      "lower_bound": 0.0,
+      "upper_bound": null
+    }
+  ],
+  "theta": [
+    128.5760661433662,
+    121.55220546253253,
+    94.34078994668829,
+    87.63898188300361,
+    94.35459908698064,
+    91.24025814055966,
+    127.85335332031619,
+    109.6300777431021,
+    96.70789882946087,
+    124.72428230509507,
+    128.01766946938628,
+    89.98641662301104,
+    49.448781633894605,
+    45.491898386134935,
+    47.37917178772133,
+    70.64734685519296,
+    59.44007938888169,
+    21.615960536481218,
+    0.2042499589003958,
+    0.23330980059273612,
+    2.0455780297879853,
+    2.133880206977284,
+    2.57269457288623,
+    2.2122836972844384,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.049356712910343,
+    3.9941070127920364,
+    0.0,
+    0.7635598067099305,
+    0.4920667906289491,
+    0.0,
+    0.0,
+    0.641833031302593,
+    0.7731322538082082,
+    0.38142824335770936,
+    1.0688466480349081,
+    0.10471820340372001,
+    0.6583428439639916,
+    0.14997681500829266,
+    0.0,
+    0.6801208017432853,
+    0.0,
+    0.483624273287321,
+    0.0,
+    0.0,
+    0.06488447292883649,
+    0.7147318128872779,
+    0.2108156585939503,
+    0.0,
+    0.07837903242588455,
+    0.0,
+    2.9376572041900344,
+    2.9395140768398735,
+    3.143978665738299,
+    3.2500239194201774,
+    2.8995960661723976,
+    2.835672461140225,
+    0.37533862012100794,
+    0.7680103139076807,
+    0.23304655240982822,
+    0.2072297278901996,
+    0.4937393904214923,
+    0.3900434364407533,
+    0.0,
+    0.0,
+    1.2356732681162583,
+    1.4849697112108595,
+    0.6882208039498261,
+    0.9287584663097233,
+    1.255764849075632,
+    0.7310125547975789,
+    3.603021309251385,
+    3.411430453330526,
+    3.6385992581710997,
+    4.240003934250836,
+    0.894689117821025,
+    1.6230066993633276,
+    0.18348157455623892,
+    0.6092330159562189,
+    1.371401701246078,
+    2.568196331544105,
+    1.8745789842858063,
+    0.600255246274002,
+    0.0,
+    0.0,
+    0.45122030413547337,
+    2.000430110901195
+  ],
+  "scope": {
+    "steady_translation_only": true,
+    "qdot_zero": true,
+    "angular_velocity_zero": true,
+    "acceleration_zero": true,
+    "status": "development_data_only_not_blind",
+    "independent_joint_motion_validated": false,
+    "inertial_model_included": false,
+    "observed_q": [
+      [
+        0.0,
+        -0.8,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -0.8
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.45,
+        -0.5,
+        -0.4
+      ]
+    ],
+    "max_training_speed_m_s": 0.8
+  },
+  "fit": {
+    "regularizer": 0.0,
+    "training_ids": [
+      "q0__T_px_03",
+      "q0__T_px_08",
+      "q0__T_nx_03",
+      "q0__T_nx_08",
+      "q0__T_py_03",
+      "q0__T_py_08",
+      "q0__T_ny_03",
+      "q0__T_ny_08",
+      "q0__T_pz_03",
+      "q0__T_pz_08",
+      "q0__T_nz_03",
+      "q0__T_nz_08",
+      "q0__T_xy_06",
+      "q0__T_xz_06",
+      "q0__T_xyz_06",
+      "qb__T_nx_08",
+      "qb__T_ny_08",
+      "qb__T_nz_08",
+      "qb__T_px_03",
+      "qb__T_px_08",
+      "qb__T_py_03",
+      "qb__T_py_08",
+      "qc__T_nx_08",
+      "qc__T_ny_08",
+      "qc__T_nz_08",
+      "qc__T_px_03",
+      "qc__T_px_08",
+      "qc__T_py_03",
+      "qc__T_py_08",
+      "qc__T_pz_08",
+      "qd__T_nx_08",
+      "qd__T_ny_08",
+      "qd__T_px_03",
+      "qd__T_px_08",
+      "qd__T_py_03",
+      "qd__T_py_08",
+      "qd__T_pz_08"
+    ],
+    "component_diagnostics": [
+      {
+        "effective_rank": 18,
+        "parameter_count": 18,
+        "nullity": 0,
+        "rank_tolerance": 5.294111897661274e-07,
+        "singular_values": [
+          23.8473508903661,
+          23.802349699549715,
+          21.351821913190204,
+          21.301897230714157,
+          20.062137882849633,
+          20.06194100091992,
+          15.609215270721354,
+          15.592379165602038,
+          14.439524864509126,
+          14.420798387363583,
+          8.713693789375567,
+          8.713170159472806,
+          4.849710231069842,
+          4.84966769283832,
+          4.516345823896131,
+          4.516314215685703,
+          1.2648409681189732,
+          1.264822728155908
+        ],
+        "unidentifiable_parameters": [],
+        "full_rank": true,
+        "body": "hull",
+        "target_scale_train_only": [
+          98.95162779940715,
+          104.43322071370757,
+          40.103845680193494,
+          6.520140395817121,
+          1.933771628367077,
+          9.885886685124223
+        ],
+        "feature_scale_train_only": [
+          0.0034767519967037566,
+          0.003372375050861593,
+          0.018092318185046963,
+          0.017549161550018,
+          0.016841535746057942,
+          0.016335929344988277,
+          0.0030534076278716034,
+          0.003015253702877599,
+          0.005546427386933899,
+          0.005477121876403921,
+          0.005198284206652172,
+          0.005133328927210371,
+          0.0131685906185721,
+          0.012926323947047583,
+          0.0077773450576912005,
+          0.0076342628133569315,
+          0.007110964002150606,
+          0.006980141378072518
+        ],
+        "zero_feature_parameters": [],
+        "solver_success": true,
+        "solver_status": 3,
+        "cost": 20.131859208800194,
+        "active_lower_bounds": 0
+      },
+      {
+        "effective_rank": 18,
+        "parameter_count": 18,
+        "nullity": 0,
+        "rank_tolerance": 5.726630717930972e-07,
+        "singular_values": [
+          25.795633864553928,
+          25.772970369161772,
+          25.734657417418415,
+          25.716397986729543,
+          25.71639266052333,
+          25.711941873304156,
+          1.9660506995332274,
+          1.9659169594758281,
+          1.7820243007385375,
+          1.7820173657079275,
+          1.072149604068674,
+          1.0720961563476699,
+          0.8959249536463352,
+          0.8957226346517213,
+          0.7774918499923275,
+          0.7770344060081872,
+          0.7428456181196172,
+          0.7425464303366835
+        ],
+        "unidentifiable_parameters": [],
+        "full_rank": true,
+        "body": "base0",
+        "target_scale_train_only": [
+          1.5067768974900917,
+          1.0,
+          1.0,
+          0.480635027092982,
+          0.47218133108554694,
+          0.49356609706876575
+        ],
+        "feature_scale_train_only": [
+          0.09623959624024574,
+          0.09335034928384404,
+          0.09631903536831773,
+          0.09342740353845472,
+          0.10869873151363674,
+          0.10543544393285233,
+          0.1044294213259892,
+          0.10312452109843051,
+          0.09904722862886038,
+          0.09780958171350118,
+          0.11042829347657353,
+          0.10904843420457125,
+          0.09060902188600198,
+          0.08894205943130656,
+          0.08769508192517807,
+          0.08608172813338204,
+          0.09363348060283007,
+          0.09191087623718817
+        ],
+        "zero_feature_parameters": [],
+        "solver_success": true,
+        "solver_status": 1,
+        "cost": 25.862879758724603,
+        "active_lower_bounds": 7
+      },
+      {
+        "effective_rank": 18,
+        "parameter_count": 18,
+        "nullity": 0,
+        "rank_tolerance": 5.525403397477802e-07,
+        "singular_values": [
+          24.88920449314325,
+          24.889087648838572,
+          24.736395023254406,
+          24.73633490538169,
+          24.509731613120962,
+          24.50963783960982,
+          6.116746811517271,
+          6.091234482493451,
+          6.017429886038976,
+          6.016237577316802,
+          5.363785179450303,
+          5.362369317805489,
+          5.312579567594216,
+          5.307785988389073,
+          4.233039199213273,
+          4.2270904489828975,
+          4.214147593807653,
+          4.176897312048741
+        ],
+        "unidentifiable_parameters": [],
+        "full_rank": true,
+        "body": "link1",
+        "target_scale_train_only": [
+          1.0,
+          1.0,
+          1.0,
+          0.1,
+          0.1,
+          0.1
+        ],
+        "feature_scale_train_only": [
+          0.08975822543906706,
+          0.08693417249388356,
+          0.0886393912571082,
+          0.08585054006587288,
+          0.09405612841439048,
+          0.09109685103160027,
+          0.08588907807601497,
+          0.08479658793757276,
+          0.08686374932319715,
+          0.08575886158136203,
+          0.092230910700267,
+          0.09105775384893361,
+          0.07707753281705376,
+          0.07565951338993498,
+          0.07988335135837,
+          0.07841371241185119,
+          0.08232824820443481,
+          0.0808136297275871
+        ],
+        "zero_feature_parameters": [],
+        "solver_success": true,
+        "solver_status": 1,
+        "cost": 17.4526297355176,
+        "active_lower_bounds": 6
+      },
+      {
+        "effective_rank": 18,
+        "parameter_count": 18,
+        "nullity": 0,
+        "rank_tolerance": 5.406009415680956e-07,
+        "singular_values": [
+          24.351393764328627,
+          24.351294907177216,
+          20.629770695619687,
+          20.629129496231887,
+          18.916415903036096,
+          18.91554341248659,
+          15.1866868280078,
+          14.996293267179114,
+          14.994835604301139,
+          14.994487213690588,
+          9.133800273054241,
+          9.130092769927652,
+          7.601791184101581,
+          7.210160830122249,
+          3.9557654127492548,
+          3.938298417257602,
+          3.8964118346620764,
+          3.8915552866757523
+        ],
+        "unidentifiable_parameters": [],
+        "full_rank": true,
+        "body": "link2",
+        "target_scale_train_only": [
+          2.7081607649811783,
+          1.1548399800901683,
+          1.0,
+          0.1,
+          0.1,
+          0.1
+        ],
+        "feature_scale_train_only": [
+          0.049617919139081715,
+          0.04805679613343892,
+          0.08376976492912946,
+          0.08113412624300108,
+          0.08376976492912179,
+          0.08113412624299364,
+          0.06783829751523605,
+          0.06757386116449,
+          0.09265802296907044,
+          0.0922968383527292,
+          0.09265802296906511,
+          0.09229683835272387,
+          0.07261190650990774,
+          0.06523498856101757,
+          0.07546845744829793,
+          0.06780133169600222,
+          0.07546845744829778,
+          0.06780133169600208
+        ],
+        "zero_feature_parameters": [],
+        "solver_success": true,
+        "solver_status": 1,
+        "cost": 32.06055068981511,
+        "active_lower_bounds": 2
+      },
+      {
+        "effective_rank": 18,
+        "parameter_count": 18,
+        "nullity": 0,
+        "rank_tolerance": 5.240243892956748e-07,
+        "singular_values": [
+          23.60470222052589,
+          23.572088539245016,
+          20.9931019175187,
+          20.986339870024214,
+          19.016656199402043,
+          18.955650265883417,
+          14.38381569535099,
+          14.342927210174278,
+          13.769098243727436,
+          13.767026936432462,
+          10.051752767343542,
+          10.033004548599882,
+          8.974253681811218,
+          8.96501121956824,
+          6.0019064117327146,
+          5.96536406752599,
+          5.455748234540223,
+          5.037258834869556
+        ],
+        "unidentifiable_parameters": [],
+        "full_rank": true,
+        "body": "link3",
+        "target_scale_train_only": [
+          2.5474578157443992,
+          1.5587797451394805,
+          1.0,
+          0.10760108686686295,
+          0.11868691790909221,
+          0.1
+        ],
+        "feature_scale_train_only": [
+          0.05802811772883828,
+          0.056202385591488616,
+          0.07571372449668898,
+          0.07333155210402242,
+          0.12058853039932621,
+          0.11679446703896319,
+          0.0653291146976364,
+          0.06783307733445756,
+          0.07789407914191483,
+          0.08087963718450686,
+          0.11373696734717809,
+          0.11809632715146742,
+          0.0716623349671763,
+          0.08153480856080973,
+          0.07012617382666894,
+          0.07978702006679551,
+          0.06630029881842905,
+          0.07543407808524685
+        ],
+        "zero_feature_parameters": [],
+        "solver_success": true,
+        "solver_status": 1,
+        "cost": 32.04056278741122,
+        "active_lower_bounds": 2
+      }
+    ],
+    "full_rank": true,
+    "objective": "independent split-body six-wrench weighted residuals plus ridge; no direct joint correction",
+    "normalization_floor_note": "1 N / 0.1 N*m is a normalization floor, NOT error precision"
+  },
+  "training_dataset_sha256": "e1c94770cf2bb76ec0fb9c1f1c747bbd2bd6f248545970aab8354c60fbb9803c",
+  "training_population": "strict37",
+  "final_regularizer_selection": {
+    "status": "training_only_inner_cv",
+    "scores": {
+      "0.0": 0.2769119713367591,
+      "0.001": 0.2771450047937614,
+      "0.03": 0.29052910872159454,
+      "0.3": 0.34408349767835944
+    },
+    "folds": [
+      {
+        "held_group": "q0",
+        "train_ids": [
+          "qb__T_nx_08",
+          "qb__T_ny_08",
+          "qb__T_nz_08",
+          "qb__T_px_03",
+          "qb__T_px_08",
+          "qb__T_py_03",
+          "qb__T_py_08",
+          "qc__T_nx_08",
+          "qc__T_ny_08",
+          "qc__T_nz_08",
+          "qc__T_px_03",
+          "qc__T_px_08",
+          "qc__T_py_03",
+          "qc__T_py_08",
+          "qc__T_pz_08",
+          "qd__T_nx_08",
+          "qd__T_ny_08",
+          "qd__T_px_03",
+          "qd__T_px_08",
+          "qd__T_py_03",
+          "qd__T_py_08",
+          "qd__T_pz_08"
+        ],
+        "test_ids": [
+          "q0__T_px_03",
+          "q0__T_px_08",
+          "q0__T_nx_03",
+          "q0__T_nx_08",
+          "q0__T_py_03",
+          "q0__T_py_08",
+          "q0__T_ny_03",
+          "q0__T_ny_08",
+          "q0__T_pz_03",
+          "q0__T_pz_08",
+          "q0__T_nz_03",
+          "q0__T_nz_08",
+          "q0__T_xy_06",
+          "q0__T_xz_06",
+          "q0__T_xyz_06"
+        ],
+        "valid_bodies": [
+          "hull",
+          "base0",
+          "link1",
+          "link2",
+          "link3"
+        ]
+      },
+      {
+        "held_group": "qb",
+        "train_ids": [
+          "q0__T_px_03",
+          "q0__T_px_08",
+          "q0__T_nx_03",
+          "q0__T_nx_08",
+          "q0__T_py_03",
+          "q0__T_py_08",
+          "q0__T_ny_03",
+          "q0__T_ny_08",
+          "q0__T_pz_03",
+          "q0__T_pz_08",
+          "q0__T_nz_03",
+          "q0__T_nz_08",
+          "q0__T_xy_06",
+          "q0__T_xz_06",
+          "q0__T_xyz_06",
+          "qc__T_nx_08",
+          "qc__T_ny_08",
+          "qc__T_nz_08",
+          "qc__T_px_03",
+          "qc__T_px_08",
+          "qc__T_py_03",
+          "qc__T_py_08",
+          "qc__T_pz_08",
+          "qd__T_nx_08",
+          "qd__T_ny_08",
+          "qd__T_px_03",
+          "qd__T_px_08",
+          "qd__T_py_03",
+          "qd__T_py_08",
+          "qd__T_pz_08"
+        ],
+        "test_ids": [
+          "qb__T_nx_08",
+          "qb__T_ny_08",
+          "qb__T_nz_08",
+          "qb__T_px_03",
+          "qb__T_px_08",
+          "qb__T_py_03",
+          "qb__T_py_08"
+        ],
+        "valid_bodies": [
+          "hull",
+          "base0",
+          "link1",
+          "link2",
+          "link3"
+        ]
+      },
+      {
+        "held_group": "qc",
+        "train_ids": [
+          "q0__T_px_03",
+          "q0__T_px_08",
+          "q0__T_nx_03",
+          "q0__T_nx_08",
+          "q0__T_py_03",
+          "q0__T_py_08",
+          "q0__T_ny_03",
+          "q0__T_ny_08",
+          "q0__T_pz_03",
+          "q0__T_pz_08",
+          "q0__T_nz_03",
+          "q0__T_nz_08",
+          "q0__T_xy_06",
+          "q0__T_xz_06",
+          "q0__T_xyz_06",
+          "qb__T_nx_08",
+          "qb__T_ny_08",
+          "qb__T_nz_08",
+          "qb__T_px_03",
+          "qb__T_px_08",
+          "qb__T_py_03",
+          "qb__T_py_08",
+          "qd__T_nx_08",
+          "qd__T_ny_08",
+          "qd__T_px_03",
+          "qd__T_px_08",
+          "qd__T_py_03",
+          "qd__T_py_08",
+          "qd__T_pz_08"
+        ],
+        "test_ids": [
+          "qc__T_nx_08",
+          "qc__T_ny_08",
+          "qc__T_nz_08",
+          "qc__T_px_03",
+          "qc__T_px_08",
+          "qc__T_py_03",
+          "qc__T_py_08",
+          "qc__T_pz_08"
+        ],
+        "valid_bodies": [
+          "hull",
+          "base0",
+          "link1",
+          "link2",
+          "link3"
+        ]
+      },
+      {
+        "held_group": "qd",
+        "train_ids": [
+          "q0__T_px_03",
+          "q0__T_px_08",
+          "q0__T_nx_03",
+          "q0__T_nx_08",
+          "q0__T_py_03",
+          "q0__T_py_08",
+          "q0__T_ny_03",
+          "q0__T_ny_08",
+          "q0__T_pz_03",
+          "q0__T_pz_08",
+          "q0__T_nz_03",
+          "q0__T_nz_08",
+          "q0__T_xy_06",
+          "q0__T_xz_06",
+          "q0__T_xyz_06",
+          "qb__T_nx_08",
+          "qb__T_ny_08",
+          "qb__T_nz_08",
+          "qb__T_px_03",
+          "qb__T_px_08",
+          "qb__T_py_03",
+          "qb__T_py_08",
+          "qc__T_nx_08",
+          "qc__T_ny_08",
+          "qc__T_nz_08",
+          "qc__T_px_03",
+          "qc__T_px_08",
+          "qc__T_py_03",
+          "qc__T_py_08",
+          "qc__T_pz_08"
+        ],
+        "test_ids": [
+          "qd__T_nx_08",
+          "qd__T_ny_08",
+          "qd__T_px_03",
+          "qd__T_px_08",
+          "qd__T_py_03",
+          "qd__T_py_08",
+          "qd__T_pz_08"
+        ],
+        "valid_bodies": [
+          "hull",
+          "base0",
+          "link1",
+          "link2",
+          "link3"
+        ]
+      }
+    ],
+    "tie_break": "larger ridge",
+    "partial_rank_policy": "only individually full-rank body predictions enter inner loss; all omissions listed"
+  },
+  "freeze_status": "candidate_only_parent_controls_freeze",
+  "development_cv_complete": {
+    "pose": true,
+    "direction": false
+  },
+  "retention_status": "rejected_nonidentifiable_development_folds"
+}

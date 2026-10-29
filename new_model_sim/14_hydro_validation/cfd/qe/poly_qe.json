@@ -1,0 +1,76 @@
+{
+  "status": "failed",
+  "flow_initialized": false,
+  "flow_solved": false,
+  "processor_count": 1,
+  "steps": [
+    {
+      "name": "launch_one_rank_prepare_only",
+      "ok": true,
+      "required": true,
+      "seconds": 28.891
+    },
+    {
+      "name": "transcript_start",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_tet",
+      "ok": true,
+      "required": true,
+      "seconds": 17.406
+    },
+    {
+      "name": "tet_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "convert_polyhedra",
+      "ok": true,
+      "required": true,
+      "seconds": 45.578
+    },
+    {
+      "name": "poly_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 3.64
+    }
+  ],
+  "failed_required": [],
+  "inputs": {
+    "mesh_variant": "qe_v2",
+    "tet_mesh": "D:\\work4\\new_model_sim\\14_hydro_validation\\cfd\\qe\\auvm_water_qe_v2_files\\dp0\\FFF\\MECH\\FFF.msh",
+    "tet_sha256": "2c191e9257eeb01488203a0021ac150b248f5216b29c830b9a34cbd6be3325f8",
+    "elements": 851069,
+    "nodes": 166496,
+    "skew_max": 0.999889649277808,
+    "skew_average": 0.2711342735430026
+  },
+  "tet": {
+    "label": "tet",
+    "min_orth": 0.000110351,
+    "max_aspect": 383.462,
+    "minimum_volume_m3": 1.902445e-12,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "6.45218e-04, -5.85000e-03, -3.78384e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "poly": {
+    "label": "poly",
+    "min_orth": 0.0069499,
+    "max_aspect": 1378.41,
+    "minimum_volume_m3": 6.570289e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "3.17916e-01,  4.63444e-01,  4.15393e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "minimum_orthogonal_quality_gate": 0.01,
+  "error": "RuntimeError('poly quality below e5 preparation gate; no automatic repair')"
+}

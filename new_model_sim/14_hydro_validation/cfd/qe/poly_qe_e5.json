@@ -1,0 +1,111 @@
+{
+  "status": "failed",
+  "flow_initialized": false,
+  "flow_solved": false,
+  "processor_count": 1,
+  "steps": [
+    {
+      "name": "launch_one_rank_prepare_only",
+      "ok": true,
+      "required": true,
+      "seconds": 27.828
+    },
+    {
+      "name": "transcript_start",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_tet",
+      "ok": true,
+      "required": true,
+      "seconds": 17.375
+    },
+    {
+      "name": "tet_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 2.469
+    },
+    {
+      "name": "convert_polyhedra",
+      "ok": true,
+      "required": true,
+      "seconds": 46.735
+    },
+    {
+      "name": "poly_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 3.937
+    },
+    {
+      "name": "standard_e5_mesh_only_improve_quality_once",
+      "ok": true,
+      "required": true,
+      "seconds": 4.406
+    },
+    {
+      "name": "poly_improved_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 3.328
+    },
+    {
+      "name": "final_poly_quality_gate",
+      "ok": false,
+      "required": true,
+      "error": "RuntimeError('poly quality below unchanged e5 preparation gate after one standard improvement; stop')",
+      "seconds": 0.0
+    }
+  ],
+  "failed_required": [
+    "final_poly_quality_gate"
+  ],
+  "inputs": {
+    "mesh_variant": "qe_v2",
+    "tet_mesh": "D:\\work4\\new_model_sim\\14_hydro_validation\\cfd\\qe\\auvm_water_qe_v2_files\\dp0\\FFF\\MECH\\FFF.msh",
+    "tet_sha256": "2c191e9257eeb01488203a0021ac150b248f5216b29c830b9a34cbd6be3325f8",
+    "elements": 851069,
+    "nodes": 166496,
+    "skew_max": 0.999889649277808,
+    "skew_average": 0.2711342735430026
+  },
+  "repair_reason": "Restore the original e5 mesh-only improve_quality step omitted from first preparation; unchanged input mesh and quality gate; one explicit completion attempt",
+  "previous_attempt_retained": "poly_qe.json",
+  "workflow_reference": "12_coarse_mesh/fluent_poly.py: convert followed by exactly one mesh-only improve_quality call",
+  "maximum_quality_improvement_calls": 1,
+  "tet": {
+    "label": "tet",
+    "min_orth": 0.000110351,
+    "max_aspect": 383.462,
+    "minimum_volume_m3": 1.902445e-12,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "6.45218e-04, -5.85000e-03, -3.78384e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "poly": {
+    "label": "poly",
+    "min_orth": 0.0069499,
+    "max_aspect": 1378.41,
+    "minimum_volume_m3": 6.570289e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "3.17916e-01,  4.63444e-01,  4.15393e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "poly_improved": {
+    "label": "poly_improved",
+    "min_orth": 0.0069499,
+    "max_aspect": 1378.41,
+    "minimum_volume_m3": 6.570289e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "3.17916e-01,  4.63444e-01,  4.15393e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "minimum_orthogonal_quality_gate": 0.01,
+  "error": "RuntimeError('poly quality below unchanged e5 preparation gate after one standard improvement; stop')"
+}

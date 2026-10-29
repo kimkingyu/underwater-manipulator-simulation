@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "status": "frozen_before_cfd",
+  "frozen_at_utc": "2026-10-29T14:27:36.497239+00:00",
+  "research_snapshot_sha256": "3286123641a587d1a929667a5c3c915c4d8444665f172a02da11c191cd5b24fb",
+  "case_config_sha256": "7bb87550edf60b974cedf56176c0c12fcbe44c026b7e78bb128111e93c605cb8",
+  "approved_case_ids": [
+    "T_V_q0_XY_p055",
+    "T_V_q0_XY_n055",
+    "T_V_q0_YZ_p055",
+    "T_V_q0_YZ_n055",
+    "T_V_qe_XY_p055",
+    "T_V_qe_XY_n055",
+    "T_V_qe_YZ_p055",
+    "T_V_qe_YZ_n055",
+    "O_V_q0_YZ"
+  ],
+  "files": [
+    {
+      "path": "cfd/bqe.cas.h5",
+      "sha256": "c286f93caa47cac2a1c4879e3f0089df4e17dd91fbeceb0a2fb96431e4261d24"
+    },
+    {
+      "path": "cfd/bqe_base.json",
+      "sha256": "b252f9076fa4ef6f1da13da2da82574e22103c7605e0924478233b9a861e80cf"
+    },
+    {
+      "path": "cfd/parent_quality_disposition.json",
+      "sha256": "95723af7e6fcf3ab444599a7b15f5098853b34c6dab70b2e8f77717f284e58b0"
+    },
+    {
+      "path": "cfd/qe/fluid_domain_qe.json",
+      "sha256": "b0e5ff79edece560e4423327e0869cf8c673deb42fbcc826344763d9424aa2af"
+    },
+    {
+      "path": "cfd/qe/poly_qe_v3.json",
+      "sha256": "941602052d2cb76a572c9467cad2985e5b3cc58c39806e5cc2540f71bb6bdab7"
+    },
+    {
+      "path": "cfd/qe/probe_pose_qe.json",
+      "sha256": "3b89bc904a79a84b64d0a3632521e977724a55614ba24296590478d523313f81"
+    },
+    {
+      "path": "cfd/run_case.py",
+      "sha256": "e626aa585bbbf928689439e1b088c7d8782973f8edbd8dd77930a599dcccfcf5"
+    },
+    {
+      "path": "cfd/run_validation.py",
+      "sha256": "32b062f4b58f071dd4e64d077fb35831228d2f00f89e8a956135c3a815dde005"
+    },
+    {
+      "path": "cfd/runtime_api_probe.json",
+      "sha256": "09a7f64257efd06710d10181518357611663386a55d6e704415466603d2a3a27"
+    },
+    {
+      "path": "cfd/validation_cases.json",
+      "sha256": "7bb87550edf60b974cedf56176c0c12fcbe44c026b7e78bb128111e93c605cb8"
+    },
+    {
+      "path": "contract.json",
+      "sha256": "4ed6b01d1941b68830dfcbbfbbc7e42a360fae8224d47d40c8849845d19fc22a"
+    },
+    {
+      "path": "data/component_dataset.json",
+      "sha256": "e1c94770cf2bb76ec0fb9c1f1c747bbd2bd6f248545970aab8354c60fbb9803c"
+    },
+    {
+      "path": "data_pipeline.py",
+      "sha256": "e6784b8a6f75c70dc06a41528e9d21802ac42aa24ad43377be359a537f8abe22"
+    },
+    {
+      "path": "dynamics_linear.py",
+      "sha256": "72d89f06074354885260f7af2a40f2a619b9730b105fbcefeb451846643b5b0d"
+    },
+    {
+      "path": "evaluate_blind.py",
+      "sha256": "21231f1ac0ed6cc147eea0468afed9807b5ce159b1ed0693a7412d5f4ce1fb86"
+    },
+    {
+      "path": "finalize_blind_protocol.py",
+      "sha256": "e12b51823a5fb3c1e56921a994106cf273e4e611542cd1363982455e56badf7f"
+    },
+    {
+      "path": "fit_candidates.py",
+      "sha256": "9889e3464d63bf91eb4c3ed8dd01d1f23da151346197baca20ca3076e999680d"
+    },
+    {
+      "path": "frozen/case_design.json",
+      "sha256": "a36526e53c3ace4bcbdd90eb77880dbbb235c3557216f4ccea6c34079ff9f8d0"
+    },
+    {
+      "path": "frozen/evaluation_protocol.json",
+      "sha256": "01506d61b8b63c0d07eea01ab089e63f4fe5bc22a93229c866a6b63708b66aaf"
+    },
+    {
+      "path": "frozen/legacy87_oscillation_prior.json",
+      "sha256": "f0534e03db38cd8c087406f96654085cf46998533d983f29d6394f4949566e31"
+    },
+    {
+      "path": "frozen/oscillation_prior_predictions.json",
+      "sha256": "3fc436fbde2ab45e6dd5ef4c4a45800bda2d3948f82ea8acdc20f07a03a124c8"
+    },
+    {
+      "path": "frozen/research_model_manifest.json",
+      "sha256": "3286123641a587d1a929667a5c3c915c4d8444665f172a02da11c191cd5b24fb"
+    },
+    {
+      "path": "frozen/source_manifest.json",
+      "sha256": "f7f50a3fa6454e836c2b55dec58cd36d331f5868594bf5e46a00ba52dfc1106d"
+    },
+    {
+      "path": "frozen/steady_prior_predictions.json",
+      "sha256": "663f4375f0901bbe8ebc7959ea9be0b1530f6561ee073bb2cd7344aabb558391"
+    },
+    {
+      "path": "frozen/theta87_baseline.json",
+      "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+    },
+    {
+      "path": "frozen/theta87_baseline.mat",
+      "sha256": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850"
+    },
+    {
+      "path": "matlab/predict_dynamic_linear.m",
+      "sha256": "abc74dbabccd2d11960d33faa239f9edb581a165ff3ecd30526cfb75caf22e2e"
+    },
+    {
+      "path": "matlab/predict_split_hydro.m",
+      "sha256": "9414f4eea3d34e5b45f6f85ad4c89dccd0cb424044def3f4688eb2aac376d90d"
+    },
+    {
+      "path": "model_components.py",
+      "sha256": "32d0ea0121b5d3fa611d033b975e9f578945ee345880af6d19cabd31ea887044"
+    },
+    {
+      "path": "models/candidate_A_strict37.json",
+      "sha256": "8b58499c309fb6002edc4be563684ebe70a3537c47dd8ca6ffb98cd3456db45d"
+    },
+    {
+      "path": "models/candidate_B_pair_strict37.json",
+      "sha256": "63c3d693e5c89a57907f76f9a1c662754864d8afbe27daefd99337c49d391bb2"
+    },
+    {
+      "path": "models/candidate_B_strict37.json",
+      "sha256": "76d274193d257ae4db9e8267453971b578591de23a8a5b12d3adb6168b3adf09"
+    },
+    {
+      "path": "models/dynamic_linear_q0.json",
+      "sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087"
+    },
+    {
+      "path": "prepare_research_freeze.py",
+      "sha256": "a2adf3911ea44834067f8ce215b79a865ff4dc9f3ad15ede96d2a2a3cc22ff47"
+    }
+  ],
+  "models_are_research_candidates_not_default_replacements": true,
+  "steady_development_winner": null,
+  "default_theta_unchanged": true,
+  "qe_quality": {
+    "label": "poly_improved",
+    "min_orth": 0.140964,
+    "max_aspect": 84.5447,
+    "minimum_volume_m3": 6.897474e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "-3.62924e-03, -5.81677e-03, -3.82150e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "new_blind_histories_existed_at_freeze": false,
+  "post_truth_parameter_or_architecture_tuning_allowed": false,
+  "scope_note": "8 prescribed steady translations and 1 locked-arm q0 diagonal whole-domain oscillation; no independent-joint-motion validation"
+}

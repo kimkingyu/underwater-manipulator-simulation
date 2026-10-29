@@ -1,0 +1,142 @@
+{
+  "role": "derived geometry/reference only; original contract is not rewritten",
+  "original_contract_sha256": "4ed6b01d1941b68830dfcbbfbbc7e42a360fae8224d47d40c8849845d19fc22a",
+  "reference": {
+    "body_order": [
+      "hull",
+      "base0",
+      "link1",
+      "link2",
+      "link3"
+    ],
+    "body_walls": [
+      [
+        "wall_auv"
+      ],
+      [
+        "wall_base0"
+      ],
+      [
+        "wall_l1"
+      ],
+      [
+        "wall_l2"
+      ],
+      [
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    ],
+    "frame": "CAD body axes at reference pose, +Y up; current link-local axes for link1/2/3 wrenches",
+    "origin_Ob_CAD_m": [
+      0.0,
+      0.29386,
+      -0.0663
+    ],
+    "load_sign": "fluid force/moment ON the bodies",
+    "wrench_order": [
+      "Fx",
+      "Fy",
+      "Fz",
+      "Mx",
+      "My",
+      "Mz"
+    ],
+    "wrench_units": [
+      "N",
+      "N",
+      "N",
+      "N*m",
+      "N*m",
+      "N*m"
+    ],
+    "moment_reference": "hull and base0 about Ob; links about original uvms_geometry link reference points, NOT shifted new-CAD rigid-body COMs",
+    "joint_centres_CAD0_m": [
+      [
+        -4e-06,
+        -0.0366,
+        -0.460702
+      ],
+      [
+        0.016686,
+        -0.0666,
+        -0.511202
+      ],
+      [
+        0.014796,
+        -0.1226,
+        -0.313202
+      ]
+    ],
+    "joint_axes_CAD0": [
+      [
+        0,
+        0,
+        -1
+      ],
+      [
+        -1,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0
+      ]
+    ],
+    "link_reference_CAD0_m": [
+      [
+        0.008435498615527,
+        -0.044975304407476,
+        -0.487494357028531
+      ],
+      [
+        -0.001229762295081,
+        -0.094600000000002,
+        -0.412200000000006
+      ],
+      [
+        -7.0233630796e-05,
+        -0.151150773375763,
+        -0.435756276305762
+      ]
+    ],
+    "raw_moment_origin_CAD_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "raw_channel_count": 57,
+    "nu_order": [
+      "vx",
+      "vy",
+      "vz",
+      "wx",
+      "wy",
+      "wz"
+    ],
+    "nu_units": [
+      "m/s",
+      "m/s",
+      "m/s",
+      "rad/s",
+      "rad/s",
+      "rad/s"
+    ],
+    "nudot_units": [
+      "m/s^2",
+      "m/s^2",
+      "m/s^2",
+      "rad/s^2",
+      "rad/s^2",
+      "rad/s^2"
+    ],
+    "uncertainty_note": "Population SD (ddof=0) of correlated saved samples in the last 200 solver iterations; solver-load fluctuation, NOT independent measurement uncertainty, standard error, discretization error or an uncertainty confidence interval.",
+    "joint_tau_convention": "J^T times link-local fluid wrenches; current posed axes, not q0 tau_j reports",
+    "source_path_base": "repository root",
+    "linear_velocity_sign": "body relative to water; minus steady inlet"
+  }
+}

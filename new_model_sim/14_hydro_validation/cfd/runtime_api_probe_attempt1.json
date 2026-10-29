@@ -1,0 +1,64 @@
+{
+  "status": "failed",
+  "flow_initialized": false,
+  "flow_solved": false,
+  "processor_count": 1,
+  "steps": [
+    {
+      "name": "launch_one_rank_prepare_only",
+      "ok": true,
+      "required": true,
+      "seconds": 27.906
+    },
+    {
+      "name": "transcript_start",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_q0_uninitialized_case",
+      "ok": true,
+      "required": true,
+      "seconds": 18.062
+    },
+    {
+      "name": "set_and_read_SST",
+      "ok": true,
+      "required": true,
+      "seconds": 0.016
+    },
+    {
+      "name": "set_and_read_laminar",
+      "ok": true,
+      "required": true,
+      "seconds": 0.187
+    },
+    {
+      "name": "mass_flow_report_fields_without_compute",
+      "ok": false,
+      "required": true,
+      "error": "RuntimeError('Value is not allowed\\nError Object: (mass-flow is_not_in (flux-massflow))')",
+      "seconds": 0.422
+    }
+  ],
+  "failed_required": [
+    "mass_flow_report_fields_without_compute"
+  ],
+  "purpose": "actual 24.2 API checks before blind CFD; no solution/load computation",
+  "base_case": "D:\\work4\\new_model_sim\\11_theta_fit\\b5.cas.h5",
+  "base_sha256_before": "99bf2d4d81a31d7346e962ce876553d356ebd822256ad00027a44aa5883bc9ae",
+  "flow_loads_computed": false,
+  "case_written": false,
+  "allowed_compute_definitions": [
+    "runtime_geom_x",
+    "runtime_geom_y",
+    "runtime_geom_z"
+  ],
+  "sst_settings": {
+    "model": "k-omega",
+    "k_omega_model": "sst"
+  },
+  "laminar_model": "laminar",
+  "error": "RuntimeError('Value is not allowed\\nError Object: (mass-flow is_not_in (flux-massflow))')"
+}

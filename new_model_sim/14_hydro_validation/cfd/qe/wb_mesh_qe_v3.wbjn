@@ -1,0 +1,200 @@
+# encoding: utf-8
+# Pose qe mesh: fresh project auvm_water_qe_v3.wbpj from fluid_domain_qe.scdoc, with the final e5 settings
+# (12_coarse_mesh/wb_mesh_v5h_e5.wbjn): global 150/200 mm, no curvature/proximity, min 0.3 mm, growth 1.4;
+# jaws/pin 1.5 mm, link3/l2/l1 3.5 mm, gap faces 1 mm, hull soft 40 mm; 8 spheres R 4 mm / 0.4 mm on the J3
+# l2/link3 gap line moved to pose qe (fluid_domain_qe.json soi_centres_m). Generate, write FFF.msh, save.
+SetScriptVersion(Version="24.2.133")
+import System
+from System.IO import File, Directory
+from System.Text import Encoding
+
+D = r"D:\work4\new_model_sim\14_hydro_validation\cfd\qe"
+TRACE = D + r"\wb_mesh_qe_v3_trace.txt"
+PROJECT = D + r"\auvm_water_qe_v3.wbpj"
+CAD = D + r"\fluid_domain_qe.scdoc"
+INNER = D + r"\mesh_qe_v3_messages.txt"
+NL = System.Environment.NewLine
+
+
+def log(s):
+    File.AppendAllText(TRACE, System.String.Concat(s, NL), Encoding.UTF8)
+
+
+def step(label, fn):
+    log(label)
+    try:
+        fn()
+        log("  OK")
+        return True
+    except System.Exception, ex:
+        log("  .NET ERROR:")
+        log(ex.ToString()[:3000])
+    except Exception, e:
+        log("  python ERROR")
+        try:
+            log(e.clsException.ToString()[:3000])
+        except Exception:
+            log("  (no text)")
+    return False
+
+
+INSIDE = r'''
+import codecs, time
+out = codecs.open(r"%s", "w", "utf-8")
+SOI = [[-27.557779308532027, -159.17051496042544, -363.0532691952679], [-27.171397527248153, -157.4823395095976, -369.83565614724233], [-26.785015745964287, -155.79416405876975, -376.6180430992169], [-26.398633964680414, -154.10598860794192, -383.4004300511914], [-26.012252183396544, -152.4178131571141, -390.18281700316595], [-25.62587040211267, -150.7296377062862, -396.96520395514045], [-25.2394886208288, -149.04146225545838, -403.747590907115], [-24.9083042368712, -147.5944547261774, -409.56106543737883]]
+SIZES = [("wall_jaw1", "1.5 [mm]"), ("wall_jaw2", "1.5 [mm]"), ("wall_pin4", "1.5 [mm]"),
+         ("wall_link3", "3.5 [mm]"), ("wall_l2", "3.5 [mm]"), ("wall_l1", "3.5 [mm]"), ("gap_faces", "1 [mm]")]
+def w(s):
+    out.write(s + "\n"); out.flush()
+def put(obj, name, value):
+    try:
+        setattr(obj, name, value)
+        return "%%s=%%s" %% (name, getattr(obj, name))
+    except Exception, e:
+        return "FAILED %%s: %%s" %% (name, e)
+try:
+    m = ExtAPI.DataModel.Project.Model
+    mesh = m.Mesh
+    ns = dict((x.Name, x) for x in m.NamedSelections.Children)
+    w("named selections %%s" %% sorted(ns))
+    r = [put(mesh, "MaximumSize", Quantity("200 [mm]")), put(mesh, "ElementSize", Quantity("150 [mm]")),
+         put(mesh, "CaptureCurvature", False), put(mesh, "CaptureProximity", False),
+         put(mesh, "MinimumSize", Quantity("0.3 [mm]")), put(mesh, "GrowthRate", 1.4), put(mesh, "GrowthRateSF", 1.4)]
+    for name, size in SIZES:
+        sz = mesh.AddSizing()
+        if name == "gap_faces":
+            gsel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+            gsel.Ids = list(ns["gap_faces"].Location.Ids)
+            sz.Location = gsel
+        else:
+            sz.Location = ns[name]
+        sz.Name = "size_" + name
+        r.append(sz.Name + ":" + put(sz, "ElementSize", Quantity(size)))
+        r.append(sz.Name + ":" + put(sz, "GrowthRate", 1.4))
+    if "gap_faces" in ns:
+        ns["gap_faces"].Delete()
+    geo = ExtAPI.DataModel.GeoData
+    FAILED_CENTRE_MM = (-30.202, -182.396, -576.748)
+    FAILED_AREA_MM2 = 6.9235
+    local_faces, target_matches = [], []
+    for fid in ns["wall_pin4"].Location.Ids:
+        ent = geo.GeoEntityById(fid)
+        c = [v * 1000 for v in ent.Centroid]
+        area = ent.Area * 1e6
+        dist = sum((c[k] - FAILED_CENTRE_MM[k]) ** 2 for k in range(3)) ** 0.5
+        if dist < 0.1 and abs(area - FAILED_AREA_MM2) < 0.01:
+            target_matches.append(fid)
+        if dist < 1.0 and 0 < area < 10.0:
+            local_faces.append(fid)
+            w("repair pin4 face id %%d area_mm2 %%.6f dist_mm %%.6f" %% (fid, area, dist))
+    if len(target_matches) != 1 or not 1 <= len(local_faces) <= 5:
+        raise Exception("bounded repair must find one failed face and 1-5 local pin4 faces")
+    ssel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    ssel.Ids = local_faces
+    size = mesh.AddSizing()
+    size.Location = ssel
+    size.Name = "size_pin4_evidenced_local_repair"
+    r.append(size.Name + ":" + put(size, "ElementSize", Quantity("0.3 [mm]")))
+    r.append(size.Name + ":" + put(size, "GrowthRate", 1.4))
+    hull = mesh.AddSizing()
+    hull.Location = ns["wall_auv"]
+    hull.Name = "size_wall_auv"
+    r.append(put(hull, "GrowthRate", 1.4))
+    r.append(put(hull, "ElementSize", Quantity("40 [mm]")))
+    try:
+        hull.Behavior = SizingBehavior.Soft
+    except Exception, e:
+        r.append("FAILED behavior %%s" %% e)
+    body = m.Geometry.GetChildren(DataModelObjectCategory.Body, True)[0]
+    bsel = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    bsel.Ids = [body.GetGeoBody().Id]
+    for i, c in enumerate(SOI):
+        cs = m.CoordinateSystems.AddCoordinateSystem()
+        cs.Name = "soi_j3gap_%%d" %% i
+        cs.OriginX = Quantity("%%s [mm]" %% c[0])
+        cs.OriginY = Quantity("%%s [mm]" %% c[1])
+        cs.OriginZ = Quantity("%%s [mm]" %% c[2])
+        sz = mesh.AddSizing()
+        sz.Location = bsel
+        sz.Type = SizingType.SphereOfInfluence
+        sz.SphereCenter = cs
+        sz.SphereRadius = Quantity("4 [mm]")
+        sz.ElementSize = Quantity("0.4 [mm]")
+        sz.Name = "soi_j3gap_%%d" %% i
+    # Parent-approved sole alternative: same geometry/e5/pin4 controls, one local water-body SOI.
+    cs_quality = m.CoordinateSystems.AddCoordinateSystem()
+    cs_quality.Name = "cs_parent_quality_v3"
+    cs_quality.OriginX = Quantity("317.916 [mm]")
+    cs_quality.OriginY = Quantity("463.444 [mm]")
+    cs_quality.OriginZ = Quantity("415.393 [mm]")
+    size_quality = mesh.AddSizing()
+    size_quality.Location = bsel
+    size_quality.Type = SizingType.SphereOfInfluence
+    size_quality.SphereCenter = cs_quality
+    size_quality.SphereRadius = Quantity("20 [mm]")
+    size_quality.ElementSize = Quantity("2 [mm]")
+    size_quality.Name = "soi_parent_quality_v3"
+    w("parent quality SOI centre_mm [317.916, 463.444, 415.393] radius_mm 20 size_mm 2 scope water_body")
+    w("settings %%s" %% ([x for x in r if "FAILED" in x] or "all set"))
+    if any("FAILED" in x for x in r):
+        raise Exception("required mesh settings failed")
+    w("named selections now %%s" %% [x.Name for x in m.NamedSelections.Children])
+    t0 = time.time()
+    try:
+        mesh.GenerateMesh()
+    except Exception, e:
+        w("GenerateMesh raised %%s" %% e)
+    sk = ""
+    try:
+        mesh.MeshMetric = MeshMetricType.Skewness
+        sk = "skew max %%s avg %%s" %% (mesh.Maximum, mesh.Average)
+    except Exception, e:
+        sk = "metric err %%s" %% e
+    w("RESULT elements %%s nodes %%s %%s %%.0fs" %% (mesh.Elements, mesh.Nodes, sk, time.time() - t0))
+    for msg in ExtAPI.Application.Messages:
+        if msg.Severity.ToString() != "Warning":
+            w("  [%%s] %%s" %% (msg.Severity, msg.DisplayString))
+except Exception, e:
+    w("INSIDE ERROR %%s" %% e)
+finally:
+    out.close()
+''' % INNER
+
+
+def run():
+    holder = {}
+
+    def create():
+        s = GetTemplate(TemplateName="Fluid Flow").CreateSystem()
+        s.DisplayText = "mesh_water_qe"
+        geo = s.GetContainer(ComponentName="Geometry")
+        geo.SetFile(FilePath=CAD)
+        props = geo.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        s.GetComponent(Name="Geometry").Update(AllDependencies=True)
+        holder["s"] = s
+    if not step("1 create system + geometry", create):
+        return
+    if not step("2 save project (new file)", lambda: Save(FilePath=PROJECT, Overwrite=False)):
+        return
+    s = holder["s"]
+    comp = s.GetComponent(Name="Mesh")
+    mesh = s.GetContainer(ComponentName="Mesh")
+    ok = step("3 refresh mesh", lambda: comp.Refresh())
+    ok = ok and step("4 meshing: settings + GenerateMesh", lambda: (
+        mesh.Edit(Interactive=False),
+        mesh.SendCommand(Language="Python", Command=INSIDE),
+        mesh.Exit()))
+    step("5 mkdir MECH", lambda: Directory.CreateDirectory(D + r"\auvm_water_qe_v3_files\dp0\FFF\MECH"))
+    ok = ok and step("6 update mesh component (writes FFF.msh)", lambda: comp.Update(AllDependencies=True))
+    step("7 save", lambda: Save(Overwrite=True))
+
+
+try:
+    run()
+except System.Exception, ex:
+    log("FATAL .NET: " + ex.ToString())
+except Exception, e:
+    log("FATAL python")
+log("END")

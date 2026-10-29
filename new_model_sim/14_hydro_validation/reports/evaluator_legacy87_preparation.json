@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "path": "D:\\work4\\new_model_sim\\14_hydro_validation\\frozen\\legacy87_oscillation_prior.json",
+  "sha256": "f0534e03db38cd8c087406f96654085cf46998533d983f29d6394f4949566e31",
+  "matlab_cross_check": {
+    "status": "PASS",
+    "planned_count": 240,
+    "random_count": 48,
+    "max_abs": 1.1368683772161603e-13,
+    "planned_max_abs": 1.4210854715202004e-14,
+    "random_max_abs": 1.1368683772161603e-13,
+    "tolerance": 1e-10,
+    "matlab_version": "25.2.0.2998904 (R2025b)"
+  },
+  "blind_loads_opened": false
+}

@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "role": "lightweight unzipped handoff, no automatic sharing",
+  "overall_status": "inconclusive",
+  "default_theta_replaced": false,
+  "all_model_bytes_preserved": true,
+  "files": [
+    {
+      "path": "data/validation_bundle.json",
+      "sha256": "8ff8934ef455cfae7dda7ec00cef48a8234cd4d97e48b826a3ac83122cb51d16",
+      "size_bytes": 2431084
+    },
+    {
+      "path": "data/validation_bundle.mat",
+      "sha256": "6c5eaf387c18da61f1509bef7d4cb194f141455b8994ec99a0f453bed98c5fd8",
+      "size_bytes": 682073
+    },
+    {
+      "path": "data/validation_case_index.csv",
+      "sha256": "47c968f8835262716dde9571a60bb4f5a5440a1d906e3727c74dccd4cf1b168c",
+      "size_bytes": 6968
+    },
+    {
+      "path": "data/validation_case_index.json",
+      "sha256": "ed0e48a7f532a25a043176547dd38f78766ad39c8774fe34351dca60768cc0f2",
+      "size_bytes": 15717
+    },
+    {
+      "path": "data/validation_cycle_repeatability.csv",
+      "sha256": "7c69592f22d4e9d26840b1994553c95dd4497281537131417c4710bc033d8a06",
+      "size_bytes": 3323
+    },
+    {
+      "path": "data/validation_dynamic_hull.svg",
+      "sha256": "8164502f38c913fc1914a400f7cdf82a6ada1a61abc03e3acb2427d5bab8cb74",
+      "size_bytes": 63956
+    },
+    {
+      "path": "data/validation_dynamic_total_joint.svg",
+      "sha256": "2ec4f7fa12503b1158afb105232cd652091c687c17d470e435dfbcf27d727ac8",
+      "size_bytes": 140401
+    },
+    {
+      "path": "data/validation_harmonics.csv",
+      "sha256": "cc4d76cddb95273bf2283c441de51e55dbc9665912dbda67f9f16db1e70cfa1e",
+      "size_bytes": 124597
+    },
+    {
+      "path": "data/validation_metrics.csv",
+      "sha256": "0c7f3ec1a3d5399b6c05bac1bf53ea9ee25004dbce6dcae8468050436b74ad81",
+      "size_bytes": 112664
+    },
+    {
+      "path": "data/validation_oscillation.csv",
+      "sha256": "21abecf5a928349f99d7c94cc90e54572c414f2e128451b3c2d84c3609c0a121",
+      "size_bytes": 612054
+    },
+    {
+      "path": "data/validation_steady.csv",
+      "sha256": "abfc16ccf4870f437e9196cfc6a12892db0a1534c555cc131e1c852f5763a7ba",
+      "size_bytes": 34530
+    },
+    {
+      "path": "index.html",
+      "sha256": "7f373a95a049c1811b64b751351246570e76ce95084811e189bcdb8036bfed8f",
+      "size_bytes": 280482
+    },
+    {
+      "path": "matlab/export_validation_mat.m",
+      "sha256": "a8b29e83a45ead7e42099a4f224792b4a79d95f710b05546add63c49d1f96f84",
+      "size_bytes": 3572
+    },
+    {
+      "path": "matlab/legacy/uvms_geometry.m",
+      "sha256": "97992c43862e74da0ed9cc917b843af70cc95d3bd631de9b1d72eb2587c54634",
+      "size_bytes": 1429
+    },
+    {
+      "path": "matlab/legacy/uvms_link_kin.m",
+      "sha256": "07e64117777dfb47459f96558651e41bf97102518a20c39557e586845b3de439",
+      "size_bytes": 2001
+    },
+    {
+      "path": "matlab/legacy/Y_uvms.m",
+      "sha256": "5fb8ddaa1115184609f936930cae6144f5b33e24fb4223236eef8ce5ca3b4f1f",
+      "size_bytes": 5678
+    },
+    {
+      "path": "matlab/predict_dynamic_linear.m",
+      "sha256": "abc74dbabccd2d11960d33faa239f9edb581a165ff3ecd30526cfb75caf22e2e",
+      "size_bytes": 4585
+    },
+    {
+      "path": "matlab/predict_split_hydro.m",
+      "sha256": "9414f4eea3d34e5b45f6f85ad4c89dccd0cb424044def3f4688eb2aac376d90d",
+      "size_bytes": 6217
+    },
+    {
+      "path": "matlab/read_validation_example.m",
+      "sha256": "1ed333fca51a4e7934ce7ab2ada5fb92b9a153cb6456c1a39b01cbed73e47ad0",
+      "size_bytes": 5730
+    },
+    {
+      "path": "models/candidate_A_strict37.json",
+      "sha256": "8b58499c309fb6002edc4be563684ebe70a3537c47dd8ca6ffb98cd3456db45d",
+      "size_bytes": 38844
+    },
+    {
+      "path": "models/candidate_B_pair_strict37.json",
+      "sha256": "63c3d693e5c89a57907f76f9a1c662754864d8afbe27daefd99337c49d391bb2",
+      "size_bytes": 58420
+    },
+    {
+      "path": "models/candidate_B_strict37.json",
+      "sha256": "76d274193d257ae4db9e8267453971b578591de23a8a5b12d3adb6168b3adf09",
+      "size_bytes": 46605
+    },
+    {
+      "path": "models/dynamic_linear_q0.json",
+      "sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087",
+      "size_bytes": 110903
+    },
+    {
+      "path": "models/model_inventory.json",
+      "sha256": "41dc2e4fa606a1be8e62956f55b5c8c3b6afa1751debcfe30f6bdb50d125d2a1",
+      "size_bytes": 4568
+    },
+    {
+      "path": "models/theta87_baseline.json",
+      "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd",
+      "size_bytes": 19850
+    },
+    {
+      "path": "provenance/blind_protocol.json",
+      "sha256": "edae5dd8fc031b7a8a5c93230d27db8055c623d0d198811d591397da2ca693b4",
+      "size_bytes": 6165
+    },
+    {
+      "path": "provenance/contract_reference.json",
+      "sha256": "91d50ea07b127ccda8419cdeac010a42bbbce0649e82d767da8717ea89034111",
+      "size_bytes": 2958
+    },
+    {
+      "path": "provenance/evaluation_protocol.json",
+      "sha256": "01506d61b8b63c0d07eea01ab089e63f4fe5bc22a93229c866a6b63708b66aaf",
+      "size_bytes": 4933
+    },
+    {
+      "path": "provenance/export_source_fingerprints.json",
+      "sha256": "f8ef38e1b7792e596d75cce127b4b27e9e00c51e201694c5a97e37ad13685cfc",
+      "size_bytes": 49892
+    },
+    {
+      "path": "provenance/legacy87_oscillation_prior.json",
+      "sha256": "f0534e03db38cd8c087406f96654085cf46998533d983f29d6394f4949566e31",
+      "size_bytes": 494194
+    },
+    {
+      "path": "provenance/model_provenance_note.json",
+      "sha256": "b0ae327360c5eb48bb858d7a946de90d880857b79af5cd08073f79746f78b0c1",
+      "size_bytes": 1848
+    },
+    {
+      "path": "provenance/oscillation_prior_predictions.json",
+      "sha256": "3fc436fbde2ab45e6dd5ef4c4a45800bda2d3948f82ea8acdc20f07a03a124c8",
+      "size_bytes": 965981
+    },
+    {
+      "path": "provenance/readback_coverage.json",
+      "sha256": "fbbdefd4dad7a7e188da187367975f4679ff6ba718b4e4b859ce74c8e18c01fc",
+      "size_bytes": 1177
+    },
+    {
+      "path": "provenance/research_model_manifest.json",
+      "sha256": "3286123641a587d1a929667a5c3c915c4d8444665f172a02da11c191cd5b24fb",
+      "size_bytes": 3798
+    },
+    {
+      "path": "provenance/source_manifest.json",
+      "sha256": "f7f50a3fa6454e836c2b55dec58cd36d331f5868594bf5e46a00ba52dfc1106d",
+      "size_bytes": 39842
+    },
+    {
+      "path": "provenance/steady_prior_predictions.json",
+      "sha256": "663f4375f0901bbe8ebc7959ea9be0b1530f6561ee073bb2cd7344aabb558391",
+      "size_bytes": 90829
+    },
+    {
+      "path": "provenance/validation_matlab_checks.json",
+      "sha256": "f24efb682d55055582ab4ec396cc59345e5b53407755ba16e613d6cf09460e45",
+      "size_bytes": 878
+    },
+    {
+      "path": "provenance/validation_portability_checks.json",
+      "sha256": "1e3c03ce6e4c23ec3735aa66447a9b7facce3b5d33248a534bdf31fbddcdbca8",
+      "size_bytes": 961
+    },
+    {
+      "path": "provenance/validation_python_tests.json",
+      "sha256": "f05041011fa8a6ab540a4b68d2b0ed90d57f5a6d2948ec440aa80c89a8caec38",
+      "size_bytes": 2870
+    },
+    {
+      "path": "provenance/validation_source_integrity.json",
+      "sha256": "b39d42e2cca74bd79b81a5db8ec46e90f18a0b421996e5b2aa9dbe35ec2223ec",
+      "size_bytes": 60645
+    }
+  ],
+  "file_count": 40,
+  "total_size_bytes_excluding_manifest": 6543222,
+  "excluded": [
+    "raw case/data/mesh",
+    "old52 short traces",
+    "license/individual environment information",
+    "final ZIP"
+  ]
+}

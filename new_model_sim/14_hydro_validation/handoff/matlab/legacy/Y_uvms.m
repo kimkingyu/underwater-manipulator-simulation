@@ -1,0 +1,116 @@
+function [Y, Ylink] = Y_uvms(q, zeta, a, G)
+%Y_UVMS  Regressor of the estimated term  Y*theta = M_A*a + C_A(q,zeta)*zeta + D_0 + tau_f0.
+%   q    : 3x1 joint angles [rad]           (q = 0 is the CAD pose used in the CFD cases)
+%   zeta : 9x1 [nu; qdot], nu = [u v w p q r] in the body frame B (CAD axes, origin = hull centroid)
+%   a    : 9x1 reference acceleration (the control document's a = Jcal^-1 (xi_dd_d - Ks s - Lambda e_dot - Jcal_dot zeta))
+%   Y    : 9 x 87 so that  tau_hat = Y * theta  (generalised force the actuators must supply)
+%   Ylink: 18 x 87, wrench of links 1..3 in their own frames, per link force (3) then moment about the
+%          link reference point (3) (used by fit_theta only)
+%
+%   theta (87 x 1), see theta_names():
+%     1- 6  AUV added mass, diagonal of M_A,V   (X_udot..N_rdot, written positive)
+%     7-12  AUV linear damping, diag(D_V,l)
+%    13-18  AUV quadratic damping, diag(D_V,q)  (D_V(nu) nu = D_l nu + D_q |nu|.*nu)
+%    19-36  link i (i = 1..3), 6 each: 3 translational added masses diag(A_i), 3 quadratic dampings
+%    37-42  joint friction F_v1..3 (viscous), F_c1..3 (Coulomb)  -- fixed to 0 in the CFD fit
+%    43-60  AUV translation -> moment coupling of D_V (the hull/arm is not symmetric, so the centre
+%           of pressure is off O_b): moment row K (j = 1), M (2), N (3) gets
+%               C_lin(j,k) * v_k  +  C_quad(j,k) * |v_k| v_k,   k = u, v, w
+%           43-51 C_lin (j,k) column-major over k: K_u M_u N_u K_v M_v N_v K_w M_w N_w
+%           52-60 C_quad, same order. Sign is free (no lower bound): tau_hat(4:6) += C v.
+%    61-87  link i (9 each, i = 1..3): centre-of-pressure moment of the link's quadratic drag. The link
+%           wrench about its reference point gets the moment  E_i(j,k) * |v_ik| v_ik  on axis j for
+%           drag along k (j, k = x, y, z, link frame), column-major over k. Equivalent to the drag of
+%           direction k acting at an offset from the centroid; sign free. Enters the joint torques
+%           through J_i' like every other link term.
+%           Chosen by leave-one-case-out (scan_link_terms.m), joint-torque nrms: none 0.686,
+%           CoP moment 0.635, cross-flow force 0.910, link-3 cross-flow 0.873, direct joint |u|u 0.894.
+%           The cross-flow forms fit better but over-fit the 16 steady cases at a single pose.
+%   Added-Coriolis terms use b(K,V) = [w x p; v x p + w x l], [p; l] = K V, from the dynamics document.
+%    88-105 (only when G.hull_K is true, v5_hullK): full quadratic hull damping  [F; M] += K * |v| v,
+%           K 6x3 (rows F_x..M_z, columns u v w), |v| the translational speed, row-major: K(r,k) at
+%           87 + 3*(r-1) + k. Steady q = 0 loads are purely quadratic (0.8/0.3 ratio 7.0-7.1) and
+%           oblique flow is not the sum of the axial drags, so it replaces Dl_uvw (7:9), Dq_uvw (13:15)
+%           and C_lin (43:51), which fit_theta fixes to 0 in that case. scan_hull_terms.m: LOO F 0.307
+%           -> 0.277, M 0.659 -> 0.650, steady F 0.262 -> 0.206, leave-one-pose-out M 0.481 -> 0.461.
+if nargin < 4, G = uvms_geometry(); end
+q = q(:); zeta = zeta(:); a = a(:);
+n = G.n; N = 6 + n;
+hull_K = isfield(G, 'hull_K') && G.hull_K;
+np = 18 + 6 * n + 2 * n + 18 + 9 * n + 18 * hull_K;
+Y = zeros(N, np);
+Ylink = zeros(6 * n, np);
+
+% ---- AUV body: M_A,V a + b(M_A,V, nu) + D_V(nu) nu, padded with zeros for the joint rows ----
+v = zeta(1:3); w = zeta(4:6);
+for k = 1:3
+    e = zeros(3, 1); e(k) = 1;
+    p = e * v(k);
+    col = zeros(6, 1);
+    col(k) = a(k);                                  % M_A a
+    col = col + [cross(w, p); cross(v, p)];         % b: w x p ; v x p
+    Y(1:6, k) = col;
+    e2 = zeros(3, 1); e2(k) = 1;
+    l = e2 * w(k);
+    col = zeros(6, 1);
+    col(3 + k) = a(3 + k);
+    col(4:6) = col(4:6) + cross(w, l);              % b: w x l
+    Y(1:6, 3 + k) = col;
+end
+nu = zeta(1:6);
+Y(1:6, 7:12) = diag(nu);
+Y(1:6, 13:18) = diag(abs(nu) .* nu);
+
+% ---- links: sum_i J_i' [ A_i (J_i a + Jd_i zeta) + b(A_i, V_i) + D_i(V_i) V_i + E_i(V_i) ] ----
+[J, Jd] = uvms_link_kin(q, zeta(7:end), G);
+cE = 18 + 6 * n + 2 * n + 18;                              % first centre-of-pressure entry (61)
+for i = 1:n
+    Vi = J{i} * zeta;  vi = Vi(1:3); wi = Vi(4:6);
+    Ai = J{i} * a + Jd{i} * zeta;
+    c0 = 18 + 6 * (i - 1);
+    rl = 6 * (i - 1) + (1:6);
+    for k = 1:3
+        e = zeros(3, 1); e(k) = 1;
+        p = e * vi(k);
+        wr = [e * Ai(k) + cross(wi, p); cross(vi, p)];      % added mass + added Coriolis (6x1 wrench)
+        Y(:, c0 + k) = J{i}' * wr;
+        Ylink(rl, c0 + k) = wr;
+        wr = [e * abs(vi(k)) * vi(k); zeros(3, 1)];         % quadratic damping
+        Y(:, c0 + 3 + k) = J{i}' * wr;
+        Ylink(rl, c0 + 3 + k) = wr;
+        for j = 1:3                                         % centre-of-pressure moment of that drag
+            col = cE + 9 * (i - 1) + 3 * (k - 1) + j;
+            wr = zeros(6, 1); wr(3 + j) = abs(vi(k)) * vi(k);
+            Y(:, col) = J{i}' * wr;
+            Ylink(rl, col) = wr;
+        end
+    end
+end
+
+% ---- joint friction tau_f0 = F_v qdot + F_c sgn(qdot) ----
+qd = zeta(7:end);
+c0 = 18 + 6 * n;
+for j = 1:n
+    Y(6 + j, c0 + j) = qd(j);
+    Y(6 + j, c0 + n + j) = sign(qd(j));
+end
+
+% ---- AUV translation -> moment coupling (theta 43..60) ----
+c0 = 18 + 6 * n + 2 * n;
+for k = 1:3
+    for j = 1:3
+        Y(3 + j, c0 + 3 * (k - 1) + j) = v(k);
+        Y(3 + j, c0 + 9 + 3 * (k - 1) + j) = abs(v(k)) * v(k);
+    end
+end
+
+% ---- full quadratic hull damping K * |v| v (theta 88..105, G.hull_K only) ----
+if hull_K
+    c0 = 87; sp = norm(v);
+    for r = 1:6
+        for k = 1:3
+            Y(r, c0 + 3 * (r - 1) + k) = sp * v(k);
+        end
+    end
+end
+end

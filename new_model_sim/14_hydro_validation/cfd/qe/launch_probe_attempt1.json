@@ -1,0 +1,18 @@
+{
+  "status": "failed_before_probe_report",
+  "command": "python -B new_model_sim/09_seal_j2j3/run_sc.py new_model_sim/14_hydro_validation/cfd/qe/sc_probe_pose_qe.py 600",
+  "script_sha256_at_launch": "c7c7616e9c90c2d3109d075a7bb9593c6874ecf0d952439444a34f4cf5e07609",
+  "exit_code": 19,
+  "seconds": 542.1,
+  "probe_report_exists": false,
+  "interpretation": "SpaceClaim exited without a probe report; cause is not established. This is not evidence of either CAD collision or collision-free geometry.",
+  "bounded_diagnostics": {
+    "remaining_spaceclaim_workbench_fluent_processes": [],
+    "temp_spaceclaim_named_logs": "none found",
+    "local_spaceclaim_logs": "none found",
+    "application_events_recent_60min_containing_spaceclaim_or_ansys": "none returned"
+  },
+  "automatic_retry_performed": false,
+  "flow_initialized": false,
+  "flow_solved": false
+}

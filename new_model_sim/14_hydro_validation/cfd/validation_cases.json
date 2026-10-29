@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "purpose": "Prospective blind CFD validation; no new load may be computed before the external protocol freeze",
+  "origin_m": [0.0, 0.29386, -0.06630],
+  "origin_definition": "original Ob from cases.json and contract, not a recomputed CAD centre",
+  "frame": "CAD body axes, +Y up; q in rad; force and moment of fluid ON body",
+  "velocity_convention": "body relative linear velocity = speed * signed unit direction; stationary-body water inlet = negative body relative velocity",
+  "body_walls": ["wall_auv", "wall_base0", "wall_l1", "wall_l2", "wall_link3", "wall_jaw1", "wall_jaw2", "wall_pin4"],
+  "joint_centres_CAD0_m": [[-0.000004, -0.0366, -0.460702], [0.016686, -0.0666, -0.511202], [0.014796, -0.1226, -0.313202]],
+  "joint_axes_CAD0": [[0, 0, -1], [-1, 0, 0], [1, 0, 0]],
+  "poses": {
+    "q0": {"q": [0.0, 0.0, 0.0], "base_case": "../11_theta_fit/b5.cas.h5", "base_sha256": "99bf2d4d81a31d7346e962ce876553d356ebd822256ad00027a44aa5883bc9ae"},
+    "qe": {"q": [0.225, -0.25, -0.20], "base_case": "cfd/bqe.cas.h5", "base_sha256": "c286f93caa47cac2a1c4879e3f0089df4e17dd91fbeceb0a2fb96431e4261d24"}
+  },
+  "physics": {"density_kg_m3": 1025.0, "dynamic_viscosity_Pa_s": 0.00105, "steady_viscous_model": "k-omega-sst", "inlet_turbulent_intensity": 0.01, "inlet_turbulent_viscosity_ratio": 10.0, "box_parallel_faces": "free_slip", "oscillation_box_faces": "pressure-outlet"},
+  "solver": {"processor_count": 18, "parallel_cases": 1, "steady_max_iterations": 2500, "steady_chunk_iterations": 25, "steady_window_iterations": 200, "steady_drift_tolerance": 0.005, "steady_min_iterations": 400, "automatic_retries": 0, "max_explicit_repair_retries": 1, "oscillation_time_steps": 240, "oscillation_time_step_s": 0.025, "oscillation_max_iterations_per_step": 30},
+  "oscillation_law": "Whole-domain mesh translation; scalar velocity = A*(2*pi/T)*cos(2*pi*t/T)*min(t/ramp,1). Displacement is the integral of this ramped velocity, NOT ramped sinusoidal displacement. Matches original six O cases.",
+  "cases": [
+    {"id": "T_V_q0_XY_p055", "mode": "steady_translation", "pose_id": "q0", "q": [0,0,0], "speed_m_s": 0.55, "direction": [0.8944271909999159,0.4472135954999579,0], "body_velocity_m_s": [0.49193495504995377,0.24596747752497688,0], "water_velocity_m_s": [-0.49193495504995377,-0.24596747752497688,0]},
+    {"id": "T_V_q0_XY_n055", "mode": "steady_translation", "pose_id": "q0", "q": [0,0,0], "speed_m_s": 0.55, "direction": [-0.8944271909999159,-0.4472135954999579,0], "body_velocity_m_s": [-0.49193495504995377,-0.24596747752497688,0], "water_velocity_m_s": [0.49193495504995377,0.24596747752497688,0]},
+    {"id": "T_V_q0_YZ_p055", "mode": "steady_translation", "pose_id": "q0", "q": [0,0,0], "speed_m_s": 0.55, "direction": [0,0.4472135954999579,0.8944271909999159], "body_velocity_m_s": [0,0.24596747752497688,0.49193495504995377], "water_velocity_m_s": [0,-0.24596747752497688,-0.49193495504995377]},
+    {"id": "T_V_q0_YZ_n055", "mode": "steady_translation", "pose_id": "q0", "q": [0,0,0], "speed_m_s": 0.55, "direction": [0,-0.4472135954999579,-0.8944271909999159], "body_velocity_m_s": [0,-0.24596747752497688,-0.49193495504995377], "water_velocity_m_s": [0,0.24596747752497688,0.49193495504995377]},
+    {"id": "T_V_qe_XY_p055", "mode": "steady_translation", "pose_id": "qe", "q": [0.225,-0.25,-0.20], "speed_m_s": 0.55, "direction": [0.8944271909999159,0.4472135954999579,0], "body_velocity_m_s": [0.49193495504995377,0.24596747752497688,0], "water_velocity_m_s": [-0.49193495504995377,-0.24596747752497688,0]},
+    {"id": "T_V_qe_XY_n055", "mode": "steady_translation", "pose_id": "qe", "q": [0.225,-0.25,-0.20], "speed_m_s": 0.55, "direction": [-0.8944271909999159,-0.4472135954999579,0], "body_velocity_m_s": [-0.49193495504995377,-0.24596747752497688,0], "water_velocity_m_s": [0.49193495504995377,0.24596747752497688,0]},
+    {"id": "T_V_qe_YZ_p055", "mode": "steady_translation", "pose_id": "qe", "q": [0.225,-0.25,-0.20], "speed_m_s": 0.55, "direction": [0,0.4472135954999579,0.8944271909999159], "body_velocity_m_s": [0,0.24596747752497688,0.49193495504995377], "water_velocity_m_s": [0,-0.24596747752497688,-0.49193495504995377]},
+    {"id": "T_V_qe_YZ_n055", "mode": "steady_translation", "pose_id": "qe", "q": [0.225,-0.25,-0.20], "speed_m_s": 0.55, "direction": [0,-0.4472135954999579,-0.8944271909999159], "body_velocity_m_s": [0,-0.24596747752497688,-0.49193495504995377], "water_velocity_m_s": [0,0.24596747752497688,0.49193495504995377]},
+    {"id": "O_V_q0_YZ", "mode": "oscillation_translation", "pose_id": "q0", "q": [0,0,0], "direction": [0,0.7071067811865475,0.7071067811865475], "amplitude_m": 0.02, "period_s": 2.0, "ramp_s": 0.5, "time_step_s": 0.025, "time_steps": 240, "max_iterations_per_step": 30, "viscous_model": "laminar"}
+  ]
+}

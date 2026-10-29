@@ -1,0 +1,3 @@
+# Preserve exact bytes for the frozen scientific audit and handoff manifests.
+# Do not normalize mixed source line endings during add or checkout.
+* -text

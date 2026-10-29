@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "parent_approved_bounded_alternative_before_new_loads",
+  "reason": "qe_v2 poly minimum orthogonal quality remained below 0.01 after the original single mesh-only quality improvement",
+  "authorization": "Parent explicitly approved exactly one qe_v3 alternative mesh; no acceptance of the failed mesh and no quality-threshold relaxation",
+  "evidence": {
+    "report": "cfd/qe/poly_qe_e5.json",
+    "report_sha256": "2ff943824666120686c024a11a2c7f79853bfcbdffaf364055d06ef5210df7cf",
+    "minimum_orthogonal_quality": 0.0069499,
+    "maximum_aspect_ratio": 1378.41,
+    "minimum_volume_m3": 6.570289e-13,
+    "negative_volume": false,
+    "mesh_check_errors": [],
+    "worst_cell_location_m": [0.317916, 0.463444, 0.415393]
+  },
+  "sources": [
+    {"path": "cfd/qe/fluid_domain_qe.scdoc", "sha256": "79597f2686bff4f61b166a7ce68a8dcfb217f6328e8ef28806fad9ec3e45f821"},
+    {"path": "cfd/qe/auvm_water_qe_v2_files/dp0/FFF/MECH/FFF.msh", "sha256": "2c191e9257eeb01488203a0021ac150b248f5216b29c830b9a34cbd6be3325f8"},
+    {"path": "cfd/qe/wb_mesh_qe_v2.wbjn", "sha256": "c83a932694f06c722a09e0b14a5cbb766a0727df71ef50e15d2699957f3e47d9"}
+  ],
+  "alternative_mesh_id": "qe_v3",
+  "only_mesh_change": {
+    "scope": "water body sphere of influence",
+    "centre_m": [0.317916, 0.463444, 0.415393],
+    "radius_m": 0.020,
+    "target_element_size_m": 0.002
+  },
+  "preserved": ["same scdoc and geometry", "same sealing strategy", "same physical properties", "same e5 settings elsewhere", "qe_v2 pin4 face sizes", "all qe_v2 and failed poly files", "frozen model and prediction snapshots", "nine physical CFD cases and actual flow-case retry budget"],
+  "minimum_orthogonal_quality_gate": 0.01,
+  "maximum_mesh_generate_calls": 1,
+  "maximum_poly_conversion_calls": 1,
+  "maximum_standard_quality_improvement_calls": 1,
+  "automatic_retries": 0,
+  "stop_if_gate_fails": true,
+  "flow_initialization_allowed": false,
+  "flow_iterations_allowed": false,
+  "new_CFD_loads_allowed": false,
+  "case_config_sha256_before_base_binding": "0732f5d879034556e7787d9eefeb17fb46d5d608b6d533b352a6590ace0ea95e",
+  "physical_config_sha256_excluding_only_base_hash_fields": "8fb169d5cfc97b850e1a851545d920dc52ee48c956f7807f73a09dbbeb1fe3c1"
+}

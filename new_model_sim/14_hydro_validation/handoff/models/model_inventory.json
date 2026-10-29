@@ -1,0 +1,168 @@
+[
+  {
+    "id": "A",
+    "file": "models/candidate_A_strict37.json",
+    "schema_version": "split_hydro_static_v1",
+    "parameter_count": 45,
+    "parameter_metadata_count": 45,
+    "parameter_interpretation": "静态虚拟作用点/阻力及耦合系数，不是电机驱动矩",
+    "freeze_status_original": "candidate_only_parent_controls_freeze",
+    "scope_original": {
+      "steady_translation_only": true,
+      "qdot_zero": true,
+      "angular_velocity_zero": true,
+      "acceleration_zero": true,
+      "status": "development_data_only_not_blind",
+      "independent_joint_motion_validated": false,
+      "inertial_model_included": false,
+      "observed_q": [
+        [
+          0.0,
+          -0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -0.8
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.45,
+          -0.5,
+          -0.4
+        ]
+      ],
+      "max_training_speed_m_s": 0.8
+    },
+    "sha256": "8b58499c309fb6002edc4be563684ebe70a3537c47dd8ca6ffb98cd3456db45d"
+  },
+  {
+    "id": "B",
+    "file": "models/candidate_B_strict37.json",
+    "schema_version": "split_hydro_static_v1",
+    "parameter_count": 60,
+    "parameter_metadata_count": 60,
+    "parameter_interpretation": "静态虚拟作用点/阻力及耦合系数，不是电机驱动矩",
+    "freeze_status_original": "candidate_only_parent_controls_freeze",
+    "scope_original": {
+      "steady_translation_only": true,
+      "qdot_zero": true,
+      "angular_velocity_zero": true,
+      "acceleration_zero": true,
+      "status": "development_data_only_not_blind",
+      "independent_joint_motion_validated": false,
+      "inertial_model_included": false,
+      "observed_q": [
+        [
+          0.0,
+          -0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -0.8
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.45,
+          -0.5,
+          -0.4
+        ]
+      ],
+      "max_training_speed_m_s": 0.8
+    },
+    "sha256": "76d274193d257ae4db9e8267453971b578591de23a8a5b12d3adb6168b3adf09"
+  },
+  {
+    "id": "B_pair",
+    "file": "models/candidate_B_pair_strict37.json",
+    "schema_version": "split_hydro_static_v2",
+    "parameter_count": 66,
+    "parameter_metadata_count": 66,
+    "parameter_interpretation": "静态虚拟作用点/阻力及耦合系数，不是电机驱动矩",
+    "freeze_status_original": "candidate_only_parent_controls_freeze",
+    "scope_original": {
+      "steady_translation_only": true,
+      "qdot_zero": true,
+      "angular_velocity_zero": true,
+      "acceleration_zero": true,
+      "status": "development_data_only_not_blind",
+      "independent_joint_motion_validated": false,
+      "inertial_model_included": false,
+      "observed_q": [
+        [
+          0.0,
+          -0.8,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -0.8
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.45,
+          -0.5,
+          -0.4
+        ]
+      ],
+      "max_training_speed_m_s": 0.8
+    },
+    "sha256": "63c3d693e5c89a57907f76f9a1c662754864d8afbe27daefd99337c49d391bb2"
+  },
+  {
+    "id": "dynamic_q0",
+    "file": "models/dynamic_linear_q0.json",
+    "schema_version": "fixed_q0_common_base_dynamic_v1",
+    "parameter_count": 360,
+    "M_rows_shape": [
+      30,
+      6
+    ],
+    "D_rows_shape": [
+      30,
+      6
+    ],
+    "M_total_shape": [
+      6,
+      6
+    ],
+    "parameter_interpretation": "M_rows和D_rows各30×6，共360响应系数；不是原87参数，也不是完整9×9质量矩阵",
+    "scope_original": {
+      "q": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "joint_motion_identified": false,
+      "independent_case_validated": false,
+      "blind_validated": false,
+      "candidate_status": "development_only_pending_parent_freeze"
+    },
+    "sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087"
+  },
+  {
+    "id": "legacy87",
+    "file": "models/theta87_baseline.json",
+    "schema_version": "original_theta_json",
+    "parameter_count": 87,
+    "parameter_interpretation": "原部署对照；组合本体块包含base0，不提供独立纯hull预测",
+    "default_replaced": false,
+    "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+  }
+]

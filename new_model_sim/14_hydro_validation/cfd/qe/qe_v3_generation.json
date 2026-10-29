@@ -1,0 +1,22 @@
+{
+  "mesh_variant": "qe_v3",
+  "parent_disposition": "cfd/parent_quality_disposition.json",
+  "parent_disposition_sha256": "95723af7e6fcf3ab444599a7b15f5098853b34c6dab70b2e8f77717f284e58b0",
+  "source_journal_sha256": "c83a932694f06c722a09e0b14a5cbb766a0727df71ef50e15d2699957f3e47d9",
+  "generated_journal_sha256": "ccb2c4b1b37c6caa8123a38b3981677d90e79e09a0de313873f6affa0a477c30",
+  "only_mesh_change": {
+    "scope": "water body sphere of influence",
+    "centre_m": [
+      0.317916,
+      0.463444,
+      0.415393
+    ],
+    "radius_m": 0.02,
+    "target_element_size_m": 0.002
+  },
+  "geometry_changed": false,
+  "pin4_v2_refinement_retained": true,
+  "mesh_generation": {"status": "completed", "exit_code": 0, "seconds": 111.1, "generate_calls": 1, "elements": 896901, "nodes": 174584, "maximum_skewness": 0.999889649277808, "average_skewness": 0.26847866853640118, "tet_mesh_sha256": "44630fe48efdaa9191ee4fe0e3053e959aad1f9eccad712fc00c51a2d6607fa0", "messages": "mesh_qe_v3_messages.txt", "trace": "wb_mesh_qe_v3_trace.txt", "errors": []},
+  "flow_initialized": false,
+  "flow_solved": false
+}

@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "dataset_sha256": "e1c94770cf2bb76ec0fb9c1f1c747bbd2bd6f248545970aab8354c60fbb9803c",
+  "model_sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087",
+  "matlab_version": "25.2.0.2998904 (R2025b)",
+  "physical_time_samples": 1440,
+  "random_fixture_samples": 48,
+  "scope_rejections": 8,
+  "max_abs_prediction_difference": 1.4210854715202004E-14,
+  "max_abs_original_J_difference": 0,
+  "max_abs_cross_coordinate_closure": 1.1102230246251565E-16,
+  "max_abs_power_closure": 2.7755575615628914E-16,
+  "min_dissipation_W": 8.42220299486827E-17,
+  "original_theta_hashes_unchanged": true,
+  "simulation_or_solver_launched": false
+}

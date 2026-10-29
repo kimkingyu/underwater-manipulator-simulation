@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "tests_run": 14,
+  "failures": 0,
+  "errors": 0,
+  "dataset_sha256": "e1c94770cf2bb76ec0fb9c1f1c747bbd2bd6f248545970aab8354c60fbb9803c",
+  "model_sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087",
+  "test_source_sha256": "fa461a2996b07c8682d18df26d64b7cebaea0f58b8e5ac4f8e90621fa5a050d8",
+  "python_version": "3.10.12 (remotes/origin/3b5d0b535dfa1177dc4fc3b6f40c990a1085eaab-dirty:3b5d0b53, Mar 25 2) [MSC v.1920 64 bit (AMD64)]",
+  "original_theta_hashes": {
+    "frozen/theta87_baseline.mat": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850",
+    "frozen/theta87_baseline.json": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd",
+    "../11_theta_fit/matlab/theta_fit.mat": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850",
+    "../11_theta_fit/matlab/theta_fit.json": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+  },
+  "scope": "Dynamic source/constraints/algebra/recorded MATLAB prediction checks only; no CFD or control simulation"
+}

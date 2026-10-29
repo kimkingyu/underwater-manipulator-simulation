@@ -1,0 +1,8 @@
+# Local execution locks and mutable operator/progress snapshots.
+/cfd/runs/.serial.lock
+/cfd/_offline_test_*/
+/reports/environment_blocker.json
+/reports/live_status.html
+/reports/progress_snapshot.json
+/reports/stage14_progress.html
+/reports/archive_receipt.json

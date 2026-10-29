@@ -1,0 +1,20 @@
+{
+  "status": "completed_exact_probe_passed",
+  "exit_code": 0,
+  "seconds": 29.5,
+  "probe_report": "probe_pose_qe.json",
+  "q0_pair_count": 28,
+  "qe_pair_count": 28,
+  "kernel_failures": 0,
+  "maximum_cross_group_overlap_mm3": 0.0000017477186018282293,
+  "passed_report_gate": true,
+  "reason": "operator_environment_restored",
+  "authorization": "Parent explicitly authorized one renewed corrected read-only probe after the user restored licensing as administrator and selected check now.",
+  "environment_evidence_from_parent": {"reported_check_time_local": "2026-10-29 21:15", "lmutil_license_server": "1055@localhost UP", "vendor_daemon": "ansyslmd UP", "source_file": "C:/Users/admin/AppData/Local/Temp/narrafork-tool-output/tool_1793279750333_8385b487", "source_lines": [5, 12], "independently_rechecked_by_this_subagent": false},
+  "previous_attempts_retained": ["launch_probe_attempt1.json", "launch_probe_attempt2.json"],
+  "script_sha256_at_launch": "0bf721a664681bbf5bd80f4d95aa021b49c77dd543be90d4d0ca9b1650c87c5d",
+  "automatic_retry": false,
+  "new_geometry_repair": false,
+  "flow_initialized": false,
+  "flow_solved": false
+}

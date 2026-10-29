@@ -1,0 +1,14 @@
+{
+  "status": "failed_before_probe_report",
+  "exit_code": 19,
+  "seconds": 30.6,
+  "probe_report_exists": false,
+  "interpretation": "SpaceClaim still exits without producing the probe report after offline syntax validation. No geometry or collision conclusion is available. The single explicit script repair retry is exhausted; no further application launches were attempted.",
+  "repair_reason": "Offline AST compilation found a missing closing bracket in the newly generated probe's cross-group clash list comprehension. Fixed the local generator and probe, and verified syntax of all five new Python scripts before one explicit retry. This is a script repair, not a geometry repair.",
+  "previous_attempt": "launch_probe_attempt1.json",
+  "script_sha256_at_launch": "0bf721a664681bbf5bd80f4d95aa021b49c77dd543be90d4d0ca9b1650c87c5d",
+  "automatic_retry": false,
+  "explicit_repair_retry_number": 1,
+  "flow_initialized": false,
+  "flow_solved": false
+}

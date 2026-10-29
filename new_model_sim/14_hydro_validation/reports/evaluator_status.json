@@ -1,0 +1,6 @@
+{
+  "status": "pending",
+  "reason": "blind_protocol_missing",
+  "blind_loads_opened": false,
+  "next_action": "Freeze the complete protocol and scoring dependencies before running/scoring CFD."
+}

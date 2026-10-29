@@ -1,0 +1,846 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>B_pair development supplement</title><style>body{font:15px system-ui;margin:30px}pre{white-space:pre-wrap}</style><h1>B_pair：一次有界开发补充，不是盲测</h1><p>L2/L3各增加3个成对零功横向力系数；固定几何点，不调位置。原A/B/C数据/模型/报告哈希保持不变。每体被动性只是候选约束，局部正功CFD全部保留。</p><pre>{
+  &quot;recommendation&quot;: {
+    &quot;acceptance_passed&quot;: false,
+    &quot;winner&quot;: null,
+    &quot;freeze_recommendation&quot;: &quot;parent may freeze for research validation only; no superiority established&quot;,
+    &quot;further_model_search_performed&quot;: false,
+    &quot;original_ABC_preserved&quot;: true,
+    &quot;default_theta_unchanged&quot;: true
+  },
+  &quot;definition&quot;: &quot;B + link2/link3 pair lift at bbox-centre +/-0.8 half-length on longest bbox axis; 6 new coefficients, no direction/point tuning&quot;,
+  &quot;comparison_vs_A&quot;: {
+    &quot;pose&quot;: {
+      &quot;passed&quot;: false,
+      &quot;group_nrmse_improvement_percent&quot;: {
+        &quot;hull&quot;: 0.4840333180933354,
+        &quot;total&quot;: 0.055274249430325995,
+        &quot;joint&quot;: -0.38475812704577006
+      },
+      &quot;channel_RMSE_improvement_percent&quot;: {
+        &quot;hull.Fx&quot;: -2.641272353156676,
+        &quot;hull.Fy&quot;: -6.490844072888624,
+        &quot;hull.Fz&quot;: -17.36228390757697,
+        &quot;hull.Mx&quot;: 4.969555890932565,
+        &quot;hull.My&quot;: -0.1290842725882646,
+        &quot;hull.Mz&quot;: 0.22821076794913298,
+        &quot;total.Fx&quot;: -2.8256667072563246,
+        &quot;total.Fy&quot;: -7.739864983640854,
+        &quot;total.Fz&quot;: -19.254007380613693,
+        &quot;total.Mx&quot;: 0.302821334783443,
+        &quot;total.My&quot;: 3.315086366308395,
+        &quot;total.Mz&quot;: 0.20913579092685097,
+        &quot;joint.J1&quot;: -3.7211185911976807,
+        &quot;joint.J2&quot;: 2.8136022710216757,
+        &quot;joint.J3&quot;: -4.161661766155289
+      },
+      &quot;failures&quot;: [
+        &quot;hull: group NRMSE improvement below 10%&quot;,
+        &quot;hull.Fy: RMSE worsens more than 5%&quot;,
+        &quot;hull.Fz: RMSE worsens more than 5%&quot;,
+        &quot;total: group NRMSE improvement below 10%&quot;,
+        &quot;total.Fy: RMSE worsens more than 5%&quot;,
+        &quot;total.Fz: RMSE worsens more than 5%&quot;,
+        &quot;joint: group NRMSE improvement below 10%&quot;,
+        &quot;joint.J2: RMSE improvement below 10%&quot;,
+        &quot;joint.J3: RMSE improvement below 10%&quot;
+      ],
+      &quot;predefined_tolerance&quot;: &quot;no fluctuation relaxation; 1e-12 only arithmetic tolerance, not measurement precision&quot;
+    },
+    &quot;direction&quot;: {
+      &quot;passed&quot;: false,
+      &quot;group_nrmse_improvement_percent&quot;: {
+        &quot;hull&quot;: 0.5746959961708598,
+        &quot;total&quot;: 1.4382420388593387,
+        &quot;joint&quot;: 4.089008671137185
+      },
+      &quot;channel_RMSE_improvement_percent&quot;: {
+        &quot;hull.Fx&quot;: 3.368657916116191,
+        &quot;hull.Fy&quot;: -1.2722070264943763,
+        &quot;hull.Fz&quot;: 7.128439798628783,
+        &quot;hull.Mx&quot;: 1.8318082341970965,
+        &quot;hull.My&quot;: -0.787239932612982,
+        &quot;hull.Mz&quot;: -1.1969015990736187,
+        &quot;total.Fx&quot;: 3.989840155191826,
+        &quot;total.Fy&quot;: -0.9158372006186521,
+        &quot;total.Fz&quot;: 8.221928109395282,
+        &quot;total.Mx&quot;: -0.08963778572037562,
+        &quot;total.My&quot;: 0.2667888327466783,
+        &quot;total.Mz&quot;: -0.8736217807016056,
+        &quot;joint.J1&quot;: -1.0639358095675844,
+        &quot;joint.J2&quot;: 5.786996106067677,
+        &quot;joint.J3&quot;: -0.6354143382716337
+      },
+      &quot;failures&quot;: [
+        &quot;hull: group NRMSE improvement below 10%&quot;,
+        &quot;total: group NRMSE improvement below 10%&quot;,
+        &quot;joint: group NRMSE improvement below 10%&quot;,
+        &quot;joint.J2: RMSE improvement below 10%&quot;,
+        &quot;joint.J3: RMSE improvement below 10%&quot;
+      ],
+      &quot;predefined_tolerance&quot;: &quot;no fluctuation relaxation; 1e-12 only arithmetic tolerance, not measurement precision&quot;
+    }
+  },
+  &quot;comparison_vs_B&quot;: {
+    &quot;pose&quot;: {
+      &quot;passed&quot;: false,
+      &quot;group_nrmse_improvement_percent&quot;: {
+        &quot;hull&quot;: 0.0,
+        &quot;total&quot;: 0.31705251703099124,
+        &quot;joint&quot;: -0.025435666931850065
+      },
+      &quot;channel_RMSE_improvement_percent&quot;: {
+        &quot;hull.Fx&quot;: 0.0,
+        &quot;hull.Fy&quot;: 0.0,
+        &quot;hull.Fz&quot;: 0.0,
+        &quot;hull.Mx&quot;: 0.0,
+        &quot;hull.My&quot;: 0.0,
+        &quot;hull.Mz&quot;: 0.0,
+        &quot;total.Fx&quot;: 0.07119039575822494,
+        &quot;total.Fy&quot;: -0.3402021661071952,
+        &quot;total.Fz&quot;: 0.10753443278779251,
+        &quot;total.Mx&quot;: -0.2847120520544255,
+        &quot;total.My&quot;: 1.4000949450266642,
+        &quot;total.Mz&quot;: -0.5955880905714306,
+        &quot;joint.J1&quot;: 2.095461073073668,
+        &quot;joint.J2&quot;: -0.9334336459585479,
+        &quot;joint.J3&quot;: -0.6018318318633087
+      },
+      &quot;failures&quot;: [
+        &quot;hull: group NRMSE improvement below 10%&quot;,
+        &quot;total: group NRMSE improvement below 10%&quot;,
+        &quot;joint: group NRMSE improvement below 10%&quot;,
+        &quot;joint.J2: RMSE improvement below 10%&quot;,
+        &quot;joint.J3: RMSE improvement below 10%&quot;
+      ],
+      &quot;predefined_tolerance&quot;: &quot;no fluctuation relaxation; 1e-12 only arithmetic tolerance, not measurement precision&quot;
+    },
+    &quot;direction&quot;: {
+      &quot;passed&quot;: false,
+      &quot;group_nrmse_improvement_percent&quot;: {
+        &quot;hull&quot;: 0.0,
+        &quot;total&quot;: 0.05300403572569001,
+        &quot;joint&quot;: 0.2323600977948148
+      },
+      &quot;channel_RMSE_improvement_percent&quot;: {
+        &quot;hull.Fx&quot;: 0.0,
+        &quot;hull.Fy&quot;: 0.0,
+        &quot;hull.Fz&quot;: 0.0,
+        &quot;hull.Mx&quot;: 0.0,
+        &quot;hull.My&quot;: 0.0,
+        &quot;hull.Mz&quot;: 0.0,
+        &quot;total.Fx&quot;: 0.03391923865341262,
+        &quot;total.Fy&quot;: -0.021341737233471214,
+        &quot;total.Fz&quot;: 0.01274008262202031,
+        &quot;total.Mx&quot;: -0.0505945690290055,
+        &quot;total.My&quot;: 0.06625180921699947,
+        &quot;total.Mz&quot;: 0.006827670017561793,
+        &quot;joint.J1&quot;: 2.1652032614457584,
+        &quot;joint.J2&quot;: -0.14001681664073118,
+        &quot;joint.J3&quot;: -1.4728598912685298
+      },
+      &quot;failures&quot;: [
+        &quot;hull: group NRMSE improvement below 10%&quot;,
+        &quot;total: group NRMSE improvement below 10%&quot;,
+        &quot;joint: group NRMSE improvement below 10%&quot;,
+        &quot;joint.J2: RMSE improvement below 10%&quot;,
+        &quot;joint.J3: RMSE improvement below 10%&quot;
+      ],
+      &quot;predefined_tolerance&quot;: &quot;no fluctuation relaxation; 1e-12 only arithmetic tolerance, not measurement precision&quot;
+    }
+  },
+  &quot;component_passivity_assumption&quot;: {
+    &quot;interpretation&quot;: &quot;independent component passivity is a candidate restriction, NOT a fluid-interference law or a CFD quality filter&quot;,
+    &quot;all_cases_retained&quot;: true,
+    &quot;positive_component_power_cases&quot;: [
+      {
+        &quot;id&quot;: &quot;q0__T_py_03&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.003041481249324942
+      },
+      {
+        &quot;id&quot;: &quot;q0__T_py_08&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.07383515469308984
+      },
+      {
+        &quot;id&quot;: &quot;q0__T_xy_06&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.03217065031440914
+      },
+      {
+        &quot;id&quot;: &quot;qc__T_py_03&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.0007457791522620304
+      },
+      {
+        &quot;id&quot;: &quot;qc__T_py_08&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.021668605191377116
+      },
+      {
+        &quot;id&quot;: &quot;qd__T_py_03&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.005505595705007281
+      },
+      {
+        &quot;id&quot;: &quot;qd__T_py_08&quot;,
+        &quot;body&quot;: &quot;link1&quot;,
+        &quot;power_W&quot;: 0.11327616318877237
+      }
+    ],
+    &quot;total_power_range_W&quot;: [
+      -182.9616266846295,
+      -3.9136240206986983
+    ]
+  },
+  &quot;primary_metrics&quot;: {
+    &quot;strict37&quot;: {
+      &quot;pose&quot;: {
+        &quot;hull&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 20.78488442993795,
+              &quot;RMSE&quot;: 33.10281984721996,
+              &quot;bias&quot;: -3.797758406012183,
+              &quot;maxabs&quot;: 75.86524384564284,
+              &quot;NRMSE&quot;: 0.332107413102262
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 13.165498736339385,
+              &quot;RMSE&quot;: 23.65404192385717,
+              &quot;bias&quot;: -2.9388788328168087,
+              &quot;maxabs&quot;: 95.60042401164615,
+              &quot;NRMSE&quot;: 0.2167345666601597
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 8.026063193418645,
+              &quot;RMSE&quot;: 13.654567679822872,
+              &quot;bias&quot;: -2.8290846875813043,
+              &quot;maxabs&quot;: 40.00452038437705,
+              &quot;NRMSE&quot;: 0.3400385741202533
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 3.3977412216117453,
+              &quot;RMSE&quot;: 4.796592333594737,
+              &quot;bias&quot;: 1.4019343612194597,
+              &quot;maxabs&quot;: 15.316047642468265,
+              &quot;NRMSE&quot;: 0.7431193817475887
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.9352319728542144,
+              &quot;RMSE&quot;: 1.6434287779349734,
+              &quot;bias&quot;: 0.5672942132498323,
+              &quot;maxabs&quot;: 7.31604368319671,
+              &quot;NRMSE&quot;: 1.0698496602407148
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 1.5577712915352704,
+              &quot;RMSE&quot;: 2.367290117330046,
+              &quot;bias&quot;: 0.09204833785230876,
+              &quot;maxabs&quot;: 7.823825192361804,
+              &quot;NRMSE&quot;: 0.2338621286201551
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.5808602305146825
+        },
+        &quot;total&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 20.95921814935092,
+              &quot;RMSE&quot;: 33.44159402981448,
+              &quot;bias&quot;: -3.7077686550202316,
+              &quot;maxabs&quot;: 76.44931380071858,
+              &quot;NRMSE&quot;: 0.3144340503876015
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 12.567009699491672,
+              &quot;RMSE&quot;: 23.237063431640834,
+              &quot;bias&quot;: -3.3451857711742075,
+              &quot;maxabs&quot;: 94.30501000142186,
+              &quot;NRMSE&quot;: 0.20903328990249184
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 7.9613350238669085,
+              &quot;RMSE&quot;: 12.954600158478566,
+              &quot;bias&quot;: -3.087731844221626,
+              &quot;maxabs&quot;: 40.65818163047877,
+              &quot;NRMSE&quot;: 0.3109809977685691
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 3.138499905998476,
+              &quot;RMSE&quot;: 4.500582212748875,
+              &quot;bias&quot;: 1.31689716715743,
+              &quot;maxabs&quot;: 15.525727938653297,
+              &quot;NRMSE&quot;: 0.864660977333504
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.9862913176261148,
+              &quot;RMSE&quot;: 1.7139054426193194,
+              &quot;bias&quot;: 0.5181492543844057,
+              &quot;maxabs&quot;: 7.450295577220446,
+              &quot;NRMSE&quot;: 0.7567441450175579
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 1.601093982995912,
+              &quot;RMSE&quot;: 2.291465178254433,
+              &quot;bias&quot;: 0.11971550647780113,
+              &quot;maxabs&quot;: 5.725418290546091,
+              &quot;NRMSE&quot;: 0.3208486529754076
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.5263897532819772
+        },
+        &quot;joint&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;J1&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.09815362299766327,
+              &quot;RMSE&quot;: 0.15234160086607207,
+              &quot;bias&quot;: 0.001764486237307557,
+              &quot;maxabs&quot;: 0.4772236501699241,
+              &quot;NRMSE&quot;: 0.24524560639118714
+            },
+            {
+              &quot;channel&quot;: &quot;J2&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.13869064002447185,
+              &quot;RMSE&quot;: 0.18956646785460068,
+              &quot;bias&quot;: 0.013413158398857046,
+              &quot;maxabs&quot;: 0.4388540195176429,
+              &quot;NRMSE&quot;: 0.8346154916385404
+            },
+            {
+              &quot;channel&quot;: &quot;J3&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.11619904632358426,
+              &quot;RMSE&quot;: 0.15094877914095875,
+              &quot;bias&quot;: -0.019873461795123015,
+              &quot;maxabs&quot;: 0.344199968125682,
+              &quot;NRMSE&quot;: 0.6223797388535781
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.617544860900181
+        }
+      },
+      &quot;direction&quot;: {
+        &quot;hull&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 41.774807129304996,
+              &quot;RMSE&quot;: 54.68938185441839,
+              &quot;bias&quot;: 4.709451730037232,
+              &quot;maxabs&quot;: 100.44962422918573,
+              &quot;NRMSE&quot;: 0.8973251229253341
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 54.54230356132782,
+              &quot;RMSE&quot;: 79.90858725910348,
+              &quot;bias&quot;: -10.423416421212123,
+              &quot;maxabs&quot;: 167.4763259558411,
+              &quot;NRMSE&quot;: 1.8332124708945872
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 19.61489942980567,
+              &quot;RMSE&quot;: 32.58525152850514,
+              &quot;bias&quot;: -0.9455758083164983,
+              &quot;maxabs&quot;: 75.51356647709247,
+              &quot;NRMSE&quot;: 1.7000023871079093
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 6.257358593837464,
+              &quot;RMSE&quot;: 9.363958869486542,
+              &quot;bias&quot;: 1.8287135062511635,
+              &quot;maxabs&quot;: 21.90083818211975,
+              &quot;NRMSE&quot;: 1.5238514093675442
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 6.318813166634356,
+              &quot;RMSE&quot;: 9.414449847188827,
+              &quot;bias&quot;: 0.5228189409896298,
+              &quot;maxabs&quot;: 20.70775270092108,
+              &quot;NRMSE&quot;: 4.429941762767544
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 8.421136859868033,
+              &quot;RMSE&quot;: 13.151218828592256,
+              &quot;bias&quot;: -0.487919927895374,
+              &quot;maxabs&quot;: 31.480272224962313,
+              &quot;NRMSE&quot;: 1.427177689103898
+            }
+          ],
+          &quot;group_nrmse&quot;: 2.2744674010805404
+        },
+        &quot;total&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 42.138948196660515,
+              &quot;RMSE&quot;: 55.07463380576077,
+              &quot;bias&quot;: 4.653664122640915,
+              &quot;maxabs&quot;: 101.32240455832218,
+              &quot;NRMSE&quot;: 0.8742258861837654
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 54.40956497095742,
+              &quot;RMSE&quot;: 79.85340506609198,
+              &quot;bias&quot;: -10.680925027168755,
+              &quot;maxabs&quot;: 164.05152174269756,
+              &quot;NRMSE&quot;: 1.8362441163326289
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 19.253007385382542,
+              &quot;RMSE&quot;: 32.1173766755808,
+              &quot;bias&quot;: -0.934349260939938,
+              &quot;maxabs&quot;: 75.6821502861278,
+              &quot;NRMSE&quot;: 1.7152849893551474
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 6.683006583031565,
+              &quot;RMSE&quot;: 9.497188692188104,
+              &quot;bias&quot;: 1.6899513113639923,
+              &quot;maxabs&quot;: 21.981690333956582,
+              &quot;NRMSE&quot;: 1.7745756374020456
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 6.389467472307082,
+              &quot;RMSE&quot;: 9.534428051512236,
+              &quot;bias&quot;: 0.5321559248953616,
+              &quot;maxabs&quot;: 21.399208360513295,
+              &quot;NRMSE&quot;: 3.976229793097973
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 8.57294849672106,
+              &quot;RMSE&quot;: 13.36486530426115,
+              &quot;bias&quot;: -0.5194911771466673,
+              &quot;maxabs&quot;: 31.418265750129727,
+              &quot;NRMSE&quot;: 1.9493668687758035
+            }
+          ],
+          &quot;group_nrmse&quot;: 2.2300156650798324
+        },
+        &quot;joint&quot;: {
+          &quot;n&quot;: 37,
+          &quot;n_total&quot;: 37,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;J1&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.142396788307227,
+              &quot;RMSE&quot;: 0.20116472716844455,
+              &quot;bias&quot;: 0.014742161503848529,
+              &quot;maxabs&quot;: 0.4414974153840374,
+              &quot;NRMSE&quot;: 0.8971949155558202
+            },
+            {
+              &quot;channel&quot;: &quot;J2&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.17057238584976797,
+              &quot;RMSE&quot;: 0.22149085309174824,
+              &quot;bias&quot;: 0.03197684339805429,
+              &quot;maxabs&quot;: 0.542805566655624,
+              &quot;NRMSE&quot;: 0.943957021940421
+            },
+            {
+              &quot;channel&quot;: &quot;J3&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.11001901243140381,
+              &quot;RMSE&quot;: 0.14379330463806594,
+              &quot;bias&quot;: -0.00841143673825538,
+              &quot;maxabs&quot;: 0.346509816494425,
+              &quot;NRMSE&quot;: 0.6409544733672328
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.8380207262153107
+        }
+      }
+    },
+    &quot;including_capped40&quot;: {
+      &quot;pose&quot;: {
+        &quot;hull&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 19.316070070715845,
+              &quot;RMSE&quot;: 31.90019929522846,
+              &quot;bias&quot;: -3.623759062491735,
+              &quot;maxabs&quot;: 75.38738279033517,
+              &quot;NRMSE&quot;: 0.3325605812143535
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 14.824151135595264,
+              &quot;RMSE&quot;: 25.466859618216063,
+              &quot;bias&quot;: -3.0545384204624293,
+              &quot;maxabs&quot;: 96.13260021236324,
+              &quot;NRMSE&quot;: 0.2414391749342888
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 7.862851464856045,
+              &quot;RMSE&quot;: 13.233503920659578,
+              &quot;bias&quot;: -3.039235176820946,
+              &quot;maxabs&quot;: 38.45803425801576,
+              &quot;NRMSE&quot;: 0.2965343520976821
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 3.700472643603002,
+              &quot;RMSE&quot;: 5.362161437300922,
+              &quot;bias&quot;: 1.5459074642397526,
+              &quot;maxabs&quot;: 17.195279590156805,
+              &quot;NRMSE&quot;: 0.7819853033084021
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.882457209558029,
+              &quot;RMSE&quot;: 1.586548168344864,
+              &quot;bias&quot;: 0.5170069377146205,
+              &quot;maxabs&quot;: 7.362691208933666,
+              &quot;NRMSE&quot;: 1.076934314416915
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 1.443674314882792,
+              &quot;RMSE&quot;: 2.281872143572025,
+              &quot;bias&quot;: 0.08301737800020523,
+              &quot;maxabs&quot;: 7.903100391355657,
+              &quot;NRMSE&quot;: 0.2353560759424484
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.5892796523421007
+        },
+        &quot;total&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 19.544409121195294,
+              &quot;RMSE&quot;: 32.22095039806603,
+              &quot;bias&quot;: -3.540633824960948,
+              &quot;maxabs&quot;: 75.67941784270894,
+              &quot;NRMSE&quot;: 0.3147941116928236
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 14.289929260417946,
+              &quot;RMSE&quot;: 25.078089812459066,
+              &quot;bias&quot;: -3.425445123254834,
+              &quot;maxabs&quot;: 94.71455609626736,
+              &quot;NRMSE&quot;: 0.23342766490752911
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 7.712797980681982,
+              &quot;RMSE&quot;: 12.533960884098558,
+              &quot;bias&quot;: -3.3041938983846295,
+              &quot;maxabs&quot;: 39.21426150603274,
+              &quot;NRMSE&quot;: 0.269005544702989
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 3.4318371454177616,
+              &quot;RMSE&quot;: 5.0780112723263455,
+              &quot;bias&quot;: 1.4846441922557685,
+              &quot;maxabs&quot;: 17.488619241786605,
+              &quot;NRMSE&quot;: 0.9270320270694055
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.9356848891729996,
+              &quot;RMSE&quot;: 1.657410977225541,
+              &quot;bias&quot;: 0.4726846045870713,
+              &quot;maxabs&quot;: 7.5014689683891795,
+              &quot;NRMSE&quot;: 0.7617490204503679
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 1.4939983877191623,
+              &quot;RMSE&quot;: 2.2052405723958364,
+              &quot;bias&quot;: 0.10942915163944547,
+              &quot;maxabs&quot;: 5.869082455558761,
+              &quot;NRMSE&quot;: 0.32206977144601845
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.5430357074862271
+        },
+        &quot;joint&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;J1&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.09403352140934977,
+              &quot;RMSE&quot;: 0.1469928382346207,
+              &quot;bias&quot;: 0.0009680733413358234,
+              &quot;maxabs&quot;: 0.47681835020435437,
+              &quot;NRMSE&quot;: 0.24506856782595793
+            },
+            {
+              &quot;channel&quot;: &quot;J2&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.14837482385838907,
+              &quot;RMSE&quot;: 0.20599777124656635,
+              &quot;bias&quot;: 0.0022610476324937344,
+              &quot;maxabs&quot;: 0.6428154965130307,
+              &quot;NRMSE&quot;: 0.8592250750156462
+            },
+            {
+              &quot;channel&quot;: &quot;J3&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.1235718741363585,
+              &quot;RMSE&quot;: 0.16298816271522928,
+              &quot;bias&quot;: -0.004462955834636564,
+              &quot;maxabs&quot;: 0.39914152882790177,
+              &quot;NRMSE&quot;: 0.6200309320778893
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.6278972020974147
+        }
+      },
+      &quot;direction&quot;: {
+        &quot;hull&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 40.07282798996725,
+              &quot;RMSE&quot;: 53.13320891865706,
+              &quot;bias&quot;: 4.551480530944976,
+              &quot;maxabs&quot;: 100.82485081136929,
+              &quot;NRMSE&quot;: 0.9184399866011628
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 45.642706137760456,
+              &quot;RMSE&quot;: 64.58641026951067,
+              &quot;bias&quot;: -8.797230381793147,
+              &quot;maxabs&quot;: 131.44392729094164,
+              &quot;NRMSE&quot;: 1.2373276544069864
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 13.362559589437746,
+              &quot;RMSE&quot;: 19.778832100549923,
+              &quot;bias&quot;: -1.1521843056963152,
+              &quot;maxabs&quot;: 50.98066893589157,
+              &quot;NRMSE&quot;: 0.7950772888897305
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.248452433239994,
+              &quot;RMSE&quot;: 8.211434599192307,
+              &quot;bias&quot;: 1.6452207753218224,
+              &quot;maxabs&quot;: 20.813360421587728,
+              &quot;NRMSE&quot;: 1.2019166709716314
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.175151422467229,
+              &quot;RMSE&quot;: 7.058997545256835,
+              &quot;bias&quot;: 0.48121013535209833,
+              &quot;maxabs&quot;: 12.545477253072267,
+              &quot;NRMSE&quot;: 3.49056728631344
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.610876345098084,
+              &quot;RMSE&quot;: 8.351648103988216,
+              &quot;bias&quot;: -0.37654903548946644,
+              &quot;maxabs&quot;: 21.46958331142671,
+              &quot;NRMSE&quot;: 1.1823208604339803
+            }
+          ],
+          &quot;group_nrmse&quot;: 1.7336476915218835
+        },
+        &quot;total&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;Fx&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 40.4506066060046,
+              &quot;RMSE&quot;: 53.526251205963064,
+              &quot;bias&quot;: 4.4972392803409225,
+              &quot;maxabs&quot;: 101.64930088918331,
+              &quot;NRMSE&quot;: 0.8954356813816501
+            },
+            {
+              &quot;channel&quot;: &quot;Fy&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 45.65800989938941,
+              &quot;RMSE&quot;: 64.62994872372148,
+              &quot;bias&quot;: -9.012467611462538,
+              &quot;maxabs&quot;: 128.42055954460352,
+              &quot;NRMSE&quot;: 1.2347381169041562
+            },
+            {
+              &quot;channel&quot;: &quot;Fz&quot;,
+              &quot;unit&quot;: &quot;N&quot;,
+              &quot;MAE&quot;: 13.041568183389822,
+              &quot;RMSE&quot;: 19.194916562236667,
+              &quot;bias&quot;: -1.1953688626420296,
+              &quot;maxabs&quot;: 52.20404219528018,
+              &quot;NRMSE&quot;: 0.7908242765368744
+            },
+            {
+              &quot;channel&quot;: &quot;Mx&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.27338130577265,
+              &quot;RMSE&quot;: 7.753922168089065,
+              &quot;bias&quot;: 1.5531216260100926,
+              &quot;maxabs&quot;: 18.683754737904245,
+              &quot;NRMSE&quot;: 1.2804245330298254
+            },
+            {
+              &quot;channel&quot;: &quot;My&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.271941700326485,
+              &quot;RMSE&quot;: 7.184322071994935,
+              &quot;bias&quot;: 0.4936993227905983,
+              &quot;maxabs&quot;: 13.223780254726515,
+              &quot;NRMSE&quot;: 3.2568933137099747
+            },
+            {
+              &quot;channel&quot;: &quot;Mz&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 5.7662888741739575,
+              &quot;RMSE&quot;: 8.554180782635319,
+              &quot;bias&quot;: -0.4063528278862691,
+              &quot;maxabs&quot;: 21.436571533309547,
+              &quot;NRMSE&quot;: 1.5851778342863452
+            }
+          ],
+          &quot;group_nrmse&quot;: 1.7181102080082855
+        },
+        &quot;joint&quot;: {
+          &quot;n&quot;: 40,
+          &quot;n_total&quot;: 40,
+          &quot;eligible_complete_score&quot;: true,
+          &quot;channels&quot;: [
+            {
+              &quot;channel&quot;: &quot;J1&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.1359235504290157,
+              &quot;RMSE&quot;: 0.19680351058471832,
+              &quot;bias&quot;: 0.013280882516604637,
+              &quot;maxabs&quot;: 0.4484507388046288,
+              &quot;NRMSE&quot;: 0.9423825755259706
+            },
+            {
+              &quot;channel&quot;: &quot;J2&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.17326233411389072,
+              &quot;RMSE&quot;: 0.23171178837591871,
+              &quot;bias&quot;: 0.02047622730252229,
+              &quot;maxabs&quot;: 0.6938513827755919,
+              &quot;NRMSE&quot;: 0.9544120476855968
+            },
+            {
+              &quot;channel&quot;: &quot;J3&quot;,
+              &quot;unit&quot;: &quot;N*m&quot;,
+              &quot;MAE&quot;: 0.11709611068569833,
+              &quot;RMSE&quot;: 0.1640345161264905,
+              &quot;bias&quot;: 0.005297637608590644,
+              &quot;maxabs&quot;: 0.47922656721560286,
+              &quot;NRMSE&quot;: 0.6433611167763317
+            }
+          ],
+          &quot;group_nrmse&quot;: 0.8588559836592831
+        }
+      }
+    }
+  }
+}</pre></html>

@@ -1,0 +1,6496 @@
+{
+  "status": "completed",
+  "case_id": "O_V_q0_YZ",
+  "mode": "oscillation_translation",
+  "spec": {
+    "id": "O_V_q0_YZ",
+    "mode": "oscillation_translation",
+    "pose_id": "q0",
+    "q": [
+      0,
+      0,
+      0
+    ],
+    "direction": [
+      0,
+      0.7071067811865475,
+      0.7071067811865475
+    ],
+    "amplitude_m": 0.02,
+    "period_s": 2.0,
+    "ramp_s": 0.5,
+    "time_step_s": 0.025,
+    "time_steps": 240,
+    "max_iterations_per_step": 30,
+    "viscous_model": "laminar"
+  },
+  "identity": {
+    "case_id": "O_V_q0_YZ",
+    "case_spec_sha256": "bcac75583b12847ac6913355720638493b951cd893328518c852a4eeb60fa30a",
+    "case_config_sha256": "7bb87550edf60b974cedf56176c0c12fcbe44c026b7e78bb128111e93c605cb8",
+    "freeze_manifest_sha256": "edae5dd8fc031b7a8a5c93230d27db8055c623d0d198811d591397da2ca693b4",
+    "base_sha256": "99bf2d4d81a31d7346e962ce876553d356ebd822256ad00027a44aa5883bc9ae",
+    "runner_sha256": "e626aa585bbbf928689439e1b088c7d8782973f8edbd8dd77930a599dcccfcf5"
+  },
+  "repair_reason": null,
+  "origin_m": [
+    0.0,
+    0.29386,
+    -0.0663
+  ],
+  "processor_count": 18,
+  "steps": [
+    {
+      "name": "launch_solver",
+      "required": true,
+      "ok": true,
+      "seconds": 25.391
+    },
+    {
+      "name": "start_transcript",
+      "required": true,
+      "ok": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_base",
+      "required": true,
+      "ok": true,
+      "seconds": 16.938
+    },
+    {
+      "name": "boundary_conditions",
+      "required": true,
+      "ok": true,
+      "seconds": 5.297
+    },
+    {
+      "name": "posed_joint_reports",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "conservation_reports",
+      "required": true,
+      "ok": true,
+      "seconds": 2.844
+    },
+    {
+      "name": "mesh_reference_centroid_initial",
+      "required": true,
+      "ok": true,
+      "seconds": 3.375
+    },
+    {
+      "name": "write_start_case",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "transient_controls",
+      "required": true,
+      "ok": true,
+      "seconds": 0.015
+    },
+    {
+      "name": "standard_initialize_rest",
+      "required": true,
+      "ok": true,
+      "seconds": 0.094
+    },
+    {
+      "name": "time_step_1",
+      "required": true,
+      "ok": true,
+      "seconds": 4.438
+    },
+    {
+      "name": "mesh_reference_centroid_1",
+      "required": true,
+      "ok": true,
+      "seconds": 0.765
+    },
+    {
+      "name": "moving_joint_centres_1",
+      "required": true,
+      "ok": true,
+      "seconds": 0.953
+    },
+    {
+      "name": "sample_1",
+      "required": true,
+      "ok": true,
+      "seconds": 1.766
+    },
+    {
+      "name": "time_step_2",
+      "required": true,
+      "ok": true,
+      "seconds": 4.078
+    },
+    {
+      "name": "mesh_reference_centroid_2",
+      "required": true,
+      "ok": true,
+      "seconds": 0.422
+    },
+    {
+      "name": "moving_joint_centres_2",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "sample_2",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_3",
+      "required": true,
+      "ok": true,
+      "seconds": 3.75
+    },
+    {
+      "name": "mesh_reference_centroid_3",
+      "required": true,
+      "ok": true,
+      "seconds": 0.657
+    },
+    {
+      "name": "moving_joint_centres_3",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_3",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_4",
+      "required": true,
+      "ok": true,
+      "seconds": 4.094
+    },
+    {
+      "name": "mesh_reference_centroid_4",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_4",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_4",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_5",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_5",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_5",
+      "required": true,
+      "ok": true,
+      "seconds": 2.906
+    },
+    {
+      "name": "sample_5",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_6",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "mesh_reference_centroid_6",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_6",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_6",
+      "required": true,
+      "ok": true,
+      "seconds": 1.579
+    },
+    {
+      "name": "time_step_7",
+      "required": true,
+      "ok": true,
+      "seconds": 2.312
+    },
+    {
+      "name": "mesh_reference_centroid_7",
+      "required": true,
+      "ok": true,
+      "seconds": 0.75
+    },
+    {
+      "name": "moving_joint_centres_7",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "sample_7",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "time_step_8",
+      "required": true,
+      "ok": true,
+      "seconds": 2.813
+    },
+    {
+      "name": "mesh_reference_centroid_8",
+      "required": true,
+      "ok": true,
+      "seconds": 0.343
+    },
+    {
+      "name": "moving_joint_centres_8",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_8",
+      "required": true,
+      "ok": true,
+      "seconds": 2.875
+    },
+    {
+      "name": "time_step_9",
+      "required": true,
+      "ok": true,
+      "seconds": 2.703
+    },
+    {
+      "name": "mesh_reference_centroid_9",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_9",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "sample_9",
+      "required": true,
+      "ok": true,
+      "seconds": 1.657
+    },
+    {
+      "name": "time_step_10",
+      "required": true,
+      "ok": true,
+      "seconds": 2.922
+    },
+    {
+      "name": "mesh_reference_centroid_10",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_10",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_10",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_11",
+      "required": true,
+      "ok": true,
+      "seconds": 3.079
+    },
+    {
+      "name": "mesh_reference_centroid_11",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_11",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_11",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "time_step_12",
+      "required": true,
+      "ok": true,
+      "seconds": 2.875
+    },
+    {
+      "name": "mesh_reference_centroid_12",
+      "required": true,
+      "ok": true,
+      "seconds": 0.406
+    },
+    {
+      "name": "moving_joint_centres_12",
+      "required": true,
+      "ok": true,
+      "seconds": 1.953
+    },
+    {
+      "name": "sample_12",
+      "required": true,
+      "ok": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "time_step_13",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_13",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_13",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_13",
+      "required": true,
+      "ok": true,
+      "seconds": 1.735
+    },
+    {
+      "name": "time_step_14",
+      "required": true,
+      "ok": true,
+      "seconds": 3.422
+    },
+    {
+      "name": "mesh_reference_centroid_14",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_14",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_14",
+      "required": true,
+      "ok": true,
+      "seconds": 1.782
+    },
+    {
+      "name": "time_step_15",
+      "required": true,
+      "ok": true,
+      "seconds": 3.047
+    },
+    {
+      "name": "mesh_reference_centroid_15",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_15",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_15",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "time_step_16",
+      "required": true,
+      "ok": true,
+      "seconds": 2.985
+    },
+    {
+      "name": "mesh_reference_centroid_16",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_16",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_16",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_17",
+      "required": true,
+      "ok": true,
+      "seconds": 2.687
+    },
+    {
+      "name": "mesh_reference_centroid_17",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_17",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "sample_17",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_18",
+      "required": true,
+      "ok": true,
+      "seconds": 3.094
+    },
+    {
+      "name": "mesh_reference_centroid_18",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_18",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_18",
+      "required": true,
+      "ok": true,
+      "seconds": 1.782
+    },
+    {
+      "name": "time_step_19",
+      "required": true,
+      "ok": true,
+      "seconds": 2.89
+    },
+    {
+      "name": "mesh_reference_centroid_19",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_19",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_19",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_20",
+      "required": true,
+      "ok": true,
+      "seconds": 2.875
+    },
+    {
+      "name": "mesh_reference_centroid_20",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_20",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_20",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_21",
+      "required": true,
+      "ok": true,
+      "seconds": 3.344
+    },
+    {
+      "name": "mesh_reference_centroid_21",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_21",
+      "required": true,
+      "ok": true,
+      "seconds": 1.312
+    },
+    {
+      "name": "sample_21",
+      "required": true,
+      "ok": true,
+      "seconds": 1.984
+    },
+    {
+      "name": "time_step_22",
+      "required": true,
+      "ok": true,
+      "seconds": 2.484
+    },
+    {
+      "name": "mesh_reference_centroid_22",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_22",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_22",
+      "required": true,
+      "ok": true,
+      "seconds": 2.219
+    },
+    {
+      "name": "time_step_23",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_23",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_23",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_23",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_24",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_24",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_24",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_24",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_25",
+      "required": true,
+      "ok": true,
+      "seconds": 2.515
+    },
+    {
+      "name": "mesh_reference_centroid_25",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_25",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_25",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_26",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_26",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_26",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_26",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "time_step_27",
+      "required": true,
+      "ok": true,
+      "seconds": 2.859
+    },
+    {
+      "name": "mesh_reference_centroid_27",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_27",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_27",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "time_step_28",
+      "required": true,
+      "ok": true,
+      "seconds": 2.594
+    },
+    {
+      "name": "mesh_reference_centroid_28",
+      "required": true,
+      "ok": true,
+      "seconds": 0.422
+    },
+    {
+      "name": "moving_joint_centres_28",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_28",
+      "required": true,
+      "ok": true,
+      "seconds": 1.704
+    },
+    {
+      "name": "time_step_29",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "mesh_reference_centroid_29",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_29",
+      "required": true,
+      "ok": true,
+      "seconds": 1.546
+    },
+    {
+      "name": "sample_29",
+      "required": true,
+      "ok": true,
+      "seconds": 2.063
+    },
+    {
+      "name": "time_step_30",
+      "required": true,
+      "ok": true,
+      "seconds": 2.281
+    },
+    {
+      "name": "mesh_reference_centroid_30",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_30",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_30",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "time_step_31",
+      "required": true,
+      "ok": true,
+      "seconds": 2.64
+    },
+    {
+      "name": "mesh_reference_centroid_31",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_31",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_31",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "time_step_32",
+      "required": true,
+      "ok": true,
+      "seconds": 3.032
+    },
+    {
+      "name": "mesh_reference_centroid_32",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_32",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_32",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_33",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_33",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_33",
+      "required": true,
+      "ok": true,
+      "seconds": 1.64
+    },
+    {
+      "name": "sample_33",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_34",
+      "required": true,
+      "ok": true,
+      "seconds": 3.61
+    },
+    {
+      "name": "mesh_reference_centroid_34",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_34",
+      "required": true,
+      "ok": true,
+      "seconds": 1.484
+    },
+    {
+      "name": "sample_34",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "time_step_35",
+      "required": true,
+      "ok": true,
+      "seconds": 3.313
+    },
+    {
+      "name": "mesh_reference_centroid_35",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_35",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_35",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_36",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_36",
+      "required": true,
+      "ok": true,
+      "seconds": 0.797
+    },
+    {
+      "name": "moving_joint_centres_36",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_36",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "time_step_37",
+      "required": true,
+      "ok": true,
+      "seconds": 2.328
+    },
+    {
+      "name": "mesh_reference_centroid_37",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_37",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_37",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "time_step_38",
+      "required": true,
+      "ok": true,
+      "seconds": 2.734
+    },
+    {
+      "name": "mesh_reference_centroid_38",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_38",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_38",
+      "required": true,
+      "ok": true,
+      "seconds": 1.984
+    },
+    {
+      "name": "time_step_39",
+      "required": true,
+      "ok": true,
+      "seconds": 2.516
+    },
+    {
+      "name": "mesh_reference_centroid_39",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_39",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_39",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_40",
+      "required": true,
+      "ok": true,
+      "seconds": 2.391
+    },
+    {
+      "name": "mesh_reference_centroid_40",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_40",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_40",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_41",
+      "required": true,
+      "ok": true,
+      "seconds": 3.266
+    },
+    {
+      "name": "mesh_reference_centroid_41",
+      "required": true,
+      "ok": true,
+      "seconds": 0.343
+    },
+    {
+      "name": "moving_joint_centres_41",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_41",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "time_step_42",
+      "required": true,
+      "ok": true,
+      "seconds": 2.781
+    },
+    {
+      "name": "mesh_reference_centroid_42",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_42",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "sample_42",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "time_step_43",
+      "required": true,
+      "ok": true,
+      "seconds": 3.0
+    },
+    {
+      "name": "mesh_reference_centroid_43",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_43",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_43",
+      "required": true,
+      "ok": true,
+      "seconds": 2.14
+    },
+    {
+      "name": "time_step_44",
+      "required": true,
+      "ok": true,
+      "seconds": 2.5
+    },
+    {
+      "name": "mesh_reference_centroid_44",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "moving_joint_centres_44",
+      "required": true,
+      "ok": true,
+      "seconds": 1.969
+    },
+    {
+      "name": "sample_44",
+      "required": true,
+      "ok": true,
+      "seconds": 3.032
+    },
+    {
+      "name": "time_step_45",
+      "required": true,
+      "ok": true,
+      "seconds": 2.781
+    },
+    {
+      "name": "mesh_reference_centroid_45",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_45",
+      "required": true,
+      "ok": true,
+      "seconds": 1.843
+    },
+    {
+      "name": "sample_45",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_46",
+      "required": true,
+      "ok": true,
+      "seconds": 2.969
+    },
+    {
+      "name": "mesh_reference_centroid_46",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_46",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_46",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_47",
+      "required": true,
+      "ok": true,
+      "seconds": 2.547
+    },
+    {
+      "name": "mesh_reference_centroid_47",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_47",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_47",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_48",
+      "required": true,
+      "ok": true,
+      "seconds": 2.734
+    },
+    {
+      "name": "mesh_reference_centroid_48",
+      "required": true,
+      "ok": true,
+      "seconds": 0.343
+    },
+    {
+      "name": "moving_joint_centres_48",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_48",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_49",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_49",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_49",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "sample_49",
+      "required": true,
+      "ok": true,
+      "seconds": 1.969
+    },
+    {
+      "name": "time_step_50",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_50",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_50",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_50",
+      "required": true,
+      "ok": true,
+      "seconds": 1.766
+    },
+    {
+      "name": "time_step_51",
+      "required": true,
+      "ok": true,
+      "seconds": 2.781
+    },
+    {
+      "name": "mesh_reference_centroid_51",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_51",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "sample_51",
+      "required": true,
+      "ok": true,
+      "seconds": 1.657
+    },
+    {
+      "name": "time_step_52",
+      "required": true,
+      "ok": true,
+      "seconds": 2.563
+    },
+    {
+      "name": "mesh_reference_centroid_52",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_52",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_52",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_53",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "mesh_reference_centroid_53",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_53",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "sample_53",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "time_step_54",
+      "required": true,
+      "ok": true,
+      "seconds": 2.579
+    },
+    {
+      "name": "mesh_reference_centroid_54",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_54",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_54",
+      "required": true,
+      "ok": true,
+      "seconds": 1.782
+    },
+    {
+      "name": "time_step_55",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_55",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_55",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_55",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_56",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_56",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_56",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_56",
+      "required": true,
+      "ok": true,
+      "seconds": 1.718
+    },
+    {
+      "name": "time_step_57",
+      "required": true,
+      "ok": true,
+      "seconds": 2.266
+    },
+    {
+      "name": "mesh_reference_centroid_57",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_57",
+      "required": true,
+      "ok": true,
+      "seconds": 1.61
+    },
+    {
+      "name": "sample_57",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_58",
+      "required": true,
+      "ok": true,
+      "seconds": 2.312
+    },
+    {
+      "name": "mesh_reference_centroid_58",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_58",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_58",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "time_step_59",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_59",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_59",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_59",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_60",
+      "required": true,
+      "ok": true,
+      "seconds": 2.453
+    },
+    {
+      "name": "mesh_reference_centroid_60",
+      "required": true,
+      "ok": true,
+      "seconds": 0.438
+    },
+    {
+      "name": "moving_joint_centres_60",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_60",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "time_step_61",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_61",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_61",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_61",
+      "required": true,
+      "ok": true,
+      "seconds": 1.984
+    },
+    {
+      "name": "time_step_62",
+      "required": true,
+      "ok": true,
+      "seconds": 2.828
+    },
+    {
+      "name": "mesh_reference_centroid_62",
+      "required": true,
+      "ok": true,
+      "seconds": 0.657
+    },
+    {
+      "name": "moving_joint_centres_62",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_62",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_63",
+      "required": true,
+      "ok": true,
+      "seconds": 2.484
+    },
+    {
+      "name": "mesh_reference_centroid_63",
+      "required": true,
+      "ok": true,
+      "seconds": 0.453
+    },
+    {
+      "name": "moving_joint_centres_63",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_63",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_64",
+      "required": true,
+      "ok": true,
+      "seconds": 2.437
+    },
+    {
+      "name": "mesh_reference_centroid_64",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_64",
+      "required": true,
+      "ok": true,
+      "seconds": 2.078
+    },
+    {
+      "name": "sample_64",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "time_step_65",
+      "required": true,
+      "ok": true,
+      "seconds": 2.219
+    },
+    {
+      "name": "mesh_reference_centroid_65",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_65",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_65",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_66",
+      "required": true,
+      "ok": true,
+      "seconds": 2.141
+    },
+    {
+      "name": "mesh_reference_centroid_66",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_66",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_66",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_67",
+      "required": true,
+      "ok": true,
+      "seconds": 2.64
+    },
+    {
+      "name": "mesh_reference_centroid_67",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_67",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_67",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_68",
+      "required": true,
+      "ok": true,
+      "seconds": 2.859
+    },
+    {
+      "name": "mesh_reference_centroid_68",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_68",
+      "required": true,
+      "ok": true,
+      "seconds": 1.843
+    },
+    {
+      "name": "sample_68",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_69",
+      "required": true,
+      "ok": true,
+      "seconds": 2.204
+    },
+    {
+      "name": "mesh_reference_centroid_69",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_69",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "sample_69",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_70",
+      "required": true,
+      "ok": true,
+      "seconds": 2.672
+    },
+    {
+      "name": "mesh_reference_centroid_70",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_70",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_70",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_71",
+      "required": true,
+      "ok": true,
+      "seconds": 2.657
+    },
+    {
+      "name": "mesh_reference_centroid_71",
+      "required": true,
+      "ok": true,
+      "seconds": 0.375
+    },
+    {
+      "name": "moving_joint_centres_71",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_71",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_72",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_72",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_72",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_72",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_73",
+      "required": true,
+      "ok": true,
+      "seconds": 2.297
+    },
+    {
+      "name": "mesh_reference_centroid_73",
+      "required": true,
+      "ok": true,
+      "seconds": 0.641
+    },
+    {
+      "name": "moving_joint_centres_73",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_73",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_74",
+      "required": true,
+      "ok": true,
+      "seconds": 2.969
+    },
+    {
+      "name": "mesh_reference_centroid_74",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_74",
+      "required": true,
+      "ok": true,
+      "seconds": 1.61
+    },
+    {
+      "name": "sample_74",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_75",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_75",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_75",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "sample_75",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_76",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_76",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_76",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_76",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_77",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_77",
+      "required": true,
+      "ok": true,
+      "seconds": 0.64
+    },
+    {
+      "name": "moving_joint_centres_77",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "sample_77",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_78",
+      "required": true,
+      "ok": true,
+      "seconds": 2.688
+    },
+    {
+      "name": "mesh_reference_centroid_78",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_78",
+      "required": true,
+      "ok": true,
+      "seconds": 1.89
+    },
+    {
+      "name": "sample_78",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_79",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_79",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_79",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_79",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_80",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_80",
+      "required": true,
+      "ok": true,
+      "seconds": 1.265
+    },
+    {
+      "name": "moving_joint_centres_80",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_80",
+      "required": true,
+      "ok": true,
+      "seconds": 1.671
+    },
+    {
+      "name": "time_step_81",
+      "required": true,
+      "ok": true,
+      "seconds": 2.781
+    },
+    {
+      "name": "mesh_reference_centroid_81",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_81",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_81",
+      "required": true,
+      "ok": true,
+      "seconds": 1.968
+    },
+    {
+      "name": "time_step_82",
+      "required": true,
+      "ok": true,
+      "seconds": 2.656
+    },
+    {
+      "name": "mesh_reference_centroid_82",
+      "required": true,
+      "ok": true,
+      "seconds": 0.329
+    },
+    {
+      "name": "moving_joint_centres_82",
+      "required": true,
+      "ok": true,
+      "seconds": 1.938
+    },
+    {
+      "name": "sample_82",
+      "required": true,
+      "ok": true,
+      "seconds": 1.765
+    },
+    {
+      "name": "time_step_83",
+      "required": true,
+      "ok": true,
+      "seconds": 2.469
+    },
+    {
+      "name": "mesh_reference_centroid_83",
+      "required": true,
+      "ok": true,
+      "seconds": 0.641
+    },
+    {
+      "name": "moving_joint_centres_83",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_83",
+      "required": true,
+      "ok": true,
+      "seconds": 2.172
+    },
+    {
+      "name": "time_step_84",
+      "required": true,
+      "ok": true,
+      "seconds": 2.703
+    },
+    {
+      "name": "mesh_reference_centroid_84",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_84",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_84",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "time_step_85",
+      "required": true,
+      "ok": true,
+      "seconds": 2.86
+    },
+    {
+      "name": "mesh_reference_centroid_85",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_85",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "sample_85",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_86",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_86",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_86",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_86",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_87",
+      "required": true,
+      "ok": true,
+      "seconds": 2.437
+    },
+    {
+      "name": "mesh_reference_centroid_87",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_87",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_87",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_88",
+      "required": true,
+      "ok": true,
+      "seconds": 2.75
+    },
+    {
+      "name": "mesh_reference_centroid_88",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_88",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_88",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_89",
+      "required": true,
+      "ok": true,
+      "seconds": 2.86
+    },
+    {
+      "name": "mesh_reference_centroid_89",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_89",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_89",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_90",
+      "required": true,
+      "ok": true,
+      "seconds": 2.844
+    },
+    {
+      "name": "mesh_reference_centroid_90",
+      "required": true,
+      "ok": true,
+      "seconds": 0.703
+    },
+    {
+      "name": "moving_joint_centres_90",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "sample_90",
+      "required": true,
+      "ok": true,
+      "seconds": 1.843
+    },
+    {
+      "name": "time_step_91",
+      "required": true,
+      "ok": true,
+      "seconds": 2.75
+    },
+    {
+      "name": "mesh_reference_centroid_91",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_91",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "sample_91",
+      "required": true,
+      "ok": true,
+      "seconds": 1.593
+    },
+    {
+      "name": "time_step_92",
+      "required": true,
+      "ok": true,
+      "seconds": 3.047
+    },
+    {
+      "name": "mesh_reference_centroid_92",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_92",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_92",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_93",
+      "required": true,
+      "ok": true,
+      "seconds": 2.453
+    },
+    {
+      "name": "mesh_reference_centroid_93",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_93",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_93",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_94",
+      "required": true,
+      "ok": true,
+      "seconds": 2.266
+    },
+    {
+      "name": "mesh_reference_centroid_94",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_94",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_94",
+      "required": true,
+      "ok": true,
+      "seconds": 1.75
+    },
+    {
+      "name": "time_step_95",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_95",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_95",
+      "required": true,
+      "ok": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "sample_95",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_96",
+      "required": true,
+      "ok": true,
+      "seconds": 2.656
+    },
+    {
+      "name": "mesh_reference_centroid_96",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_96",
+      "required": true,
+      "ok": true,
+      "seconds": 1.938
+    },
+    {
+      "name": "sample_96",
+      "required": true,
+      "ok": true,
+      "seconds": 1.829
+    },
+    {
+      "name": "time_step_97",
+      "required": true,
+      "ok": true,
+      "seconds": 2.297
+    },
+    {
+      "name": "mesh_reference_centroid_97",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_97",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_97",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_98",
+      "required": true,
+      "ok": true,
+      "seconds": 3.39
+    },
+    {
+      "name": "mesh_reference_centroid_98",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_98",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_98",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_99",
+      "required": true,
+      "ok": true,
+      "seconds": 2.75
+    },
+    {
+      "name": "mesh_reference_centroid_99",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_99",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_99",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "time_step_100",
+      "required": true,
+      "ok": true,
+      "seconds": 2.078
+    },
+    {
+      "name": "mesh_reference_centroid_100",
+      "required": true,
+      "ok": true,
+      "seconds": 0.296
+    },
+    {
+      "name": "moving_joint_centres_100",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_100",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_101",
+      "required": true,
+      "ok": true,
+      "seconds": 2.297
+    },
+    {
+      "name": "mesh_reference_centroid_101",
+      "required": true,
+      "ok": true,
+      "seconds": 0.656
+    },
+    {
+      "name": "moving_joint_centres_101",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_101",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_102",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_102",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_102",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_102",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "time_step_103",
+      "required": true,
+      "ok": true,
+      "seconds": 2.453
+    },
+    {
+      "name": "mesh_reference_centroid_103",
+      "required": true,
+      "ok": true,
+      "seconds": 0.406
+    },
+    {
+      "name": "moving_joint_centres_103",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_103",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_104",
+      "required": true,
+      "ok": true,
+      "seconds": 2.078
+    },
+    {
+      "name": "mesh_reference_centroid_104",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_104",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "sample_104",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_105",
+      "required": true,
+      "ok": true,
+      "seconds": 2.156
+    },
+    {
+      "name": "mesh_reference_centroid_105",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_105",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_105",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_106",
+      "required": true,
+      "ok": true,
+      "seconds": 2.718
+    },
+    {
+      "name": "mesh_reference_centroid_106",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_106",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_106",
+      "required": true,
+      "ok": true,
+      "seconds": 1.609
+    },
+    {
+      "name": "time_step_107",
+      "required": true,
+      "ok": true,
+      "seconds": 3.172
+    },
+    {
+      "name": "mesh_reference_centroid_107",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_107",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_107",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_108",
+      "required": true,
+      "ok": true,
+      "seconds": 2.641
+    },
+    {
+      "name": "mesh_reference_centroid_108",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_108",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "sample_108",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_109",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_109",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_109",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_109",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_110",
+      "required": true,
+      "ok": true,
+      "seconds": 2.593
+    },
+    {
+      "name": "mesh_reference_centroid_110",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_110",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "sample_110",
+      "required": true,
+      "ok": true,
+      "seconds": 1.969
+    },
+    {
+      "name": "time_step_111",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_111",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_111",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_111",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_112",
+      "required": true,
+      "ok": true,
+      "seconds": 2.469
+    },
+    {
+      "name": "mesh_reference_centroid_112",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_112",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_112",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_113",
+      "required": true,
+      "ok": true,
+      "seconds": 2.703
+    },
+    {
+      "name": "mesh_reference_centroid_113",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_113",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_113",
+      "required": true,
+      "ok": true,
+      "seconds": 1.796
+    },
+    {
+      "name": "time_step_114",
+      "required": true,
+      "ok": true,
+      "seconds": 2.672
+    },
+    {
+      "name": "mesh_reference_centroid_114",
+      "required": true,
+      "ok": true,
+      "seconds": 0.296
+    },
+    {
+      "name": "moving_joint_centres_114",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_114",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_115",
+      "required": true,
+      "ok": true,
+      "seconds": 3.125
+    },
+    {
+      "name": "mesh_reference_centroid_115",
+      "required": true,
+      "ok": true,
+      "seconds": 0.641
+    },
+    {
+      "name": "moving_joint_centres_115",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_115",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_116",
+      "required": true,
+      "ok": true,
+      "seconds": 2.36
+    },
+    {
+      "name": "mesh_reference_centroid_116",
+      "required": true,
+      "ok": true,
+      "seconds": 0.735
+    },
+    {
+      "name": "moving_joint_centres_116",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_116",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_117",
+      "required": true,
+      "ok": true,
+      "seconds": 2.86
+    },
+    {
+      "name": "mesh_reference_centroid_117",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_117",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_117",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_118",
+      "required": true,
+      "ok": true,
+      "seconds": 2.453
+    },
+    {
+      "name": "mesh_reference_centroid_118",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_118",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_118",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_119",
+      "required": true,
+      "ok": true,
+      "seconds": 2.484
+    },
+    {
+      "name": "mesh_reference_centroid_119",
+      "required": true,
+      "ok": true,
+      "seconds": 0.672
+    },
+    {
+      "name": "moving_joint_centres_119",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_119",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_120",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_120",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_120",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_120",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_121",
+      "required": true,
+      "ok": true,
+      "seconds": 2.75
+    },
+    {
+      "name": "mesh_reference_centroid_121",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_121",
+      "required": true,
+      "ok": true,
+      "seconds": 1.969
+    },
+    {
+      "name": "sample_121",
+      "required": true,
+      "ok": true,
+      "seconds": 1.766
+    },
+    {
+      "name": "time_step_122",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_122",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_122",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_122",
+      "required": true,
+      "ok": true,
+      "seconds": 1.75
+    },
+    {
+      "name": "time_step_123",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_123",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_123",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_123",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_124",
+      "required": true,
+      "ok": true,
+      "seconds": 2.672
+    },
+    {
+      "name": "mesh_reference_centroid_124",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_124",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "sample_124",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_125",
+      "required": true,
+      "ok": true,
+      "seconds": 2.36
+    },
+    {
+      "name": "mesh_reference_centroid_125",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_125",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_125",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_126",
+      "required": true,
+      "ok": true,
+      "seconds": 2.641
+    },
+    {
+      "name": "mesh_reference_centroid_126",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_126",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "sample_126",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_127",
+      "required": true,
+      "ok": true,
+      "seconds": 2.766
+    },
+    {
+      "name": "mesh_reference_centroid_127",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_127",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_127",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_128",
+      "required": true,
+      "ok": true,
+      "seconds": 2.766
+    },
+    {
+      "name": "mesh_reference_centroid_128",
+      "required": true,
+      "ok": true,
+      "seconds": 0.39
+    },
+    {
+      "name": "moving_joint_centres_128",
+      "required": true,
+      "ok": true,
+      "seconds": 1.89
+    },
+    {
+      "name": "sample_128",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "time_step_129",
+      "required": true,
+      "ok": true,
+      "seconds": 2.515
+    },
+    {
+      "name": "mesh_reference_centroid_129",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_129",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_129",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_130",
+      "required": true,
+      "ok": true,
+      "seconds": 2.735
+    },
+    {
+      "name": "mesh_reference_centroid_130",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_130",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_130",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_131",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_131",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_131",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_131",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_132",
+      "required": true,
+      "ok": true,
+      "seconds": 2.344
+    },
+    {
+      "name": "mesh_reference_centroid_132",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_132",
+      "required": true,
+      "ok": true,
+      "seconds": 1.953
+    },
+    {
+      "name": "sample_132",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_133",
+      "required": true,
+      "ok": true,
+      "seconds": 3.015
+    },
+    {
+      "name": "mesh_reference_centroid_133",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_133",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_133",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "time_step_134",
+      "required": true,
+      "ok": true,
+      "seconds": 2.735
+    },
+    {
+      "name": "mesh_reference_centroid_134",
+      "required": true,
+      "ok": true,
+      "seconds": 0.484
+    },
+    {
+      "name": "moving_joint_centres_134",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_134",
+      "required": true,
+      "ok": true,
+      "seconds": 1.968
+    },
+    {
+      "name": "time_step_135",
+      "required": true,
+      "ok": true,
+      "seconds": 2.609
+    },
+    {
+      "name": "mesh_reference_centroid_135",
+      "required": true,
+      "ok": true,
+      "seconds": 0.282
+    },
+    {
+      "name": "moving_joint_centres_135",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_135",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_136",
+      "required": true,
+      "ok": true,
+      "seconds": 2.281
+    },
+    {
+      "name": "mesh_reference_centroid_136",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_136",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_136",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_137",
+      "required": true,
+      "ok": true,
+      "seconds": 2.218
+    },
+    {
+      "name": "mesh_reference_centroid_137",
+      "required": true,
+      "ok": true,
+      "seconds": 0.656
+    },
+    {
+      "name": "moving_joint_centres_137",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_137",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "time_step_138",
+      "required": true,
+      "ok": true,
+      "seconds": 2.516
+    },
+    {
+      "name": "mesh_reference_centroid_138",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_138",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_138",
+      "required": true,
+      "ok": true,
+      "seconds": 1.937
+    },
+    {
+      "name": "time_step_139",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "mesh_reference_centroid_139",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_139",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_139",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_140",
+      "required": true,
+      "ok": true,
+      "seconds": 2.125
+    },
+    {
+      "name": "mesh_reference_centroid_140",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_140",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_140",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_141",
+      "required": true,
+      "ok": true,
+      "seconds": 2.157
+    },
+    {
+      "name": "mesh_reference_centroid_141",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_141",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "sample_141",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_142",
+      "required": true,
+      "ok": true,
+      "seconds": 2.578
+    },
+    {
+      "name": "mesh_reference_centroid_142",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_142",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_142",
+      "required": true,
+      "ok": true,
+      "seconds": 1.969
+    },
+    {
+      "name": "time_step_143",
+      "required": true,
+      "ok": true,
+      "seconds": 2.125
+    },
+    {
+      "name": "mesh_reference_centroid_143",
+      "required": true,
+      "ok": true,
+      "seconds": 0.296
+    },
+    {
+      "name": "moving_joint_centres_143",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_143",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_144",
+      "required": true,
+      "ok": true,
+      "seconds": 2.188
+    },
+    {
+      "name": "mesh_reference_centroid_144",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_144",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_144",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "time_step_145",
+      "required": true,
+      "ok": true,
+      "seconds": 2.188
+    },
+    {
+      "name": "mesh_reference_centroid_145",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_145",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "sample_145",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_146",
+      "required": true,
+      "ok": true,
+      "seconds": 2.656
+    },
+    {
+      "name": "mesh_reference_centroid_146",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_146",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_146",
+      "required": true,
+      "ok": true,
+      "seconds": 2.078
+    },
+    {
+      "name": "time_step_147",
+      "required": true,
+      "ok": true,
+      "seconds": 2.188
+    },
+    {
+      "name": "mesh_reference_centroid_147",
+      "required": true,
+      "ok": true,
+      "seconds": 0.391
+    },
+    {
+      "name": "moving_joint_centres_147",
+      "required": true,
+      "ok": true,
+      "seconds": 1.938
+    },
+    {
+      "name": "sample_147",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_148",
+      "required": true,
+      "ok": true,
+      "seconds": 2.156
+    },
+    {
+      "name": "mesh_reference_centroid_148",
+      "required": true,
+      "ok": true,
+      "seconds": 0.672
+    },
+    {
+      "name": "moving_joint_centres_148",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_148",
+      "required": true,
+      "ok": true,
+      "seconds": 1.61
+    },
+    {
+      "name": "time_step_149",
+      "required": true,
+      "ok": true,
+      "seconds": 2.61
+    },
+    {
+      "name": "mesh_reference_centroid_149",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_149",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_149",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_150",
+      "required": true,
+      "ok": true,
+      "seconds": 2.594
+    },
+    {
+      "name": "mesh_reference_centroid_150",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_150",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_150",
+      "required": true,
+      "ok": true,
+      "seconds": 2.0
+    },
+    {
+      "name": "time_step_151",
+      "required": true,
+      "ok": true,
+      "seconds": 2.281
+    },
+    {
+      "name": "mesh_reference_centroid_151",
+      "required": true,
+      "ok": true,
+      "seconds": 0.296
+    },
+    {
+      "name": "moving_joint_centres_151",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "sample_151",
+      "required": true,
+      "ok": true,
+      "seconds": 2.125
+    },
+    {
+      "name": "time_step_152",
+      "required": true,
+      "ok": true,
+      "seconds": 2.281
+    },
+    {
+      "name": "mesh_reference_centroid_152",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_152",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "sample_152",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_153",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_153",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_153",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_153",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_154",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_154",
+      "required": true,
+      "ok": true,
+      "seconds": 0.828
+    },
+    {
+      "name": "moving_joint_centres_154",
+      "required": true,
+      "ok": true,
+      "seconds": 2.234
+    },
+    {
+      "name": "sample_154",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_155",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_155",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_155",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_155",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_156",
+      "required": true,
+      "ok": true,
+      "seconds": 2.688
+    },
+    {
+      "name": "mesh_reference_centroid_156",
+      "required": true,
+      "ok": true,
+      "seconds": 0.36
+    },
+    {
+      "name": "moving_joint_centres_156",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_156",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_157",
+      "required": true,
+      "ok": true,
+      "seconds": 2.938
+    },
+    {
+      "name": "mesh_reference_centroid_157",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_157",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_157",
+      "required": true,
+      "ok": true,
+      "seconds": 1.766
+    },
+    {
+      "name": "time_step_158",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_158",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_158",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_158",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_159",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_159",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_159",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_159",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_160",
+      "required": true,
+      "ok": true,
+      "seconds": 2.843
+    },
+    {
+      "name": "mesh_reference_centroid_160",
+      "required": true,
+      "ok": true,
+      "seconds": 0.407
+    },
+    {
+      "name": "moving_joint_centres_160",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_160",
+      "required": true,
+      "ok": true,
+      "seconds": 2.016
+    },
+    {
+      "name": "time_step_161",
+      "required": true,
+      "ok": true,
+      "seconds": 2.735
+    },
+    {
+      "name": "mesh_reference_centroid_161",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_161",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_161",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_162",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_162",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_162",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_162",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "time_step_163",
+      "required": true,
+      "ok": true,
+      "seconds": 2.843
+    },
+    {
+      "name": "mesh_reference_centroid_163",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_163",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_163",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_164",
+      "required": true,
+      "ok": true,
+      "seconds": 2.75
+    },
+    {
+      "name": "mesh_reference_centroid_164",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_164",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "sample_164",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_165",
+      "required": true,
+      "ok": true,
+      "seconds": 2.484
+    },
+    {
+      "name": "mesh_reference_centroid_165",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_165",
+      "required": true,
+      "ok": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "sample_165",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_166",
+      "required": true,
+      "ok": true,
+      "seconds": 2.516
+    },
+    {
+      "name": "mesh_reference_centroid_166",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_166",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_166",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_167",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_167",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_167",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_167",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_168",
+      "required": true,
+      "ok": true,
+      "seconds": 2.672
+    },
+    {
+      "name": "mesh_reference_centroid_168",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_168",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_168",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "time_step_169",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_169",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_169",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_169",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "time_step_170",
+      "required": true,
+      "ok": true,
+      "seconds": 2.843
+    },
+    {
+      "name": "mesh_reference_centroid_170",
+      "required": true,
+      "ok": true,
+      "seconds": 0.375
+    },
+    {
+      "name": "moving_joint_centres_170",
+      "required": true,
+      "ok": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "sample_170",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_171",
+      "required": true,
+      "ok": true,
+      "seconds": 2.734
+    },
+    {
+      "name": "mesh_reference_centroid_171",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_171",
+      "required": true,
+      "ok": true,
+      "seconds": 1.86
+    },
+    {
+      "name": "sample_171",
+      "required": true,
+      "ok": true,
+      "seconds": 1.781
+    },
+    {
+      "name": "time_step_172",
+      "required": true,
+      "ok": true,
+      "seconds": 2.468
+    },
+    {
+      "name": "mesh_reference_centroid_172",
+      "required": true,
+      "ok": true,
+      "seconds": 0.719
+    },
+    {
+      "name": "moving_joint_centres_172",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_172",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_173",
+      "required": true,
+      "ok": true,
+      "seconds": 2.797
+    },
+    {
+      "name": "mesh_reference_centroid_173",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_173",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_173",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_174",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_174",
+      "required": true,
+      "ok": true,
+      "seconds": 0.282
+    },
+    {
+      "name": "moving_joint_centres_174",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "sample_174",
+      "required": true,
+      "ok": true,
+      "seconds": 1.75
+    },
+    {
+      "name": "time_step_175",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_175",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_175",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_175",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_176",
+      "required": true,
+      "ok": true,
+      "seconds": 2.25
+    },
+    {
+      "name": "mesh_reference_centroid_176",
+      "required": true,
+      "ok": true,
+      "seconds": 0.688
+    },
+    {
+      "name": "moving_joint_centres_176",
+      "required": true,
+      "ok": true,
+      "seconds": 1.641
+    },
+    {
+      "name": "sample_176",
+      "required": true,
+      "ok": true,
+      "seconds": 1.656
+    },
+    {
+      "name": "time_step_177",
+      "required": true,
+      "ok": true,
+      "seconds": 2.609
+    },
+    {
+      "name": "mesh_reference_centroid_177",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_177",
+      "required": true,
+      "ok": true,
+      "seconds": 1.484
+    },
+    {
+      "name": "sample_177",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_178",
+      "required": true,
+      "ok": true,
+      "seconds": 3.766
+    },
+    {
+      "name": "mesh_reference_centroid_178",
+      "required": true,
+      "ok": true,
+      "seconds": 0.329
+    },
+    {
+      "name": "moving_joint_centres_178",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_178",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_179",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_179",
+      "required": true,
+      "ok": true,
+      "seconds": 0.641
+    },
+    {
+      "name": "moving_joint_centres_179",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "sample_179",
+      "required": true,
+      "ok": true,
+      "seconds": 1.921
+    },
+    {
+      "name": "time_step_180",
+      "required": true,
+      "ok": true,
+      "seconds": 2.031
+    },
+    {
+      "name": "mesh_reference_centroid_180",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_180",
+      "required": true,
+      "ok": true,
+      "seconds": 1.546
+    },
+    {
+      "name": "sample_180",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "time_step_181",
+      "required": true,
+      "ok": true,
+      "seconds": 2.718
+    },
+    {
+      "name": "mesh_reference_centroid_181",
+      "required": true,
+      "ok": true,
+      "seconds": 0.343
+    },
+    {
+      "name": "moving_joint_centres_181",
+      "required": true,
+      "ok": true,
+      "seconds": 1.235
+    },
+    {
+      "name": "sample_181",
+      "required": true,
+      "ok": true,
+      "seconds": 3.234
+    },
+    {
+      "name": "time_step_182",
+      "required": true,
+      "ok": true,
+      "seconds": 2.266
+    },
+    {
+      "name": "mesh_reference_centroid_182",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_182",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_182",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_183",
+      "required": true,
+      "ok": true,
+      "seconds": 2.078
+    },
+    {
+      "name": "mesh_reference_centroid_183",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_183",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_183",
+      "required": true,
+      "ok": true,
+      "seconds": 2.156
+    },
+    {
+      "name": "time_step_184",
+      "required": true,
+      "ok": true,
+      "seconds": 2.422
+    },
+    {
+      "name": "mesh_reference_centroid_184",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_184",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_184",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "time_step_185",
+      "required": true,
+      "ok": true,
+      "seconds": 2.609
+    },
+    {
+      "name": "mesh_reference_centroid_185",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_185",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_185",
+      "required": true,
+      "ok": true,
+      "seconds": 1.907
+    },
+    {
+      "name": "time_step_186",
+      "required": true,
+      "ok": true,
+      "seconds": 2.437
+    },
+    {
+      "name": "mesh_reference_centroid_186",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_186",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_186",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_187",
+      "required": true,
+      "ok": true,
+      "seconds": 3.875
+    },
+    {
+      "name": "mesh_reference_centroid_187",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_187",
+      "required": true,
+      "ok": true,
+      "seconds": 1.484
+    },
+    {
+      "name": "sample_187",
+      "required": true,
+      "ok": true,
+      "seconds": 1.703
+    },
+    {
+      "name": "time_step_188",
+      "required": true,
+      "ok": true,
+      "seconds": 2.703
+    },
+    {
+      "name": "mesh_reference_centroid_188",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_188",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_188",
+      "required": true,
+      "ok": true,
+      "seconds": 2.281
+    },
+    {
+      "name": "time_step_189",
+      "required": true,
+      "ok": true,
+      "seconds": 2.359
+    },
+    {
+      "name": "mesh_reference_centroid_189",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_189",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_189",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_190",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_190",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_190",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_190",
+      "required": true,
+      "ok": true,
+      "seconds": 2.016
+    },
+    {
+      "name": "time_step_191",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_191",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_191",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_191",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_192",
+      "required": true,
+      "ok": true,
+      "seconds": 2.906
+    },
+    {
+      "name": "mesh_reference_centroid_192",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_192",
+      "required": true,
+      "ok": true,
+      "seconds": 1.843
+    },
+    {
+      "name": "sample_192",
+      "required": true,
+      "ok": true,
+      "seconds": 1.875
+    },
+    {
+      "name": "time_step_193",
+      "required": true,
+      "ok": true,
+      "seconds": 2.407
+    },
+    {
+      "name": "mesh_reference_centroid_193",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_193",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_193",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "time_step_194",
+      "required": true,
+      "ok": true,
+      "seconds": 2.328
+    },
+    {
+      "name": "mesh_reference_centroid_194",
+      "required": true,
+      "ok": true,
+      "seconds": 0.703
+    },
+    {
+      "name": "moving_joint_centres_194",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_194",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_195",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_195",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_195",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_195",
+      "required": true,
+      "ok": true,
+      "seconds": 1.954
+    },
+    {
+      "name": "time_step_196",
+      "required": true,
+      "ok": true,
+      "seconds": 2.594
+    },
+    {
+      "name": "mesh_reference_centroid_196",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_196",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_196",
+      "required": true,
+      "ok": true,
+      "seconds": 1.906
+    },
+    {
+      "name": "time_step_197",
+      "required": true,
+      "ok": true,
+      "seconds": 2.328
+    },
+    {
+      "name": "mesh_reference_centroid_197",
+      "required": true,
+      "ok": true,
+      "seconds": 0.594
+    },
+    {
+      "name": "moving_joint_centres_197",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_197",
+      "required": true,
+      "ok": true,
+      "seconds": 1.593
+    },
+    {
+      "name": "time_step_198",
+      "required": true,
+      "ok": true,
+      "seconds": 2.891
+    },
+    {
+      "name": "mesh_reference_centroid_198",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_198",
+      "required": true,
+      "ok": true,
+      "seconds": 1.532
+    },
+    {
+      "name": "sample_198",
+      "required": true,
+      "ok": true,
+      "seconds": 1.672
+    },
+    {
+      "name": "time_step_199",
+      "required": true,
+      "ok": true,
+      "seconds": 2.703
+    },
+    {
+      "name": "mesh_reference_centroid_199",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_199",
+      "required": true,
+      "ok": true,
+      "seconds": 2.016
+    },
+    {
+      "name": "sample_199",
+      "required": true,
+      "ok": true,
+      "seconds": 1.937
+    },
+    {
+      "name": "time_step_200",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_200",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_200",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_200",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_201",
+      "required": true,
+      "ok": true,
+      "seconds": 2.437
+    },
+    {
+      "name": "mesh_reference_centroid_201",
+      "required": true,
+      "ok": true,
+      "seconds": 0.656
+    },
+    {
+      "name": "moving_joint_centres_201",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_201",
+      "required": true,
+      "ok": true,
+      "seconds": 1.907
+    },
+    {
+      "name": "time_step_202",
+      "required": true,
+      "ok": true,
+      "seconds": 2.766
+    },
+    {
+      "name": "mesh_reference_centroid_202",
+      "required": true,
+      "ok": true,
+      "seconds": 0.39
+    },
+    {
+      "name": "moving_joint_centres_202",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_202",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "time_step_203",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_203",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_203",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_203",
+      "required": true,
+      "ok": true,
+      "seconds": 2.312
+    },
+    {
+      "name": "time_step_204",
+      "required": true,
+      "ok": true,
+      "seconds": 2.391
+    },
+    {
+      "name": "mesh_reference_centroid_204",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_204",
+      "required": true,
+      "ok": true,
+      "seconds": 1.64
+    },
+    {
+      "name": "sample_204",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "time_step_205",
+      "required": true,
+      "ok": true,
+      "seconds": 2.734
+    },
+    {
+      "name": "mesh_reference_centroid_205",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_205",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_205",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_206",
+      "required": true,
+      "ok": true,
+      "seconds": 2.641
+    },
+    {
+      "name": "mesh_reference_centroid_206",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_206",
+      "required": true,
+      "ok": true,
+      "seconds": 1.954
+    },
+    {
+      "name": "sample_206",
+      "required": true,
+      "ok": true,
+      "seconds": 2.093
+    },
+    {
+      "name": "time_step_207",
+      "required": true,
+      "ok": true,
+      "seconds": 2.468
+    },
+    {
+      "name": "mesh_reference_centroid_207",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_207",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "sample_207",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_208",
+      "required": true,
+      "ok": true,
+      "seconds": 2.719
+    },
+    {
+      "name": "mesh_reference_centroid_208",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_208",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_208",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_209",
+      "required": true,
+      "ok": true,
+      "seconds": 2.781
+    },
+    {
+      "name": "mesh_reference_centroid_209",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_209",
+      "required": true,
+      "ok": true,
+      "seconds": 1.907
+    },
+    {
+      "name": "sample_209",
+      "required": true,
+      "ok": true,
+      "seconds": 2.203
+    },
+    {
+      "name": "time_step_210",
+      "required": true,
+      "ok": true,
+      "seconds": 2.406
+    },
+    {
+      "name": "mesh_reference_centroid_210",
+      "required": true,
+      "ok": true,
+      "seconds": 0.61
+    },
+    {
+      "name": "moving_joint_centres_210",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_210",
+      "required": true,
+      "ok": true,
+      "seconds": 1.782
+    },
+    {
+      "name": "time_step_211",
+      "required": true,
+      "ok": true,
+      "seconds": 2.625
+    },
+    {
+      "name": "mesh_reference_centroid_211",
+      "required": true,
+      "ok": true,
+      "seconds": 0.657
+    },
+    {
+      "name": "moving_joint_centres_211",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_211",
+      "required": true,
+      "ok": true,
+      "seconds": 1.735
+    },
+    {
+      "name": "time_step_212",
+      "required": true,
+      "ok": true,
+      "seconds": 2.687
+    },
+    {
+      "name": "mesh_reference_centroid_212",
+      "required": true,
+      "ok": true,
+      "seconds": 0.406
+    },
+    {
+      "name": "moving_joint_centres_212",
+      "required": true,
+      "ok": true,
+      "seconds": 1.563
+    },
+    {
+      "name": "sample_212",
+      "required": true,
+      "ok": true,
+      "seconds": 2.125
+    },
+    {
+      "name": "time_step_213",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_213",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_213",
+      "required": true,
+      "ok": true,
+      "seconds": 2.0
+    },
+    {
+      "name": "sample_213",
+      "required": true,
+      "ok": true,
+      "seconds": 1.797
+    },
+    {
+      "name": "time_step_214",
+      "required": true,
+      "ok": true,
+      "seconds": 2.391
+    },
+    {
+      "name": "mesh_reference_centroid_214",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_214",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_214",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_215",
+      "required": true,
+      "ok": true,
+      "seconds": 2.563
+    },
+    {
+      "name": "mesh_reference_centroid_215",
+      "required": true,
+      "ok": true,
+      "seconds": 0.359
+    },
+    {
+      "name": "moving_joint_centres_215",
+      "required": true,
+      "ok": true,
+      "seconds": 1.594
+    },
+    {
+      "name": "sample_215",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "time_step_216",
+      "required": true,
+      "ok": true,
+      "seconds": 2.531
+    },
+    {
+      "name": "mesh_reference_centroid_216",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_216",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_216",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "time_step_217",
+      "required": true,
+      "ok": true,
+      "seconds": 2.296
+    },
+    {
+      "name": "mesh_reference_centroid_217",
+      "required": true,
+      "ok": true,
+      "seconds": 0.281
+    },
+    {
+      "name": "moving_joint_centres_217",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "sample_217",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_218",
+      "required": true,
+      "ok": true,
+      "seconds": 2.172
+    },
+    {
+      "name": "mesh_reference_centroid_218",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_218",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_218",
+      "required": true,
+      "ok": true,
+      "seconds": 1.579
+    },
+    {
+      "name": "time_step_219",
+      "required": true,
+      "ok": true,
+      "seconds": 2.453
+    },
+    {
+      "name": "mesh_reference_centroid_219",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_219",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_219",
+      "required": true,
+      "ok": true,
+      "seconds": 1.734
+    },
+    {
+      "name": "time_step_220",
+      "required": true,
+      "ok": true,
+      "seconds": 2.641
+    },
+    {
+      "name": "mesh_reference_centroid_220",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_220",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_220",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "time_step_221",
+      "required": true,
+      "ok": true,
+      "seconds": 2.266
+    },
+    {
+      "name": "mesh_reference_centroid_221",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_221",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_221",
+      "required": true,
+      "ok": true,
+      "seconds": 1.766
+    },
+    {
+      "name": "time_step_222",
+      "required": true,
+      "ok": true,
+      "seconds": 2.469
+    },
+    {
+      "name": "mesh_reference_centroid_222",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_222",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_222",
+      "required": true,
+      "ok": true,
+      "seconds": 2.047
+    },
+    {
+      "name": "time_step_223",
+      "required": true,
+      "ok": true,
+      "seconds": 2.469
+    },
+    {
+      "name": "mesh_reference_centroid_223",
+      "required": true,
+      "ok": true,
+      "seconds": 0.329
+    },
+    {
+      "name": "moving_joint_centres_223",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_223",
+      "required": true,
+      "ok": true,
+      "seconds": 1.922
+    },
+    {
+      "name": "time_step_224",
+      "required": true,
+      "ok": true,
+      "seconds": 2.766
+    },
+    {
+      "name": "mesh_reference_centroid_224",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_224",
+      "required": true,
+      "ok": true,
+      "seconds": 1.813
+    },
+    {
+      "name": "sample_224",
+      "required": true,
+      "ok": true,
+      "seconds": 1.688
+    },
+    {
+      "name": "time_step_225",
+      "required": true,
+      "ok": true,
+      "seconds": 2.063
+    },
+    {
+      "name": "mesh_reference_centroid_225",
+      "required": true,
+      "ok": true,
+      "seconds": 0.719
+    },
+    {
+      "name": "moving_joint_centres_225",
+      "required": true,
+      "ok": true,
+      "seconds": 1.547
+    },
+    {
+      "name": "sample_225",
+      "required": true,
+      "ok": true,
+      "seconds": 1.719
+    },
+    {
+      "name": "time_step_226",
+      "required": true,
+      "ok": true,
+      "seconds": 2.36
+    },
+    {
+      "name": "mesh_reference_centroid_226",
+      "required": true,
+      "ok": true,
+      "seconds": 0.64
+    },
+    {
+      "name": "moving_joint_centres_226",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_226",
+      "required": true,
+      "ok": true,
+      "seconds": 2.265
+    },
+    {
+      "name": "time_step_227",
+      "required": true,
+      "ok": true,
+      "seconds": 2.546
+    },
+    {
+      "name": "mesh_reference_centroid_227",
+      "required": true,
+      "ok": true,
+      "seconds": 0.312
+    },
+    {
+      "name": "moving_joint_centres_227",
+      "required": true,
+      "ok": true,
+      "seconds": 1.578
+    },
+    {
+      "name": "sample_227",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_228",
+      "required": true,
+      "ok": true,
+      "seconds": 2.484
+    },
+    {
+      "name": "mesh_reference_centroid_228",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_228",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "sample_228",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "time_step_229",
+      "required": true,
+      "ok": true,
+      "seconds": 2.375
+    },
+    {
+      "name": "mesh_reference_centroid_229",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_229",
+      "required": true,
+      "ok": true,
+      "seconds": 1.515
+    },
+    {
+      "name": "sample_229",
+      "required": true,
+      "ok": true,
+      "seconds": 2.172
+    },
+    {
+      "name": "time_step_230",
+      "required": true,
+      "ok": true,
+      "seconds": 2.578
+    },
+    {
+      "name": "mesh_reference_centroid_230",
+      "required": true,
+      "ok": true,
+      "seconds": 0.328
+    },
+    {
+      "name": "moving_joint_centres_230",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "sample_230",
+      "required": true,
+      "ok": true,
+      "seconds": 1.75
+    },
+    {
+      "name": "time_step_231",
+      "required": true,
+      "ok": true,
+      "seconds": 2.656
+    },
+    {
+      "name": "mesh_reference_centroid_231",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_231",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_231",
+      "required": true,
+      "ok": true,
+      "seconds": 1.687
+    },
+    {
+      "name": "time_step_232",
+      "required": true,
+      "ok": true,
+      "seconds": 2.438
+    },
+    {
+      "name": "mesh_reference_centroid_232",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_232",
+      "required": true,
+      "ok": true,
+      "seconds": 1.859
+    },
+    {
+      "name": "sample_232",
+      "required": true,
+      "ok": true,
+      "seconds": 2.063
+    },
+    {
+      "name": "time_step_233",
+      "required": true,
+      "ok": true,
+      "seconds": 2.547
+    },
+    {
+      "name": "mesh_reference_centroid_233",
+      "required": true,
+      "ok": true,
+      "seconds": 0.734
+    },
+    {
+      "name": "moving_joint_centres_233",
+      "required": true,
+      "ok": true,
+      "seconds": 1.5
+    },
+    {
+      "name": "sample_233",
+      "required": true,
+      "ok": true,
+      "seconds": 1.812
+    },
+    {
+      "name": "time_step_234",
+      "required": true,
+      "ok": true,
+      "seconds": 2.797
+    },
+    {
+      "name": "mesh_reference_centroid_234",
+      "required": true,
+      "ok": true,
+      "seconds": 0.344
+    },
+    {
+      "name": "moving_joint_centres_234",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_234",
+      "required": true,
+      "ok": true,
+      "seconds": 1.718
+    },
+    {
+      "name": "time_step_235",
+      "required": true,
+      "ok": true,
+      "seconds": 2.859
+    },
+    {
+      "name": "mesh_reference_centroid_235",
+      "required": true,
+      "ok": true,
+      "seconds": 0.297
+    },
+    {
+      "name": "moving_joint_centres_235",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_235",
+      "required": true,
+      "ok": true,
+      "seconds": 2.032
+    },
+    {
+      "name": "time_step_236",
+      "required": true,
+      "ok": true,
+      "seconds": 2.438
+    },
+    {
+      "name": "mesh_reference_centroid_236",
+      "required": true,
+      "ok": true,
+      "seconds": 0.625
+    },
+    {
+      "name": "moving_joint_centres_236",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "sample_236",
+      "required": true,
+      "ok": true,
+      "seconds": 1.625
+    },
+    {
+      "name": "time_step_237",
+      "required": true,
+      "ok": true,
+      "seconds": 2.828
+    },
+    {
+      "name": "mesh_reference_centroid_237",
+      "required": true,
+      "ok": true,
+      "seconds": 0.313
+    },
+    {
+      "name": "moving_joint_centres_237",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_237",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "time_step_238",
+      "required": true,
+      "ok": true,
+      "seconds": 2.688
+    },
+    {
+      "name": "mesh_reference_centroid_238",
+      "required": true,
+      "ok": true,
+      "seconds": 0.422
+    },
+    {
+      "name": "moving_joint_centres_238",
+      "required": true,
+      "ok": true,
+      "seconds": 1.844
+    },
+    {
+      "name": "sample_238",
+      "required": true,
+      "ok": true,
+      "seconds": 1.985
+    },
+    {
+      "name": "time_step_239",
+      "required": true,
+      "ok": true,
+      "seconds": 2.765
+    },
+    {
+      "name": "mesh_reference_centroid_239",
+      "required": true,
+      "ok": true,
+      "seconds": 0.593
+    },
+    {
+      "name": "moving_joint_centres_239",
+      "required": true,
+      "ok": true,
+      "seconds": 1.516
+    },
+    {
+      "name": "sample_239",
+      "required": true,
+      "ok": true,
+      "seconds": 1.562
+    },
+    {
+      "name": "time_step_240",
+      "required": true,
+      "ok": true,
+      "seconds": 3.125
+    },
+    {
+      "name": "mesh_reference_centroid_240",
+      "required": true,
+      "ok": true,
+      "seconds": 0.609
+    },
+    {
+      "name": "moving_joint_centres_240",
+      "required": true,
+      "ok": true,
+      "seconds": 1.531
+    },
+    {
+      "name": "sample_240",
+      "required": true,
+      "ok": true,
+      "seconds": 1.828
+    },
+    {
+      "name": "write_final_case",
+      "required": true,
+      "ok": true,
+      "seconds": 1.235
+    },
+    {
+      "name": "write_final_data",
+      "required": true,
+      "ok": true,
+      "seconds": 1.891
+    },
+    {
+      "name": "stop_transcript",
+      "required": true,
+      "ok": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "exit_solver",
+      "required": true,
+      "ok": true,
+      "seconds": 0.0
+    }
+  ],
+  "failed_required": [],
+  "execution_complete": true,
+  "joint_reports_initial": [
+    {
+      "name": "tau_j1",
+      "centre_m": [
+        -4e-06,
+        -0.0366,
+        -0.460702
+      ],
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "zones": [
+        "wall_l1",
+        "wall_l2",
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    },
+    {
+      "name": "tau_j2",
+      "centre_m": [
+        0.016686,
+        -0.0666,
+        -0.511202
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "zones": [
+        "wall_l2",
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    },
+    {
+      "name": "tau_j3",
+      "centre_m": [
+        0.014796,
+        -0.12259999999999999,
+        -0.313202
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "zones": [
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    }
+  ],
+  "started_utc": "2026-10-29T15:40:05Z",
+  "box_roles": {
+    "xmin": "pressure-outlet",
+    "xmax": "pressure-outlet",
+    "ymin": "pressure-outlet",
+    "ymax": "pressure-outlet",
+    "zmin": "pressure-outlet",
+    "zmax": "pressure-outlet"
+  },
+  "joint_reports_current": [
+    {
+      "name": "tau_j1",
+      "centre_m": [
+        -3.9999999999749005e-06,
+        -0.04616315295964222,
+        -0.4702651529596425
+      ],
+      "axis": [
+        0,
+        0,
+        -1
+      ],
+      "zones": [
+        "wall_l1",
+        "wall_l2",
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    },
+    {
+      "name": "tau_j2",
+      "centre_m": [
+        0.016686000000000024,
+        -0.07616315295964222,
+        -0.5207651529596425
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "zones": [
+        "wall_l2",
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    },
+    {
+      "name": "tau_j3",
+      "centre_m": [
+        0.014796000000000024,
+        -0.1321631529596422,
+        -0.3227651529596425
+      ],
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "zones": [
+        "wall_link3",
+        "wall_jaw1",
+        "wall_jaw2",
+        "wall_pin4"
+      ]
+    }
+  ],
+  "mesh_reference_centroid_initial_m": [
+    0.0001627522499391713,
+    0.3618156875008423,
+    -0.06482302114860826
+  ],
+  "cycle_statistics": {
+    "cycles": [
+      {
+        "sample_count": 80,
+        "mean": {
+          "my": -0.0006387618256324301,
+          "fx(wall_l1)": 0.002735577544482144,
+          "my(wall_pin4)": -1.8205566382853306e-05,
+          "fy(wall_auv)": -9.418364170980933,
+          "fz(wall_auv)": -4.281852342794735,
+          "fy(wall_jaw2)": -0.0001485751747486976,
+          "fx(wall_pin4)": 2.9106654993806713e-05,
+          "mz(wall_l2)": -0.0009203839040327521,
+          "fx(wall_l2)": -0.006345999003236451,
+          "mx(wall_l2)": 0.0011117900069086745,
+          "fx(wall_auv)": 0.0049510685833360725,
+          "mx(wall_auv)": -2.0369440404727532,
+          "fy(wall_base0)": -0.017190527416211934,
+          "fz(wall_base0)": 0.017396021257595977,
+          "mz(wall_jaw1)": 6.860568351577039e-05,
+          "tau_j1": -6.193923165755157e-05,
+          "fz(wall_jaw1)": -0.0001560525123296453,
+          "mz(wall_base0)": -3.116866415856607e-05,
+          "mz": -0.003287482932907985,
+          "fz": -4.278039530346396,
+          "fx": 0.005129368914908111,
+          "my(wall_link3)": -0.0015001753910597149,
+          "mx(wall_pin4)": 0.000135710778963346,
+          "mz(wall_l1)": 0.00031938816241745756,
+          "fx(wall_jaw2)": -0.000346894471140371,
+          "fx(wall_jaw1)": 0.00033217310961131894,
+          "fy(wall_l2)": 0.0032337771783913587,
+          "fy(wall_jaw1)": -0.00018041028447250788,
+          "mz(wall_link3)": 0.0007093295202285318,
+          "fz(wall_pin4)": -0.0008627436113254847,
+          "fy(wall_pin4)": -6.413040154054646e-05,
+          "mx": -2.039128566409236,
+          "mx(wall_base0)": -0.00719478998075877,
+          "mx(wall_link3)": 0.0009022551685821008,
+          "mx(wall_jaw2)": -6.317028025984432e-05,
+          "mx(wall_l1)": 0.003002667669332674,
+          "mz(wall_auv)": -0.0033671652690746997,
+          "fz(wall_l2)": 0.00233435974633294,
+          "my(wall_auv)": -0.0005334747813361346,
+          "fy(wall_link3)": 0.00237884984436127,
+          "fx(wall_base0)": -0.0004304343824373056,
+          "mz(wall_jaw2)": -7.150206670979305e-05,
+          "tau_j3": 9.561293969590765e-05,
+          "fy(wall_l1)": 0.0032497682269739597,
+          "fz(wall_link3)": 0.0009233525918035732,
+          "fy": -9.427085419008183,
+          "my(wall_l2)": 0.0027657562946593493,
+          "fz(wall_l1)": -0.015648270677246997,
+          "tau_j2": 0.0007229138860148339,
+          "fz(wall_jaw2)": -0.00017385434649270582,
+          "my(wall_base0)": 0.00017597306144284154,
+          "my(wall_jaw1)": -0.00020881184096377707,
+          "my(wall_l1)": -0.0015340114768439112,
+          "mx(wall_jaw1)": -7.898929925084617e-05,
+          "my(wall_jaw2)": 0.0002141878748517696,
+          "mz(wall_pin4)": 5.413604906067638e-06,
+          "fx(wall_link3)": 0.004204770879298894
+        },
+        "population_sd": {
+          "my": 0.0060785141458564295,
+          "fx(wall_l1)": 0.011678790140188154,
+          "my(wall_pin4)": 4.079686088867391e-05,
+          "fy(wall_auv)": 38.687385067725096,
+          "fz(wall_auv)": 17.703036559903573,
+          "fy(wall_jaw2)": 0.0020038117542799726,
+          "fx(wall_pin4)": 6.0842570767570656e-05,
+          "mz(wall_l2)": 0.0028676694065747806,
+          "fx(wall_l2)": 0.026368460540343964,
+          "mx(wall_l2)": 0.0044919106406512525,
+          "fx(wall_auv)": 0.02076887058928165,
+          "mx(wall_auv)": 8.409991749158001,
+          "fy(wall_base0)": 0.07327353764558026,
+          "fz(wall_base0)": 0.07614691493812861,
+          "mz(wall_jaw1)": 0.00044270219359898965,
+          "tau_j1": 0.0002943232899306512,
+          "fz(wall_jaw1)": 0.0013814206800728034,
+          "mz(wall_base0)": 6.263312708922877e-05,
+          "mz": 0.012790853979287534,
+          "fz": 17.69529614317463,
+          "fx": 0.02190378669641054,
+          "my(wall_link3)": 0.0056531034691350585,
+          "mx(wall_pin4)": 0.00048414057442265043,
+          "mz(wall_l1)": 0.0009444405518901055,
+          "fx(wall_jaw2)": 0.002404847272683319,
+          "fx(wall_jaw1)": 0.002379235062107272,
+          "fy(wall_l2)": 0.012339482581886574,
+          "fy(wall_jaw1)": 0.0017446196586775728,
+          "mz(wall_link3)": 0.002325436860976068,
+          "fz(wall_pin4)": 0.003981587748204996,
+          "fy(wall_pin4)": 0.00032991209013798515,
+          "mx": 8.415694931448881,
+          "mx(wall_base0)": 0.025360155056197743,
+          "mx(wall_link3)": 0.0059117599376242716,
+          "mx(wall_jaw2)": 0.0009769401917875096,
+          "mx(wall_l1)": 0.010163855880931173,
+          "mz(wall_auv)": 0.013133789961557028,
+          "fz(wall_l2)": 0.007006182380174675,
+          "my(wall_auv)": 0.006184806862277108,
+          "fy(wall_link3)": 0.015867067526606306,
+          "fx(wall_base0)": 0.0013661226165516765,
+          "mz(wall_jaw2)": 0.00044449699087034124,
+          "tau_j3": 0.0009494319386029518,
+          "fy(wall_l1)": 0.014265173113193997,
+          "fz(wall_link3)": 0.0038860622035144913,
+          "fy": 38.72133007906771,
+          "my(wall_l2)": 0.010663321056957779,
+          "fz(wall_l1)": 0.07252570677713194,
+          "tau_j2": 0.003242767550697846,
+          "fz(wall_jaw2)": 0.0013064369818321995,
+          "my(wall_base0)": 0.0005386172171109097,
+          "my(wall_jaw1)": 0.0014464480402855953,
+          "my(wall_l1)": 0.0061104388753012535,
+          "mx(wall_jaw1)": 0.0008003741318378274,
+          "my(wall_jaw2)": 0.0014503376471139931,
+          "mz(wall_pin4)": 1.0379926543411917e-05,
+          "fx(wall_link3)": 0.017181169406950286
+        }
+      },
+      {
+        "sample_count": 80,
+        "mean": {
+          "my": -0.00016110010581795839,
+          "fx(wall_l1)": -0.00011672872857783258,
+          "my(wall_pin4)": -9.05957261102427e-06,
+          "fy(wall_auv)": -0.014082650789789219,
+          "fz(wall_auv)": -0.0049216177548331965,
+          "fy(wall_jaw2)": 6.80058751571943e-05,
+          "fx(wall_pin4)": 1.5730292513939188e-05,
+          "mz(wall_l2)": -0.0003054874969896457,
+          "fx(wall_l2)": -6.783984528149412e-05,
+          "mx(wall_l2)": 3.931744856349394e-05,
+          "fx(wall_auv)": 0.0004918292974688084,
+          "mx(wall_auv)": -0.009534386867134856,
+          "fy(wall_base0)": 0.0007980960949172755,
+          "fz(wall_base0)": -0.0019831791772446684,
+          "mz(wall_jaw1)": 1.854547158728136e-05,
+          "tau_j1": 2.086443549259425e-05,
+          "fz(wall_jaw1)": -0.00016676878272179322,
+          "mz(wall_base0)": -1.959301293759887e-05,
+          "mz": 8.555172371537033e-05,
+          "fz": -0.004077385563193597,
+          "fx": 0.0003368419876253033,
+          "my(wall_link3)": -0.00017883260610892162,
+          "mx(wall_pin4)": 2.013225784817856e-05,
+          "mz(wall_l1)": 0.00011683964214098486,
+          "fx(wall_jaw2)": -5.64169941234852e-05,
+          "fx(wall_jaw1)": 4.7915998397722356e-05,
+          "fy(wall_l2)": 0.0002804740983279433,
+          "fy(wall_jaw1)": -2.166040673306008e-05,
+          "mz(wall_link3)": 0.00019101700178216047,
+          "fz(wall_pin4)": 0.0001213614391047012,
+          "fy(wall_pin4)": -8.699119477658371e-07,
+          "mx": -0.010858873464964634,
+          "mx(wall_base0)": -0.0013018334434037767,
+          "mx(wall_link3)": -0.0008200707825178381,
+          "mx(wall_jaw2)": 6.899152394273973e-05,
+          "mx(wall_l1)": 0.0006599871821093255,
+          "mz(wall_auv)": 0.0001019722289040334,
+          "fz(wall_l2)": 0.0005833670452915335,
+          "my(wall_auv)": -0.00022204623004979315,
+          "fy(wall_link3)": -0.00235972347993804,
+          "fx(wall_base0)": -8.610406632123107e-05,
+          "mz(wall_jaw2)": -2.113079710884694e-05,
+          "tau_j3": -0.00019333306558532863,
+          "fy(wall_l1)": -0.0003197687258916545,
+          "fz(wall_link3)": -0.00011942473681922114,
+          "fy": -0.01563809724589571,
+          "my(wall_l2)": 0.00026631704586963553,
+          "fz(wall_l1)": 0.002668809098396494,
+          "tau_j2": -0.0001674154561584677,
+          "fz(wall_jaw2)": -0.00025993269437300093,
+          "my(wall_base0)": 4.752851012813656e-05,
+          "my(wall_jaw1)": -3.955266623348885e-05,
+          "my(wall_l1)": -6.965596921967261e-05,
+          "mx(wall_jaw1)": 8.989215627991734e-06,
+          "my(wall_jaw2)": 4.4201382407168044e-05,
+          "mz(wall_pin4)": 3.3886863370005465e-06,
+          "fx(wall_link3)": 0.00010845603354886985
+        },
+        "population_sd": {
+          "my": 0.007050848715736844,
+          "fx(wall_l1)": 0.012730722484362094,
+          "my(wall_pin4)": 4.9556285829519813e-05,
+          "fy(wall_auv)": 42.07974632750347,
+          "fz(wall_auv)": 19.231589180053014,
+          "fy(wall_jaw2)": 0.0023903537867388663,
+          "fx(wall_pin4)": 7.583426937957033e-05,
+          "mz(wall_l2)": 0.003123440212855898,
+          "fx(wall_l2)": 0.028649894485846067,
+          "mx(wall_l2)": 0.00488555479953725,
+          "fx(wall_auv)": 0.02107893081948456,
+          "mx(wall_auv)": 9.134409811706462,
+          "fy(wall_base0)": 0.07964347884748323,
+          "fz(wall_base0)": 0.0833260457790571,
+          "mz(wall_jaw1)": 0.0005298778757365579,
+          "tau_j1": 0.0003225742059416739,
+          "fz(wall_jaw1)": 0.0017418003578710257,
+          "mz(wall_base0)": 6.764245158056092e-05,
+          "mz": 0.013740833011574308,
+          "fz": 19.221546736087884,
+          "fx": 0.02227361722438583,
+          "my(wall_link3)": 0.006143033112445775,
+          "mx(wall_pin4)": 0.0005311118037573927,
+          "mz(wall_l1)": 0.001035019747460571,
+          "fx(wall_jaw2)": 0.00284534767504447,
+          "fx(wall_jaw1)": 0.002864063296693972,
+          "fy(wall_l2)": 0.013484508498980089,
+          "fy(wall_jaw1)": 0.002011564241608339,
+          "mz(wall_link3)": 0.0025300950870574906,
+          "fz(wall_pin4)": 0.004310130169771773,
+          "fy(wall_pin4)": 0.0003751401796750998,
+          "mx": 9.140454501557656,
+          "mx(wall_base0)": 0.027649577266650384,
+          "mx(wall_link3)": 0.0065181605348223585,
+          "mx(wall_jaw2)": 0.0011541760297310373,
+          "mx(wall_l1)": 0.0111053829342234,
+          "mz(wall_auv)": 0.014079808196575323,
+          "fz(wall_l2)": 0.008010573308094043,
+          "my(wall_auv)": 0.0072792366222885025,
+          "fy(wall_link3)": 0.01760930170744482,
+          "fx(wall_base0)": 0.0014840154932933215,
+          "mz(wall_jaw2)": 0.0005247692101670354,
+          "tau_j3": 0.0012575388725675363,
+          "fy(wall_l1)": 0.01555033957875096,
+          "fz(wall_link3)": 0.0047606424008826125,
+          "fy": 42.115909014628066,
+          "my(wall_l2)": 0.01161104474798904,
+          "fz(wall_l1)": 0.07888835459079675,
+          "tau_j2": 0.003645232192873686,
+          "fz(wall_jaw2)": 0.0016814577945864515,
+          "my(wall_base0)": 0.0005835512396661361,
+          "my(wall_jaw1)": 0.0017486432072194127,
+          "my(wall_l1)": 0.0066677626258847345,
+          "mx(wall_jaw1)": 0.0009091130097702141,
+          "my(wall_jaw2)": 0.001724890670172887,
+          "mz(wall_pin4)": 1.2572768972451273e-05,
+          "fx(wall_link3)": 0.018645250233445265
+        }
+      },
+      {
+        "sample_count": 80,
+        "mean": {
+          "my": -0.00018273279734754675,
+          "fx(wall_l1)": -0.000105769095560616,
+          "my(wall_pin4)": -1.0155584448461212e-05,
+          "fy(wall_auv)": -0.010835394192711623,
+          "fz(wall_auv)": -0.002576084592257505,
+          "fy(wall_jaw2)": 6.80670164614004e-05,
+          "fx(wall_pin4)": 1.7720320090326714e-05,
+          "mz(wall_l2)": -0.0003052308627372319,
+          "fx(wall_l2)": -7.29826124355245e-05,
+          "mx(wall_l2)": 3.4161541025242e-05,
+          "fx(wall_auv)": 0.0006736895558225028,
+          "mx(wall_auv)": -0.007009648586340657,
+          "fy(wall_base0)": 0.0008041770346187731,
+          "fz(wall_base0)": -0.0019510177999740419,
+          "mz(wall_jaw1)": 2.1192747791573438e-05,
+          "tau_j1": 2.2724975681953637e-05,
+          "fz(wall_jaw1)": -0.00015214869902998706,
+          "mz(wall_base0)": -1.9233394260472892e-05,
+          "mz": -8.080631560472733e-05,
+          "fz": -0.0015851987177347648,
+          "fx": 0.0005083007538694712,
+          "my(wall_link3)": -0.0001694400377959915,
+          "mx(wall_pin4)": 2.0078556121492718e-05,
+          "mz(wall_l1)": 0.00011806034696864994,
+          "fx(wall_jaw2)": -8.341867074747225e-05,
+          "fx(wall_jaw1)": 6.934214578387888e-05,
+          "fy(wall_l2)": 0.00026338879731774805,
+          "fy(wall_jaw1)": -1.3646976262986726e-05,
+          "mz(wall_link3)": 0.00018766410329606117,
+          "fz(wall_pin4)": 0.00012059196711531167,
+          "fy(wall_pin4)": -1.224270409722279e-06,
+          "mx": -0.008342237242898606,
+          "mx(wall_base0)": -0.0013022635978251153,
+          "mx(wall_link3)": -0.0008246229949215603,
+          "mx(wall_jaw2)": 6.652946526127226e-05,
+          "mx(wall_l1)": 0.0006622550600064817,
+          "mz(wall_auv)": -6.226254393084593e-05,
+          "fz(wall_l2)": 0.000611559581113647,
+          "my(wall_auv)": -0.0002512824776669386,
+          "fy(wall_link3)": -0.002356282404903254,
+          "fx(wall_base0)": -7.50813721365654e-05,
+          "mz(wall_jaw2)": -2.4701036103896097e-05,
+          "tau_j3": -0.00019106490662289117,
+          "fy(wall_l1)": -0.0003152242449911974,
+          "fz(wall_link3)": -6.934156451939237e-05,
+          "fy": -0.012386139240875815,
+          "my(wall_l2)": 0.00027102008813366873,
+          "fz(wall_l1)": 0.0026732994344648474,
+          "tau_j2": -0.00016888368157897614,
+          "fz(wall_jaw2)": -0.00024205704464420972,
+          "my(wall_base0)": 4.4450641560386186e-05,
+          "my(wall_jaw1)": -5.129154226519721e-05,
+          "my(wall_l1)": -7.535396386356285e-05,
+          "mx(wall_jaw1)": 1.1273313773211219e-05,
+          "my(wall_jaw2)": 5.9320078998549335e-05,
+          "mz(wall_pin4)": 3.7043233714338698e-06,
+          "fx(wall_link3)": 8.480048305295292e-05
+        },
+        "population_sd": {
+          "my": 0.006941834309714358,
+          "fx(wall_l1)": 0.012739050320688172,
+          "my(wall_pin4)": 4.93143395734295e-05,
+          "fy(wall_auv)": 42.07796213761536,
+          "fz(wall_auv)": 19.2326515494348,
+          "fy(wall_jaw2)": 0.0023358490167353194,
+          "fx(wall_pin4)": 7.553566463721209e-05,
+          "mz(wall_l2)": 0.003121829372018284,
+          "fx(wall_l2)": 0.028634582323829347,
+          "mx(wall_l2)": 0.004880219519744235,
+          "fx(wall_auv)": 0.02124677742611361,
+          "mx(wall_auv)": 9.135014461595203,
+          "fy(wall_base0)": 0.0796465046407149,
+          "fz(wall_base0)": 0.08333360277788478,
+          "mz(wall_jaw1)": 0.0005356047106041514,
+          "tau_j1": 0.0003255727108723798,
+          "fz(wall_jaw1)": 0.0017609265228497497,
+          "mz(wall_base0)": 6.721119539372779e-05,
+          "mz": 0.014230478052333653,
+          "fz": 19.222627610526843,
+          "fx": 0.022420808243252023,
+          "my(wall_link3)": 0.0061481610912616285,
+          "mx(wall_pin4)": 0.0005315887626273776,
+          "mz(wall_l1)": 0.00103538364984335,
+          "fx(wall_jaw2)": 0.0028930636616917053,
+          "fx(wall_jaw1)": 0.002913813593962961,
+          "fy(wall_l2)": 0.013466871290909253,
+          "fy(wall_jaw1)": 0.001959546540420402,
+          "mz(wall_link3)": 0.002532149898679303,
+          "fz(wall_pin4)": 0.004309985971020957,
+          "fy(wall_pin4)": 0.0003744232487654725,
+          "mx": 9.141067149186501,
+          "mx(wall_base0)": 0.027651074981968157,
+          "mx(wall_link3)": 0.006515831887865602,
+          "mx(wall_jaw2)": 0.001122077983627395,
+          "mx(wall_l1)": 0.011102211838646452,
+          "mz(wall_auv)": 0.014553411692548443,
+          "fz(wall_l2)": 0.008008354828580201,
+          "my(wall_auv)": 0.007202375771812469,
+          "fy(wall_link3)": 0.01759060448642006,
+          "fx(wall_base0)": 0.0014762791964625544,
+          "mz(wall_jaw2)": 0.0005307197308620749,
+          "tau_j3": 0.00122746247509655,
+          "fy(wall_l1)": 0.015544898525889457,
+          "fz(wall_link3)": 0.0047075176361290804,
+          "fy": 42.114158143954164,
+          "my(wall_l2)": 0.01160489584050643,
+          "fz(wall_l1)": 0.07888088378059305,
+          "tau_j2": 0.0036382255730392755,
+          "fz(wall_jaw2)": 0.001699371691477109,
+          "my(wall_base0)": 0.0005801876386799239,
+          "my(wall_jaw1)": 0.0017773394383565645,
+          "my(wall_l1)": 0.006672078876329549,
+          "mx(wall_jaw1)": 0.0008792896494005368,
+          "my(wall_jaw2)": 0.0017524074666914135,
+          "mz(wall_pin4)": 1.2506449346399304e-05,
+          "fx(wall_link3)": 0.018659098598842332
+        }
+      }
+    ],
+    "phase_matched_cycle2_vs3_RMSE": {
+      "my": 0.0005982918833780631,
+      "fx(wall_l1)": 1.6635831011830854e-05,
+      "my(wall_pin4)": 2.307739416836396e-06,
+      "fy(wall_auv)": 0.007831192707848553,
+      "fz(wall_auv)": 0.00486859884978054,
+      "fy(wall_jaw2)": 6.31795097814497e-05,
+      "fx(wall_pin4)": 4.197914566846758e-06,
+      "mz(wall_l2)": 3.6579706732845245e-06,
+      "fx(wall_l2)": 3.230431126003324e-05,
+      "mx(wall_l2)": 8.401183367523644e-06,
+      "fx(wall_auv)": 0.003204540048921495,
+      "mx(wall_auv)": 0.0033076420209337235,
+      "fy(wall_base0)": 2.2473203410434377e-05,
+      "fz(wall_base0)": 5.379823034376285e-05,
+      "mz(wall_jaw1)": 1.4309355987608001e-05,
+      "tau_j1": 4.2878258905442055e-06,
+      "fz(wall_jaw1)": 3.920485715458556e-05,
+      "mz(wall_base0)": 1.221145442599561e-06,
+      "mz": 0.0018329555565839645,
+      "fz": 0.004944442083693077,
+      "fx": 0.0031787955887202547,
+      "my(wall_link3)": 1.4424443543069251e-05,
+      "mx(wall_pin4)": 2.1336446212930177e-06,
+      "mz(wall_l1)": 1.4839260151610914e-06,
+      "fx(wall_jaw2)": 0.00010851570459814838,
+      "fx(wall_jaw1)": 0.0001053252116095026,
+      "fy(wall_l2)": 2.6730535041254946e-05,
+      "fy(wall_jaw1)": 7.038549976983727e-05,
+      "mz(wall_link3)": 5.7902498910071615e-06,
+      "fz(wall_pin4)": 5.398656928797157e-06,
+      "fy(wall_pin4)": 3.475435845217382e-06,
+      "mx": 0.00326978416181885,
+      "mx(wall_base0)": 7.0310394651620065e-06,
+      "mx(wall_link3)": 1.3125428700094818e-05,
+      "mx(wall_jaw2)": 4.009294436717239e-05,
+      "mx(wall_l1)": 8.300694224808906e-06,
+      "mz(wall_auv)": 0.0018310351539368801,
+      "fz(wall_l2)": 4.078359144276128e-05,
+      "my(wall_auv)": 0.0006105178835983863,
+      "fy(wall_link3)": 4.671862540282555e-05,
+      "fx(wall_base0)": 3.5531353959189645e-05,
+      "mz(wall_jaw2)": 1.5244231517185723e-05,
+      "tau_j3": 3.882243932224361e-05,
+      "fy(wall_l1)": 1.4198079119689795e-05,
+      "fz(wall_link3)": 8.034901839773516e-05,
+      "fy": 0.007670595225131268,
+      "my(wall_l2)": 1.369191659470133e-05,
+      "fz(wall_l1)": 2.9754628926683563e-05,
+      "tau_j2": 9.984484082473447e-06,
+      "fz(wall_jaw2)": 3.935258920819466e-05,
+      "my(wall_base0)": 1.1368564323897745e-05,
+      "my(wall_jaw1)": 6.156274169398123e-05,
+      "my(wall_l1)": 8.567988653547704e-06,
+      "mx(wall_jaw1)": 4.4896768899533695e-05,
+      "my(wall_jaw2)": 6.332950110196842e-05,
+      "mz(wall_pin4)": 6.611047843827968e-07,
+      "fx(wall_link3)": 3.649825778494555e-05
+    },
+    "periodic_convergence_assumed": false
+  },
+  "outcome": "240_steps_completed_periodicity_reported_not_assumed",
+  "terminal_state": {
+    "time_steps": 240,
+    "flow_time_s": 6.0,
+    "id": "93da3e27ab014118b2fa4dd48bf8ffc2",
+    "sample_count": 240
+  },
+  "artifacts": {
+    "start_case": {
+      "path": "start.cas.h5",
+      "sha256": "a47be5fe59fdc326e41cb36f08cabedf858d4520410b5ddd51c2fb9cbb6d43c3"
+    },
+    "final_case": {
+      "path": "final.cas.h5",
+      "sha256": "22d0ac8b45e6f5205e7050d7fb1ea57620ecc4e5b438cbcd84ff2cd0d5c5c368",
+      "state_id": "93da3e27ab014118b2fa4dd48bf8ffc2"
+    },
+    "final_data": {
+      "path": "final.dat.h5",
+      "sha256": "73b6d56145cd77d539098ef5522061f4dfb7ab35f6c353606855f3542d540395",
+      "state_id": "93da3e27ab014118b2fa4dd48bf8ffc2"
+    },
+    "history": {
+      "path": "history.json",
+      "sha256": "b4b5b3d84a10b198224a9a50ff3898602f780f67f7ab4a8d3f36531ab958953c"
+    },
+    "transcript": {
+      "path": "solver.trn",
+      "sha256": "d6dd7ac15c1d0999b181c4d9c67659c4ced9a7cd66332160b2e94afa87904034"
+    }
+  },
+  "solver_statistics": {
+    "raw_residuals_and_solver_messages": "solver.trn",
+    "iterations_or_time_steps": {
+      "time_steps": 240,
+      "flow_time_s": 6.0,
+      "id": "93da3e27ab014118b2fa4dd48bf8ffc2",
+      "sample_count": 240
+    },
+    "steady_acceptance": "original 0.5% adjacent load-window drift; not a residual convergence claim"
+  }
+}

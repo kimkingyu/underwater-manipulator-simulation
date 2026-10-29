@@ -1,0 +1,69 @@
+{
+  "protocol_version": 1,
+  "role": "Preregistered acceptance rules before generating prospective CFD loads",
+  "scope": {
+    "primary_user_outputs": ["hull_Fx", "hull_Fy", "hull_Fz", "hull_Mx_Ob", "hull_My_Ob", "hull_Mz_Ob", "joint_tau1", "joint_tau2", "joint_tau3"],
+    "additional_outputs": ["total_Fx", "total_Fy", "total_Fz", "total_Mx_Ob", "total_My_Ob", "total_Mz_Ob", "base0_and_link_wrenches"],
+    "not_target": "controller tracking error or motor-command torque",
+    "steady_validated_input_scope": "fixed arm pose, body-relative translation, angular velocity and joint rates zero",
+    "dynamic_scope": "q0 locked arm, small-amplitude laminar whole-domain oscillation; independent joint motion and a full 9x9 added-mass matrix not identified"
+  },
+  "baselines": {
+    "deployment_reference": "frozen/theta87_baseline.json",
+    "deployment_reference_scope": "first 6 outputs are total-body loads, not pure hull; do not subtract held-out base0 truth to manufacture hull predictions",
+    "matched_component_baseline": "candidate A trained on exactly the same training rows and folds as candidates B/C",
+    "report_both": true
+  },
+  "development": {
+    "data_role": "all previously viewed q0/qb/qc/qd cases are retrospective development data",
+    "steady_primary": "37 rows with strict=true",
+    "sensitivity": "include/exclude the 3 explicitly capped tail-mean rows, without relabelling them converged",
+    "grouping": "whole pose and direction family; opposite directions and multiple speeds of the same axis grouped; no within-case time splitting",
+    "scaling_and_model_selection": "training-fold labels only; regularization and feature selection inside the training fold",
+    "unidentifiable_fold": "flag unsupported/unidentifiable parameters and report coverage; do not silently set them to zero and count as an ordinary predictive failure",
+    "repeat_cycle_check": "cycle2 -> cycle3 is a repeatability check, not independent-case generalization"
+  },
+  "metrics": {
+    "required_per_channel": ["MAE", "RMSE", "signed_bias", "maximum_absolute_error"],
+    "units": "force N; moment and torque N*m",
+    "auxiliary_normalization": "max(training-fold channel RMS, declared floor)",
+    "force_floor_N": 1.0,
+    "moment_floor_Nm": 0.1,
+    "floor_note": "scoring denominator floors, NOT experimental accuracy or noise claims",
+    "case_weighting": "equal whole-case contribution; physical time samples remain grouped",
+    "harmonics": "measured and predicted DC/fundamental/second harmonic projected on the same actual motion law; actual N/Nm amplitudes, not unit-excitation pseudoloads"
+  },
+  "physical_checks": {
+    "component_total_and_joint_projection_closure_relative_tolerance": 1e-10,
+    "jacobian_power_closure_relative_tolerance": 1e-10,
+    "zero_input_load": "zero under zero relative velocity and acceleration",
+    "dynamic_mass": "effective total 6x6 mass symmetric PSD in the observed locked-arm subspace, with dimensional scaling recorded",
+    "dissipation": "check declared candidate dissipation/zero-work properties; do not claim independent sub-body passivity or reciprocity is universally required in an interacting fluid",
+    "geometry": "force points/directions fixed from geometry or virtual geometry assumptions before held-out evaluation"
+  },
+  "acceptance": {
+    "stage_target_relative_reduction": 0.10,
+    "target_groups": ["hull_force_macro_RMSE", "hull_moment_macro_RMSE", "J2_RMSE", "J3_RMSE"],
+    "per_channel_allowed_regression": "max(5% of matched-baseline RMSE, prespecified estimate of CFD tail/cycle variability)",
+    "component_uncertainty_note": "tail SD is not an independent measurement uncertainty; show raw absolute values and sensitivity",
+    "new_steady_required_count_for_complete_claim": 8,
+    "new_oscillation_required_count_for_dynamic_check": 1,
+    "if_quality_or_target_fails": "report partial/inconclusive/not-improved; do not replace the default theta or claim full nine-channel validation"
+  },
+  "prospective_validation": {
+    "config": "cfd/validation_cases.json",
+    "steady_count": 8,
+    "oscillation_count": 1,
+    "freeze_before_cfd": "hash model files, parameter tables, protocol, case config, inference code and prior predictions in blind_protocol.json",
+    "do_not_tune_on_new_truth": true,
+    "case_budget": "18 cores, one Fluent solve at a time; at most 2500 steady iterations or 240 oscillation steps; automatic retries disabled",
+    "retry_budget": "at most one explicit numerical/geometry repair retry with recorded reason, never by deleting original artifacts",
+    "final_artifacts": "save starting case and matching end-state case/data; no blanket restart claim without read-back check"
+  },
+  "data_policy": {
+    "old_models_and_delivered_packages": "preserved, read-only inputs",
+    "unrelated_local_csv": "not modified",
+    "interrupted_runs": "not deleted",
+    "git": "no automatic commit or push"
+  }
+}

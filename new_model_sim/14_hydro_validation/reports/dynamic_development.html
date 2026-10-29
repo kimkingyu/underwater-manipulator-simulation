@@ -1,0 +1,172 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>Dynamic q0 development</title><style>body{font:15px sans-serif;max-width:1200px;margin:32px auto}table{border-collapse:collapse}td,th{padding:7px;border:1px solid #bbb;text-align:right}h1{font-size:24px}li{margin:8px}</style><h1>固定臂 q0 动态候选：开发数据与重复周期检查</h1><p>未做盲测或独立工况验证；未替换旧默认参数。末160点拟合，共960物理时刻。周期2→周期3仅重复周期检查。</p><ul><li>Development fit to six existing q0 whole-domain laminar oscillations; not independent-case or blind validation.</li><li>Only fixed-arm base-twist observation subspace; no full 9x9 independent-joint added-mass identification.</li><li>2 s nominal period, 0.02 m translation / 0.05 rad rotation, 0.5 s ramp only; frequency and amplitude generalization unvalidated.</li><li>Velocity-phase response is local laminar effective damping, not a replacement for steady SST drag.</li><li>PSD/reciprocity imposed only on aggregate six-base response; partial-wall maps need not be reciprocal or individually passive.</li><li>Coriolis term is a coordinate/energy-consistent model completion, not an independently identified nonlinear term.</li><li>DC and second-harmonic nuisance terms are diagnostics only and are excluded from deployed predictions.</li><li>No startup fluid-memory states are identified; the first 80 unfitted onset samples have materially larger residuals than the last two cycles.</li><li>Cycle 2 fit / cycle 3 prediction is a repeated-cycle consistency check, not an independent-case generalization test.</li><li>Original87 has a combined hull+base0 residual block; separate legacy hull/base0 predictions are unavailable.</li></ul><h2>先看全时序与启动段</h2><p>未辨识启动流场记忆；全程误差显著大于末两周期误差，不能把周期拟合替代全程动态验证。</p><table><tr><th>窗口</th><th>组</th><th>通道</th><th>SI单位</th><th>旧87 RMSE</th><th>新 RMSE</th><th>新 max</th></tr><tr><td>全240点</td><td>total</td><td>Fx</td><td>N</td><td>2.311085</td><td>1.176193</td><td>36.08615</td></tr><tr><td>全240点</td><td>total</td><td>Fy</td><td>N</td><td>4.651475</td><td>1.693494</td><td>51.83183</td></tr><tr><td>全240点</td><td>total</td><td>Fz</td><td>N</td><td>3.704411</td><td>0.7472185</td><td>22.87835</td></tr><tr><td>全240点</td><td>total</td><td>Mx</td><td>N*m</td><td>0.3058264</td><td>0.1514402</td><td>4.66075</td></tr><tr><td>全240点</td><td>total</td><td>My</td><td>N*m</td><td>0.1980304</td><td>0.1645185</td><td>5.112559</td></tr><tr><td>全240点</td><td>total</td><td>Mz</td><td>N*m</td><td>0.7637382</td><td>0.158864</td><td>4.681023</td></tr><tr><td>全240点</td><td>tau_hydro</td><td>tau1</td><td>N*m</td><td>0.01172794</td><td>0.001898716</td><td>0.03415489</td></tr><tr><td>全240点</td><td>tau_hydro</td><td>tau2</td><td>N*m</td><td>0.01118658</td><td>0.00252706</td><td>0.01065118</td></tr><tr><td>全240点</td><td>tau_hydro</td><td>tau3</td><td>N*m</td><td>0.005428135</td><td>0.003515518</td><td>0.01238032</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>Fx</td><td>N</td><td>2.836103</td><td>2.036369</td><td>36.08615</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>Fy</td><td>N</td><td>4.601253</td><td>2.932853</td><td>51.83183</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>Fz</td><td>N</td><td>3.840191</td><td>1.293676</td><td>22.87835</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>Mx</td><td>N*m</td><td>0.350791</td><td>0.2617059</td><td>4.66075</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>My</td><td>N*m</td><td>0.3017721</td><td>0.2838125</td><td>5.112559</td></tr><tr><td>启动前80点（未拟合）</td><td>total</td><td>Mz</td><td>N*m</td><td>0.7193148</td><td>0.2744468</td><td>4.681023</td></tr><tr><td>启动前80点（未拟合）</td><td>tau_hydro</td><td>tau1</td><td>N*m</td><td>0.01092272</td><td>0.003194824</td><td>0.03415489</td></tr><tr><td>启动前80点（未拟合）</td><td>tau_hydro</td><td>tau2</td><td>N*m</td><td>0.01060986</td><td>0.0020431</td><td>0.009247185</td></tr><tr><td>启动前80点（未拟合）</td><td>tau_hydro</td><td>tau3</td><td>N*m</td><td>0.004698385</td><td>0.002902661</td><td>0.01169643</td></tr></table><h2>末160点：各分体与投影通道</h2><p>下表不是独立工况验证。link1 Mz 与 link2 Mz 的极小通道误差并未改善。</p><table><tr><th>组</th><th>通道</th><th>SI单位</th><th>旧87 RMSE</th><th>新 RMSE</th><th>新 MAE</th><th>新 bias</th><th>新 max</th><th>周期2→3 RMSE</th></tr><tr><td>total</td><td>Fx</td><td>N</td><td>1.997481</td><td>0.04178595</td><td>0.02523746</td><td>-0.001982593</td><td>0.1596097</td><td>0.0421374</td></tr><tr><td>total</td><td>Fy</td><td>N</td><td>4.676383</td><td>0.03268711</td><td>0.02198533</td><td>0.006279969</td><td>0.1497099</td><td>0.03274994</td></tr><tr><td>total</td><td>Fz</td><td>N</td><td>3.63462</td><td>0.0265304</td><td>0.0179683</td><td>-0.0002661877</td><td>0.09215909</td><td>0.02678984</td></tr><tr><td>total</td><td>Mx</td><td>N*m</td><td>0.2806556</td><td>0.01249848</td><td>0.008426843</td><td>0.001953314</td><td>0.04859401</td><td>0.01248528</td></tr><tr><td>total</td><td>My</td><td>N*m</td><td>0.1152859</td><td>0.01802003</td><td>0.009059011</td><td>0.002084272</td><td>0.07789709</td><td>0.01803878</td></tr><tr><td>total</td><td>Mz</td><td>N*m</td><td>0.7850077</td><td>0.01400546</td><td>0.008760764</td><td>0.0001855379</td><td>0.04482119</td><td>0.01415753</td></tr><tr><td>tau_hydro</td><td>tau1</td><td>N*m</td><td>0.01211049</td><td>0.0005515729</td><td>0.0003619573</td><td>-2.507602e-05</td><td>0.001955756</td><td>0.0005291984</td></tr><tr><td>tau_hydro</td><td>tau2</td><td>N*m</td><td>0.01146406</td><td>0.002737137</td><td>0.001768999</td><td>-0.0005432899</td><td>0.01065118</td><td>0.002640512</td></tr><tr><td>tau_hydro</td><td>tau3</td><td>N*m</td><td>0.005758435</td><td>0.003784915</td><td>0.002488712</td><td>-0.001286368</td><td>0.01238032</td><td>0.003789601</td></tr><tr><td>hull</td><td>Fx</td><td>N</td><td>not separable</td><td>0.04387226</td><td>0.02529814</td><td>-0.002068623</td><td>0.1729081</td><td>0.04477353</td></tr><tr><td>hull</td><td>Fy</td><td>N</td><td>not separable</td><td>0.0387138</td><td>0.02851515</td><td>0.01287124</td><td>0.1666221</td><td>0.03912903</td></tr><tr><td>hull</td><td>Fz</td><td>N</td><td>not separable</td><td>0.02752652</td><td>0.01940457</td><td>0.0001877277</td><td>0.08791043</td><td>0.02785664</td></tr><tr><td>hull</td><td>Mx</td><td>N*m</td><td>not separable</td><td>0.01432961</td><td>0.01054453</td><td>0.004522708</td><td>0.05864444</td><td>0.01410524</td></tr><tr><td>hull</td><td>My</td><td>N*m</td><td>not separable</td><td>0.01812819</td><td>0.00854464</td><td>0.002065699</td><td>0.07760898</td><td>0.01815664</td></tr><tr><td>hull</td><td>Mz</td><td>N*m</td><td>not separable</td><td>0.01336585</td><td>0.008106649</td><td>0.0001539298</td><td>0.04582747</td><td>0.01352065</td></tr><tr><td>base0</td><td>Fx</td><td>N</td><td>not separable</td><td>0.003350432</td><td>0.002046616</td><td>-0.0002205766</td><td>0.01556423</td><td>0.003345983</td></tr><tr><td>base0</td><td>Fy</td><td>N</td><td>not separable</td><td>0.009501063</td><td>0.007449225</td><td>-0.001728292</td><td>0.02724078</td><td>0.009412872</td></tr><tr><td>base0</td><td>Fz</td><td>N</td><td>not separable</td><td>0.009811998</td><td>0.005610841</td><td>-0.004480892</td><td>0.03141996</td><td>0.009920361</td></tr><tr><td>base0</td><td>Mx</td><td>N*m</td><td>not separable</td><td>0.003081125</td><td>0.002364254</td><td>0.0002962801</td><td>0.008968171</td><td>0.003098263</td></tr><tr><td>base0</td><td>My</td><td>N*m</td><td>not separable</td><td>0.001067882</td><td>0.0006615313</td><td>7.624108e-05</td><td>0.004883984</td><td>0.001074208</td></tr><tr><td>base0</td><td>Mz</td><td>N*m</td><td>not separable</td><td>0.001107612</td><td>0.0006766314</td><td>-9.480844e-05</td><td>0.005174432</td><td>0.001104642</td></tr><tr><td>link1</td><td>Fx</td><td>N</td><td>0.01735115</td><td>0.004836757</td><td>0.00382845</td><td>-0.001773546</td><td>0.01199055</td><td>0.004858113</td></tr><tr><td>link1</td><td>Fy</td><td>N</td><td>0.02118549</td><td>0.01091683</td><td>0.007463318</td><td>-0.007463318</td><td>0.03568043</td><td>0.01062151</td></tr><tr><td>link1</td><td>Fz</td><td>N</td><td>0.02942779</td><td>0.007804925</td><td>0.005838467</td><td>0.005838467</td><td>0.02444789</td><td>0.007651603</td></tr><tr><td>link1</td><td>Mx</td><td>N*m</td><td>0.0004045451</td><td>0.0003745625</td><td>0.0002133206</td><td>-9.704397e-05</td><td>0.001362446</td><td>0.0003743021</td></tr><tr><td>link1</td><td>My</td><td>N*m</td><td>0.0005001374</td><td>0.0001579502</td><td>0.0001297087</td><td>0.000129258</td><td>0.0003822637</td><td>0.0001567038</td></tr><tr><td>link1</td><td>Mz</td><td>N*m</td><td>0.0001623442</td><td>0.0002002646</td><td>0.0001418835</td><td>-2.344636e-05</td><td>0.0005266738</td><td>0.000199185</td></tr><tr><td>link2</td><td>Fx</td><td>N</td><td>0.09512384</td><td>0.007239455</td><td>0.005708928</td><td>0.004055148</td><td>0.0225676</td><td>0.007238872</td></tr><tr><td>link2</td><td>Fy</td><td>N</td><td>0.05783797</td><td>0.01985046</td><td>0.01243966</td><td>0.006611696</td><td>0.0561953</td><td>0.01981725</td></tr><tr><td>link2</td><td>Fz</td><td>N</td><td>0.02899383</td><td>0.004566291</td><td>0.003658605</td><td>-0.001466522</td><td>0.0159293</td><td>0.0044529</td></tr><tr><td>link2</td><td>Mx</td><td>N*m</td><td>0.002695461</td><td>0.002455498</td><td>0.00163265</td><td>0.001629599</td><td>0.007502912</td><td>0.00239711</td></tr><tr><td>link2</td><td>My</td><td>N*m</td><td>0.0007769654</td><td>0.0002486133</td><td>0.0001944098</td><td>-9.690377e-05</td><td>0.0008553749</td><td>0.0002528858</td></tr><tr><td>link2</td><td>Mz</td><td>N*m</td><td>0.0002051185</td><td>0.0002170082</td><td>0.0001382204</td><td>0.0001156801</td><td>0.0006959477</td><td>0.0002164425</td></tr><tr><td>link3</td><td>Fx</td><td>N</td><td>0.05905691</td><td>0.004073338</td><td>0.002943782</td><td>-0.001974996</td><td>0.01335787</td><td>0.004077663</td></tr><tr><td>link3</td><td>Fy</td><td>N</td><td>0.04546508</td><td>0.02584229</td><td>0.01675342</td><td>-0.004011357</td><td>0.07796246</td><td>0.02602594</td></tr><tr><td>link3</td><td>Fz</td><td>N</td><td>0.02011365</td><td>0.004236227</td><td>0.003216335</td><td>-0.0003449688</td><td>0.01126006</td><td>0.004250037</td></tr><tr><td>link3</td><td>Mx</td><td>N*m</td><td>0.002579729</td><td>0.001507912</td><td>0.001043059</td><td>-0.000804608</td><td>0.004620866</td><td>0.001496713</td></tr><tr><td>link3</td><td>My</td><td>N*m</td><td>0.001534035</td><td>0.0002507821</td><td>0.0001862872</td><td>-0.0001129512</td><td>0.0006852796</td><td>0.0002514092</td></tr><tr><td>link3</td><td>Mz</td><td>N*m</td><td>0.0002552188</td><td>0.0001605334</td><td>0.0001065546</td><td>9.560387e-06</td><td>0.0005329352</td><td>0.0001615016</td></tr><tr><td>hull_base0</td><td>Fx</td><td>N</td><td>2.082214</td><td>0.04270245</td><td>0.02502265</td><td>-0.002289199</td><td>0.1702976</td><td>0.0434169</td></tr><tr><td>hull_base0</td><td>Fy</td><td>N</td><td>4.756104</td><td>0.03957576</td><td>0.03029786</td><td>0.01114295</td><td>0.1543134</td><td>0.03991845</td></tr><tr><td>hull_base0</td><td>Fz</td><td>N</td><td>3.637698</td><td>0.02714509</td><td>0.01914479</td><td>-0.004293164</td><td>0.08893323</td><td>0.02748863</td></tr><tr><td>hull_base0</td><td>Mx</td><td>N*m</td><td>0.2910377</td><td>0.0140254</td><td>0.01034451</td><td>0.004818988</td><td>0.05337347</td><td>0.01381336</td></tr><tr><td>hull_base0</td><td>My</td><td>N*m</td><td>0.08904121</td><td>0.01796243</td><td>0.008571624</td><td>0.002141941</td><td>0.07748847</td><td>0.01798144</td></tr><tr><td>hull_base0</td><td>Mz</td><td>N*m</td><td>0.8157389</td><td>0.01346046</td><td>0.008172348</td><td>5.912135e-05</td><td>0.04509162</td><td>0.01363143</td></tr></table><h2>约束与代数检查</h2><pre>{
+  &quot;mass_projection&quot;: {
+    &quot;symmetric_scaled_eigenvalues_before&quot;: [
+      23.159164651507425,
+      24.185044901493786,
+      27.05561267661053,
+      181.87816140499197,
+      288.1920020978236,
+      413.94044535821723
+    ],
+    &quot;symmetric_scaled_eigenvalues_after&quot;: [
+      23.159164651507357,
+      24.18504490149377,
+      27.055612676610522,
+      181.8781614049918,
+      288.1920020978235,
+      413.9404453582163
+    ],
+    &quot;negative_eigenvalues_clipped&quot;: 0,
+    &quot;scaled_frobenius_correction&quot;: 0.09719613891695233,
+    &quot;scaled_relative_frobenius_correction&quot;: 0.00018069622398617804,
+    &quot;scaled_removed_skew_frobenius&quot;: 0.0971961389169527,
+    &quot;delta_physical_rows&quot;: [
+      [
+        -5.684341886080802e-14,
+        -0.028594895913085533,
+        0.015806958951954768,
+        -0.009362400208699773,
+        -0.019376542168487942,
+        0.019516569185126897
+      ],
+      [
+        0.02859489591307826,
+        -7.958078640513122e-13,
+        -0.007600987358888034,
+        -0.01819968678510564,
+        -0.007656625156157311,
+        -0.008106100107933209
+      ],
+      [
+        -0.015806958951955448,
+        0.007600987358689082,
+        -3.126388037344441e-13,
+        0.024421303986209786,
+        -0.012331844405861984,
+        0.0009484067312859334
+      ],
+      [
+        0.009362400208699696,
+        0.01819968678506989,
+        -0.02442130398615472,
+        1.7763568394002505e-15,
+        -0.006285329823998898,
+        -0.005360230986298268
+      ],
+      [
+        0.01937654216848972,
+        0.007656625156150877,
+        0.012331844405894604,
+        0.006285329823965447,
+        -3.552713678800501e-15,
+        -0.004138226337842887
+      ],
+      [
+        -0.019516569185112687,
+        0.00810610010778199,
+        -0.0009484067312973948,
+        0.0053602309863011975,
+        0.00413822633783234,
+        1.7763568394002505e-15
+      ]
+    ],
+    &quot;delta_max_abs_by_output_row&quot;: [
+      0.028594895913085533,
+      0.02859489591307826,
+      0.024421303986209786,
+      0.02442130398615472,
+      0.01937654216848972,
+      0.019516569185112687
+    ]
+  },
+  &quot;damping_projection&quot;: {
+    &quot;symmetric_scaled_eigenvalues_before&quot;: [
+      9.909723743821209,
+      10.156412349584075,
+      14.347515973189365,
+      58.295672165760124,
+      101.05658312650809,
+      117.61654710314329
+    ],
+    &quot;symmetric_scaled_eigenvalues_after&quot;: [
+      9.909723743821223,
+      10.156412349584063,
+      14.347515973189367,
+      58.295672165760195,
+      101.05658312650806,
+      117.61654710314335
+    ],
+    &quot;negative_eigenvalues_clipped&quot;: 0,
+    &quot;scaled_frobenius_correction&quot;: 1.6193275456433167e-13,
+    &quot;scaled_relative_frobenius_correction&quot;: 9.70296058321772e-16,
+    &quot;scaled_removed_skew_frobenius&quot;: 0.0,
+    &quot;delta_physical_rows&quot;: [
+      [
+        -2.842170943040401e-14,
+        2.831068712794149e-15,
+        3.885780586188048e-16,
+        2.7755575615628914e-17,
+        8.881784197001252e-16,
+        2.6645352591003757e-15
+      ],
+      [
+        2.942091015256665e-15,
+        -1.4210854715202004e-14,
+        -5.3734794391857577e-14,
+        1.63202784619898e-14,
+        -7.049916206369744e-15,
+        7.33441085642994e-15
+      ],
+      [
+        3.608224830031759e-16,
+        -5.3734794391857577e-14,
+        1.2079226507921703e-13,
+        -3.064215547965432e-14,
+        6.661338147750939e-15,
+        1.0130785099704553e-15
+      ],
+      [
+        4.163336342344337e-17,
+        1.63202784619898e-14,
+        -3.019806626980426e-14,
+        1.1546319456101628e-14,
+        -3.323296499102568e-15,
+        1.6237011735142914e-15
+      ],
+      [
+        8.881784197001252e-16,
+        -7.0401583868173745e-15,
+        6.63358257213531e-15,
+        -3.4590386110977533e-15,
+        -3.552713678800501e-15,
+        7.771561172376096e-16
+      ],
+      [
+        2.6645352591003757e-15,
+        7.344819197285801e-15,
+        1.0026701691145945e-15,
+        1.6237011735142914e-15,
+        9.992007221626409e-16,
+        1.7763568394002505e-15
+      ]
+    ],
+    &quot;delta_max_abs_by_output_row&quot;: [
+      2.842170943040401e-14,
+      5.3734794391857577e-14,
+      1.2079226507921703e-13,
+      3.019806626980426e-14,
+      7.0401583868173745e-15,
+      7.344819197285801e-15
+    ]
+  },
+  &quot;algebraic_tests&quot;: {
+    &quot;max_abs_component_total_closure&quot;: 2.1316282072803006e-14,
+    &quot;max_abs_cross_coordinate_closure&quot;: 6.661338147750939e-16,
+    &quot;max_abs_cross_zero_power&quot;: 6.938893903907228e-18,
+    &quot;max_abs_jacobian_power_closure&quot;: 2.1316282072803006e-14,
+    &quot;min_dissipation_W&quot;: 0.006700988071456211,
+    &quot;random_algebra_cases&quot;: 128,
+    &quot;zero_state_max_abs&quot;: 0.0,
+    &quot;algebraic_only_not_new_empirical_validation&quot;: true
+  }
+}</pre></html>

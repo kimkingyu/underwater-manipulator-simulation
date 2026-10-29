@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "contract": "new_model_sim/14_hydro_validation/contract.json",
+  "dataset": "new_model_sim/14_hydro_validation/data/component_dataset.json",
+  "functions": {
+    "forward_kinematics(q, reference)": "joint_centres(3,3), joint_axes(3,3), body_references(5,3), body_rotations(5,3,3)",
+    "loads_to_components(loads, q, reference, origin_global=None, rotation_global_from_body=None, raw_moment_origin=None, force_scale=1, moment_scale=1)": "wrenches(5,6), total(6), joint_tau(3), generalized(9)",
+    "average_window(history, q, reference, window_iterations=200, **conversion_kwargs)": "mean/SD arrays plus original averaging indices; future raw steady reuse",
+    "recompose_components(wrenches, q, reference)": "total(6), joint_tau(3), generalized(9)",
+    "body_jacobians(q, reference)": "J(5,6,9): local twist=J@[nu,qdot]; generalized=sum J.T@wrench",
+    "oscillation_trajectory(history, spec, q, reference, law)": "physical sampled trajectory; spec=dof/amp/period; law=peak_rate/angular_frequency_rad_s/ramp_s"
+  },
+  "example_steady": {
+    "id": "q0__T_px_03",
+    "pose_id": "q0",
+    "case_id": "T_px_03",
+    "q": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "nu": [
+      0.3,
+      0,
+      0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "wrenches": [
+      [
+        -28.493847929839678,
+        3.518977470920348,
+        -0.626723028544442,
+        -0.4169933409337019,
+        -0.333879166032285,
+        3.2447212565128796
+      ],
+      [
+        -0.5857381563568136,
+        -0.038616085899120196,
+        0.16305832812809007,
+        -0.05699989693135354,
+        0.1824841640791585,
+        -0.19176662540364536
+      ],
+      [
+        -0.15713615907257783,
+        0.10281101525312573,
+        -0.14801479675887466,
+        -0.00014069324616367007,
+        0.001830959985679323,
+        -0.0014509865760618315
+      ],
+      [
+        -0.8484776917639967,
+        -0.1254593932368838,
+        0.06196705580050564,
+        -0.01255787282929718,
+        -0.0008792896805416839,
+        -0.0008206517052951334
+      ],
+      [
+        -0.7757278889106638,
+        -0.4564629543070368,
+        -0.0037081860232487775,
+        0.019221283002590427,
+        0.01575400747270901,
+        0.003005815178511506
+      ]
+    ],
+    "total": [
+      -30.860927825943726,
+      3.001250052730433,
+      -0.5534206273979697,
+      -0.6084755100130124,
+      0.5129060330783923,
+      2.3266922242564836
+    ],
+    "joint_tau": [
+      0.13760213198120702,
+      -0.05210077138350733,
+      -0.03661433244411367
+    ],
+    "strict": true,
+    "unsteady_mean": false,
+    "viscous_model": "SST",
+    "status": "ok",
+    "converged": true,
+    "iterations": 400,
+    "drift_last": 0.00044951667681357714,
+    "failed_required": [],
+    "uncertainty_wrenches_sd": [
+      [
+        0.0004888091455731769,
+        0.0010740613027024938,
+        0.000757378028868327,
+        0.00012949103079207491,
+        0.00019089678900802135,
+        6.659388202528891e-05
+      ],
+      [
+        8.20337373204023e-06,
+        1.928718764092513e-05,
+        1.9047697195646636e-05,
+        1.0445354978763377e-05,
+        4.32401104498398e-06,
+        2.8536764352337795e-06
+      ],
+      [
+        4.669095527579761e-06,
+        1.186621577346361e-05,
+        8.526553300211685e-05,
+        2.5834123647275996e-07,
+        6.291254403764565e-07,
+        1.6187044567431581e-07
+      ],
+      [
+        0.00016291307683257732,
+        0.00019288091421810176,
+        8.649151299922976e-05,
+        6.121641345701412e-07,
+        4.497841651617015e-06,
+        1.4006289022922535e-06
+      ],
+      [
+        0.0004368713258596993,
+        0.0002381613974481766,
+        3.317925086814226e-05,
+        9.573922109194e-06,
+        1.2004263341485786e-05,
+        1.6654985969790502e-06
+      ]
+    ],
+    "uncertainty_total_sd": [
+      0.0009447072907934743,
+      0.0007294262927808405,
+      0.0005580282924296571,
+      0.00010302562628776766,
+      0.0003463539897530074,
+      0.00022263182564162925
+    ],
+    "uncertainty_tau_sd": [
+      6.126283109666768e-05,
+      4.914975383477546e-05,
+      2.0953036998413228e-05
+    ],
+    "source": {
+      "history": "new_model_sim/11_theta_fit/runs/T_px_03_hist.json",
+      "result": "new_model_sim/11_theta_fit/runs/T_px_03_result.json",
+      "legacy_dataset": "new_model_sim/11_theta_fit/theta_dataset.json",
+      "case_h5": "new_model_sim/11_theta_fit/runs/T_px_03.cas.h5",
+      "averaging": {
+        "rule": "iter > last_iter - window_iterations",
+        "window_iterations": 200,
+        "interval_exclusive_inclusive": [
+          200,
+          400
+        ],
+        "sample_count": 4,
+        "sample_indices_zero_based": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "sample_iterations": [
+          250,
+          300,
+          350,
+          400
+        ],
+        "sd_ddof": 0,
+        "uncertainty_note": "Population SD (ddof=0) of correlated saved samples in the last 200 solver iterations; solver-load fluctuation, NOT independent measurement uncertainty, standard error, discretization error or an uncertainty confidence interval."
+      },
+      "raw_channel_count": 57,
+      "force_scale_applied": 1.0,
+      "moment_scale_applied": 1.0
+    }
+  },
+  "oscillation_shapes": {
+    "time_s": [
+      240
+    ],
+    "nu": [
+      240,
+      6
+    ],
+    "nudot": [
+      240,
+      6
+    ],
+    "wrenches": [
+      240,
+      5,
+      6
+    ],
+    "total": [
+      240,
+      6
+    ],
+    "joint_tau": [
+      240,
+      3
+    ]
+  },
+  "uncertainty_note": "Population SD (ddof=0) of correlated saved samples in the last 200 solver iterations; solver-load fluctuation, NOT independent measurement uncertainty, standard error, discretization error or an uncertainty confidence interval."
+}

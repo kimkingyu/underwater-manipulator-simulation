@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "status": "models_frozen_waiting_for_qe_preparation_and_license",
+  "frozen_at_utc": "2026-10-29T12:07:41.525364+00:00",
+  "source_git_commit": "3552c585e13dce2d43dc702008c1cdc210fee2d5",
+  "steady_development_winner": null,
+  "default_theta_replacement_authorized": false,
+  "prospective_cases": [
+    "T_V_q0_XY_p055",
+    "T_V_q0_XY_n055",
+    "T_V_q0_YZ_p055",
+    "T_V_q0_YZ_n055",
+    "T_V_qe_XY_p055",
+    "T_V_qe_XY_n055",
+    "T_V_qe_YZ_p055",
+    "T_V_qe_YZ_n055",
+    "O_V_q0_YZ"
+  ],
+  "new_blind_loads_generated": false,
+  "files": [
+    {
+      "path": "contract.json",
+      "sha256": "4ed6b01d1941b68830dfcbbfbbc7e42a360fae8224d47d40c8849845d19fc22a"
+    },
+    {
+      "path": "data/component_dataset.json",
+      "sha256": "e1c94770cf2bb76ec0fb9c1f1c747bbd2bd6f248545970aab8354c60fbb9803c"
+    },
+    {
+      "path": "data_pipeline.py",
+      "sha256": "e6784b8a6f75c70dc06a41528e9d21802ac42aa24ad43377be359a537f8abe22"
+    },
+    {
+      "path": "model_components.py",
+      "sha256": "32d0ea0121b5d3fa611d033b975e9f578945ee345880af6d19cabd31ea887044"
+    },
+    {
+      "path": "fit_candidates.py",
+      "sha256": "9889e3464d63bf91eb4c3ed8dd01d1f23da151346197baca20ca3076e999680d"
+    },
+    {
+      "path": "dynamics_linear.py",
+      "sha256": "72d89f06074354885260f7af2a40f2a619b9730b105fbcefeb451846643b5b0d"
+    },
+    {
+      "path": "frozen/source_manifest.json",
+      "sha256": "f7f50a3fa6454e836c2b55dec58cd36d331f5868594bf5e46a00ba52dfc1106d"
+    },
+    {
+      "path": "frozen/theta87_baseline.json",
+      "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+    },
+    {
+      "path": "frozen/theta87_baseline.mat",
+      "sha256": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850"
+    },
+    {
+      "path": "frozen/evaluation_protocol.json",
+      "sha256": "01506d61b8b63c0d07eea01ab089e63f4fe5bc22a93229c866a6b63708b66aaf"
+    },
+    {
+      "path": "frozen/case_design.json",
+      "sha256": "a36526e53c3ace4bcbdd90eb77880dbbb235c3557216f4ccea6c34079ff9f8d0"
+    },
+    {
+      "path": "frozen/steady_prior_predictions.json",
+      "sha256": "663f4375f0901bbe8ebc7959ea9be0b1530f6561ee073bb2cd7344aabb558391"
+    },
+    {
+      "path": "frozen/oscillation_prior_predictions.json",
+      "sha256": "3fc436fbde2ab45e6dd5ef4c4a45800bda2d3948f82ea8acdc20f07a03a124c8"
+    },
+    {
+      "path": "models/candidate_A_strict37.json",
+      "sha256": "8b58499c309fb6002edc4be563684ebe70a3537c47dd8ca6ffb98cd3456db45d"
+    },
+    {
+      "path": "models/candidate_B_strict37.json",
+      "sha256": "76d274193d257ae4db9e8267453971b578591de23a8a5b12d3adb6168b3adf09"
+    },
+    {
+      "path": "models/candidate_B_pair_strict37.json",
+      "sha256": "63c3d693e5c89a57907f76f9a1c662754864d8afbe27daefd99337c49d391bb2"
+    },
+    {
+      "path": "models/dynamic_linear_q0.json",
+      "sha256": "5eac00e86c07b9f452f9e5d89b274ac5c273ea5f029901b0d3bf381a9b7e6087"
+    },
+    {
+      "path": "matlab/predict_split_hydro.m",
+      "sha256": "9414f4eea3d34e5b45f6f85ad4c89dccd0cb424044def3f4688eb2aac376d90d"
+    },
+    {
+      "path": "matlab/predict_dynamic_linear.m",
+      "sha256": "abc74dbabccd2d11960d33faa239f9edb581a165ff3ecd30526cfb75caf22e2e"
+    },
+    {
+      "path": "prepare_research_freeze.py",
+      "sha256": "a2adf3911ea44834067f8ce215b79a865ff4dc9f3ad15ede96d2a2a3cc22ff47"
+    }
+  ],
+  "pending_before_runnable_blind_protocol": [
+    "verified qe CAD/water/mesh/base",
+    "available authorized Fluent license",
+    "final CFD config and runner hashes"
+  ],
+  "scope": "Research snapshot only. Not sufficient to launch run_validation; do not relabel as independent validation."
+}

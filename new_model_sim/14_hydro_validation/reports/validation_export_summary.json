@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "validation_status": "inconclusive",
+  "handoff_directory": "handoff",
+  "strict_steady": 6,
+  "capped_steady": 2,
+  "independent_oscillation": 1,
+  "csv_row_counts": {
+    "validation_steady.csv": 8,
+    "validation_oscillation.csv": 240,
+    "validation_metrics.csv": 804,
+    "validation_harmonics.csv": 234,
+    "validation_case_index.csv": 9,
+    "validation_cycle_repeatability.csv": 45
+  },
+  "model_parameter_counts": {
+    "A": 45,
+    "B": 60,
+    "B_pair": 66,
+    "dynamic_q0": 360,
+    "legacy87": 87
+  },
+  "source_hashes_unchanged": true,
+  "source_files_verified": 292,
+  "matlab": {
+    "status": "PASS",
+    "validation_status": "inconclusive",
+    "strict_steady": 6,
+    "capped_steady": 2,
+    "static_cases_checked": 8,
+    "static_models_checked": 4,
+    "oscillation_samples_checked": 240,
+    "dynamic_models_checked": 2,
+    "static_prediction_max_abs": {
+      "A": 3.552713678800501e-15,
+      "B": 2.842170943040401e-14,
+      "B_pair": 2.842170943040401e-14,
+      "legacy87": 1.4210854715202004e-14
+    },
+    "dynamic_prediction_max_abs": {
+      "dynamic_q0": 7.105427357601002e-15,
+      "legacy87": 1.4210854715202004e-14
+    },
+    "maximum_absolute_error": 2.842170943040401e-14,
+    "tolerance": 1e-10,
+    "portable_inference_paths_verified": true,
+    "original_scope_flags_preserved": true,
+    "model_parameters_refitted": false,
+    "default_theta_replaced": false,
+    "pure_hull_legacy_available": false,
+    "matlab_version": "25.2.0.2998904 (R2025b)"
+  },
+  "portability": {
+    "status": "PASS",
+    "validation_status": "inconclusive",
+    "strict_steady": 6,
+    "capped_steady": 2,
+    "static_cases_checked": 8,
+    "static_models_checked": 4,
+    "oscillation_samples_checked": 240,
+    "dynamic_models_checked": 2,
+    "static_prediction_max_abs": {
+      "A": 3.552713678800501e-15,
+      "B": 2.842170943040401e-14,
+      "B_pair": 2.842170943040401e-14,
+      "legacy87": 1.4210854715202004e-14
+    },
+    "dynamic_prediction_max_abs": {
+      "dynamic_q0": 7.105427357601002e-15,
+      "legacy87": 1.4210854715202004e-14
+    },
+    "maximum_absolute_error": 2.842170943040401e-14,
+    "tolerance": 1e-10,
+    "portable_inference_paths_verified": true,
+    "original_scope_flags_preserved": true,
+    "model_parameters_refitted": false,
+    "default_theta_replaced": false,
+    "pure_hull_legacy_available": false,
+    "matlab_version": "25.2.0.2998904 (R2025b)",
+    "tested_after_temporary_copy": true,
+    "temporary_copy_removed_on_exit": true
+  },
+  "file_count": 40,
+  "handoff_bytes_excluding_manifest": 6543222,
+  "no_model_refit": true,
+  "no_default_theta_change": true,
+  "zip_created": false,
+  "python_tests": {
+    "status": "PASS",
+    "tests_run": 16,
+    "failures": 0,
+    "errors": 0
+  },
+  "handoff_bytes_including_manifest": 6550801
+}

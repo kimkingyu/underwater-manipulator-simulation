@@ -1,0 +1,7 @@
+named selections ['gap_faces', 'inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+settings all set
+named selections now ['inlet', 'outlet', 'tank_wall', 'wall_auv', 'wall_base0', 'wall_jaw1', 'wall_jaw2', 'wall_l1', 'wall_l2', 'wall_link3', 'wall_pin4']
+RESULT elements 98756 nodes 49394 skew max 0 avg 0 8s
+  [Error] 一个或多个实体网格划分失败。包含这些实体的几何体的网格可能不是最新的。但其它实体上的网格划分可能是成功的。
+  [Error] 表面网格相互交叉或近似交叉，因此难以创建体积网格。请通过调整网格尺寸或调整几何结构来解决该问题。
+  [Error] 当前网格划分选项与设置无法生成网格。

@@ -1,0 +1,25 @@
+{
+  "pose": [
+    0.225,
+    -0.25,
+    -0.2
+  ],
+  "generator_source": "D:\\work4\\new_model_sim\\13_pose_q1\\make_build_pose.py",
+  "generator_sha256": "6863473c7f7aaf4a301d40d4c264c12e1a9bfbc3778b026e3458192b24eb8e40",
+  "output_root": "D:\\work4\\new_model_sim\\14_hydro_validation\\cfd\\qe",
+  "exact_probe": "probe_pose_qe.json",
+  "flow_solved": false,
+  "seal_strategy": {
+    "q0": "v5 cylinder-gap fill retained",
+    "qe": "same qb/qc v5 seal-before-pose policy; cylinder-gap fill dropped because joint2 opens it",
+    "j3_wedge_and_jaw_seams": "retained before pose",
+    "distal_shift_before_pose_m": [
+      0,
+      1e-05,
+      0
+    ]
+  },
+  "local_fragment_repair": "one bounded mesh-sizing repair completed after explicit failure and one diagnostic: pin4 faces 891 and 968 refined to 0.3 mm in qe_v2; no CAD geometry modification; details in mesh_repair_plan.json", 
+  "water_build": {"exit_code": 0, "seconds": 70.9, "status": "ok", "scdoc_sha256": "79597f2686bff4f61b166a7ce68a8dcfb217f6328e8ef28806fad9ec3e45f821", "source_unchanged": true, "closed": true, "manifold": true, "water_volume_m3": 34.37565051331446, "water_faces": 984, "unassigned_faces": 0, "ambiguous_face_diagnostics_retained": 8, "tiny_faces_below_0p01_mm2": 5, "extended_seal_overlap_mm3": {"l2/link3": 0.12976180922050487}},
+  "legacy_policy_annotation": "fluid_domain_qe.json retains the original v5 template's policy label and computed cylinder-gap diagnostics; qe generated code omits e.Unite(cyl_fill) for l2, as recorded in seal_strategy. Those diagnostics do not mean that the cylinder fill was applied at qe."
+}

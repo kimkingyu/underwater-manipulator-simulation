@@ -1,0 +1,14 @@
+{
+  "role": "Metadata clarification only; no predictions, fitted parameters, folds or scores changed",
+  "original_report": "model_development.json",
+  "field_to_read_with_this_correction": "candidate_dictionary_frozen_before_labels",
+  "clarification": "The dictionary was fixed geometrically before this numerical fitting run, not before historical CFD labels were ever observed. The initial task already supplied historical q0 +/-X joint loads; every existing pose is development data. The original field name is too broad and must not be interpreted as label-blind preregistration.",
+  "actual_port_policy": "All A/B/C normals and points came from the predetermined bbox formulas. No held-out labels selected normals, point locations or regularization; regularization was selected in inner training-only grouped CV.",
+  "b_pair_policy": "One explicit parent-requested bounded development extension after reviewing ABC results; not a blind/preregistered model discovery. Only link2/link3 get a fixed pair along the longest bbox axis, with three coefficients per pair. No further candidates were searched.",
+  "original_ABC_artifacts_preserved": true,
+  "current_generator_wording_corrected": true,
+  "new_blind_CFD_labels_read": false,
+  "candidate_freeze_performed_by_this_agent": false,
+  "independent_component_passivity": "A modelling restriction, not a law imposed on each CFD wall component. All seven strict cases with positive link1 local power remain included; the measured whole-system power is negative for all strict cases.",
+  "scope_note": "new_configuration/out_of_sample_configuration means the exact pose was not a training sample. It does not imply that the pose lies outside the geometric interpolation range. within_training_speed is recorded separately. No static candidate validates inertia or independent joint motion."
+}

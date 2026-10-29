@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "python_matlab_cases": 28,
+  "original87_cases": 20,
+  "scope_and_input_rejections": 6,
+  "max_abs_prediction_difference": 2.8421709430404007E-14,
+  "max_abs_original_J_difference": 3.3306690738754696E-16,
+  "max_abs_frozen87_difference": 4.2632564145606011E-14,
+  "max_abs_power_closure": 5.6843418860808015E-14,
+  "matlab_version": "25.2.0.2998904 (R2025b)",
+  "existing_dynamic_branch_unchanged": true
+}

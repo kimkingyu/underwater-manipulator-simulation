@@ -1,0 +1,143 @@
+{
+  "status": "ready_uninitialized",
+  "flow_initialized": false,
+  "flow_solved": false,
+  "processor_count": 1,
+  "steps": [
+    {
+      "name": "launch_one_rank_prepare_only",
+      "ok": true,
+      "required": true,
+      "seconds": 27.953
+    },
+    {
+      "name": "transcript_start",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "read_tet",
+      "ok": true,
+      "required": true,
+      "seconds": 17.609
+    },
+    {
+      "name": "tet_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 2.609
+    },
+    {
+      "name": "convert_polyhedra",
+      "ok": true,
+      "required": true,
+      "seconds": 35.5
+    },
+    {
+      "name": "poly_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 3.969
+    },
+    {
+      "name": "standard_e5_mesh_only_improve_quality_once",
+      "ok": true,
+      "required": true,
+      "seconds": 3.86
+    },
+    {
+      "name": "poly_improved_quality",
+      "ok": true,
+      "required": true,
+      "seconds": 3.547
+    },
+    {
+      "name": "final_poly_quality_gate",
+      "ok": true,
+      "required": true,
+      "seconds": 0.0
+    },
+    {
+      "name": "mesh_info",
+      "ok": true,
+      "required": true,
+      "seconds": 0.781
+    },
+    {
+      "name": "write_poly_case",
+      "ok": true,
+      "required": true,
+      "seconds": 3.235
+    }
+  ],
+  "failed_required": [],
+  "inputs": {
+    "mesh_variant": "qe_v3",
+    "tet_mesh": "D:\\work4\\new_model_sim\\14_hydro_validation\\cfd\\qe\\auvm_water_qe_v3_files\\dp0\\FFF\\MECH\\FFF.msh",
+    "tet_sha256": "44630fe48efdaa9191ee4fe0e3053e959aad1f9eccad712fc00c51a2d6607fa0",
+    "elements": 896901,
+    "nodes": 174584,
+    "skew_max": 0.999889649277808,
+    "skew_average": 0.2684786685364012
+  },
+  "repair_reason": "Parent quality disposition: sole pre-load qe_v3 local water-body SOI alternative; fixed radius 0.020 m and size 0.002 m; unchanged 0.01 gate and flow-case retry budget",
+  "previous_attempt_retained": "poly_qe_e5.json",
+  "workflow_reference": "12_coarse_mesh/fluent_poly.py: convert followed by exactly one mesh-only improve_quality call",
+  "maximum_quality_improvement_calls": 1,
+  "parent_quality_disposition": "cfd/parent_quality_disposition.json",
+  "parent_quality_disposition_sha256": "95723af7e6fcf3ab444599a7b15f5098853b34c6dab70b2e8f77717f284e58b0",
+  "maximum_parent_authorized_alternative_attempts": 1,
+  "tet": {
+    "label": "tet",
+    "min_orth": 0.000110351,
+    "max_aspect": 86.8228,
+    "minimum_volume_m3": 1.624361e-12,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "6.45218e-04, -5.85000e-03, -3.78384e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "poly": {
+    "label": "poly",
+    "min_orth": 0.101475,
+    "max_aspect": 83.3852,
+    "minimum_volume_m3": 6.897474e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "2.64335e-01,  4.53457e-01,  4.13583e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "poly_improved": {
+    "label": "poly_improved",
+    "min_orth": 0.140964,
+    "max_aspect": 84.5447,
+    "minimum_volume_m3": 6.897474e-13,
+    "mesh_check_complete": true,
+    "min_orth_location_m": "-3.62924e-03, -5.81677e-03, -3.82150e-01",
+    "negative_volume": false,
+    "errors": []
+  },
+  "minimum_orthogonal_quality_gate": 0.01,
+  "polyhedral_cells": 326927,
+  "mesh_info_lines": [
+    "125392 nodes, binary.",
+    "49192 nodes, binary.",
+    "326927 polyhedra cells, zone  2.",
+    "1574658 polygonal interior faces, zone  1.",
+    "571 polygonal velocity-inlet faces, zone  5.",
+    "572 polygonal pressure-outlet faces, zone  6.",
+    "2227 polygonal wall faces, zone  7.",
+    "11052 polygonal wall faces, zone  8.",
+    "708 polygonal wall faces, zone  9.",
+    "11150 polygonal wall faces, zone 10.",
+    "12649 polygonal wall faces, zone 11.",
+    "15400 polygonal wall faces, zone 12.",
+    "37524 polygonal wall faces, zone 13.",
+    "22580 polygonal wall faces, zone 14.",
+    "1255 polygonal wall faces, zone 15.",
+    "1210711 nodes.",
+    "1210711 nodes,     1 zone  ..."
+  ],
+  "poly_case_sha256": "8f96131abbec85b9410f0eb305cd61ed4786746bb729210b12e4e3d1d1a4900d"
+}
