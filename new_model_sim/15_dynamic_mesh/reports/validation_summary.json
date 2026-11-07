@@ -154,10 +154,40 @@
       "control_state": "FullyDefined",
       "nodes": 0,
       "elements": 0
+    },
+    {
+      "path": "evidence/background_all_define.json",
+      "sha256": "3459a72d69cdc9434e3828e1bd52042fa8dccadb34d8d6242f835835710a52cc",
+      "profile": "background_all_controls",
+      "phase": "define",
+      "control_state": "FullyDefined",
+      "all_background_controls_fully_defined": true,
+      "nodes": 0,
+      "elements": 0
+    },
+    {
+      "path": "evidence/background_all_refresh.json",
+      "sha256": "8a033736d16b7a2fc5fbf879a0af46acaf57fd99e5d7b3d4b67e20ec8a76a097",
+      "profile": "background_all_controls",
+      "phase": "refresh",
+      "control_state": "FullyDefined",
+      "all_background_controls_fully_defined": true,
+      "nodes": 0,
+      "elements": 0
+    },
+    {
+      "path": "evidence/background_all_readback.json",
+      "sha256": "94ffb9d62fcc9f0233f541f937fa8c8e40d4c16c326df2bdff33c5f453cd4215",
+      "profile": "background_all_controls",
+      "phase": "readback",
+      "control_state": "FullyDefined",
+      "all_background_controls_fully_defined": true,
+      "nodes": 0,
+      "elements": 0
     }
   ],
   "not_yet_validated": [
-    "all background controls in the prepared third diagnostic",
+    "arm-domain controls with the revised no-local-growth configuration",
     "valid two-domain mesh pair",
     "static overset connectivity",
     "mesh motion and restart",
@@ -168,5 +198,30 @@
     "license and connection runtime records",
     "machine-specific authorization grants",
     "local execution/source archives"
-  ]
+  ],
+  "background_definition_verification": {
+    "status": "passed",
+    "job_id": "sizing-b001-a003",
+    "elapsed_seconds": 65.88481811332167,
+    "all_three_phases_match": {
+      "define": true,
+      "refresh": true,
+      "readback": true
+    },
+    "required_control_names": [
+      "stage15_background_tet",
+      "stage15_wall_base0",
+      "stage15_wall_auv",
+      "stage15_overlap_0"
+    ],
+    "five_named_scopes_valid_and_stable": true,
+    "global_growth_rate": 1.3,
+    "local_face_growth_override_applied": false,
+    "nodes_each_phase": 0,
+    "elements_each_phase": 0,
+    "native_errors_present": false,
+    "owned_cleanup_verified": true,
+    "inputs_and_sources_reverified_after_cleanup": true,
+    "is_mesh_or_motion_validation": false
+  }
 }
