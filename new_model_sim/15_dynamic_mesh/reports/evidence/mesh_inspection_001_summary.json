@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_summary_of_two_native_connection_failures_and_fresh_owned_cleanup_reviews",
+  "recorded_local_date": "2026-11-07",
+  "scope": "read-only existing-mesh inspection only; no mesh generation, initialization, flow iteration, mesh motion or overset assembly",
+  "maximum_attempts": 2,
+  "attempts_consumed": 2,
+  "remaining_attempts": 0,
+  "automatic_retries": 0,
+  "maximum_seconds_per_attempt_including_cleanup": 300,
+  "jobs": [
+    {
+      "job_id": "mesh-inspection-001-background",
+      "domain": "background",
+      "elapsed_seconds": 28.419086626032367,
+      "original_status": "cleanup_unverified",
+      "original_owned_cleanup_verified": false,
+      "solver_launched": true,
+      "native_read_mesh_completed": false,
+      "native_commands_completed": 0,
+      "outer_error_class": "InvalidPassword",
+      "inner_rpc_status": "unavailable_in_original_evidence",
+      "password_rejection_proven": false,
+      "actual_failure_cause": "unverified; original adapter did not preserve the underlying RPC classification",
+      "original_receipts": {
+        "request.json": "9b9d264f640833f4f2c9809ffed83746c44cbea2b84f4256927e8d797028b9de",
+        "native_result.json": "1d014ca3f183226e392d41abc6cde6ab1366cc3b9c58fea0b287c902999ab3e6",
+        "probe_result.json": "cc9180ba85b75b355ac6f08c91edc6d96eaa9873d5a9dfc40ccdefc202ad2521"
+      },
+      "fresh_cleanup_review": {
+        "known_process_identities_rechecked": 11,
+        "active_owned_processes": 0,
+        "active_ansys_clients": 0,
+        "extra_native_engines": 0,
+        "worker_lock_pid_and_attempt_verified": true,
+        "only_exact_matching_exited_worker_lock_released": true,
+        "processes_signalled_during_review": 0,
+        "original_cleanup_false_preserved": true,
+        "receipt_sha256": "c43a397b995388166770c9618fd6b5c6d093fa9a46b38c75daa73df3c12aa743"
+      }
+    },
+    {
+      "job_id": "mesh-inspection-001-arm",
+      "domain": "arm",
+      "elapsed_seconds": 27.176745414733887,
+      "original_status": "cleanup_unverified",
+      "original_owned_cleanup_verified": false,
+      "solver_launched": true,
+      "native_read_mesh_completed": false,
+      "native_commands_completed": 0,
+      "outer_error_class": "InvalidPassword",
+      "inner_exception_class": "_InactiveRpcError",
+      "inner_rpc_status": "UNAVAILABLE",
+      "classification": "transport_unavailable_not_proven_password_error",
+      "password_rejection_proven": false,
+      "actual_transport_failure_cause": "unverified",
+      "original_receipts": {
+        "request.json": "78564b1a686134cf94f95bc9a61ba28373629bdedd0cc51dbf88f2157c0a6316",
+        "native_result.json": "2994c7b888e6050509adf7b62d9cc60032205f8b65a4fce14e4d33d466565b60",
+        "probe_result.json": "2471cfb1ab79be780f25de27d6ac3e4e1e5fde6781fb53987586f5b8c4293a30"
+      },
+      "fresh_cleanup_review": {
+        "known_process_identities_rechecked": 9,
+        "active_owned_processes": 0,
+        "active_ansys_clients": 0,
+        "extra_native_engines": 0,
+        "worker_lock_pid_and_attempt_verified": true,
+        "only_exact_matching_exited_worker_lock_released": true,
+        "processes_signalled_during_review": 0,
+        "original_cleanup_false_preserved": true,
+        "receipt_sha256": "068a96aac8447b2b87a3cf70498fbb709222c0e5afbc409ecb0885b2aec02ac1"
+      }
+    }
+  ],
+  "source_integrity": {
+    "original_809_version_runtime_sources_archived": 14,
+    "archive_total_files": 20,
+    "archive_manifest_sha256": "49015de0aa488a50fbdc05d7000db22d02652813b715143379c993b43febc930",
+    "later_source_binding_revision_added_attempts": 0,
+    "original_requests_and_native_receipts_unchanged": true,
+    "both_meshes_and_eight_protected_inputs_reverified": true
+  },
+  "connection_followup": {
+    "private_server_info_requires_nonempty_credentials_and_two_stable_snapshots": true,
+    "same_in_memory_snapshot_passed_to_public_connect_api": true,
+    "exactly_one_native_launch_and_connect_per_attempt": true,
+    "native_startup_budget_seconds": 45,
+    "credential_values_logged_or_published": false,
+    "safe_error_classes_and_rpc_status_only": true,
+    "offline_fix_did_not_prove_the_original_failure_cause": true
+  },
+  "offline_regression": {
+    "tests_passed": 847,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_hashes_bound": true,
+    "portable_tests_passed": 844,
+    "local_calibration_tests_deselected_in_portable_run": 3,
+    "mcp_tools": 12
+  },
+  "resulting_gates": {
+    "native_quality_verified": false,
+    "native_positive_cell_volumes_verified": false,
+    "native_wall_fluid_adjacency_verified": false,
+    "qualified_mesh_pair": false,
+    "static_overset_connectivity_verified": false,
+    "actual_initializations": 0,
+    "actual_flow_steps": 0,
+    "actual_mesh_motion_steps": 0,
+    "CFD_authorized": false
+  },
+  "publication_scope": "Only this derived redacted summary, source code and tests are public. Mesh/CAD binaries, server-info credentials, native stdout/transcripts, runtime grants and local source archives remain local. No failed run was converted into a passing quality receipt."
+}

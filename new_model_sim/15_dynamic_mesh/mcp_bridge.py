@@ -60,6 +60,10 @@ class BridgeError(RuntimeError):
     pass
 
 
+class WorkerLaunchUncertain(BridgeError):
+    """A bounded worker-launch hook returned without proving process ownership."""
+
+
 def sha256(path):
     digest = hashlib.sha256()
     with Path(path).open("rb") as stream:
@@ -278,6 +282,10 @@ class Stage15Bridge:
     def preserve_sources(self, request):
         """Optional create-only per-slot archival hook; legacy artifacts stay untouched."""
         return None
+    def launch_worker(self, command, **options):
+        """Legacy default; separately authorized adapters may add a bounded hook."""
+        return subprocess.Popen(command, **options)
+
     def start(self, confirmation):
         if confirmation != self.START_CONFIRMATION:
             raise BridgeError("Explicit definition-probe confirmation required")
@@ -288,6 +296,8 @@ class Stage15Bridge:
         self.authorize()
         if self.safe(".ansys-task.lock").exists():
             raise BridgeError("Existing ANSYS ownership lock: no new task permitted")
+        if self.OPERATION != "mesh_inspection" and self.safe(".mesh-inspection-dispatch.lock").exists():
+            raise BridgeError("Read-only inspection worker dispatch ownership is pending")
         python = self._python()
         sources = self._sources()
         self.safe(Path(self.ATTEMPT).parent).mkdir(parents=True, exist_ok=True)
@@ -310,7 +320,7 @@ class Stage15Bridge:
                 "owned_cleanup_verified": False})
             options = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {"start_new_session": True}
             with self.safe(self.ATTEMPT + "/worker.log").open("xb") as log:
-                process = subprocess.Popen(
+                process = self.launch_worker(
                     [python, "-B", str(self.safe(self.WORKER_SCRIPT)), "--run", "--attempt", str(attempt)],
                     cwd=str(self.root), env=self._environment(), stdin=subprocess.DEVNULL,
                     stdout=log, stderr=subprocess.STDOUT, shell=False, close_fds=True, **options)
@@ -326,12 +336,13 @@ class Stage15Bridge:
         except Exception as exc:
             # No broad process termination here. A worker without a matching
             # launcher ledger must refuse to launch any ANSYS client itself.
-            failure = {"job_id": self.JOB_ID, "status": "failed" if process is None else "cleanup_unverified",
+            uncertain_launch = isinstance(exc, WorkerLaunchUncertain)
+            failure = {"job_id": self.JOB_ID, "status": "failed" if process is None and not uncertain_launch else "cleanup_unverified",
                        "phase": "worker_launch_failed", "error": redact(type(exc).__name__ + ": " + str(exc)),
-                       "owned_cleanup_verified": process is None,
+                       "owned_cleanup_verified": process is None and not uncertain_launch,
                        "mesh_generated": False, "flow_iterations": 0, "remaining_definition_probes": 0}
             write_new(self.safe(self.ATTEMPT + "/launch_failure.json"), failure)
-            if process is not None:
+            if process is not None or uncertain_launch:
                 try:
                     write_new(self.safe(self.ATTEMPT + "/cancel_request.json"), {
                         "job_id": self.JOB_ID, "operation": self.CANCEL_OPERATION, "created_unix": time.time()})

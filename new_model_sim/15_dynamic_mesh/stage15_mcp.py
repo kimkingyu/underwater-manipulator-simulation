@@ -15,6 +15,7 @@ from pydantic import StrictInt
 from mcp_bridge import Stage15Bridge, redact
 from sizing_mcp_bridge import SizingBudget
 from mesh_mcp_bridge import MeshSlot
+from mesh_inspection_mcp_bridge import InspectionSlot, inspection_job
 
 mcp = FastMCP(
     "ansys-stage15",
@@ -52,9 +53,10 @@ def guarded(function, *args):
 
 def combined_status():
     result = bridge.status()
-    result["scope"] = "preserved diagnostic jobs and one separately authorized mesh construction; no CFD"
+    result["scope"] = "preserved jobs, separate mesh construction, bounded read-only existing-mesh inspections; no CFD"
     result["sizing_diagnostics"] = sizing.status()
     result["mesh_construction"] = mesh.status()
+    result["mesh_inspection"] = {domain: InspectionSlot(domain).status() for domain in ("background", "arm")}
     return result
 
 
@@ -63,6 +65,8 @@ def job_bridge(job_id):
         return bridge
     if job_id == mesh.JOB_ID:
         return mesh
+    if job_id in ("mesh-inspection-001-background", "mesh-inspection-001-arm"):
+        return inspection_job(job_id)
     return sizing.job(job_id)
 
 
@@ -107,7 +111,7 @@ async def stage15_job_status(job_id: str) -> dict[str, Any]:
 @mcp.tool(annotations=READ_ONLY)
 async def stage15_job_log(
     job_id: str,
-    stream: Literal["worker", "workbench_stdout", "workbench_stderr", "trace", "meshing", "define", "refresh", "readback", "completion", "mesh_background", "mesh_arm", "execution", "plan"] = "trace",
+    stream: Literal["worker", "workbench_stdout", "workbench_stderr", "trace", "meshing", "define", "refresh", "readback", "completion", "mesh_background", "mesh_arm", "execution", "plan", "native", "native_stderr"] = "trace",
     limit: int = 100,
 ) -> dict[str, Any]:
     """Read at most 200 lines/20000 characters from a fixed own-job log; no arbitrary paths."""
@@ -121,6 +125,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     Legacy confirmation: CANCEL_STAGE15_DEFINITION_PROBE.
     Sizing confirmation: CANCEL_STAGE15_SIZING_DIAGNOSTIC.
     Mesh construction confirmation: CANCEL_STAGE15_FULL_MESH_CONSTRUCTION.
+    Read-only inspection confirmation: CANCEL_STAGE15_READ_ONLY_MESH_INSPECTION.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -161,6 +166,23 @@ async def stage15_start_mesh_construction(confirmation: str) -> dict[str, Any]:
     exported meshes or exit0 alone do not establish topology/motion validity.
     """
     return await asyncio.to_thread(guarded, mesh.start, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_mesh_inspection_preflight(domain: Literal["background", "arm"]) -> dict[str, Any]:
+    """Read-only source/grant/existing-mesh hashes; never launches ANSYS or consumes a slot."""
+    return await asyncio.to_thread(guarded, InspectionSlot(domain).preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_mesh_inspection(domain: Literal["background", "arm"], confirmation: str) -> dict[str, Any]:
+    """One read-only Fluent inspection per domain, <=300s including cleanup; no CFD or mesh write.
+
+    Requires RUN_STAGE15_READ_ONLY_MESH_INSPECTION_ONCE. Existing domain slots
+    are returned without another execution. Native quality/volume/adjacency may
+    remain unverified; independent domains do not establish overset connectivity.
+    """
+    return await asyncio.to_thread(guarded, InspectionSlot(domain).start, confirmation)
 
 
 if __name__ == "__main__":

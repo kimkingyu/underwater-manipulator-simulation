@@ -17,13 +17,15 @@ from mcp.client.stdio import StdioServerParameters, stdio_client
 from mcp_bridge import Stage15Bridge, STAGE, ATTEMPT, JOB_ID, sha256, write_new
 from sizing_mcp_bridge import SizingBudget, SOURCE_RELATIVES as SIZING_SOURCES
 from mesh_mcp_bridge import MeshSlot, MESH_ATTEMPT, SOURCE_RELATIVES as MESH_SOURCES
-SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES)))
+from mesh_inspection_mcp_bridge import InspectionSlot, SOURCES as INSPECTION_SOURCES
+SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES) | set(INSPECTION_SOURCES)))
 
 EXPECTED_TOOLS = {
     "stage15_status", "stage15_preflight", "stage15_start_definition_probe",
     "stage15_job_status", "stage15_job_log", "stage15_cancel_job",
     "stage15_sizing_preflight", "stage15_start_sizing_diagnostic",
     "stage15_mesh_preflight", "stage15_start_mesh_construction",
+    "stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection",
 }
 
 
@@ -45,8 +47,12 @@ async def checks():
     mesh = MeshSlot()
     mesh_slot_before = mesh.safe(mesh.ATTEMPT).exists()
     mesh_output_before = mesh.safe(MESH_ATTEMPT).exists()
-    if bridge.safe(".ansys-task.lock").exists() or bridge.safe(".sizing-dispatch.lock").exists():
-        raise RuntimeError("Connection self-check requires no active ownership/dispatch lock")
+    inspection_before = {domain: InspectionSlot(domain).safe(InspectionSlot(domain).ATTEMPT).exists()
+                         for domain in ("background", "arm")}
+    # Existing locks are evidence, not something a read-only protocol check may
+    # clear. Only NO confirmations are sent; compare lock bytes before/after.
+    lock_names = (".ansys-task.lock", ".sizing-dispatch.lock", ".mesh-inspection-dispatch.lock")
+    locks_before = {name: sha256(bridge.safe(name)) if bridge.safe(name).exists() else None for name in lock_names}
     old_slot_before = bridge.safe(ATTEMPT).exists()
     sizing_before = budget.status()["reserved_attempts"]
     params = StdioServerParameters(
@@ -66,6 +72,8 @@ async def checks():
                 ("stage15_start_sizing_diagnostic", {"attempt_index": 1, "profile": "baseline",
                     "hypothesis": "Protocol rejection test only; no valid start", "confirmation": "NO"}),
                 ("stage15_start_mesh_construction", {"confirmation": "NO"}),
+                ("stage15_start_mesh_inspection", {"domain": "arm", "confirmation": "NO"}),
+                ("stage15_mesh_inspection_preflight", {"domain": "background"}),
                 ("stage15_cancel_job", {"job_id": JOB_ID, "confirmation": "NO"}),
                 ("stage15_job_log", {"job_id": "../contract.json", "stream": "trace", "limit": 10}),
                 ("stage15_preflight", {}),
@@ -75,7 +83,12 @@ async def checks():
                 results[name] = decoded(await session.call_tool(name, arguments))
     after = {name: sha256(STAGE / name) for name in SOURCE_RELATIVES}
     checks_result = {
-        "exact_ten_tools": names == EXPECTED_TOOLS,
+        "exact_twelve_tools": names == EXPECTED_TOOLS,
+        "legacy_ten_tools_preserved": EXPECTED_TOOLS - {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection"} <= names,
+        "incorrect_inspection_start_refused": results["stage15_start_mesh_inspection"].get("status") == "blocked",
+        "inspection_preflight_structured": results["stage15_mesh_inspection_preflight"].get("status") in ("passed", "blocked", "failed"),
+        "inspection_slots_preserved": all(InspectionSlot(domain).safe(InspectionSlot(domain).ATTEMPT).exists() == used
+                                          for domain, used in inspection_before.items()),
         "incorrect_mesh_start_refused": results["stage15_start_mesh_construction"].get("status") == "blocked",
         "mesh_preflight_structured": results["stage15_mesh_preflight"].get("status") in ("passed", "blocked", "failed"),
         "mesh_slot_preserved": mesh.safe(mesh.ATTEMPT).exists() == mesh_slot_before,
@@ -89,8 +102,8 @@ async def checks():
         "sizing_preflight_structured": results["stage15_sizing_preflight"].get("status") in ("passed", "blocked", "failed"),
         "legacy_slot_preserved": bridge.safe(ATTEMPT).exists() == old_slot_before,
         "sizing_reservations_unchanged": budget.status()["reserved_attempts"] == sizing_before,
-        "task_lock_not_created": not bridge.safe(".ansys-task.lock").exists(),
-        "dispatch_lock_not_created": not bridge.safe(".sizing-dispatch.lock").exists(),
+        "existing_task_and_dispatch_locks_preserved": locks_before == {
+            name: sha256(bridge.safe(name)) if bridge.safe(name).exists() else None for name in lock_names},
         "sources_unchanged": before == after,
     }
     return {
@@ -101,6 +114,8 @@ async def checks():
         "server": {"name": initialized.serverInfo.name, "protocol_version": initialized.protocolVersion},
         "tools": [{"name": item.name, "read_only": item.annotations.readOnlyHint} for item in tools.tools],
         "checks": checks_result, "results": results,
+        "preexisting_lock_states": {name: {"present": digest is not None, "sha256": digest} for name, digest in locks_before.items()},
+        "no_lock_release_performed": True,
         "source_sha256_before": before, "source_sha256_after": after,
         "environment_status": results["stage15_mesh_preflight"].get("status"),
         "native_probe_started": False, "mesh_generation_verified": False, "flow_iterations": 0,
