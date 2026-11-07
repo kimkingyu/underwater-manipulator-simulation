@@ -1,0 +1,70 @@
+# encoding: utf-8
+# A single background project, two field observation commands, no component discretization.
+SetScriptVersion(Version="24.2.133")
+import System, json, traceback
+from System.IO import File
+from System.Text import Encoding
+C = json.loads(__CONFIG_JSON__)
+R = {"job_id": C["job_id"], "profile": C["profile"], "scope": C["scope"], "status": "running",
+     "full_background_definitions_verified": False,
+     "journal_completed": False, "diagnostic_completed": False,
+     "mesh_generated": False, "flow_iterations": 0, "mesh_motion_verified": False}
+if File.Exists(C["trace"]) or File.Exists(C["completion"]) or File.Exists(C["project"]):
+    raise Exception("refusing existing diagnostic outputs")
+
+
+def text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+
+
+def log(value):
+    File.AppendAllText(C["trace"], text(value) + text(System.Environment.NewLine), Encoding.UTF8)
+
+
+try:
+    log("journal-entered")
+    system = GetTemplate(TemplateName="Fluid Flow").CreateSystem()
+    system.DisplayText = "stage15_sizing_diagnostic"
+    geometry = system.GetContainer(ComponentName="Geometry")
+    geometry.SetFile(FilePath=C["cad_path"])
+    properties = geometry.GetGeometryProperties()
+    properties.GeometryImportNamedSelections = True
+    properties.GeometryImportNamedSelectionsFilter = ""
+    geometry_component = system.GetComponent(Name="Geometry")
+    geometry_component.Update(AllDependencies=False)
+    Save(FilePath=C["project"], Overwrite=False)
+    mesh_component = system.GetComponent(Name="Mesh")
+    mesh_container = system.GetContainer(ComponentName="Mesh")
+    mesh_component.Refresh()
+    mesh_container.Edit(Interactive=False)
+    try:
+        log("define-and-refresh-command")
+        mesh_container.SendCommand(Language="Python", Command=C["define_script"])
+        log("independent-readback-command")
+        mesh_container.SendCommand(Language="Python", Command=C["readback_script"])
+    finally:
+        mesh_container.Exit()
+    for phase in ("define", "refresh", "readback"):
+        value = json.loads(File.ReadAllText(C[phase + "_path"]))
+        if (value.get("job_id") != C["job_id"] or value.get("profile") != C["profile"] or
+                value.get("status") != "completed" or value.get("diagnostic_completed") is not True or
+                value.get("mesh_counts") != {"nodes": 0, "elements": 0} or
+                value.get("mesh_generated") is not False):
+            raise Exception("missing or invalid zero-mesh observation: " + phase)
+    R["journal_completed"] = True
+    R["diagnostic_completed"] = True
+    R["status"] = "completed"
+except Exception as exc:
+    R["status"] = "failed"
+    R["exception"] = text(exc)
+    R["traceback"] = traceback.format_exc()
+    try:
+        log("FAILED: " + text(exc))
+    except Exception as log_exc:
+        R["logging_error"] = text(log_exc)
+finally:
+    File.WriteAllText(C["completion"] + ".tmp", json.dumps(R, indent=2, ensure_ascii=True), Encoding.UTF8)
+    File.Move(C["completion"] + ".tmp", C["completion"])

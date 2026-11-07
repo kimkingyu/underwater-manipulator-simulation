@@ -1,0 +1,83 @@
+# encoding: utf-8
+# Stage15: exactly two independent Fluid Flow systems. No shared topology.
+# Offline-generated only. Run explicitly with run_wb_fullenv.py in this attempt.
+SetScriptVersion(Version="24.2.133")
+import System, json, os, traceback
+from System.IO import File, Directory
+from System.Text import Encoding
+C = json.loads(__CONFIG_JSON__)
+TRACE = C["trace"]
+if File.Exists(TRACE) or File.Exists(C["project"]) or File.Exists(C["completion"]):
+    raise Exception("refusing to rerun this Workbench attempt")
+
+def native_text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+    except Exception:
+        return repr(value)
+
+
+def log(text):
+    try:
+        File.AppendAllText(TRACE, native_text(text) + native_text(System.Environment.NewLine), Encoding.UTF8)
+    except Exception as exc:
+        # A logging failure must not replace the original Meshing exception or
+        # escape into an unattended Workbench modal-error dialog.
+        R.setdefault('logging_errors', []).append({'text': native_text(text)[:2000], 'error': native_text(exc)})
+
+R = {"status": "failed", "valid": False, "systems": [], "initialized": False, "flow_iterations": 0}
+try:
+    previous = None
+    template = GetTemplate(TemplateName="Fluid Flow")
+    for item in C["domains"]:
+        if previous is None:
+            system = template.CreateSystem()
+        else:
+            system = template.CreateSystem(Position="Below", RelativeTo=previous)
+        system.DisplayText = "stage15_" + item["domain"]
+        previous = system
+        geometry = system.GetContainer(ComponentName="Geometry")
+        geometry.SetFile(FilePath=item["cad_path"])
+        props = geometry.GetGeometryProperties()
+        props.GeometryImportNamedSelections = True
+        props.GeometryImportNamedSelectionsFilter = ""
+        log("geometry " + item["domain"])
+        system.GetComponent(Name="Geometry").Update(AllDependencies=True)
+        if not File.Exists(C["project"]):
+            Save(FilePath=C["project"], Overwrite=False)
+        else:
+            Save(Overwrite=True)
+        component = system.GetComponent(Name="Mesh")
+        container = system.GetContainer(ComponentName="Mesh")
+        component.Refresh()
+        log("generate " + item["domain"])
+        container.Edit(Interactive=False)
+        try:
+            container.SendCommand(Language="Python", Command=item["meshing_script"])
+        finally:
+            container.Exit()
+        # The result of SendCommand/Update may be None; inspect real saved statistics.
+        statistics = json.loads(File.ReadAllText(item["stats_path"]))
+        if not statistics.get("mesh_generated") or statistics.get("status") == "failed":
+            raise Exception("no successful Meshing evidence for " + item["domain"])
+        component.Update(AllDependencies=True)
+        Save(Overwrite=True)
+        R["systems"].append({"domain": item["domain"], "system_name": str(system.Name),
+                              "display_text": str(system.DisplayText), "statistics_path": item["stats_path"]})
+        log("export completed " + item["domain"])
+    R["status"] = "completed_pending_mesh_inventory"
+except Exception as exc:
+    R["exception"] = native_text(exc)
+    R["traceback"] = traceback.format_exc()
+    log(u"FAILED: " + native_text(exc))
+finally:
+    if R.get('logging_errors'):
+        R['status'] = 'failed'
+        R['log_evidence_complete'] = False
+    log('END status=' + R['status'])
+    if R.get('logging_errors'):
+        R['status'] = 'failed'
+        R['log_evidence_complete'] = False
+    File.WriteAllText(C["completion"], json.dumps(R, indent=2), Encoding.UTF8)

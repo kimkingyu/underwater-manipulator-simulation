@@ -1,0 +1,357 @@
+# Python Script, API Version = V242
+# -*- coding: utf-8 -*-
+# Generated stage15 script; execute only through the separately authorized CAD runner.
+import codecs
+import json
+import math
+import os
+import traceback
+
+CFG = json.loads('__STAGE15_CONFIG_JSON__')
+SOURCE = CFG['source_path']
+OUT_JSON = CFG['output_json']
+Q = CFG['pose_rad']
+JC = CFG['joint_centres_m']
+JA = CFG['joint_axes']
+GROUP = {'hull': 0, 'base0': 0, 'l1': 1, 'l2': 2, 'link3': 3, 'pin4': 3, 'jaw1': 3, 'jaw2': 3}
+FIXED = ('hull', 'base0')
+MOVING = ('l1', 'l2', 'link3', 'pin4', 'jaw1', 'jaw2')
+ARM_BY_VOLUME = [(0.0006491, 'base0'), (0.0001230, 'l1'), (0.0006265, 'l2'), (0.0004371, 'link3'),
+                 (0.0000269, 'jaw1'), (0.0000277, 'jaw2'), (0.0000211, 'pin4')]
+WALL_NAME = {'hull': 'wall_auv', 'base0': 'wall_base0', 'l1': 'wall_l1', 'l2': 'wall_l2',
+             'link3': 'wall_link3', 'pin4': 'wall_pin4', 'jaw1': 'wall_jaw1', 'jaw2': 'wall_jaw2'}
+TOL_SEAL = 1e-7
+TOL_BOOL = 1e-7
+TOL_OUTER = 1e-7
+TOL_OWNER = 1e-5
+N_SAMPLE = 6
+report = {'schema_version': 1, 'stage': '15_dynamic_mesh', 'mode': CFG['mode'], 'state': 'not_run',
+          'source': SOURCE, 'source_sha256_expected': CFG['source_sha256'],
+          'units': {'length': 'm', 'angle': 'rad', 'area': 'm2', 'volume': 'm3', 'kernel_length': 'm'},
+          'kernel_tolerance_m': TOL_SEAL, 'measurement_precision': 'kernel_requested_tolerance_not_accuracy_certificate',
+          'config': CFG, 'errors': [], 'limitations': [], 'geometry_modified_by_probe': False,
+          'continuous_range_proof': {'state': 'not_run', 'finite_samples_are_not_continuous_proof': True},
+          'overset_connectivity': {'state': 'not_run'}, 'motion_authorized': False}
+
+
+class BlockedEvidence(Exception):
+    pass
+
+
+def u(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+    except Exception:
+        return repr(value)
+
+
+def finite(value):
+    value = float(value)
+    if math.isnan(value) or math.isinf(value):
+        raise ValueError('Nonfinite geometric measurement')
+    return value
+
+
+def xyz(point):
+    return [finite(point.X), finite(point.Y), finite(point.Z)]
+
+
+def inside_stage(path):
+    root = os.path.normcase(os.path.realpath(CFG['stage_root']))
+    resolved = os.path.normcase(os.path.realpath(path))
+    return resolved.startswith(root.rstrip('\\/') + os.sep)
+
+
+def save():
+    if not inside_stage(OUT_JSON):
+        raise ValueError('Report path escaped stage15')
+    stream = codecs.open(OUT_JSON, 'w', 'utf-8')
+    try:
+        stream.write(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False))
+    finally:
+        stream.close()
+
+
+def sha256(path):
+    algo = SHA256.Create()
+    stream = File.OpenRead(path)
+    try:
+        return ''.join('%02x' % int(v) for v in algo.ComputeHash(stream))
+    finally:
+        stream.Dispose()
+        algo.Dispose()
+
+
+def world_copy(design_body):
+    shape = design_body.GetMaster().Shape.Copy()
+    shape.Transform(design_body.GetTransformToMaster().Inverse)
+    return shape
+
+
+def name_for(volume):
+    if volume > 0.01:
+        return 'hull'
+    best = min(ARM_BY_VOLUME, key=lambda row: abs(row[0] - volume))
+    return best[1] if abs(best[0] - volume) / best[0] < 2e-3 else None
+
+
+def bbox(obj):
+    box = obj.GetBoundingBox(Matrix.Identity)
+    return [xyz(box.MinCorner), xyz(box.MaxCorner)]
+
+
+def as_point(hit):
+    return getattr(hit, 'Point', hit)
+
+
+def dist(p, q):
+    return finite(((p.X - q.X) ** 2 + (p.Y - q.Y) ** 2 + (p.Z - q.Z) ** 2) ** 0.5)
+
+
+def pose_matrix(group, q):
+    matrix = Matrix.Identity
+    for j in range(group, 0, -1):
+        matrix = Matrix.CreateRotation(Line.Create(Point.Create(*JC[j - 1]), Direction.Create(*JA[j - 1])), q[j - 1]) * matrix
+    return matrix
+
+
+def lst(*bodies):
+    result = List[Body]()
+    for body in bodies:
+        result.Add(body.Copy())
+    return result
+
+
+def topology(shape):
+    result = {'state': 'not_run', 'api': {}, 'errors': []}
+    for key, name in (('closed', 'IsClosed'), ('manifold', 'IsManifold')):
+        try:
+            member = getattr(shape, name)
+            if callable(member):
+                raise ValueError(name + ' unexpectedly a method; V242 declares a Boolean property')
+            result[key] = bool(member)
+            result['api'][name] = 'Boolean property'
+        except Exception as exc:
+            result['errors'].append({'api': name, 'error': u(exc)})
+    try:
+        result['piece_count'] = int(shape.PieceCount)
+        result['api']['PieceCount'] = 'Int32 property'
+    except Exception as exc:
+        result['errors'].append({'api': 'PieceCount', 'error': u(exc)})
+    # V242 public Body has no Check in the installed assembly. If the running SDK
+    # exposes one, use only a verified zero-parameter signature, never bool(method).
+    try:
+        methods = [m for m in shape.GetType().GetMethods() if m.Name == 'Check']
+        result['check'] = {'available': bool(methods), 'signatures': [u(m.ToString()) for m in methods], 'state': 'not_run'}
+        zero = [m for m in methods if len(m.GetParameters()) == 0]
+        if len(zero) == 1:
+            checked = getattr(shape, 'Check')()
+            if isinstance(checked, bool):
+                result['check'].update({'state': 'passed' if checked else 'failed', 'result': checked})
+            elif checked is not None and hasattr(checked, '__iter__'):
+                messages = [u(item) for item in checked]
+                result['check'].update({'state': 'passed' if not messages else 'failed', 'messages': messages})
+            else:
+                result['check'].update({'state': 'blocked', 'result_repr': u(checked)})
+        elif methods:
+            result['check']['state'] = 'blocked'
+            result['check']['reason'] = 'No unique supported zero-argument Check signature'
+        else:
+            result['check']['reason'] = 'No public Body.Check method in this actual SDK'
+    except Exception as exc:
+        result['check'] = {'state': 'blocked', 'error': u(exc)}
+    check_state = result['check']['state']
+    if result.get('closed') is False or result.get('manifold') is False or check_state == 'failed':
+        result['state'] = 'failed'
+    elif result['errors'] or check_state == 'blocked':
+        result['state'] = 'blocked'
+    else:
+        result['state'] = 'passed'
+    return result
+
+
+def shape_record(shape):
+    return {'volume_m3': finite(shape.Volume), 'surface_area_m2': finite(shape.SurfaceArea),
+            'bbox_m': bbox(shape), 'faces': len(list(shape.Faces)), 'topology': topology(shape)}
+
+
+def load_source():
+    DocumentOpen.Execute(SOURCE)
+    parts = {}
+    for db in GetRootPart().GetAllBodies():
+        shape = world_copy(db)
+        name = name_for(finite(shape.Volume))
+        if name is None or name in parts:
+            raise ValueError('Unrecognized or duplicate source part at volume %.12g' % shape.Volume)
+        parts[name] = shape
+    if sorted(parts) != sorted(GROUP):
+        raise ValueError('Expected the original eight parts, got ' + repr(sorted(parts)))
+    report['source_parts'] = dict((name, shape_record(shape)) for name, shape in parts.items())
+    return parts
+
+
+def samples(face):
+    box = face.BoxUV
+    ru, rv = box.RangeU, box.RangeV
+    points = []
+    for i in range(N_SAMPLE):
+        for j in range(N_SAMPLE):
+            uv = PointUV.Create(ru.Start + (ru.End - ru.Start) * (i + 0.5) / N_SAMPLE,
+                                rv.Start + (rv.End - rv.Start) * (j + 0.5) / N_SAMPLE)
+            if face.ContainsParam(uv):
+                points.append(face.Geometry.Evaluate(uv).Point)
+    if not points:
+        points.append(as_point(face.ProjectPoint(face.GetBoundingBox(Matrix.Identity).Center)))
+    return points
+
+
+def make_box(lo, hi):
+    created = list(BlockBody.Create(Point.Create(*lo), Point.Create(*hi),
+                                    ExtrudeType.ForceIndependent, None).CreatedBodies)[0]
+    shape = world_copy(created)
+    created.Delete()
+    return shape
+
+
+def local_faces(shape, point):
+    candidates, errors = [], []
+    for index, face in enumerate(shape.Faces):
+        try:
+            hit = face.ProjectPoint(point)
+            separation = dist(hit.Point, point)
+            if separation > 5.0 * TOL_SEAL:
+                continue
+            geometry = face.Geometry
+            row = {'face_index': index, 'type': u(geometry.GetType().Name),
+                   'projection_distance_m': separation, 'point_m': xyz(hit.Point),
+                   'surface_normal': xyz(hit.Normal), 'face_is_reversed': bool(face.IsReversed),
+                   'area_m2': finite(face.Area), 'bbox_m': bbox(face)}
+            sign = -1.0 if row['face_is_reversed'] else 1.0
+            row['oriented_face_normal'] = [sign * value for value in row['surface_normal']]
+            p = row['point_m']
+            delta = [p[k] - JC[0][k] for k in range(3)]
+            axial = sum(delta[k] * JA[0][k] for k in range(3))
+            radial = [delta[k] - axial * JA[0][k] for k in range(3)]
+            row['j1_axis_axial_m'] = axial
+            row['j1_axis_radius_m'] = math.sqrt(sum(value * value for value in radial))
+            row['normal_dot_j1_axis'] = sum(row['oriented_face_normal'][k] * JA[0][k] for k in range(3))
+            if row['type'] == 'Plane':
+                row['plane_origin_m'] = xyz(geometry.Frame.Origin)
+                row['plane_normal'] = xyz(geometry.Frame.DirZ)
+            elif row['type'] == 'Cylinder':
+                row['cylinder_axis_origin_m'] = xyz(geometry.Axis.Origin)
+                row['cylinder_axis_direction'] = xyz(geometry.Axis.Direction)
+                row['cylinder_radius_m'] = finite(geometry.Radius)
+            candidates.append(row)
+        except Exception as exc:
+            errors.append({'face_index': index, 'error': u(exc)})
+    return {'faces': candidates, 'optional_api_errors': errors,
+            'state': 'passed' if candidates else 'blocked',
+            'scope': 'local projected faces near one closest-point solution; not complete contact patch'}
+
+
+def pair_measurement(a_name, b_name, parts, with_faces=False):
+    a, b = parts[a_name], parts[b_name]
+    a_fixed, b_fixed = a_name in FIXED, b_name in FIXED
+    kind = 'cross_fixed_moving' if a_fixed != b_fixed else ('same_fixed_group' if a_fixed else 'same_moving_rigid_group')
+    row = {'a': a_name, 'b': b_name, 'pair_kind': kind, 'state': 'not_run', 'errors': [],
+           'classification': 'unresolved', 'classification_is_geometry_authorization': False,
+           'cross_group_interference_gate_applies': kind == 'cross_fixed_moving',
+           'same_rigid_group_overlap_is_reference_only': kind != 'cross_fixed_moving'}
+    try:
+        sep = a.GetClosestSeparation(b)
+        row['distance_m'] = finite(sep.Distance)
+        if row['distance_m'] < 0:
+            raise ValueError('Negative closest separation')
+        row['point_a_m'], row['point_b_m'] = xyz(sep.PointA), xyz(sep.PointB)
+        if with_faces or row['distance_m'] <= TOL_SEAL:
+            row['local_a'] = local_faces(a, sep.PointA)
+            row['local_b'] = local_faces(b, sep.PointB)
+    except Exception as exc:
+        row['errors'].append({'operation': 'GetClosestSeparation', 'error': u(exc)})
+    try:
+        intersection = a.Copy()
+        intersection.Intersect(lst(b), TOL_SEAL)
+        volume = finite(intersection.Volume)
+        if volume < 0:
+            raise ValueError('Negative intersection volume')
+        row['intersection_m3'] = volume
+    except Exception as exc:
+        row['errors'].append({'operation': 'Intersect', 'error': u(exc)})
+    if row['errors']:
+        row['state'] = 'failed'
+    else:
+        row['state'] = 'passed'
+        volume, distance = row['intersection_m3'], row['distance_m']
+        if volume > 0.0:
+            row['classification'] = 'real_penetration'
+            row['classification_basis'] = 'positive measured Boolean volume; no tolerance-based silent waiver'
+        elif distance > 0.0:
+            row['classification'] = 'finite_water_gap'
+            row['gap_resolution_state'] = 'passed' if distance > TOL_SEAL else 'blocked'
+            row['classification_basis'] = 'positive measured gap; sub-kernel-tolerance values require resolution review, never relabelled as contact'
+        elif set((a_name, b_name)) == set(('base0', 'l1')):
+            row['classification'] = 'design_contact'
+            row['classification_basis'] = 'known base0/l1 design interface, exactly zero measured volume and distance; contact extent and hole cutting unverified'
+        else:
+            row['classification'] = 'unclassified_zero_clearance'
+            row['classification_basis'] = 'cannot distinguish design contact from unresolved sub-tolerance gap automatically'
+    return row
+
+
+def pair_census(parts, with_faces=False):
+    names = sorted(parts)
+    return [pair_measurement(names[i], names[j], parts, with_faces) for i in range(len(names)) for j in range(i + 1, len(names))]
+
+
+def runtime_main():
+    if not inside_stage(OUT_JSON):
+        raise ValueError('Report is outside stage15')
+    # Atomic reservation: a second process cannot rewrite an existing report.
+    fd = os.open(OUT_JSON, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    os.close(fd)
+    try:
+        save()
+        global List, File, SHA256, Body, Face, Matrix, Point, PointUV, Vector, Line, Direction, IDocObject, DesignBody, Window
+        from System.Collections.Generic import List
+        from System.IO import File
+        from System.Security.Cryptography import SHA256
+        from SpaceClaim.Api.V242.Modeler import Body, Face
+        from SpaceClaim.Api.V242.Geometry import Matrix, Point, PointUV, Vector, Line, Direction
+        from SpaceClaim.Api.V242 import IDocObject, DesignBody, Window
+        report['source_sha256_before'] = sha256(SOURCE)
+        if report['source_sha256_before'] != CFG['source_sha256']:
+            raise ValueError('Original STEP changed since generation')
+        for frozen in CFG['frozen_sources']:
+            actual = sha256(frozen['path'])
+            if actual != frozen['sha256']:
+                raise ValueError('Frozen source changed: ' + frozen['path'])
+        mode_main()
+    except BlockedEvidence as exc:
+        report['state'] = 'blocked'
+        report['errors'].append({'type': 'insufficient_evidence', 'error': u(exc), 'traceback': u(traceback.format_exc())})
+    except Exception as exc:
+        report['state'] = 'failed'
+        report['errors'].append({'type': 'execution_error', 'error': u(exc), 'traceback': u(traceback.format_exc())})
+    finally:
+        try:
+            report['source_sha256_after'] = sha256(SOURCE)
+            report['source_unchanged'] = (report['source_sha256_after'] == CFG['source_sha256'] == report.get('source_sha256_before'))
+            report['frozen_sources_after'] = [{'path': item['path'], 'expected_sha256': item['sha256'],
+                                               'actual_sha256': sha256(item['path'])} for item in CFG['frozen_sources']]
+            if not report['source_unchanged'] or any(item['expected_sha256'] != item['actual_sha256'] for item in report['frozen_sources_after']):
+                report['state'] = 'failed'
+                report['errors'].append({'type': 'source_mutation', 'error': 'Protected input hash changed'})
+        except Exception as exc:
+            report['state'] = 'failed'
+            report['errors'].append({'type': 'hash_check_error', 'error': u(exc)})
+        integrity_failed = any(item['type'] in ('source_mutation', 'hash_check_error') for item in report['errors'])
+        report['input_integrity'] = {'state': 'failed' if integrity_failed else 'passed'}
+        if integrity_failed:
+            for gate in ('cad_contact', 'cad_domains', 'cad_construction', 'measurement'):
+                if gate in report:
+                    report[gate]['state'] = 'failed'
+                    report[gate]['invalidated_by_input_integrity'] = True
+        save()

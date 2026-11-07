@@ -1,0 +1,2 @@
+# Preserve hashes for source contracts, generated drivers and frozen receipts.
+* -text

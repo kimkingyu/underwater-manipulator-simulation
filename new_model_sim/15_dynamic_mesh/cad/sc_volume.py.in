@@ -1,0 +1,800 @@
+
+
+# Volume measurements are independent of the UI's display tessellation. The
+# public Body.Volume accessor discards the native mass-integrator accuracy;
+# Body.MassProperties exposes Mass and RelativeAccuracy but no tolerance input.
+# Controlled tessellation remains diagnostic only. Protocol v2 explicitly
+# changes acceptance to interval consistency PLUS independent geometry; legacy
+# scalar/absolute-precision checks are retained and are never relabelled passed.
+VOLUME_ABSOLUTE_TOLERANCE_M3 = 1e-10
+VOLUME_RELATIVE_TOLERANCE = 1e-8
+MAXIMUM_SINGLE_RELATIVE_ACCURACY = 0.01
+MAXIMUM_COMBINED_RELATIVE_UNCERTAINTY = 0.01
+FLOAT64_EPSILON = 2.220446049250313e-16
+
+
+def volume_tolerance(box_volume):
+    return max(VOLUME_ABSOLUTE_TOLERANCE_M3, abs(finite(box_volume)) * VOLUME_RELATIVE_TOLERANCE)
+
+
+def native_volume_snapshot(shape):
+    record = {'state': 'not_run', 'scope': 'read-only instantaneous scalar snapshot; not a validity certificate'}
+    try:
+        record['is_deleted'] = bool(shape.IsDeleted)
+        if record['is_deleted']:
+            record['empty_boolean_result'] = True
+            record['volume_m3'] = 0.0
+            record['state'] = 'passed'
+            return record
+        record['volume_m3'] = finite(shape.Volume)
+        record['piece_count'] = int(shape.PieceCount)
+        record['closed'] = bool(shape.IsClosed)
+        record['manifold'] = bool(shape.IsManifold)
+        try:
+            mass = shape.MassProperties
+            volume = finite(mass.Mass)
+            accuracy = finite(mass.RelativeAccuracy)
+            record['mass_properties'] = {'state': 'passed', 'volume_at_unit_density_m3': volume,
+                                          'relative_accuracy_reported': accuracy,
+                                          'estimated_absolute_error_m3': finite(abs(volume) * accuracy) if accuracy >= 0 else None,
+                                          'precision_adjustment_available': False}
+            if volume < 0 or accuracy < 0:
+                record['mass_properties']['state'] = 'blocked'
+                record['mass_properties']['reason'] = 'Negative volume/error indicator is not calibrated accuracy'
+        except Exception as exc:
+            record['mass_properties'] = {'state': 'blocked', 'error': u(exc)}
+        record['volume_after_mass_query_m3'] = finite(shape.Volume)
+        record['volume_cache_change_m3'] = record['volume_after_mass_query_m3'] - record['volume_m3']
+        if record['volume_m3'] < 0:
+            raise ValueError('Negative native solid volume; no abs()/signed-volume repair is allowed')
+        record['state'] = 'passed'
+    except Exception as exc:
+        record['state'] = 'failed'
+        record['error'] = u(exc)
+    return record
+
+
+def volume_ledger(box, material, all_water, all_pieces, main_before_imprint, main_after_imprint, cavities):
+    values = [finite(value) for value in (box, material, all_water, main_before_imprint, main_after_imprint, cavities)]
+    pieces = [finite(value) for value in all_pieces]
+    if not pieces or any(value < 0.0 for value in values + pieces):
+        raise ValueError('Missing pieces or negative volume in Boolean ledger')
+    box, material, all_water, main_before_imprint, main_after_imprint, cavities = values
+    total = math.fsum(pieces)
+    residuals = {'subtraction_m3': box - material - all_water,
+                 'separate_pieces_m3': all_water - total,
+                 'cavity_selection_m3': total - main_before_imprint - cavities,
+                 'imprint_m3': main_after_imprint - main_before_imprint,
+                 'final_m3': box - material - main_after_imprint - cavities}
+    tolerance = volume_tolerance(box)
+    return {'state': 'passed' if all(abs(value) <= tolerance for value in residuals.values()) else 'failed',
+            'method': 'Body.Volume scalar snapshots; strict arithmetic gate, not independently calibrated precision',
+            'box_m3': box, 'material_m3': material, 'all_water_before_separation_m3': all_water,
+            'all_piece_volumes_m3': pieces, 'all_piece_sum_m3': total,
+            'main_before_imprint_m3': main_before_imprint, 'main_after_imprint_m3': main_after_imprint,
+            'discarded_cavities_m3': cavities, 'residuals': residuals,
+            'absolute_tolerance_m3': VOLUME_ABSOLUTE_TOLERANCE_M3,
+            'relative_tolerance': VOLUME_RELATIVE_TOLERANCE, 'effective_tolerance_m3': tolerance,
+            'threshold_was_relaxed': False}
+
+
+def difference_probe(a, b, label):
+    # The SDK consumes all tool bodies and may delete an empty target. Never
+    # read Volume on consumed operands; retain independent copies and inspect
+    # IsDeleted before interpreting an empty result.
+    result = {'label': label, 'state': 'not_run'}
+    try:
+        copied = a.Copy()
+        tool = b.Copy()
+        arguments = List[Body]()
+        arguments.Add(tool)
+        copied.Subtract(arguments, TOL_BOOL)
+        result['target_deleted'] = bool(copied.IsDeleted)
+        result['tool_consumed'] = bool(tool.IsDeleted)
+        result['result'] = native_volume_snapshot(copied)
+        result['state'] = result['result']['state']
+        result['empty'] = result['target_deleted'] or (result['result'].get('piece_count') == 0)
+    except Exception as exc:
+        result['state'] = 'failed'
+        result['error'] = u(exc)
+    return result
+
+
+def complement_diagnostics(enclosure, material, original_water):
+    data = {'state': 'not_run', 'scope': 'copy-only Boolean complement and symmetric-difference diagnostics',
+            'boolean_tolerance_note': 'V242 documents this overload tolerance as Parasolid-specific; actual modeler precision is not assumed'}
+    try:
+        removed = enclosure.Copy()
+        removed.Subtract(lst(original_water), TOL_BOOL)
+        data['removed_material'] = native_volume_snapshot(removed)
+        geometry = geometry_equivalence(material, removed, 'expected_vs_boolean_reconstructed_material')
+        data['geometry_acceptance'] = geometry
+        native = geometry.get('native_symmetric_difference', {})
+        data['expected_minus_removed'] = native.get('a_minus_b', {'state': 'not_run'})
+        data['removed_minus_expected'] = native.get('b_minus_a', {'state': 'not_run'})
+        data['enclosure_after'] = native_volume_snapshot(enclosure)
+        data['material_after'] = native_volume_snapshot(material)
+        data['water_after'] = native_volume_snapshot(original_water)
+        data['state'] = geometry['state']
+        data['conclusion'] = geometry.get('acceptance_method', geometry.get('reason', 'geometry equivalence incomplete'))
+    except Exception as exc:
+        data['state'] = 'blocked'
+        data['error'] = u(exc)
+        data['conclusion'] = 'Boolean reconstruction unavailable; no valid second surface exists for fallback'
+        data['native_failure_is_not_equality_or_bad_entity_proof'] = True
+    return data
+
+
+def vector_cross(a, b):
+    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+
+
+def vector_dot(a, b):
+    return math.fsum(a[index] * b[index] for index in range(3))
+
+
+def triangle_volume(a, b, c, reference):
+    pa = [finite(a[index]) - reference[index] for index in range(3)]
+    pb = [finite(b[index]) - reference[index] for index in range(3)]
+    pc = [finite(c[index]) - reference[index] for index in range(3)]
+    return vector_dot(pa, vector_cross(pb, pc)) / 6.0
+
+
+def controlled_tessellation_volume(shape, deviation, maximum_facets):
+    from SpaceClaim.Api.V242.Modeler import TessellationOptions
+    options = TessellationOptions(deviation, 0.1)
+    row = {'state': 'not_run', 'surface_deviation_m': finite(options.SurfaceDeviation),
+           'angle_deviation_rad': finite(options.AngleDeviation), 'watertight_requested': bool(options.Watertight),
+           'method': 'Body.GetTessellation(all faces in one call), signed oriented tetrahedra; not display facets'}
+    faces = list(shape.Faces)
+    typed_faces = List[Face]()
+    for face in faces:
+        typed_faces.Add(face)
+    tessellations = shape.GetTessellation(typed_faces, options)
+    boxes = bbox(shape)
+    reference = [(boxes[0][index] + boxes[1][index]) * 0.5 for index in range(3)]
+    contributions, zero_reference_contributions, area_vectors = [], [], [[], [], []]
+    count, reversed_facets, areas = 0, 0, []
+    if not row['watertight_requested']:
+        raise BlockedEvidence('Native tessellation does not request watertight boundaries')
+    for face in faces:
+        tess = tessellations[face]
+        vertices = list(tess.Vertices)
+        facets = list(tess.Facets)
+        if not vertices or not facets:
+            raise BlockedEvidence('A B-rep face produced no tessellation')
+        count += len(facets)
+        if count > maximum_facets:
+            raise BlockedEvidence('Controlled tessellation exceeded its finite facet budget')
+        # Determine whether vertex normals represent the oriented face or the
+        # underlying surface. This is measured rather than guessing winding.
+        first = vertices[0]
+        projected = face.Geometry.Evaluate(first.Param)
+        outward = xyz(projected.Normal)
+        if bool(face.IsReversed):
+            outward = [-value for value in outward]
+        orientation = vector_dot(xyz(first.Normal), outward)
+        if abs(orientation) < 0.5:
+            raise BlockedEvidence('Tessellation normal orientation cannot be established')
+        orientation_sign = 1.0 if orientation > 0 else -1.0
+        for facet in facets:
+            chosen = [vertices[int(facet.Vertex0)], vertices[int(facet.Vertex1)], vertices[int(facet.Vertex2)]]
+            a, b, c = [xyz(vertex.Position) for vertex in chosen]
+            ab, ac = ([b[index] - a[index] for index in range(3)], [c[index] - a[index] for index in range(3)])
+            normal = vector_cross(ab, ac)
+            normal_sum = [orientation_sign * sum(xyz(vertex.Normal)[index] for vertex in chosen) for index in range(3)]
+            direction = vector_dot(normal, normal_sum)
+            if direction == 0.0:
+                if vector_dot(normal, normal) == 0.0:
+                    continue
+                raise BlockedEvidence('Triangle orientation is indeterminate')
+            if direction < 0:
+                b, c = c, b
+                normal = [-value for value in normal]
+                reversed_facets += 1
+            contributions.append(triangle_volume(a, b, c, reference))
+            zero_reference_contributions.append(triangle_volume(a, b, c, [0.0, 0.0, 0.0]))
+            areas.append(math.sqrt(vector_dot(normal, normal)) * 0.5)
+            for index in range(3):
+                area_vectors[index].append(normal[index] * 0.5)
+    volume = finite(math.fsum(contributions))
+    origin_volume = finite(math.fsum(zero_reference_contributions))
+    flux = [math.fsum(values) for values in area_vectors]
+    row.update({'signed_volume_m3': volume, 'global_origin_signed_volume_m3': origin_volume,
+                'reference_invariance_error_m3': volume - origin_volume,
+                'triangle_count': count, 'orientation_corrected_facets': reversed_facets,
+                'triangle_area_m2': math.fsum(areas), 'net_area_vector_m2': flux,
+                'reference_point_m': reference, 'state': 'passed'})
+    if volume <= 0.0:
+        raise BlockedEvidence('Signed closed-body volume is nonpositive; no abs() correction is allowed')
+    if abs(volume - origin_volume) > volume_tolerance(volume):
+        raise BlockedEvidence('Triangle integral is not invariant to its reference point')
+    return row
+
+
+def controlled_volume_diagnostics(shape):
+    result = {'state': 'not_run', 'scope': 'independent calibrated-measurement investigation only; not CAD gate authority',
+              'levels': [], 'continuous_error_bound_claimed': False,
+              'maximum_facets': CFG['volume_diagnostics']['maximum_facets']}
+    previous_count = None
+    for deviation in CFG['volume_diagnostics']['surface_deviations_m']:
+        if previous_count is not None and previous_count * 8 > result['maximum_facets']:
+            result['state'] = 'blocked'
+            result['reason'] = 'Predicted refinement cost exceeds finite facet budget; no silent coarsening'
+            break
+        try:
+            row = controlled_tessellation_volume(shape, deviation, result['maximum_facets'])
+            result['levels'].append(row)
+            previous_count = row['triangle_count']
+        except Exception as exc:
+            result['state'] = 'blocked'
+            result['reason'] = u(exc)
+            break
+    else:
+        result['state'] = 'passed'
+    if len(result['levels']) >= 2:
+        result['successive_volume_differences_m3'] = [result['levels'][index]['signed_volume_m3'] - result['levels'][index - 1]['signed_volume_m3'] for index in range(1, len(result['levels']))]
+        result['observed_last_difference_m3'] = abs(result['successive_volume_differences_m3'][-1])
+        result['uncertainty_status'] = 'empirical_convergence_only_not_a_global_error_bound'
+    return result
+
+
+def calibration_shape_evidence(shape):
+    evidence = {'state': 'blocked', 'errors': []}
+    for name, reader in (('native', native_volume_snapshot), ('topology', topology), ('bbox_m', bbox)):
+        try:
+            evidence[name] = reader(shape)
+        except Exception as exc:
+            evidence['errors'].append({'operation': name, 'error': u(exc)})
+    native = evidence.get('native', {})
+    topo = evidence.get('topology', {})
+    solid = (native.get('state') == 'passed' and native.get('is_deleted') is False
+             and native.get('volume_m3', 0.0) > 0.0 and topo.get('state') == 'passed'
+             and topo.get('closed') is True and topo.get('manifold') is True and topo.get('piece_count') == 1)
+    evidence['solid_evidence'] = {'state': 'passed' if solid else 'blocked',
+                                 'basis': 'positive volume, not deleted, one closed manifold B-rep piece; no guessed IsSolid API'}
+    if solid and 'bbox_m' in evidence and not evidence['errors']:
+        evidence['state'] = 'passed'
+    return evidence
+
+
+def cylinder_dimension_evidence(shape, z0, z1, radius):
+    result = {'state': 'blocked', 'expected_radius_m': radius, 'expected_axial_limits_m': [z0, z1],
+              'expected_bbox_m': [[-radius, -radius, z0], [radius, radius, z1]],
+              'cylindrical_faces': [], 'axial_cap_planes_z_m': [], 'errors': [],
+              'tolerance_requested_m': TOL_SEAL,
+              'bbox_note': 'recorded independently; curved-body bounding boxes may be padded by the SDK'}
+    try:
+        result['bbox_m'] = bbox(shape)
+    except Exception as exc:
+        result['errors'].append({'operation': 'bbox', 'error': u(exc)})
+    try:
+        for index, face in enumerate(shape.Faces):
+            geometry = face.Geometry
+            name = u(geometry.GetType().Name)
+            if name == 'Cylinder':
+                result['cylindrical_faces'].append({'face_index': index, 'radius_m': finite(geometry.Radius),
+                                                   'axis_origin_m': xyz(geometry.Axis.Origin),
+                                                   'axis_direction': xyz(geometry.Axis.Direction)})
+            elif name == 'Plane':
+                direction = xyz(geometry.Frame.DirZ)
+                if abs(abs(direction[2]) - 1.0) <= TOL_SEAL and max(abs(direction[0]), abs(direction[1])) <= TOL_SEAL:
+                    result['axial_cap_planes_z_m'].append(finite(geometry.Frame.Origin.Z))
+    except Exception as exc:
+        result['errors'].append({'operation': 'analytic_faces', 'error': u(exc)})
+    cylinders, caps = result['cylindrical_faces'], result['axial_cap_planes_z_m']
+    radius_axis_ok = bool(cylinders) and all(abs(row['radius_m'] - radius) <= TOL_SEAL
+                        and max(abs(row['axis_origin_m'][0]), abs(row['axis_origin_m'][1])) <= TOL_SEAL
+                        and abs(abs(row['axis_direction'][2]) - 1.0) <= TOL_SEAL
+                        and max(abs(row['axis_direction'][0]), abs(row['axis_direction'][1])) <= TOL_SEAL
+                        for row in cylinders)
+    cap_ok = len(caps) >= 2 and abs(min(caps) - z0) <= TOL_SEAL and abs(max(caps) - z1) <= TOL_SEAL
+    result['radius_axis_matches'] = radius_axis_ok
+    result['height_and_cap_planes_match'] = cap_ok
+    if radius_axis_ok and cap_ok and 'bbox_m' in result and not result['errors']:
+        result['state'] = 'passed'
+    return result
+
+
+def calibration_measure(row, shape):
+    row['shape'] = calibration_shape_evidence(shape)
+    row['native'] = row['shape'].get('native', {'state': 'blocked', 'error': 'Native snapshot unavailable'})
+    # Persist native values/topology before an optional tessellation can fail.
+    save()
+    native = row['native']
+    expected = row['expected_volume_m3']
+    if native.get('state') == 'passed' and 'volume_m3' in native:
+        row['body_volume_error_m3'] = native['volume_m3'] - expected
+    try:
+        mass = validated_mass_reading(native.get('mass_properties', {}))
+        error = mass['volume_at_unit_density_m3'] - expected
+        row['mass_volume_error_m3'] = error
+        row['native_accuracy_covers_observed_error'] = abs(error) <= mass['estimated_absolute_error_m3'] + 1e-12 * max(1.0, expected)
+    except Exception as exc:
+        row['native_accuracy_covers_observed_error'] = False
+        row['errors'].append({'operation': 'native_mass_accuracy', 'error': u(exc)})
+    try:
+        row['controlled_tessellation'] = controlled_volume_diagnostics(shape)
+        for level in row['controlled_tessellation'].get('levels', []):
+            level['analytic_error_m3'] = level['signed_volume_m3'] - expected
+    except Exception as exc:
+        row['controlled_tessellation'] = {'state': 'blocked', 'levels': [], 'error': u(exc)}
+        row['errors'].append({'operation': 'controlled_tessellation', 'error': u(exc)})
+    row['state'] = ('passed' if row['shape']['state'] == 'passed'
+                    and row.get('native_accuracy_covers_observed_error') is True
+                    and row['controlled_tessellation'].get('state') == 'passed'
+                    and row.get('primitive_dimension_check', {'state': 'passed'}).get('state') == 'passed'
+                    and not row['errors'] else 'blocked')
+
+
+def volume_calibration():
+    scale = finite(globals().get('CFG', {}).get('calibration_scale', 1.0))
+    if scale <= 0.0 or scale > 1.0:
+        raise ValueError('Calibration scale must be in (0, 1]')
+    radius = 0.2 * scale
+    area = math.pi * radius ** 2
+    box_volume = 1.8 * scale ** 3
+    specifications = [('analytic_box', box_volume, 'box'),
+                      ('analytic_cylinder', area * 0.6 * scale, 'contained_cylinder'),
+                      ('analytic_box_minus_cylinder', box_volume - area * 0.6 * scale, 'interior_cavity'),
+                      ('analytic_through_cylinder', area * 1.5 * scale, 'through_cylinder'),
+                      ('analytic_box_minus_through_cylinder', box_volume - area * scale, 'through_hole')]
+    result = {'state': 'not_run', 'checks': [{'name': name, 'expected_volume_m3': expected, 'kind': kind,
+                                            'state': 'not_run', 'errors': []} for name, expected, kind in specifications],
+              'scope': 'independent analytic controls in scratch documents; failures retained, never substituted by another control',
+              'mass_properties_precision_parameter': 'none in public V242 Body API',
+              'native_accuracy_calibrated': False, 'geometry_pass_claimed': False,
+              'diagnostic_failure_does_not_abort_domain_collection': True}
+    report['volume_calibration'] = result
+    save()
+    shapes = {}
+    rows_by_name = dict((row['name'], row) for row in result['checks'])
+
+    def cylinder(z0, z1):
+        # Candidate corrected from attempt003's measured +X-axis, R=0.6 result:
+        # first/second points define the axis, third is on the second end circle.
+        # Parameter names alone did not establish this. The candidate still
+        # requires a real bbox/radius/axis/cap check before it is a valid control.
+        created_bodies = list(CylinderBody.Create(Point.Create(0, 0, z0), Point.Create(0, 0, z1),
+                                                  Point.Create(radius, 0, z1), ExtrudeType.ForceIndependent, None).CreatedBodies)
+        if len(created_bodies) != 1:
+            raise ValueError('Analytic cylinder primitive produced %d bodies instead of one' % len(created_bodies))
+        created = created_bodies[0]
+        try:
+            return world_copy(created)
+        finally:
+            created.Delete()
+
+    for row in result['checks']:
+        shape = None
+        try:
+            kind = row['kind']
+            if kind in ('box', 'contained_cylinder', 'through_cylinder'):
+                # Each primitive starts in a fresh scratch document. A previous
+                # diagnostic failure cannot poison the next primitive's scene.
+                Document.Create()
+                if kind == 'box':
+                    shape = make_box(tuple(value * scale for value in (-0.75, -0.6, -0.5)),
+                                     tuple(value * scale for value in (0.75, 0.6, 0.5)))
+                else:
+                    z0, z1 = (-0.3 * scale, 0.3 * scale) if kind == 'contained_cylinder' else (-0.75 * scale, 0.75 * scale)
+                    row['primitive_dimensions'] = {'radius_m': radius, 'z_start_m': z0, 'z_end_m': z1}
+                    shape = cylinder(z0, z1)
+                    row['primitive_dimension_check'] = cylinder_dimension_evidence(shape, z0, z1, radius)
+                shapes[row['name']] = shape
+            else:
+                tool_name = 'analytic_cylinder' if kind == 'interior_cavity' else 'analytic_through_cylinder'
+                if 'analytic_box' not in shapes or tool_name not in shapes:
+                    raise BlockedEvidence('Required box/cylinder construction did not finish')
+                row['operand_evidence'] = {'box': calibration_shape_evidence(shapes['analytic_box']),
+                                           'cylinder': calibration_shape_evidence(shapes[tool_name])}
+                row['operation'] = {'name': 'Subtract', 'state': 'not_run', 'tolerance_requested_m': TOL_BOOL,
+                                    'expected_removed_from_box_m3': area * (0.6 if kind == 'interior_cavity' else 1.0) * scale}
+                save()
+                if any(evidence['solid_evidence']['state'] != 'passed' for evidence in row['operand_evidence'].values()):
+                    raise BlockedEvidence('Calibration Boolean operands lack measured solid/closed/manifold evidence')
+                row['tool_dimension_check'] = rows_by_name[tool_name].get('primitive_dimension_check', {'state': 'blocked'})
+                if row['tool_dimension_check'].get('state') != 'passed':
+                    raise BlockedEvidence('Cylinder radius/axis/cap planes do not match the analytic control')
+                shape = shapes['analytic_box'].Copy()
+                tools = lst(shapes[tool_name])
+                row['target_before'] = calibration_shape_evidence(shape)
+                row['tool_before'] = [calibration_shape_evidence(tool) for tool in tools]
+                save()
+                try:
+                    shape.Subtract(tools, TOL_BOOL)
+                    row['operation']['state'] = 'passed'
+                except Exception as exc:
+                    row['operation'].update({'state': 'failed', 'error': u(exc)})
+                    row['partial_target_after_error'] = calibration_shape_evidence(shape)
+                    row['tools_after_error'] = [calibration_shape_evidence(tool) for tool in tools]
+                    raise
+                shapes[row['name']] = shape
+            calibration_measure(row, shape)
+        except Exception as exc:
+            row['state'] = 'blocked'
+            row['native_accuracy_covers_observed_error'] = False
+            row['errors'].append({'operation': row['kind'], 'error': u(exc), 'traceback': u(traceback.format_exc())})
+            if shape is not None and 'shape' not in row:
+                try:
+                    row['shape'] = calibration_shape_evidence(shape)
+                    row['native'] = row['shape'].get('native', {'state': 'blocked'})
+                    row['partial_shape_is_not_valid_control'] = True
+                except Exception as snapshot_exc:
+                    row['errors'].append({'operation': 'partial_shape_snapshot', 'error': u(snapshot_exc)})
+        finally:
+            save()
+    result['native_accuracy_calibrated'] = (len(result['checks']) == len(specifications)
+                                            and all(row['state'] == 'passed'
+                                                    and row.get('native_accuracy_covers_observed_error') is True
+                                                    for row in result['checks']))
+    result['state'] = 'passed' if result['native_accuracy_calibrated'] else 'blocked'
+    result['failed_or_blocked_checks'] = [row['name'] for row in result['checks'] if row['state'] != 'passed']
+    save()
+    return result
+
+
+def read_bound_measurement_reference(key):
+    reference = CFG.get(key)
+    if not isinstance(reference, dict) or not reference.get('path') or not reference.get('sha256'):
+        raise BlockedEvidence('Missing explicitly bound reference: ' + key)
+    path = reference['path']
+    if not inside_stage(path) or sha256(path) != reference['sha256']:
+        raise BlockedEvidence('Reference path/hash mismatch: ' + key)
+    stream = codecs.open(path, 'r', 'utf-8')
+    try:
+        value = json.load(stream)
+    finally:
+        stream.close()
+    return value, {'path': path, 'sha256': reference['sha256']}
+
+
+def use_frozen_measurement_calibration():
+    protocol, protocol_ref = read_bound_measurement_reference('measurement_protocol')
+    calibration, calibration_ref = read_bound_measurement_reference('calibration_reference')
+    authorization, authorization_ref = read_bound_measurement_reference('additional_authorization')
+    policy = protocol.get('new_volume_consistency', {})
+    geometry = protocol.get('mandatory_geometric_evidence', {})
+    legacy = protocol.get('legacy_volume_test', {})
+    if (protocol.get('schema_version') != 2
+            or policy.get('maximum_single_relative_accuracy') != MAXIMUM_SINGLE_RELATIVE_ACCURACY
+            or policy.get('maximum_combined_relative_uncertainty') != MAXIMUM_COMBINED_RELATIVE_UNCERTAINTY
+            or policy.get('mandatory_cavity_accounting') is not True
+            or geometry.get('fallback_projection_tolerance_m') != TOL_OWNER
+            or geometry.get('independent_reopen_required') is not True
+            or geometry.get('native_failure_is_not_equality') is not True
+            or legacy.get('absolute_tolerance_m3') != VOLUME_ABSOLUTE_TOLERANCE_M3
+            or legacy.get('relative_tolerance') != VOLUME_RELATIVE_TOLERANCE):
+        raise BlockedEvidence('Frozen measurement protocol does not match reviewed v2 implementation')
+    if (calibration.get('mode') != 'calibration' or calibration.get('state') != 'passed'
+            or calibration.get('small_diagnostic_passed') is not True
+            or calibration.get('input_integrity', {}).get('state') != 'passed'
+            or calibration.get('source_unchanged') is not True
+            or calibration.get('source_sha256_before') != CFG['source_sha256']
+            or calibration.get('source_sha256_after') != CFG['source_sha256']
+            or calibration.get('volume_calibration', {}).get('native_accuracy_calibrated') is not True
+            or calibration.get('posed_cylinder_control', {}).get('state') != 'passed'
+            or calibration.get('orthogonal_cylinder_union_control', {}).get('state') != 'passed'):
+        raise BlockedEvidence('Bound small diagnostic does not provide the required actual passed evidence')
+    checks = calibration['volume_calibration'].get('checks', [])
+    if len(checks) != 5 or any(check.get('state') != 'passed' for check in checks):
+        raise BlockedEvidence('Bound calibration has incomplete basic/cavity controls')
+    report['measurement_protocol'] = {'validated': True, 'reference': protocol_ref, 'definition': protocol}
+    report['additional_authorization'] = authorization_ref
+    result = {'state': 'passed', 'native_accuracy_calibrated': True, 'reference': calibration_ref,
+              'scope': 'existing passed known controls only; no repetition and no full-domain precision proof',
+              'full_domain_precision_proven': False, 'geometry_pass_claimed': False,
+              'acceptance_basis_changed': True, 'consistency_only_no_absolute_accuracy_certificate': True,
+              'measurement_protocol_reference': protocol_ref}
+    report['volume_calibration'] = result
+    report['acceptance_basis_changed'] = True
+    save()
+    return result
+
+
+def run_volume_calibration():
+    if globals().get('CFG', {}).get('mode') in ('build', 'verify'):
+        try:
+            return use_frozen_measurement_calibration()
+        except Exception as exc:
+            result = {'state': 'blocked', 'native_accuracy_calibrated': False, 'geometry_pass_claimed': False,
+                      'scope': 'reference validation failed; no automatic rerun of diagnostics is authorized',
+                      'errors': [{'operation': 'frozen_measurement_references', 'error': u(exc)}]}
+            report['volume_calibration'] = result
+            report['measurement_protocol'] = {'validated': False, 'reference': CFG.get('measurement_protocol'), 'error': u(exc)}
+            save()
+            return result
+    # Last-resort boundary for a diagnostic-program error. Preserve any cases
+    # already recorded and let domain ledgers run, without validating accuracy.
+    try:
+        return volume_calibration()
+    except Exception as exc:
+        result = report.setdefault('volume_calibration', {'checks': []})
+        result['state'] = 'blocked'
+        result['native_accuracy_calibrated'] = False
+        result['geometry_pass_claimed'] = False
+        result.setdefault('errors', []).append({'operation': 'calibration_workflow', 'error': u(exc),
+                                                'traceback': u(traceback.format_exc())})
+        save()
+        return result
+
+
+def validated_mass_reading(mass):
+    if mass.get('state') != 'passed':
+        raise ValueError('Native mass reading did not succeed')
+    values = {}
+    for key in ('volume_at_unit_density_m3', 'relative_accuracy_reported', 'estimated_absolute_error_m3'):
+        if key not in mass or mass[key] is None or isinstance(mass[key], bool):
+            raise ValueError('Missing or non-numeric native mass field: ' + key)
+        values[key] = finite(mass[key])
+        if values[key] < 0:
+            raise ValueError('Negative native mass/uncertainty field: ' + key)
+    expected_error = finite(values['volume_at_unit_density_m3'] * values['relative_accuracy_reported'])
+    if abs(expected_error - values['estimated_absolute_error_m3']) > 1e-14 * max(1e-12, expected_error):
+        raise ValueError('Native absolute error is inconsistent with the reported relative accuracy')
+    values['state'] = 'passed'
+    return values
+
+
+def analytic_box_volume(lo, hi):
+    if len(lo) != 3 or len(hi) != 3:
+        raise ValueError('Analytic enclosure requires three bounds')
+    volume = 1.0
+    for axis in range(3):
+        length = finite(hi[axis]) - finite(lo[axis])
+        if length <= 0:
+            raise ValueError('Analytic enclosure length is not positive')
+        volume = finite(volume * length)
+    if volume <= 0:
+        raise ValueError('Analytic enclosure volume is not positive')
+    return volume
+
+
+def positive_interval_mass(snapshot, label):
+    if snapshot.get('state') != 'passed' or snapshot.get('is_deleted') is not False:
+        raise ValueError('Missing/invalid live native snapshot: ' + label)
+    mass = validated_mass_reading(snapshot.get('mass_properties', {}))
+    if mass['volume_at_unit_density_m3'] <= 0 or finite(snapshot.get('volume_m3', 0.0)) <= 0:
+        raise ValueError('Nonpositive solid volume: ' + label)
+    if mass['relative_accuracy_reported'] > MAXIMUM_SINGLE_RELATIVE_ACCURACY:
+        raise ValueError('Reported single-body relative error exceeds the frozen 1% capability cap: ' + label)
+    mass['label'] = label
+    return mass
+
+
+def conservation_interval(terms, reference_volume, label):
+    reference_volume = finite(reference_volume)
+    if reference_volume <= 0:
+        raise ValueError('Nonpositive interval normalization volume')
+    signed = [finite(sign * mass['volume_at_unit_density_m3']) for sign, mass in terms]
+    uncertainty = finite(math.fsum(mass['estimated_absolute_error_m3'] for sign, mass in terms))
+    residual = finite(math.fsum(signed))
+    relative = finite(uncertainty / reference_volume)
+    fp = 64.0 * FLOAT64_EPSILON * max(reference_volume, math.fsum(abs(value) for value in signed))
+    lower, upper = residual - uncertainty - fp, residual + uncertainty + fp
+    absolute_cap = finite(reference_volume * MAXIMUM_COMBINED_RELATIVE_UNCERTAINTY)
+    # Compare in volume units rather than dividing at the boundary. One ULP of
+    # the cap accounts only for IEEE-754 multiplication/summation roundoff; the
+    # declared 1% capability cap is unchanged and larger excesses stay blocked.
+    cap_ulp = math.ldexp(1.0, max(-1074, math.frexp(absolute_cap)[1] - 53)) if absolute_cap > 0 else 0.0
+    cap_ok = uncertainty <= absolute_cap or uncertainty - absolute_cap <= cap_ulp
+    contains_zero = lower <= 0.0 <= upper
+    return {'state': 'blocked' if not cap_ok else ('passed' if contains_zero else 'failed'),
+            'equation': label, 'residual_m3': residual, 'reported_error_sum_m3': uncertainty,
+            'floating_point_allowance_m3': fp, 'residual_interval_m3': [lower, upper],
+            'zero_in_interval': contains_zero, 'reference_volume_m3': reference_volume,
+            'combined_relative_uncertainty': relative,
+            'maximum_combined_relative_uncertainty': MAXIMUM_COMBINED_RELATIVE_UNCERTAINTY,
+            'absolute_cap_m3': absolute_cap, 'cap_comparison_roundoff_allowance_m3': cap_ulp,
+            'cap_met': cap_ok, 'term_labels': [mass['label'] for sign, mass in terms]}
+
+
+def native_mass_balance(snapshots, cavity_snapshots, tolerance, calibration, analytic_enclosure_m3=None, piece_records=None):
+    result = {'state': 'blocked', 'method': 'protocol_v2_reported_error_interval_consistency',
+              'acceptance_basis_changed': True, 'consistency_only_no_absolute_accuracy_certificate': True,
+              'requires_separate_geometry_acceptance': True, 'tessellation_used_for_acceptance': False,
+              'maximum_single_relative_accuracy': MAXIMUM_SINGLE_RELATIVE_ACCURACY,
+              'maximum_combined_relative_uncertainty': MAXIMUM_COMBINED_RELATIVE_UNCERTAINTY,
+              'calibration_scope': 'known analytic controls only; no full-domain absolute-precision proof'}
+    try:
+        result['legacy_strict_result'] = legacy_native_mass_balance(snapshots, cavity_snapshots, tolerance, calibration)
+    except Exception as exc:
+        result['legacy_strict_result'] = {'state': 'blocked', 'effective_tolerance_m3': tolerance, 'error': u(exc)}
+    try:
+        box = finite(analytic_enclosure_m3)
+        if box <= 0 or piece_records is None:
+            raise ValueError('Analytic positive enclosure and complete piece ledger are mandatory')
+        required = ('material_before_boolean', 'material_after_boolean', 'all_water_before_separation',
+                    'unseparated_water_after_split', 'main_before_imprint', 'main_after_imprint')
+        readings = dict((name, positive_interval_mass(snapshots[name], name)) for name in required)
+        original_count = snapshots['all_water_before_separation'].get('piece_count')
+        if isinstance(original_count, bool) or not isinstance(original_count, int) or original_count < 1:
+            raise ValueError('Original all-water piece count is unknown')
+        indices = [row.get('piece_index') for row in piece_records]
+        if len(piece_records) != original_count or sorted(indices) != list(range(original_count)):
+            raise ValueError('Piece census is incomplete, duplicated, or not index-bound')
+        outer = [row for row in piece_records if row.get('reaches_all_box_sides') is True]
+        cavities_expected = [row for row in piece_records if row.get('reaches_all_box_sides') is False]
+        if len(outer) != 1 or len(outer) + len(cavities_expected) != original_count:
+            raise ValueError('Exterior/cavity classification is incomplete')
+        cavity_indices = [row.get('piece_index') for row in cavity_snapshots]
+        if sorted(cavity_indices) != sorted(row['piece_index'] for row in cavities_expected):
+            raise ValueError('Missing, duplicated, or unbound sealed-cavity accounting')
+        if any(snapshots[name].get('piece_index') != outer[0]['piece_index'] for name in ('main_before_imprint', 'main_after_imprint')):
+            raise ValueError('Main-water snapshots are not bound to the measured exterior piece')
+        pieces = {}
+        for row in piece_records:
+            pieces[row['piece_index']] = positive_interval_mass(row['native_volume_snapshot'], 'piece_%d' % row['piece_index'])
+        cavities = []
+        for row in cavity_snapshots:
+            measured = positive_interval_mass(row, 'cavity_%d' % row['piece_index'])
+            expected = pieces[row['piece_index']]
+            for key in ('volume_at_unit_density_m3', 'relative_accuracy_reported', 'estimated_absolute_error_m3'):
+                if measured[key] != expected[key]:
+                    raise ValueError('Cavity reading is not the recorded native reading for its piece')
+            cavities.append(measured)
+        exact_box = {'label': 'analytic_enclosure', 'volume_at_unit_density_m3': box,
+                     'relative_accuracy_reported': 0.0, 'estimated_absolute_error_m3': 0.0, 'state': 'passed'}
+        material, water = readings['material_before_boolean'], readings['all_water_before_separation']
+        main, before = readings['main_after_imprint'], readings['main_before_imprint']
+        equations = [conservation_interval([(1, exact_box), (-1, material), (-1, water)], box, 'box-material-all_water'),
+                     conservation_interval([(1, exact_box), (-1, material), (-1, main)] + [(-1, item) for item in cavities], box, 'box-material-main-cavities'),
+                     conservation_interval([(1, water)] + [(-1, pieces[index]) for index in sorted(pieces)], water['volume_at_unit_density_m3'], 'all_water-sum_all_pieces'),
+                     conservation_interval([(1, pieces[index]) for index in sorted(pieces)] + [(-1, before)] + [(-1, item) for item in cavities], water['volume_at_unit_density_m3'], 'sum_all_pieces-main_before-cavities'),
+                     conservation_interval([(1, main), (-1, before)], before['volume_at_unit_density_m3'], 'main_after-main_before_imprint'),
+                     conservation_interval([(1, readings['material_after_boolean']), (-1, material)], material['volume_at_unit_density_m3'], 'material_copy_after-before'),
+                     conservation_interval([(1, readings['unseparated_water_after_split']), (-1, water)], water['volume_at_unit_density_m3'], 'unseparated_water_copy_after-before')]
+        result.update({'analytic_envelope_m3': box, 'enclosure_sdk_relative_accuracy_used': False,
+                       'measurements': readings, 'cavity_measurements': cavities, 'interval_checks': equations,
+                       'cavity_accounting': {'state': 'passed', 'original_piece_count': original_count,
+                                             'outer_piece_index': outer[0]['piece_index'], 'cavity_piece_indices': sorted(cavity_indices)}})
+        if calibration.get('native_accuracy_calibrated') is not True:
+            result['reason'] = 'Bound passed known-control evidence is missing'
+        elif any(row['state'] == 'blocked' for row in equations):
+            result['reason'] = 'Combined reported uncertainty exceeds the frozen 1% capability cap'
+        elif any(row['state'] == 'failed' for row in equations):
+            result['state'] = 'failed'
+            result['reason'] = 'Reported-error intervals are incompatible with volume conservation'
+        else:
+            result['state'] = 'passed'
+            result['conclusion'] = 'approximate interval consistency only; legacy absolute precision is not certified'
+    except Exception as exc:
+        result['reason'] = u(exc)
+    return result
+
+
+def old_strict_volume_result(raw, native):
+    states = (raw.get('state'), native.get('state'))
+    state = 'failed' if 'failed' in states else ('blocked' if 'blocked' in states or 'not_run' in states else 'passed')
+    return {'state': state, 'body_volume_arithmetic': raw, 'native_mass_absolute_precision': native,
+            'absolute_tolerance_m3': VOLUME_ABSOLUTE_TOLERANCE_M3, 'relative_tolerance': VOLUME_RELATIVE_TOLERANCE,
+            'new_interval_pass_does_not_change_this_result': True,
+            'physical_shape_inference': 'inconclusive; scalar precision failure alone does not prove bad geometry'}
+
+
+def legacy_native_mass_balance(snapshots, cavity_snapshots, tolerance, calibration):
+    result = {'state': 'blocked', 'method': 'Body.MassProperties.Mass with unit density and native RelativeAccuracy',
+              'effective_tolerance_m3': tolerance, 'threshold_was_relaxed': False}
+    measurements = {}
+    for name in ('box_before_boolean', 'material_before_boolean', 'all_water_before_separation', 'main_after_imprint'):
+        mass = snapshots[name].get('mass_properties', {})
+        if mass.get('state') != 'passed' or mass.get('estimated_absolute_error_m3') is None:
+            result['reason'] = 'Missing/unknown native accuracy: ' + name
+            return result
+        try:
+            measurements[name] = validated_mass_reading(mass)
+        except Exception as exc:
+            result['reason'] = 'Invalid native reading: ' + name + ': ' + u(exc)
+            return result
+    cavities = []
+    for record in cavity_snapshots:
+        mass = record.get('mass_properties', {})
+        if mass.get('state') != 'passed' or mass.get('estimated_absolute_error_m3') is None:
+            result['reason'] = 'Unknown cavity-volume accuracy'
+            return result
+        try:
+            cavities.append(validated_mass_reading(mass))
+        except Exception as exc:
+            result['reason'] = 'Invalid cavity reading: ' + u(exc)
+            return result
+    box = measurements['box_before_boolean']
+    material = measurements['material_before_boolean']
+    water = measurements['all_water_before_separation']
+    main = measurements['main_after_imprint']
+    residual = box['volume_at_unit_density_m3'] - material['volume_at_unit_density_m3'] - main['volume_at_unit_density_m3'] - math.fsum(row['volume_at_unit_density_m3'] for row in cavities)
+    partition = box['volume_at_unit_density_m3'] - material['volume_at_unit_density_m3'] - water['volume_at_unit_density_m3']
+    uncertainty = math.fsum(row['estimated_absolute_error_m3'] for row in [box, material, main] + cavities)
+    partition_uncertainty = math.fsum(row['estimated_absolute_error_m3'] for row in [box, material, water])
+    result.update({'residual_m3': residual, 'subtraction_residual_m3': partition,
+                   'combined_estimated_error_m3': uncertainty, 'subtraction_combined_estimated_error_m3': partition_uncertainty,
+                   'measurements': measurements, 'cavity_measurements': cavities})
+    if not calibration.get('native_accuracy_calibrated'):
+        result['reason'] = 'Native error estimate did not bound known analytic/control errors'
+    elif max(uncertainty, partition_uncertainty) > tolerance:
+        result['reason'] = 'Measurement uncertainty exceeds the original unchanged acceptance threshold'
+    elif abs(residual) + uncertainty > tolerance or abs(partition) + partition_uncertainty > tolerance:
+        result['state'] = 'failed'
+        result['reason'] = 'Calibrated native mass-volume balance exceeds unchanged threshold'
+    else:
+        result['state'] = 'passed'
+    return result
+
+
+def verify_native_domain_volume(shape, material, built, reference):
+    result = {'state': 'blocked', 'method': 'independent_protocol_v2_interval_recomputation',
+              'acceptance_basis_changed': True, 'consistency_only_no_absolute_accuracy_certificate': True,
+              'tessellation_used_for_acceptance': False}
+    if reference.get('state') != 'passed':
+        result['reason'] = 'Independent full-water/cavity regeneration is incomplete'
+        return result
+    try:
+        rows = reference['piece_records']
+        old_rows = built.get('pieces')
+        if not isinstance(old_rows, list) or len(old_rows) != len(rows):
+            raise ValueError('Build cavity/piece manifest differs from independently regenerated census')
+        if sum(row.get('reaches_all_box_sides') is False for row in old_rows) != len(reference['cavity_snapshots']):
+            raise ValueError('Build omits or duplicates a sealed-cavity record')
+        snapshots = dict(reference['snapshots'])
+        actual = native_volume_snapshot(shape)
+        actual['piece_index'] = reference['outer_piece_index']
+        snapshots['main_after_imprint'] = actual
+        box = reference['analytic_enclosure_m3']
+        tolerance = volume_tolerance(box)
+        interval = native_mass_balance(snapshots, reference['cavity_snapshots'], tolerance, report['volume_calibration'],
+                                       analytic_enclosure_m3=box, piece_records=rows)
+        raw = volume_ledger(snapshots['box_before_boolean']['volume_m3'], snapshots['material_before_boolean']['volume_m3'],
+                            snapshots['all_water_before_separation']['volume_m3'], [row['volume_m3'] for row in rows],
+                            snapshots['main_before_imprint']['volume_m3'], actual['volume_m3'],
+                            math.fsum(row['volume_m3'] for row in rows if row['reaches_all_box_sides'] is False))
+        result.update(interval)
+        result['method'] = 'independent_protocol_v2_interval_recomputation'
+        result['legacy_strict_result'] = old_strict_volume_result(raw, interval['legacy_strict_result'])
+        result['saved_fluid_snapshot'] = actual
+        result['cavities_independently_regenerated'] = True
+        result['original_material_and_analytic_enclosure_recomputed'] = True
+        result['main_after_reading_origin'] = 'actual reopened saved document, not a build pass flag'
+    except Exception as exc:
+        result['state'] = 'blocked'
+        result['reason'] = u(exc)
+    return result
+
+
+def legacy_verify_native_domain_volume(shape, material, built):
+    result = {'state': 'blocked', 'method': 'independent analytic envelope minus regenerated native material and recorded sealed cavities',
+              'threshold_was_relaxed': False, 'tessellation_used_for_acceptance': False}
+    if built.get('volume_acceptance', {}).get('state') != 'passed':
+        result['reason'] = 'Build lacks calibrated volume acceptance'
+        return result
+    actual = native_volume_snapshot(shape)
+    tool = native_volume_snapshot(material)
+    result['saved_fluid_snapshot'], result['regenerated_material_snapshot'] = actual, tool
+    a, m = actual.get('mass_properties', {}), tool.get('mass_properties', {})
+    if a.get('state') != 'passed' or m.get('state') != 'passed':
+        result['reason'] = 'Saved-fluid/material native accuracy is unavailable'
+        return result
+    try:
+        a, m = validated_mass_reading(a), validated_mass_reading(m)
+        cavities = [validated_mass_reading(row) for row in built['calibrated_mass_volume_balance'].get('cavity_measurements', [])]
+    except Exception as exc:
+        result['reason'] = 'Invalid independent mass/uncertainty reading: ' + u(exc)
+        return result
+    box = 1.0
+    for axis in range(3):
+        box *= finite(built['box_hi_m'][axis]) - finite(built['box_lo_m'][axis])
+    expected = box - m['volume_at_unit_density_m3'] - math.fsum(row['volume_at_unit_density_m3'] for row in cavities)
+    uncertainty = a['estimated_absolute_error_m3'] + m['estimated_absolute_error_m3'] + math.fsum(row['estimated_absolute_error_m3'] for row in cavities)
+    residual = a['volume_at_unit_density_m3'] - expected
+    tolerance = volume_tolerance(box)
+    result.update({'analytic_envelope_m3': box, 'expected_exterior_water_m3': expected,
+                   'actual_water_m3': a['volume_at_unit_density_m3'], 'residual_m3': residual,
+                   'combined_estimated_error_m3': uncertainty, 'effective_tolerance_m3': tolerance})
+    if not report['volume_calibration'].get('native_accuracy_calibrated'):
+        result['reason'] = 'Native error estimate did not pass independent analytic controls'
+    elif uncertainty > tolerance:
+        result['reason'] = 'Independent readback measurement precision is insufficient'
+    elif abs(residual) + uncertainty > tolerance:
+        result['state'] = 'failed'
+        result['reason'] = 'Independently regenerated volume balance failed'
+    else:
+        result['state'] = 'passed'
+    return result

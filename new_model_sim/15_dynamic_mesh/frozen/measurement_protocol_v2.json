@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "scope": "CAD geometric fidelity and precision-aware volume consistency for the one additionally authorized complete build",
+  "motivation": "Actual V242 measurements showed that the original scalar 1e-8 relative volume test demanded precision not supplied by Body.MassProperties. It must remain reported as an unmet legacy test, not silently relabeled as passed.",
+  "supporting_small_diagnostic": "runs/cad_calibration/attempt_002/calibration_report.json",
+  "legacy_volume_test": {
+    "absolute_tolerance_m3": 1e-10,
+    "relative_tolerance": 1e-8,
+    "retain_full_result": true,
+    "passing_new_consistency_check_does_not_mean_legacy_precision_passed": true
+  },
+  "new_volume_consistency": {
+    "enclosure_volume": "analytic product of three positive box lengths",
+    "other_volume_readings": "native MassProperties.Mass at unit density, with finite nonnegative RelativeAccuracy",
+    "maximum_single_relative_accuracy": 0.01,
+    "maximum_combined_relative_uncertainty": 0.01,
+    "acceptance": "conservation residual compatible with zero within the propagated reported-error interval and floating-point allowance",
+    "mandatory_cavity_accounting": true,
+    "uncertainty_is_not_absolute_volume_accuracy_certification": true,
+    "calibrated_on_known_controls_only": true
+  },
+  "mandatory_geometric_evidence": {
+    "closed": true,
+    "manifold": true,
+    "component_topology_checked": true,
+    "boundary_coverage_and_ownership_checked": true,
+    "independent_reopen_required": true,
+    "preferred_equivalence": "native empty symmetric differences",
+    "native_failure_is_not_equality": true,
+    "permitted_fallback": "independent bidirectional sampled surface-distance/area/bounding-box comparison of expected material and Boolean-reconstructed material",
+    "fallback_projection_tolerance_m": 0.00001,
+    "fallback_tolerance_origin": "existing CAD face-ownership TOL_OWNER, not the dynamic rigid-motion tolerance",
+    "finite_sampling_not_continuous_proof": true,
+    "fallback_failure": "blocked",
+    "interval_compatibility_without_geometric_evidence": "reject"
+  },
+  "unchanged_red_lines": {
+    "original_STEP_and_seal_recipe": "unchanged",
+    "dynamic_rigid_fit_residual_m": 1e-7,
+    "dynamic_pairwise_distance_change_m": 1e-7,
+    "minimum_orthogonal_quality": 0.01,
+    "maximum_orphan_cells": 0,
+    "maximum_negative_volume_cells": 0,
+    "default_theta_replacement_allowed": false
+  },
+  "budget": "diagnostic_authorization_001.json; no increase beyond the user's finite extension",
+  "no_retrospective_editing_of_failed_attempts": true
+}

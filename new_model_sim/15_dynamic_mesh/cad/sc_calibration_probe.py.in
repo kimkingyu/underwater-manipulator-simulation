@@ -1,0 +1,119 @@
+# Synthetic controls only: never open, modify or export the robot STEP geometry.
+def assess_independent_control(name, diagnostics, expected):
+    tolerance = max(1e-10, abs(expected) * 1e-8)
+    result = {'name': name, 'expected_volume_m3': expected, 'tolerance_m3': tolerance,
+              'state': 'blocked', 'scope': 'known analytic synthetic control only',
+              'method': 'three supported surface deviations, first-order extrapolation checked against analytic truth',
+              'assumption': 'leading chordal-volume error is locally linear in requested surface deviation',
+              'general_CAD_error_bound_claimed': False}
+    levels = diagnostics.get('levels', [])
+    if diagnostics.get('state') != 'passed' or len(levels) != 3:
+        result['reason'] = 'Incomplete independent integration levels'
+        return result
+    values = [finite(level['signed_volume_m3']) for level in levels]
+    deviations = [finite(level['surface_deviation_m']) for level in levels]
+    if not all(deviations[i] > deviations[i + 1] > 0 for i in range(2)):
+        result['reason'] = 'Surface deviations are not strictly positive refinements'
+        return result
+    errors = [abs(value - expected) for value in values]
+    extrapolates = [(deviations[i] * values[i + 1] - deviations[i + 1] * values[i]) /
+                    (deviations[i] - deviations[i + 1]) for i in range(2)]
+    extrapolate_errors = [abs(value - expected) for value in extrapolates]
+    result.update({'surface_deviations_m': deviations, 'absolute_volume_errors_m3': errors,
+                   'finest_error_m3': errors[-1], 'raw_finest_meets_target': errors[-1] <= tolerance,
+                   'extrapolated_volumes_m3': extrapolates,
+                   'extrapolated_analytic_errors_m3': extrapolate_errors,
+                   'extrapolate_change_m3': abs(extrapolates[1] - extrapolates[0]),
+                   'reference_invariance_errors_m3': [abs(finite(level['reference_invariance_error_m3'])) for level in levels]})
+    if any(error > tolerance for error in result['reference_invariance_errors_m3']):
+        result['reason'] = 'Integral depends on its reference point'
+    elif any(errors[index + 1] > errors[index] + tolerance for index in range(2)):
+        result['reason'] = 'Analytic error increases under refinement'
+    elif max(extrapolate_errors) > tolerance or result['extrapolate_change_m3'] > tolerance:
+        result['reason'] = 'Extrapolation does not agree with analytic truth and refinement stability'
+    else:
+        result['state'] = 'passed'
+    return result
+
+def mode_main():
+    report['scope'] = 'Synthetic primitive/API and independently integrated analytic volumes only; no robot CAD build'
+    report['robot_geometry_opened'] = False
+    report['maximum_runtime_seconds'] = 300
+    calibration = run_volume_calibration()
+    assessments = []
+    for row in calibration.get('checks', []):
+        assessment = assess_independent_control(row['name'], row.get('controlled_tessellation', {}), row['expected_volume_m3'])
+        assessment['geometry_and_native_control_state'] = row['state']
+        if row['state'] != 'passed':
+            assessment['state'] = 'blocked'
+            assessment['reason'] = 'Primitive dimensions/topology or native error check did not pass'
+        assessments.append(assessment)
+    report['independent_analytic_controls'] = assessments
+    save()
+
+    # A posed/translated control checks normal/coordinate handling absent from
+    # identity-only tests. It is not an articulated robot motion experiment.
+    posed = {'state': 'not_run', 'expected_volume_m3': math.pi * 0.02 ** 2 * 0.06,
+             'translation_m': [-0.03, -0.15, -0.45], 'rotation_rad': {'z': 0.225, 'x': -0.25}}
+    report['posed_cylinder_control'] = posed
+    try:
+        Document.Create()
+        created = list(CylinderBody.Create(Point.Create(0, 0, -0.03), Point.Create(0, 0, 0.03),
+                                          Point.Create(0.02, 0, 0.03), ExtrudeType.ForceIndependent, None).CreatedBodies)[0]
+        shape = world_copy(created)
+        created.Delete()
+        posed['initial_dimensions'] = cylinder_dimension_evidence(shape, -0.03, 0.03, 0.02)
+        if posed['initial_dimensions'].get('state') != 'passed':
+            raise BlockedEvidence('Posed control initial primitive dimensions not verified')
+        transform = Matrix.CreateTranslation(Vector.Create(-0.03, -0.15, -0.45))
+        transform = transform * Matrix.CreateRotation(Line.Create(Point.Origin, Direction.Create(0, 0, 1)), 0.225)
+        transform = transform * Matrix.CreateRotation(Line.Create(Point.Origin, Direction.Create(1, 0, 0)), -0.25)
+        shape.Transform(transform)
+        posed['shape'] = calibration_shape_evidence(shape)
+        posed['independent_integration'] = controlled_volume_diagnostics(shape)
+        posed['assessment'] = assess_independent_control('posed_cylinder', posed['independent_integration'], posed['expected_volume_m3'])
+        posed['state'] = posed['assessment']['state']
+    except Exception as exc:
+        posed['state'] = 'blocked'
+        posed['error'] = u(exc)
+        posed['traceback'] = u(traceback.format_exc())
+    save()
+    crossing = {'state': 'not_run', 'expected_volume_m3': 2.0 * math.pi * 0.02 ** 2 * 0.06 - 16.0 * 0.02 ** 3 / 3.0,
+                'scope': 'finite orthogonal-cylinder union; full Steinmetz intersection fits inside both cylinders'}
+    report['orthogonal_cylinder_union_control'] = crossing
+    try:
+        Document.Create()
+        created_z = list(CylinderBody.Create(Point.Create(0, 0, -0.03), Point.Create(0, 0, 0.03),
+                                            Point.Create(0.02, 0, 0.03), ExtrudeType.ForceIndependent, None).CreatedBodies)[0]
+        z_body = world_copy(created_z)
+        created_z.Delete()
+        created_x = list(CylinderBody.Create(Point.Create(-0.03, 0, 0), Point.Create(0.03, 0, 0),
+                                            Point.Create(0.03, 0.02, 0), ExtrudeType.ForceIndependent, None).CreatedBodies)[0]
+        x_body = world_copy(created_x)
+        created_x.Delete()
+        joined = z_body.Copy()
+        joined.Unite(lst(x_body), TOL_BOOL)
+        crossing['shape'] = calibration_shape_evidence(joined)
+        crossing['independent_integration'] = controlled_volume_diagnostics(joined)
+        crossing['assessment'] = assess_independent_control('orthogonal_cylinder_union', crossing['independent_integration'], crossing['expected_volume_m3'])
+        crossing['self_subtraction_diagnostic'] = difference_probe(joined, joined, 'known_identical_union_minus_itself')
+        crossing['state'] = crossing['assessment']['state']
+        if crossing['shape']['solid_evidence']['state'] != 'passed':
+            crossing['state'] = 'blocked'
+    except Exception as exc:
+        crossing['state'] = 'blocked'
+        crossing['error'] = u(exc)
+        crossing['traceback'] = u(traceback.format_exc())
+    save()
+    success = (len(assessments) == 5 and all(row['state'] == 'passed' for row in assessments)
+               and calibration.get('state') == 'passed' and posed['state'] == 'passed'
+               and crossing['state'] == 'passed')
+    report['state'] = 'passed' if success else 'blocked'
+    report['small_diagnostic_passed'] = success
+    report['full_domain_accuracy_verified'] = False
+    report['full_domain_build_authorized_by_this_result_alone'] = False
+    report['native_relative_accuracy_is_not_replaced_by_observed_sample_error'] = True
+    save()
+
+
+runtime_main()

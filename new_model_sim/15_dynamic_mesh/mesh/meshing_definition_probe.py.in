@@ -1,0 +1,205 @@
+# Definitions only, executed inside the explicitly opened Meshing editor.
+import json, codecs, os, traceback
+from System.IO import File
+C = json.loads(__CONFIG_JSON__)
+R = {"status": "running", "script_entered": True, "definitions_ready": False,
+     "domain": "background", "mesh_generated": False, "flow_iterations": 0,
+     "mesh_motion_verified": False, "controls": [], "named_selections": {},
+     "messages": [], "message_capture_complete": False}
+if os.path.exists(C["stats_path"]):
+    raise Exception("refusing to rerun definitions")
+
+
+def native_text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+    except Exception:
+        return repr(value)
+
+
+def receipt():
+    path = C["stats_path"]
+    temporary = path + ".tmp"
+    if os.path.exists(temporary):
+        raise Exception("receipt temporary file already exists")
+    out = codecs.open(temporary, "w", "utf-8")
+    try:
+        out.write(json.dumps(R, indent=2, ensure_ascii=True))
+    finally:
+        out.close()
+    if File.Exists(path):
+        File.Replace(temporary, path, None)
+    else:
+        File.Move(temporary, path)
+
+
+def capture_messages():
+    rows = []
+    try:
+        for message in ExtAPI.Application.Messages:
+            rows.append({"severity": native_text(message.Severity),
+                         "text": native_text(message.DisplayString)})
+        R["messages"] = rows
+        R["message_capture_complete"] = True
+    except Exception as exc:
+        R["messages"] = rows
+        R["message_capture_complete"] = False
+        R["message_capture_error"] = native_text(exc)
+    if not R["message_capture_complete"]:
+        raise Exception("native message capture unavailable")
+    if any(row["severity"].lower().rsplit(".", 1)[-1] not in ("info", "information", "warning") for row in rows):
+        raise Exception("native Meshing error or unknown severity")
+
+
+def quantity_readback(actual, expected):
+    converted = actual.ConvertUnit("m")
+    if converted is None:
+        converted = actual
+    value = float(converted.Value)
+    if abs(value - expected) > max(1e-10, abs(expected) * 1e-7):
+        raise Exception("length setting failed exact SI readback")
+    return value
+
+
+def required_quantity(obj, key, value):
+    setattr(obj, key, Quantity(str(value) + " [m]"))
+    return quantity_readback(getattr(obj, key), value)
+
+
+def exact_setting(obj, key, value):
+    setattr(obj, key, value)
+    if getattr(obj, key) != value:
+        raise Exception("setting failed readback: " + key)
+
+
+def defined(obj, kind, geometry_ids, values):
+    state = native_text(obj.ObjectState)
+    actual = list(obj.Location.Ids)
+    row = {"name": native_text(obj.Name), "kind": kind, "object_state": state,
+           "expected_geometry_ids": list(geometry_ids), "actual_geometry_ids": actual,
+           "values": values}
+    R["controls"].append(row)
+    if sorted(actual) != sorted(geometry_ids) or state != "FullyDefined":
+        raise Exception("required definition is not FullyDefined with exact scope: " + native_text(obj.Name))
+    return row
+
+
+def configure_face_size(mesh, selection, control, growth_rate):
+    expected_ids = list(selection.Location.Ids)
+    if not expected_ids or len(set(expected_ids)) != len(expected_ids):
+        raise Exception("face sizing requires unique nonempty face IDs")
+    scope = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    scope.Ids = expected_ids
+    size = mesh.AddSizing()
+    size.Name = "stage15_" + control["name"]
+    exact_setting(size, "Type", SizingType.ElementSize)
+    size.Location = scope
+    value = required_quantity(size, "ElementSize", control["size_m"])
+    # Keep the local default unset: native A/B proved its explicit 1.3
+    # override made this face control UnderDefined with capture disabled.
+    row = defined(size, "face_size", expected_ids,
+                  {"size_m": value, "growth_rate": float(size.GrowthRate), "type": native_text(size.Type),
+                   "local_growth_override_applied": False, "global_growth_rate_requested": growth_rate})
+    row["source_named_selection"] = control["name"]
+    return size
+
+
+def read_mesh_counts(mesh, phase):
+    counts = {}
+    R[phase] = counts
+    for key, property_name in (("nodes", "Nodes"), ("elements", "Elements")):
+        raw = getattr(mesh, property_name)
+        value = int(raw)
+        if isinstance(raw, bool) or value != raw or value < 0:
+            raise Exception("native mesh count is not a nonnegative integer: " + property_name)
+        counts[key] = value
+    if counts["nodes"] != 0 or counts["elements"] != 0:
+        raise Exception("definition probe must not contain generated mesh: " + phase)
+
+
+receipt()
+try:
+    model = ExtAPI.DataModel.Project.Model
+    mesh = model.Mesh
+    read_mesh_counts(mesh, "mesh_counts_before")
+    bodies = list(model.Geometry.GetChildren(DataModelObjectCategory.Body, True))
+    if len(bodies) != 1:
+        raise Exception("exactly one independent background fluid body required")
+    body = bodies[0]
+    body.Name = C["cell_zone"]
+    geo_body = body.GetGeoBody()
+    body_ids = [geo_body.Id]
+    face_ids = set(face.Id for face in geo_body.Faces)
+    R["body_geometry_ids"] = body_ids
+    R["body_face_ids"] = sorted(face_ids)
+    selections = {}
+    for selection in model.NamedSelections.Children:
+        if selection.Name in selections:
+            raise Exception("duplicate named selection")
+        selections[selection.Name] = selection
+    used = set()
+    for name in C["required_selections"]:
+        if name not in selections:
+            raise Exception("missing required named selection: " + name)
+        ids = list(selections[name].Location.Ids)
+        if not ids or len(set(ids)) != len(ids) or not set(ids).issubset(face_ids) or used.intersection(ids):
+            raise Exception("invalid/overlapping required face selection: " + name)
+        used.update(ids)
+        R["named_selections"][name] = ids
+    R["global_readback"] = {}
+    for name, key in (("ElementSize", "global_size_m"), ("MaximumSize", "maximum_size_m"), ("MinimumSize", "minimum_size_m")):
+        R["global_readback"][key] = required_quantity(mesh, name, C[key])
+    exact_setting(mesh, "CaptureCurvature", False)
+    exact_setting(mesh, "CaptureProximity", False)
+    exact_setting(mesh, "GrowthRate", C["growth_rate"])
+    R["global_readback"]["growth_rate"] = float(mesh.GrowthRate)
+    body_scope = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    body_scope.Ids = body_ids
+    method = mesh.AddAutomaticMethod()
+    method.Name = "stage15_background_tet"
+    method.Location = body_scope
+    exact_setting(method, "Method", MethodType.AllTriAllTet)
+    defined(method, "tet_method", body_ids, {"method": native_text(method.Method)})
+    for control in C["face_controls"]:
+        configure_face_size(mesh, selections[control["name"]], control, C["growth_rate"])
+    for index, sphere in enumerate(C["spheres"]):
+        coordinate = model.CoordinateSystems.AddCoordinateSystem()
+        coordinate.Name = "stage15_overlap_%d" % index
+        centre = []
+        for key, value in zip(("OriginX", "OriginY", "OriginZ"), sphere["centre_m"]):
+            centre.append(required_quantity(coordinate, key, value))
+        if native_text(coordinate.ObjectState) != "FullyDefined":
+            raise Exception("sphere coordinate system is not FullyDefined")
+        size = mesh.AddSizing()
+        size.Name = coordinate.Name
+        size.Location = body_scope
+        exact_setting(size, "Type", SizingType.SphereOfInfluence)
+        size.SphereCenter = coordinate
+        if size.SphereCenter.ObjectId != coordinate.ObjectId:
+            raise Exception("sphere centre failed readback")
+        radius = required_quantity(size, "SphereRadius", sphere["radius_m"])
+        value = required_quantity(size, "ElementSize", sphere["size_m"])
+        defined(size, "sphere", body_ids,
+                {"centre_m": centre, "radius_m": radius, "size_m": value, "type": native_text(size.Type),
+                 "coordinate_object_state": native_text(coordinate.ObjectState)})
+    read_mesh_counts(mesh, "mesh_counts_after")
+    capture_messages()
+    R["definitions_ready"] = True
+    R["status"] = "definitions_ready"
+except Exception as exc:
+    R["status"] = "failed"
+    R["definitions_ready"] = False
+    R["exception"] = native_text(exc)
+    R["traceback"] = traceback.format_exc()
+finally:
+    try:
+        capture_messages()
+    except Exception as exc:
+        R["status"] = "failed"
+        R["definitions_ready"] = False
+        R.setdefault("exception", native_text(exc))
+    receipt()
+if R["status"] != "definitions_ready":
+    raise Exception("definition probe failed; inspect background_meshing_stats.json")

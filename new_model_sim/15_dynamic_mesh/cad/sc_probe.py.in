@@ -1,0 +1,62 @@
+
+
+def mode_main():
+    report['units']['source_step_length'] = CFG['step_length_unit']
+    report['scope'] = 'Original unmodified STEP; q0 reference plus absolute qe/J1 samples in one process; no sealing, distal shift, or domain construction'
+    report['comparison_basis'] = {'q2_q3_locked_rad': Q[1:], 'j1_axis': JA[0], 'j1_centre_m': JC[0],
+                                  'all_moving_parts_one_rigid_group': list(MOVING),
+                                  'source_geometry_is_pre_recipe': True,
+                                  'sealed_domain_contact_requires_separate_build_evidence': True}
+    base = load_source()
+    report['q0_reference'] = {'q_rad': [0.0, 0.0, 0.0], 'pairs': pair_census(base)}
+    report['samples'] = []
+    save()
+    for angle in CFG['j1_samples_rad']:
+        q = [angle, Q[1], Q[2]]
+        parts = {}
+        for name, shape in base.items():
+            copied = shape.Copy()
+            copied.Transform(pose_matrix(GROUP[name], q))
+            parts[name] = copied
+        row = {'q_rad': q, 'is_qe': abs(angle - Q[0]) <= 1e-14,
+               'pose_semantics': 'absolute serial CAD0 pose; J2/J3 are not zeroed',
+               'parts': dict((name, shape_record(shape)) for name, shape in parts.items()),
+               'volume_drift_m3': dict((name, finite(parts[name].Volume) - finite(base[name].Volume)) for name in base),
+               'pairs': pair_census(parts)}
+        row['cross_fixed_moving_pairs'] = [pair for pair in row['pairs'] if pair['pair_kind'] == 'cross_fixed_moving']
+        row['base0_l1'] = [pair for pair in row['pairs'] if set((pair['a'], pair['b'])) == set(('base0', 'l1'))][0]
+        report['samples'].append(row)
+        save()
+    all_pairs = report['q0_reference']['pairs'] + [pair for row in report['samples'] for pair in row['pairs']]
+    cross = [pair for row in report['samples'] for pair in row['cross_fixed_moving_pairs']]
+    topologies = list(report['source_parts'].values()) + [part for row in report['samples'] for part in row['parts'].values()]
+    measurement_failures = [pair for pair in all_pairs if pair['state'] != 'passed']
+    topology_failures = [part for part in topologies if part['topology']['state'] == 'failed']
+    topology_blocked = [part for part in topologies if part['topology']['state'] == 'blocked']
+    penetrations = [pair for pair in cross if pair['classification'] == 'real_penetration']
+    contacts = [pair for pair in cross if pair['classification'] in ('design_contact', 'unclassified_zero_clearance')]
+    complete = len(report['samples']) == len(CFG['j1_samples_rad']) and all(len(row['pairs']) == 28 and len(row['cross_fixed_moving_pairs']) == 12 for row in report['samples'])
+    report['measurement'] = {'state': 'passed' if complete and not measurement_failures and not topology_failures and not topology_blocked else 'failed',
+                             'sample_count': len(report['samples']), 'pairs_per_sample': 28,
+                             'cross_fixed_moving_pairs_per_sample': 12, 'kernel_failure_count': len(measurement_failures)}
+    report['contact_summary'] = {'cross_group_penetration_count': len(penetrations),
+                                 'cross_group_zero_clearance_count': len(contacts),
+                                 'minimum_sampled_cross_group_distance_m': min(pair['distance_m'] for pair in cross if 'distance_m' in pair) if cross else None,
+                                 'positive_gap_is_not_donor_resolution_proof': True}
+    if not complete or measurement_failures or topology_failures or penetrations:
+        report['state'] = 'failed'
+    elif topology_blocked or any(pair['classification'] == 'unclassified_zero_clearance' or pair.get('gap_resolution_state') == 'blocked' for pair in cross):
+        report['state'] = 'blocked'
+        report['limitations'].append('An unresolved zero-clearance observation or topology API requires review')
+    else:
+        report['state'] = 'passed'
+    report['cad_contact'] = {'state': report['state'], 'scope': 'original pre-recipe geometry finite samples',
+                             'overset_connectivity_pending': True, 'motion_authorized': False,
+                             'cad_build_allowed': not measurement_failures and not topology_failures and not penetrations,
+                             'design_contact_classification_does_not_prove_hole_cutting': True}
+    report['limitations'].append('Classified base0/l1 design contact may proceed to isolated CAD/static hole-cutting validation, never straight to motion')
+    report['state_scope'] = 'finite CAD measurement gate only; not continuous collision or static-overset pass'
+    report['limitations'].append('Sampling includes qe, endpoints and J1 extrema; intermediate angles and time-step connectivity are not proved')
+
+
+runtime_main()

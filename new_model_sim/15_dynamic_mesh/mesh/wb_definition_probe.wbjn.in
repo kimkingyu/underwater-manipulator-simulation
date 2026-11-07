@@ -1,0 +1,76 @@
+# encoding: utf-8
+# Single background geometry and definition editing only.
+SetScriptVersion(Version="24.2.133")
+import System, json, traceback
+from System.IO import File
+from System.Text import Encoding
+C = json.loads(__CONFIG_JSON__)
+R = {"status": "running", "journal_completed": False, "definitions_ready": False,
+     "mesh_generated": False, "flow_iterations": 0, "mesh_motion_verified": False}
+if File.Exists(C["trace"]) or File.Exists(C["completion"]) or File.Exists(C["project"]):
+    raise Exception("refusing to rerun the definition journal")
+
+
+def native_text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+    except Exception:
+        return repr(value)
+
+
+def log(text):
+    File.AppendAllText(C["trace"], native_text(text) + native_text(System.Environment.NewLine), Encoding.UTF8)
+
+
+try:
+    log("journal-entered")
+    system = GetTemplate(TemplateName="Fluid Flow").CreateSystem()
+    system.DisplayText = "stage15_background_definition_probe"
+    geometry = system.GetContainer(ComponentName="Geometry")
+    geometry.SetFile(FilePath=C["cad_path"])
+    properties = geometry.GetGeometryProperties()
+    properties.GeometryImportNamedSelections = True
+    properties.GeometryImportNamedSelectionsFilter = ""
+    geometry_component = system.GetComponent(Name="Geometry")
+    geometry_component.Update(AllDependencies=False)
+    log("geometry-loaded")
+    Save(FilePath=C["project"], Overwrite=False)
+    mesh_component = system.GetComponent(Name="Mesh")
+    mesh_container = system.GetContainer(ComponentName="Mesh")
+    mesh_component.Refresh()
+    mesh_container.Edit(Interactive=False)
+    try:
+        log("meshing-script-dispatched")
+        mesh_container.SendCommand(Language="Python", Command=C["meshing_script"])
+    finally:
+        # Exit the editor without updating its component or saving mesh outputs.
+        mesh_container.Exit()
+    if not File.Exists(C["stats_path"]):
+        raise Exception("Meshing did not enter the definition script")
+    statistics = json.loads(File.ReadAllText(C["stats_path"]))
+    if (statistics.get("script_entered") is not True or statistics.get("definitions_ready") is not True or
+            statistics.get("status") != "definitions_ready" or statistics.get("mesh_generated") is not False):
+        raise Exception("Meshing did not report passed definitions")
+    log("definitions-ready")
+    R["definitions_ready"] = True
+    R["journal_completed"] = True
+    R["status"] = "journal_completed"
+except Exception as exc:
+    R["status"] = "failed"
+    R["exception"] = native_text(exc)
+    R["traceback"] = traceback.format_exc()
+    try:
+        log(u"FAILED: " + native_text(exc))
+    except Exception as log_exc:
+        R["logging_error"] = native_text(log_exc)
+finally:
+    try:
+        log("journal-completed" if R["journal_completed"] else "journal-failed")
+    except Exception as exc:
+        R["status"] = "failed"
+        R["journal_completed"] = False
+        R["logging_error"] = native_text(exc)
+    File.WriteAllText(C["completion"] + ".tmp", json.dumps(R, indent=2, ensure_ascii=True), Encoding.UTF8)
+    File.Move(C["completion"] + ".tmp", C["completion"])

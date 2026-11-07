@@ -1,0 +1,49 @@
+# Generated geometry, solver artifacts and heavy per-step coordinate evidence.
+*.scdoc
+*.step
+*.STEP
+*.msh
+*.msh.h5
+*.cas
+*.cas.h5
+*.dat
+*.dat.h5
+*.trn
+*.wbpj
+*.wbpz
+*.mshdb
+*_files/
+*.npz
+*.npy
+*.h5
+*.dll
+*.lib
+*.obj
+*.exp
+*.exe
+*.pdb
+*.ilk
+libudf*/
+*.sconsign*
+__pycache__/
+.pytest_cache/
+*.pyc
+*.tmp
+*.pending
+*.lock
+# Ephemeral Fluent gRPC connection credentials, including crash remnants.
+server-info.txt
+serverinfo*
+/runs/_test_*/
+/runs/**/tmp/
+/runs/**/cleanup-fluent-*
+
+# Keep local execution ledgers, authorizations and archived machine-specific code private.
+/runs/
+/frozen/*authorization*.json
+/frozen/source_archive*/
+
+# Publish only the concise validation record and explicitly curated native evidence.
+/reports/*
+!/reports/validation_summary.json
+!/reports/evidence/

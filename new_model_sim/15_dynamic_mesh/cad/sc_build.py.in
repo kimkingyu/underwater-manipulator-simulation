@@ -1,0 +1,44 @@
+
+
+def mode_main():
+    for path in CFG['output_scdoc'].values():
+        if not inside_stage(path) or os.path.exists(path):
+            raise ValueError('Refusing existing or escaped CAD output: ' + path)
+    report['domains'] = {}
+    report['scope'] = 'Two separate qe fluid documents: fixed background and one rigid whole-arm component'
+    report['cad_domains'] = {'state': 'not_run', 'independent_reopen_required': True}
+    ext = prepare_extended_parts()
+    sealed_motion_contacts(ext)
+    run_volume_calibration()
+    # Classified design contact does NOT block producing the artifacts required
+    # for the next static hole-cutting test. Actual overlap/kernel failure does.
+    failures, blocked = [], []
+    for domain in ('background', 'arm'):
+        try:
+            build_domain(domain, ext)
+        except BlockedEvidence as exc:
+            report['domains'].setdefault(domain, {})['state'] = 'blocked'
+            report['domains'][domain]['error'] = u(exc)
+            blocked.append(domain)
+        except Exception as exc:
+            report['domains'].setdefault(domain, {})['state'] = 'failed'
+            report['domains'][domain]['error'] = u(exc)
+            failures.append(domain)
+        finally:
+            save()
+    if failures:
+        report['cad_construction'] = {'state': 'failed', 'failed_domains': failures, 'blocked_domains': blocked}
+        raise ValueError('Domain diagnostics completed with failed domains: ' + repr(failures))
+    if blocked or report.get('volume_calibration', {}).get('native_accuracy_calibrated') is not True:
+        report['cad_construction'] = {'state': 'blocked', 'blocked_domains': blocked,
+                                      'calibration_state': report.get('volume_calibration', {}).get('state', 'not_run')}
+        raise BlockedEvidence('Domain diagnostics collected; calibrated volume acceptance remains incomplete')
+    report['cad_construction'] = {'state': 'passed', 'domain_count': 2,
+                                  'next_gate': 'independent_cad_reopen_then_static_overset'}
+    report['state'] = 'passed'
+    report['state_scope'] = 'CAD construction only; not CAD-independent verification, continuous clearance, mesh, or overset approval'
+    report['motion_authorized'] = False
+    report['limitations'].append('Zero-clearance contact remains pending native static hole-cutting connectivity; no automatic gap was added')
+
+
+runtime_main()

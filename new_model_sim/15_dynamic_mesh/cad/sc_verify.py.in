@@ -1,0 +1,65 @@
+
+
+def mode_main():
+    path = CFG['build_report']
+    if not inside_stage(path) or sha256(path) != CFG['build_report_sha256']:
+        raise ValueError('Build report path/hash mismatch')
+    stream = codecs.open(path, 'r', 'utf-8')
+    try:
+        built = json.load(stream)
+    finally:
+        stream.close()
+    report['build_report'] = path
+    report['build_report_sha256'] = CFG['build_report_sha256']
+    report['scope'] = 'Independent file reopen, topology and name coverage; regenerate approved material tools from frozen original STEP for physical ownership checks'
+    report['cad_domains'] = {'state': 'not_run', 'independent_reopen_required': True}
+    if built.get('mode') != 'build' or built.get('source_unchanged') is not True:
+        raise ValueError('Build report has no valid frozen-source record')
+    if built.get('source_sha256_after') != CFG['source_sha256']:
+        raise ValueError('Build and verify refer to different original geometry')
+    if sorted(built.get('domains', {})) != ['arm', 'background']:
+        raise ValueError('Expected exactly two generated CAD domains')
+    for key in ('measurement_protocol', 'calibration_reference', 'additional_authorization'):
+        if not CFG.get(key) or built.get('config', {}).get(key) != CFG[key]:
+            raise ValueError('Verify must inherit the actual build reference unchanged: ' + key)
+    ext = prepare_extended_parts()
+    # Recompute contact classification rather than inherit a generated/not-run flag.
+    sealed_motion_contacts(ext)
+    run_volume_calibration()
+    report['domains'] = {}
+    failures, blocked = [], []
+    for domain in ('background', 'arm'):
+        try:
+            if built['domains'][domain].get('state') != 'passed':
+                raise ValueError('Build did not finish domain: ' + domain)
+            verify_domain(domain, built['domains'][domain], ext)
+        except BlockedEvidence as exc:
+            report['domains'].setdefault(domain, {})['state'] = 'blocked'
+            report['domains'][domain]['error'] = u(exc)
+            blocked.append(domain)
+        except Exception as exc:
+            report['domains'].setdefault(domain, {})['state'] = 'failed'
+            report['domains'][domain]['error'] = u(exc)
+            failures.append(domain)
+        finally:
+            save()
+    if failures:
+        report['cad_domains'].update({'state': 'failed', 'failed_domains': failures, 'blocked_domains': blocked})
+        raise ValueError('Independent verification rejected domain evidence: ' + repr(failures))
+    if blocked:
+        report['cad_domains'].update({'state': 'blocked', 'blocked_domains': blocked})
+        raise BlockedEvidence('Independent geometry/interval verification remains incomplete')
+    report['artifacts'] = dict((name, {'path': row['scdoc'], 'sha256': row['sha256_after']}) for name, row in report['domains'].items())
+    report['cad_domains'] = {'state': 'passed', 'independent_reopen_required': True,
+                             'independent_reopen_completed': True, 'domain_count': 2,
+                             'connected_fluid_bodies_per_domain': 1, 'physical_face_ownership_checked': True,
+                             'source_hash_checked': True, 'shared_topology_between_domains': False,
+                             'acceptance_basis_changed': True, 'independent_volume_interval_recomputation': True,
+                             'consistency_only_no_absolute_accuracy_certificate': True,
+                             'legacy_strict_results_retained': True}
+    report['state'] = 'passed'
+    report['state_scope'] = 'Saved CAD geometry and reported-error interval consistency independently checked; legacy absolute volume precision is not certified, static overset and motion remain not run'
+    report['motion_authorized'] = False
+
+
+runtime_main()

@@ -1,0 +1,302 @@
+# Field-only sizing observations; no discretization is performed.
+import json, codecs, os, traceback
+from System.IO import File
+C = json.loads(__CONFIG_JSON__)
+try:
+    INTEGER_TYPES = (int, long)
+except NameError:
+    INTEGER_TYPES = (int,)
+OPTIONAL_FIELDS = ("ScopingMethod", "NamedSelection", "Active", "Suppressed", "Behavior",
+                   "CaptureCurvature", "CurvatureNormalAngle", "CaptureProximity", "LocalMinimumSize",
+                   "ProximityMinimumSize", "ProximityGapFactor", "ProximitySizeSources", "DefeatureSize")
+CORE_FIELDS = ("Type", "ElementSize", "GrowthRate", "Location")
+QUANTITY_FIELDS = ("ElementSize", "MaximumSize", "MinimumSize", "CurvatureNormalAngle", "LocalMinimumSize", "ProximityMinimumSize", "DefeatureSize")
+
+
+def text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+
+
+def quantity(value):
+    return {"value": float(value.Value), "unit": text(value.Unit), "text": text(value)}
+
+
+def field(obj, name):
+    try:
+        value = getattr(obj, name)
+        if name == "Location":
+            result = list(value.Ids)
+        elif name == "NamedSelection":
+            result = None if value is None else {"name": text(value.Name), "id": int(value.ObjectId)}
+        elif name in QUANTITY_FIELDS:
+            result = quantity(value)
+        elif isinstance(value, (bool, int, float)) or value is None:
+            result = value
+        else:
+            result = text(value)
+        return {"available": True, "value": result}
+    except Exception as exc:
+        return {"available": False, "error": text(exc)[:2000]}
+
+
+def counts(mesh):
+    result = {}
+    for key, name in (("nodes", "Nodes"), ("elements", "Elements")):
+        raw = getattr(mesh, name)
+        if isinstance(raw, bool) or not isinstance(raw, INTEGER_TYPES) or raw < 0:
+            raise Exception("invalid native mesh count: " + name)
+        result[key] = int(raw)
+    if result != {"nodes": 0, "elements": 0}:
+        raise Exception("nonzero native mesh count; diagnostic stopped")
+    return result
+
+
+def snapshot(size, mesh, step, required=False):
+    row = {"step": step, "name": text(size.Name), "object_state": text(size.ObjectState),
+           "mesh_counts": counts(mesh), "fields": {}}
+    for name in CORE_FIELDS + OPTIONAL_FIELDS:
+        row["fields"][name] = field(size, name)
+    if required and not all(row["fields"][name]["available"] for name in CORE_FIELDS):
+        raise Exception("required sizing field unavailable: " + text(row))
+    return row
+
+
+def capture_messages():
+    rows = []
+    complete = False
+    truncated = False
+    error = None
+    errors_present = False
+    used = 0
+    try:
+        for message in ExtAPI.Application.Messages:
+            if len(rows) >= 100:
+                truncated = True
+                break
+            severity = text(message.Severity)
+            display = text(message.DisplayString)
+            if severity.lower().rsplit(".", 1)[-1] not in ("info", "information", "warning"):
+                errors_present = True
+            remaining = 20000 - used
+            if len(severity) + len(display) > remaining:
+                saved_severity = severity[:remaining]
+                saved_display = display[:max(0, remaining - len(saved_severity))]
+                rows.append({"severity": saved_severity, "text": saved_display})
+                used = 20000
+                truncated = True
+                break
+            rows.append({"severity": severity, "text": display})
+            used += len(severity) + len(display)
+        complete = not truncated
+    except Exception as exc:
+        error = (text(exc) or "native message capture failed")[:2000]
+    return {"messages": rows, "message_capture_complete": complete, "messages_truncated": truncated,
+            "message_capture_error": error, "message_characters": used,
+            "native_errors_present": True if errors_present else (False if complete else None)}
+
+
+def required_scopes(model, geo):
+    names = C["required_selections"] if C["profile"] == "background_all_controls" else ["wall_base0"]
+    face_ids = set(face.Id for face in geo.Faces)
+    result = {}
+    used = set()
+    for name in names:
+        matches = [item for item in model.NamedSelections.Children if item.Name == name]
+        if len(matches) != 1:
+            raise Exception("unique required named selection missing: " + name)
+        ids = list(matches[0].Location.Ids)
+        if not ids or len(ids) != len(set(ids)) or not set(ids).issubset(face_ids) or used.intersection(ids):
+            raise Exception("invalid or overlapping required face scope: " + name)
+        used.update(ids)
+        result[name] = ids
+    return result
+
+
+def unique_object(children, name):
+    matches = [item for item in children if item.Name == name]
+    if len(matches) != 1:
+        raise Exception("unique actual object required: " + name)
+    return matches[0]
+
+
+def capture_all_controls(model, mesh):
+    bodies = list(model.Geometry.GetChildren(DataModelObjectCategory.Body, True))
+    if len(bodies) != 1:
+        raise Exception("one background body required for complete observations")
+    geo = bodies[0].GetGeoBody()
+    named = required_scopes(model, geo)
+    body_ids = [geo.Id]
+    method = unique_object(mesh.Children, "stage15_background_tet")
+    controls = [{"name": text(method.Name), "kind": "tet_method", "object_state": text(method.ObjectState),
+                 "expected_geometry_ids": body_ids, "actual_geometry_ids": list(method.Location.Ids),
+                 "method": text(method.Method)}]
+    for config in C["face_controls"]:
+        name = "stage15_" + config["name"]
+        size = unique_object(mesh.Children, name)
+        controls.append({"name": text(size.Name), "kind": "face_size", "object_state": text(size.ObjectState),
+                         "expected_geometry_ids": named[config["name"]], "actual_geometry_ids": list(size.Location.Ids),
+                         "source_named_selection": config["name"], "type": text(size.Type),
+                         "element_size": quantity(size.ElementSize), "expected_element_size_m": config["size_m"],
+                         "local_growth_raw": field(size, "GrowthRate"), "local_growth_override_applied": False})
+    for index, config in enumerate(C["spheres"]):
+        name = "stage15_overlap_%d" % index
+        size = unique_object(mesh.Children, name)
+        coordinate = unique_object(model.CoordinateSystems.Children, name)
+        origins = {}
+        for key in ("OriginX", "OriginY", "OriginZ"):
+            origins[key] = quantity(getattr(coordinate, key))
+        controls.append({"name": text(size.Name), "kind": "sphere", "object_state": text(size.ObjectState),
+                         "expected_geometry_ids": body_ids, "actual_geometry_ids": list(size.Location.Ids),
+                         "type": text(size.Type), "element_size": quantity(size.ElementSize),
+                         "expected_element_size_m": config["size_m"], "sphere_radius": quantity(size.SphereRadius),
+                         "expected_sphere_radius_m": config["radius_m"], "expected_sphere_center_m": config["centre_m"],
+                         "sphere_center_object_id": int(size.SphereCenter.ObjectId),
+                         "coordinate_system": {"name": text(coordinate.Name), "object_id": int(coordinate.ObjectId),
+                                               "object_state": text(coordinate.ObjectState), "origins": origins}})
+    return {"background_controls": controls, "named_scopes": named,
+            "body_geometry_ids": body_ids, "body_face_ids": sorted(face.Id for face in geo.Faces)}
+
+
+def write_receipt(phase, rows, mesh, method_state):
+    final = rows[-1]
+    value = {"schema_version": 1, "job_id": C["job_id"], "profile": C["profile"],
+             "phase": phase, "status": "completed", "diagnostic_completed": True,
+             "full_background_definitions_verified": False,
+             "mesh_generated": False, "flow_iterations": 0, "mesh_motion_verified": False,
+             "zero_mesh_verified": True, "mesh_counts": counts(mesh), "snapshots": rows,
+             "control": final, "control_fully_defined": final["object_state"] == "FullyDefined",
+             "tet_object_state": method_state, "scope": C["scope"],
+             "global_readback": {},
+             "local_growth_override_applied": C["profile"] not in ("omit_local_growth", "background_all_controls"),
+             "local_growth_readback_semantics": "raw_local_default_no_physical_or_inheritance_claim" if C["profile"] in ("omit_local_growth", "background_all_controls") else "explicit_local_override"}
+    for name in ("ElementSize", "MaximumSize", "MinimumSize", "GrowthRate", "CaptureCurvature", "CaptureProximity"):
+        value["global_readback"][name] = field(mesh, name)
+        if not value["global_readback"][name]["available"]:
+            raise Exception("required global setting readback unavailable: " + name)
+    if C["profile"] == "background_all_controls":
+        value.update(capture_all_controls(model, mesh))
+    value.update(capture_messages())
+    path = C[phase + "_path"]
+    if os.path.exists(path) or os.path.exists(path + ".tmp"):
+        raise Exception("refusing existing diagnostic receipt")
+    out = codecs.open(path + ".tmp", "w", "utf-8")
+    try:
+        out.write(json.dumps(value, indent=2, ensure_ascii=True))
+    finally:
+        out.close()
+    File.Move(path + ".tmp", path)
+
+
+def set_global_quantity(mesh, name, expected):
+    setattr(mesh, name, Quantity(str(expected) + " [m]"))
+    actual = getattr(mesh, name)
+    converted = actual.ConvertUnit("m")
+    if converted is None:
+        converted = actual
+    if abs(float(converted.Value) - expected) > max(1e-10, abs(expected) * 1e-7):
+        raise Exception("global quantity failed SI readback: " + name)
+
+
+model = ExtAPI.DataModel.Project.Model
+mesh = model.Mesh
+counts(mesh)
+if C["phase"] == "define":
+    bodies = list(model.Geometry.GetChildren(DataModelObjectCategory.Body, True))
+    if len(bodies) != 1:
+        raise Exception("one background fluid body required")
+    body = bodies[0]
+    body.Name = C["cell_zone"]
+    geo = body.GetGeoBody()
+    face_ids = set(face.Id for face in geo.Faces)
+    named_scopes = required_scopes(model, geo)
+    ids = named_scopes["wall_base0"]
+    for name, key in (("ElementSize", "global_size_m"), ("MaximumSize", "maximum_size_m"), ("MinimumSize", "minimum_size_m")):
+        set_global_quantity(mesh, name, C[key])
+    mesh.CaptureCurvature = False
+    mesh.CaptureProximity = False
+    mesh.GrowthRate = C["growth_rate"]
+    if mesh.CaptureCurvature != False or mesh.CaptureProximity != False or mesh.GrowthRate != C["growth_rate"]:
+        raise Exception("global settings failed readback")
+    body_scope = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    body_scope.Ids = [geo.Id]
+    method = mesh.AddAutomaticMethod()
+    method.Name = "stage15_background_tet"
+    method.Location = body_scope
+    method.Method = MethodType.AllTriAllTet
+    if method.Method != MethodType.AllTriAllTet or list(method.Location.Ids) != [geo.Id]:
+        raise Exception("tet method failed readback")
+    method_state = text(method.ObjectState)
+    size = mesh.AddSizing()
+    size.Name = "stage15_wall_base0"
+    rows = [snapshot(size, mesh, "created")]
+    size.Type = SizingType.ElementSize
+    rows.append(snapshot(size, mesh, "set_type"))
+    scope = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    scope.Ids = ids
+    size.Location = scope
+    rows.append(snapshot(size, mesh, "set_location"))
+    size.ElementSize = Quantity(str(C["local_size_m"]) + " [m]")
+    rows.append(snapshot(size, mesh, "set_element_size"))
+    if C["profile"] in ("omit_local_growth", "background_all_controls"):
+        # Observe the untouched local default. This is not a physical rate or an inheritance claim.
+        rows.append(snapshot(size, mesh, "leave_local_growth_unset"))
+    else:
+        size.GrowthRate = C["growth_rate"]
+        rows.append(snapshot(size, mesh, "set_growth_rate"))
+    if C["profile"] == "geometry_scope":
+        size.ScopingMethod = GeometryDefineByType.Geometry
+        if size.ScopingMethod != GeometryDefineByType.Geometry:
+            raise Exception("geometry scoping setting failed readback")
+        rows.append(snapshot(size, mesh, "set_geometry_scope"))
+    elif C["profile"] == "capture_off":
+        size.CaptureCurvature = False
+        size.CaptureProximity = False
+        if size.CaptureCurvature != False or size.CaptureProximity != False:
+            raise Exception("local capture setting failed readback")
+        rows.append(snapshot(size, mesh, "set_capture_off"))
+    elif C["profile"] not in ("baseline", "omit_local_growth", "background_all_controls"):
+        raise Exception("unapproved profile")
+    expected_local_growth_readback = 0.0 if C["profile"] in ("omit_local_growth", "background_all_controls") else C["growth_rate"]
+    if list(size.Location.Ids) != ids or size.Type != SizingType.ElementSize or size.GrowthRate != expected_local_growth_readback:
+        raise Exception("core sizing setting/scope failed readback")
+    rows.append(snapshot(size, mesh, "define_final", True))
+    if C["profile"] == "background_all_controls":
+        if len(C["face_controls"]) != 2 or len(C["spheres"]) != 1:
+            raise Exception("fixed background requires two face controls and one sphere")
+        for config in C["face_controls"]:
+            if config["name"] == "wall_base0":
+                continue
+            other_scope = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+            other_scope.Ids = named_scopes[config["name"]]
+            other = mesh.AddSizing()
+            other.Name = "stage15_" + config["name"]
+            other.Type = SizingType.ElementSize
+            other.Location = other_scope
+            other.ElementSize = Quantity(str(config["size_m"]) + " [m]")
+        for index, config in enumerate(C["spheres"]):
+            coordinate = model.CoordinateSystems.AddCoordinateSystem()
+            coordinate.Name = "stage15_overlap_%d" % index
+            for key, number in zip(("OriginX", "OriginY", "OriginZ"), config["centre_m"]):
+                setattr(coordinate, key, Quantity(str(number) + " [m]"))
+            sphere = mesh.AddSizing()
+            sphere.Name = coordinate.Name
+            sphere.Type = SizingType.SphereOfInfluence
+            sphere.Location = body_scope
+            sphere.SphereCenter = coordinate
+            sphere.SphereRadius = Quantity(str(config["radius_m"]) + " [m]")
+            sphere.ElementSize = Quantity(str(config["size_m"]) + " [m]")
+    write_receipt("define", rows, mesh, method_state)
+    ExtAPI.DataModel.Tree.Refresh()
+    write_receipt("refresh", [snapshot(size, mesh, "after_tree_refresh", True)], mesh, method_state)
+elif C["phase"] == "readback":
+    # This invocation independently obtains actual model objects; no earlier globals are used.
+    matches = [item for item in mesh.Children if item.Name == "stage15_wall_base0"]
+    methods = [item for item in mesh.Children if item.Name == "stage15_background_tet"]
+    if len(matches) != 1 or len(methods) != 1:
+        raise Exception("unique actual sizing and tet objects required")
+    write_receipt("readback", [snapshot(matches[0], mesh, "independent_readback", True)], mesh, text(methods[0].ObjectState))
+else:
+    raise Exception("unapproved observation phase")

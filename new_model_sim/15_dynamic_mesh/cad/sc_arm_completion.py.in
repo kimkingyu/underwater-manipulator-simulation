@@ -1,0 +1,56 @@
+# Reuse an immutable background artifact; construct and check ONLY the arm domain.
+def mode_main():
+    grant, grant_ref = read_bound_measurement_reference('additional_authorization')
+    if (grant.get('scope') != 'arm_domain_completion_then_independent_reopen'
+            or grant.get('maximum_arm_construction_attempts') != 1
+            or grant.get('maximum_arm_construction_seconds') != 1800
+            or grant.get('background_rebuild_allowed') is not False
+            or grant.get('original_cad_changes_allowed') is not False):
+        raise ValueError('Single-arm completion is not explicitly authorized')
+    previous, previous_ref = read_bound_measurement_reference('background_reference_report')
+    background = previous['domains']['background']
+    background_ref = CFG['background_artifact_reference']
+    if (background.get('state') != 'passed' or previous.get('source_unchanged') is not True
+            or previous.get('source_sha256_after') != CFG['source_sha256']
+            or background['scdoc'] != background_ref['path']
+            or background['scdoc_sha256'] != background_ref['sha256']
+            or sha256(background_ref['path']) != background_ref['sha256']
+            or background_ref['sha256'] != grant.get('background_sha256')):
+        raise ValueError('Existing background construction provenance does not match')
+    arm_path = CFG['output_scdoc']['arm']
+    if not inside_stage(arm_path) or os.path.exists(arm_path):
+        raise ValueError('Refusing existing or escaped arm output')
+    report['scope'] = 'One arm-domain completion with an immutable previously constructed background; independent reopen still required'
+    report['domains'] = {'background': background}
+    report['background_reuse'] = {'source_report': previous_ref, 'artifact': background_ref,
+                                'original_overall_build_state': previous['state'],
+                                'only_domain_construction_status_adopted': True,
+                                'background_rebuilt': False, 'independent_verification_inherited': False}
+    report['cad_domains'] = {'state': 'not_run', 'independent_reopen_required': True}
+    ext = prepare_extended_parts()
+    sealed_motion_contacts(ext)
+    run_volume_calibration()
+    save()
+    try:
+        build_domain('arm', ext)
+    except BlockedEvidence as exc:
+        report['domains'].setdefault('arm', {})['state'] = 'blocked'
+        report['domains']['arm']['error'] = u(exc)
+        report['cad_construction'] = {'state': 'blocked', 'constructed_domains': ['arm'], 'reused_domains': ['background']}
+        raise
+    except Exception as exc:
+        report['domains'].setdefault('arm', {})['state'] = 'failed'
+        report['domains']['arm']['error'] = u(exc)
+        report['cad_construction'] = {'state': 'failed', 'constructed_domains': ['arm'], 'reused_domains': ['background']}
+        raise
+    if sha256(background_ref['path']) != background_ref['sha256']:
+        raise ValueError('Reused background file changed during arm completion')
+    report['cad_construction'] = {'state': 'passed', 'constructed_domains': ['arm'], 'reused_domains': ['background'],
+                                 'domain_count': 2, 'scope': 'construction artifacts only; independent verification is pending'}
+    report['state'] = 'passed'
+    report['state_scope'] = 'New arm construction plus existing background construction; not independent CAD or mesh acceptance'
+    report['motion_authorized'] = False
+    save()
+
+
+runtime_main()

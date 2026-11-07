@@ -1,0 +1,63 @@
+# Local sampling investigation only. It does not create either fluid domain.
+def mode_main():
+    report['scope'] = 'Bounded read-only sampling of reconstructed approved arm material; no fluid domain, mesh or flow run'
+    report['whole_CAD_pair_validated'] = False
+    report['whole_body_geometry_validated'] = False
+    report['reference_face_index_is_a_hint_not_a_persistent_identifier'] = True
+    report['limits'] = CFG['face_probe_limits']
+    ext = prepare_extended_parts()
+    order = sorted(MOVING, key=lambda name: -ext[name].Volume)
+    material = ext[order[0]].Copy()
+    for name in order[1:]:
+        material.Unite(lst(ext[name]), TOL_BOOL)
+    material_record = shape_record(material)
+    report['material'] = material_record
+    report['union_order'] = order
+    report['matches_reference_face_count'] = material_record['faces'] == CFG['reference_material_face_count']
+    if material_record['topology']['state'] != 'passed':
+        raise BlockedEvidence('Reconstructed material topology is not valid for a face probe')
+    faces = list(material.Faces)
+    maximum_scan = CFG['face_probe_limits']['maximum_faces_scanned']
+    maximum_targets = CFG['face_probe_limits']['maximum_failed_faces_diagnosed']
+    report['face_observations'] = []
+    report['targeted_faces'] = []
+    for index, face in enumerate(faces[:maximum_scan]):
+        row = {'face_index_this_run': index, 'state': 'not_run', 'sampling': {}}
+        report['face_observations'].append(row)
+        try:
+            row['area_m2'] = finite(face.Area)
+            row['bbox_m'] = bbox(face)
+            uvbox = face.BoxUV
+            row['uv_bounds'] = [[finite(uvbox.RangeU.Start), finite(uvbox.RangeV.Start)],
+                                [finite(uvbox.RangeU.End), finite(uvbox.RangeV.End)]]
+            row['surface_type'] = u(face.Geometry.GetType().Name)
+            points = surface_face_samples(face, owner=material, diagnostics=row['sampling'])
+            row['validated_sample_points_m'] = [xyz(point) for point in points]
+            row['state'] = 'passed_for_this_face_sampling_only'
+        except Exception as exc:
+            row['state'] = 'blocked'
+            row['error'] = u(exc)
+            row['traceback'] = u(traceback.format_exc())
+        uv_count = row['sampling'].get('uv_distinct_count')
+        row['uniform_grid_issue_reproduced'] = uv_count is not None and uv_count < 3
+        if row['uniform_grid_issue_reproduced'] or row['state'] == 'blocked':
+            report['targeted_faces'].append(index)
+        save()
+        if len(report['targeted_faces']) >= maximum_targets:
+            break
+    targets = [row for row in report['face_observations'] if row['face_index_this_run'] in report['targeted_faces']]
+    report['faces_observed_count'] = len(report['face_observations'])
+    report['all_material_faces_checked'] = False
+    report['baseline_failure_reproduced'] = any(row['uniform_grid_issue_reproduced'] for row in targets)
+    passed = (report['matches_reference_face_count'] and report['baseline_failure_reproduced']
+              and bool(targets) and all(row['state'] == 'passed_for_this_face_sampling_only' for row in targets))
+    report['local_sampling_verified'] = passed
+    report['state'] = 'passed' if passed else 'blocked'
+    report['state_scope'] = 'Local sampler evidence only; no complete surface-equivalence or CAD-pair acceptance'
+    report['qualified_fluid_domain_exported'] = False
+    report['motion_authorized'] = False
+    report['flow_solved'] = False
+    save()
+
+
+runtime_main()

@@ -1,0 +1,783 @@
+
+
+# Two-domain helpers adapted from the frozen stage05 implementation, not its q0
+# four-domain execution block. All sealing functions above are uniquely extracted
+# from the frozen qe source; its obsolete cylinder-fill execution is excluded.
+def intersect(a, b, tol=TOL_SEAL):
+    copied = a.Copy()
+    try:
+        copied.Intersect(lst(b), tol)
+    except Exception as exc:
+        report.setdefault('kernel_errors', []).append({'operation': 'recipe_intersect', 'tolerance_m': tol, 'error': u(exc)})
+        raise
+    if finite(copied.Volume) <= 0:
+        return None
+    return copied
+
+
+def minus(a, b, tol=TOL_SEAL):
+    copied = a.Copy()
+    copied.Subtract(lst(b), tol)
+    return copied
+
+
+def outer_side(face, lo, hi):
+    fl, fh = bbox(face)
+    sides = []
+    for axis in range(3):
+        if fh[axis] - fl[axis] <= TOL_OUTER:
+            for upper, value in ((False, lo[axis]), (True, hi[axis])):
+                if abs(fl[axis] - value) <= TOL_OUTER:
+                    sides.append((axis, upper))
+    if len(sides) > 1:
+        raise ValueError('Degenerate outer face')
+    return sides[0] if sides else None
+
+
+def expected_names(domain):
+    members = FIXED if domain == 'background' else MOVING
+    return sorted([WALL_NAME[name] for name in members] +
+                  (['inlet', 'outlet', 'tank_wall'] if domain == 'background' else ['overset_arm']))
+
+
+def face_record(face, owner=None):
+    row = {'type': u(face.Geometry.GetType().Name), 'area_m2': finite(face.Area),
+           'bbox_m': bbox(face), 'sampling': {}, 'sampling_state': 'not_run'}
+    try:
+        points = surface_face_samples(face, owner=owner, diagnostics=row['sampling'])
+        row['sample_count'] = len(points)
+        row['sample_points_m'] = [xyz(point) for point in points]
+        row['sampling_state'] = 'passed'
+    except Exception as exc:
+        row['sample_count'] = 0
+        row['sample_points_m'] = []
+        row['sampling_state'] = 'blocked'
+        row['sampling_error'] = u(exc)
+    return row
+
+def classify_faces(body, domain, members, tools, lo, hi):
+    groups = dict((name, []) for name in expected_names(domain))
+    rows, unassigned, ambiguous, sampling_unresolved = [], [], [], []
+    owner_body = body.GetMaster().Shape
+    for index, dface in enumerate(list(body.Faces)):
+        face = dface.Shape
+        row = face_record(face, owner=owner_body)
+        row['face_index'] = index
+        if row['sampling_state'] != 'passed' or row['sample_count'] < 3:
+            row['assignment_state'] = 'blocked'
+            sampling_unresolved.append(row)
+            rows.append(row)
+            continue
+        side = outer_side(face, lo, hi)
+        if side is not None:
+            if domain == 'arm':
+                owner = 'overset_arm'
+            elif side[0] == 0:
+                owner = 'outlet' if side[1] else 'inlet'
+            else:
+                owner = 'tank_wall'
+            row['assignment_basis'] = 'exact envelope coordinate planes'
+            row['outer_side'] = list(side)
+        else:
+            points = [Point.Create(*point) for point in row['sample_points_m']]
+            ranked = sorted((max(dist(as_point(tools[name].ProjectPoint(point)), point) for point in points), name) for name in members)
+            row['owner_max_distances_m'] = dict((name, distance) for distance, name in ranked)
+            row['assignment_basis'] = 'minimum worst projection distance over at least three validated trimmed-face samples'
+            owner = WALL_NAME[ranked[0][1]]
+            if ranked[0][0] > TOL_OWNER:
+                row['assignment_state'] = 'failed'
+                unassigned.append(row)
+                rows.append(row)
+                continue
+            if len(ranked) > 1 and ranked[1][0] <= TOL_OWNER and ranked[1][0] - ranked[0][0] <= TOL_SEAL:
+                row['assignment_state'] = 'blocked'
+                row['tied_parts'] = [ranked[0][1], ranked[1][1]]
+                ambiguous.append(row)
+        row['name'] = owner
+        row.setdefault('assignment_state', 'passed')
+        groups[owner].append(dface)
+        rows.append(row)
+    missing = sorted(name for name, faces in groups.items() if not faces)
+    complete = not unassigned and not sampling_unresolved and not missing and sum(len(faces) for faces in groups.values()) == len(list(body.Faces))
+    state = 'failed' if unassigned else ('blocked' if sampling_unresolved or ambiguous else ('passed' if complete else 'failed'))
+    return groups, {'state': state, 'expected_names': expected_names(domain),
+                    'unassigned': unassigned, 'ambiguous': ambiguous, 'sampling_unresolved': sampling_unresolved,
+                    'empty_names': missing, 'face_count': len(list(body.Faces)), 'face_records': rows,
+                    'names': dict((name, {'faces': len(faces), 'area_m2': sum(finite(face.Shape.Area) for face in faces)})
+                                  for name, faces in groups.items()),
+                    'minimum_validated_samples_per_face': 3,
+                    'sampled_projection_not_exact_ownership_proof': True}
+
+def prepare_extended_parts():
+    raw = load_source()
+    if any(row['topology']['state'] == 'failed' for row in report['source_parts'].values()):
+        raise ValueError('Invalid source topology')
+    if any(row['topology']['state'] != 'passed' for row in report['source_parts'].values()):
+        raise BlockedEvidence('Source topology API evidence incomplete')
+    # All temporary boxes are made in a new scratch document, never the imported
+    # STEP document; copies are modified but the original STEP is never saved.
+    Document.Create()
+    ext = approved_extended_parts(raw)
+    report['seal_recipe'] = {
+        'source_sha256': CFG['recipe_sha256'],
+        'j3_tangency_wedge_executed': True,
+        'jaw_filler_counts': report.get('jaw_fillers', {}),
+        'distal_shift_before_pose_m': SHIFT_M,
+        'l2_cylinder_gap_fill_executed': False,
+        'physical_changes_beyond_approved_recipe': False,
+        'new_j1_clearance_created': False,
+        'policy': 'Only approved J3 tangency wedge, jaw seams, +10um distal shift, then absolute qe pose; no l2 cylinder fill',
+    }
+    if any('error' in row for row in report.get('jaw_filler_log', [])):
+        raise ValueError('Jaw seal recipe contained an unresolved filler error')
+    report['extended_parts'] = dict((name, shape_record(shape)) for name, shape in ext.items())
+    for name in FIXED:
+        before, after = report['source_parts'][name], report['extended_parts'][name]
+        if abs(before['volume_m3'] - after['volume_m3']) > 1e-12:
+            raise ValueError('Fixed material changed by sealing: ' + name)
+    for name, row in report['extended_parts'].items():
+        if row['topology']['state'] == 'failed':
+            raise ValueError('Invalid extended part topology: ' + name)
+        if row['topology']['state'] != 'passed':
+            raise BlockedEvidence('Extended part topology evidence incomplete: ' + name)
+    save()
+    return ext
+
+
+def sealed_motion_contacts(ext):
+    report['sealed_qe_pairs'] = pair_census(ext)
+    sweep = []
+    report['sealed_motion_samples'] = sweep
+    for angle in CFG['j1_samples_rad']:
+        rotation = Matrix.CreateRotation(Line.Create(Point.Create(*JC[0]), Direction.Create(*JA[0])), angle - Q[0])
+        posed = {}
+        for name, shape in ext.items():
+            copied = shape.Copy()
+            if name in MOVING:
+                copied.Transform(rotation)
+            posed[name] = copied
+        pairs = [pair_measurement(fixed, moving, posed) for fixed in FIXED for moving in MOVING]
+        sweep.append({'q_rad': [angle, Q[1], Q[2]], 'relative_j1_rad': angle - Q[0], 'pairs': pairs})
+        save()
+    cross = [row for sample in sweep for row in sample['pairs']]
+    failures = [row for row in report['sealed_qe_pairs'] + cross if row['state'] != 'passed']
+    overlaps = [row for row in cross if row['classification'] == 'real_penetration']
+    contact = [row for row in cross if row['classification'] in ('design_contact', 'unclassified_zero_clearance')]
+    unresolved = [row for row in cross if row['classification'] == 'unclassified_zero_clearance' or row.get('gap_resolution_state') == 'blocked']
+    report['cad_contact'] = {'state': 'failed' if failures or overlaps else ('blocked' if unresolved else 'passed'),
+                             'scope': 'finite sampled sealed qe geometry with rigid whole-arm J1 motion',
+                             'kernel_failures': len(failures), 'cross_group_penetrations': len(overlaps),
+                             'zero_clearance_observations': len(contact), 'classified_design_contact_is_not_interference': True,
+                             'next_gate': 'overset_connectivity_pending', 'cad_build_allowed': not failures and not overlaps,
+                             'overset_connectivity_pending': True, 'motion_authorized': False,
+                             'unresolved_zero_clearance': len(unresolved)}
+    save()
+    if failures or overlaps:
+        raise ValueError('Sealed cross-group motion probe failed; CAD construction is not authorized')
+
+
+def geometry_surface_fallback_authorized():
+    protocol = report.get('measurement_protocol', {})
+    geometry = protocol.get('definition', {}).get('mandatory_geometric_evidence', {})
+    return (protocol.get('validated') is True and geometry.get('fallback_projection_tolerance_m') == TOL_OWNER
+            and geometry.get('finite_sampling_not_continuous_proof') is True)
+
+
+def native_face_tessellation(owner, face, deviation):
+    # V242 Body.GetTessellation accepts a subset of this body's faces. This
+    # single-face call is ONLY a sampling aid, not a watertight volume mesh.
+    from SpaceClaim.Api.V242.Modeler import TessellationOptions
+    selected = List[Face]()
+    selected.Add(face)
+    return owner.GetTessellation(selected, TessellationOptions(deviation, 0.1))[face]
+
+
+def projected_facet_samples(face, owner, diagnostics, maximum_facets=4096, maximum_selected_facets=16):
+    if owner is None:
+        raise BlockedEvidence('Trimmed-face fallback requires its actual owning body')
+    deviation = 2e-8  # Supported by the actual V242 small-control execution.
+    diagnostics.update({'method': 'single_face_facets_projected_back_to_trimmed_surface',
+                        'surface_deviation_m': deviation, 'maximum_facets': maximum_facets,
+                        'maximum_selected_facets': maximum_selected_facets,
+                        'whole_body_geometry_or_watertightness_claimed': False,
+                        'candidate_errors': [], 'projections': []})
+    tess = native_face_tessellation(owner, face, deviation)
+    vertices, facets = list(tess.Vertices), list(tess.Facets)
+    diagnostics['vertex_count'], diagnostics['facet_count'] = len(vertices), len(facets)
+    if not vertices or not facets or len(facets) > maximum_facets:
+        raise BlockedEvidence('Missing or over-budget single-face tessellation')
+    ranked = []
+    for number, facet in enumerate(facets):
+        raw = (facet.Vertex0, facet.Vertex1, facet.Vertex2)
+        indices = [int(value) for value in raw]
+        if any(isinstance(value, bool) or value != index or index < 0 or index >= len(vertices)
+               for value, index in zip(raw, indices)):
+            raise BlockedEvidence('Invalid single-face facet vertex index')
+        coordinates = [xyz(vertices[index].Position) for index in indices]
+        a, b, c = coordinates
+        ab, ac = ([b[k] - a[k] for k in range(3)], [c[k] - a[k] for k in range(3)])
+        cross = [ab[1] * ac[2] - ab[2] * ac[1], ab[2] * ac[0] - ab[0] * ac[2], ab[0] * ac[1] - ab[1] * ac[0]]
+        area_squared = finite(sum(value * value for value in cross))
+        if area_squared > 0:
+            ranked.append((area_squared, number, coordinates))
+    ranked.sort(key=lambda row: row[0], reverse=True)
+    selected = ranked[:maximum_selected_facets]
+    diagnostics['nondegenerate_facet_count'] = len(ranked)
+    diagnostics['selected_facet_indices'] = [row[1] for row in selected]
+    accepted = []
+    weights = ((1.0 / 3, 1.0 / 3, 1.0 / 3), (0.6, 0.2, 0.2), (0.2, 0.6, 0.2), (0.2, 0.2, 0.6))
+    for _, number, coordinates in selected:
+        for weight in weights:
+            try:
+                raw_point = Point.Create(*[math.fsum(weight[j] * coordinates[j][k] for j in range(3)) for k in range(3)])
+                evaluation = face.ProjectPoint(raw_point)
+                if not face.ContainsParam(evaluation.Param):
+                    raise BlockedEvidence('Projected candidate is outside the trimmed face')
+                point = evaluation.Point
+                xyz(point)
+                displacement = finite(dist(point, raw_point))
+                if displacement > TOL_OWNER:
+                    raise BlockedEvidence('Facet candidate projection exceeds CAD correspondence tolerance')
+                diagnostics['projections'].append({'facet_index': number, 'point_m': xyz(point),
+                                                    'projection_distance_m': displacement,
+                                                    'trimmed_parameter_checked': True})
+                accepted.append(point)
+            except Exception as exc:
+                diagnostics['candidate_errors'].append({'facet_index': number, 'error': u(exc)})
+    diagnostics['accepted_candidate_count'] = len(accepted)
+    if not accepted:
+        raise BlockedEvidence('No validated projected candidate on the trimmed face')
+    return accepted
+
+
+def surface_face_samples(face, owner=None, diagnostics=None):
+    diagnostics = {} if diagnostics is None else diagnostics
+    diagnostics.update({'state': 'not_run', 'uv_grids_tried': [], 'fallback_used': False,
+                        'minimum_distinct_points': 3, 'geometry_modified': False})
+    try:
+        points = samples(face)
+        unique = {}
+        for point in points:
+            unique[tuple(round(value, 14) for value in xyz(point))] = point
+        diagnostics['initial_distinct_count'] = len(unique)
+        if len(unique) < 3:
+            uvbox = face.BoxUV
+            for grid in (12, 24):
+                diagnostics['uv_grids_tried'].append(grid)
+                for i in range(grid):
+                    for j in range(grid):
+                        uv = PointUV.Create(uvbox.RangeU.Start + (uvbox.RangeU.End - uvbox.RangeU.Start) * (i + 0.5) / grid,
+                                            uvbox.RangeV.Start + (uvbox.RangeV.End - uvbox.RangeV.Start) * (j + 0.5) / grid)
+                        if face.ContainsParam(uv):
+                            point = face.Geometry.Evaluate(uv).Point
+                            unique[tuple(round(value, 14) for value in xyz(point))] = point
+                if len(unique) >= 3:
+                    break
+        diagnostics['uv_distinct_count'] = len(unique)
+        if len(unique) < 3:
+            diagnostics['fallback_attempted'] = True
+            diagnostics['projected_facet_sampling'] = {}
+            additions = projected_facet_samples(face, owner, diagnostics['projected_facet_sampling'])
+            for point in additions:
+                unique[tuple(round(value, 14) for value in xyz(point))] = point
+            diagnostics['fallback_used'] = len(unique) >= 3
+        diagnostics['final_distinct_count'] = len(unique)
+        if len(unique) < 3:
+            raise BlockedEvidence('A face still has fewer than three distinct validated samples; no exemption')
+        diagnostics['state'] = 'passed'
+        return [unique[key] for key in sorted(unique)]
+    except Exception as exc:
+        diagnostics['state'] = 'blocked'
+        diagnostics['error'] = u(exc)
+        raise
+
+def point_in_padded_bbox(point, bounds, tolerance):
+    return all(bounds[0][axis] - tolerance <= point[axis] <= bounds[1][axis] + tolerance for axis in range(3))
+
+
+def surface_index(shape):
+    bounds = bbox(shape)
+    diagonal = math.sqrt(math.fsum((bounds[1][axis] - bounds[0][axis]) ** 2 for axis in range(3)))
+    cell = max(16.0 * TOL_OWNER, diagonal / 16.0)
+    index = {'origin': bounds[0], 'cell_size_m': cell, 'faces': list(shape.Faces), 'bounds': [], 'bins': {}, 'large_faces': []}
+    if not index['faces']:
+        raise BlockedEvidence('Geometry surface index has no faces')
+    for number, face in enumerate(index['faces']):
+        box = bbox(face)
+        if any(box[1][axis] < box[0][axis] for axis in range(3)):
+            raise BlockedEvidence('Invalid face bounding box')
+        index['bounds'].append(box)
+        low = [int(math.floor((box[0][axis] - TOL_OWNER - index['origin'][axis]) / cell)) for axis in range(3)]
+        high = [int(math.floor((box[1][axis] + TOL_OWNER - index['origin'][axis]) / cell)) for axis in range(3)]
+        count = (high[0] - low[0] + 1) * (high[1] - low[1] + 1) * (high[2] - low[2] + 1)
+        if count > 4096:
+            index['large_faces'].append(number)
+            continue
+        for i in range(low[0], high[0] + 1):
+            for j in range(low[1], high[1] + 1):
+                for k in range(low[2], high[2] + 1):
+                    index['bins'].setdefault((i, j, k), []).append(number)
+    return index
+
+
+def surface_candidates(point, index):
+    key = tuple(int(math.floor((point[axis] - index['origin'][axis]) / index['cell_size_m'])) for axis in range(3))
+    possible = set(index['bins'].get(key, []) + index['large_faces'])
+    return sorted(number for number in possible if point_in_padded_bbox(point, index['bounds'][number], TOL_OWNER))
+
+
+def directed_surface_check(source, target, projection_budget=2000000):
+    result = {'state': 'not_run', 'face_results': [], 'projection_calls': 0, 'projection_budget': projection_budget,
+              'tolerance_m': TOL_OWNER, 'finite_sampling_not_continuous_proof': True,
+              'requires_reverse_scan': True, 'all_source_faces_sampled': False}
+    try:
+        index = surface_index(target)
+        faces = list(source.Faces)
+        result['source_face_count'] = len(faces)
+        result['target_face_count'] = len(index['faces'])
+        result['bbox_index'] = {'cell_size_m': index['cell_size_m'], 'bin_count': len(index['bins']), 'large_face_count': len(index['large_faces'])}
+        if not faces:
+            raise BlockedEvidence('Source has no faces for bidirectional comparison')
+        all_hits = set()
+        for number, face in enumerate(faces):
+            row = {'face_index': number, 'state': 'not_run', 'samples_m': [], 'nearest_distances_m': [],
+                   'matched_target_faces': [], 'projection_errors': []}
+            result['face_results'].append(row)
+            row['sampling'] = {}
+            try:
+                # Capture a geometric fingerprint BEFORE sampling can fail.
+                row['area_m2'] = finite(face.Area)
+                row['bbox_m'] = bbox(face)
+                if row['area_m2'] <= 0:
+                    raise BlockedEvidence('Surface comparison contains a nonpositive-area face')
+                points = surface_face_samples(face, owner=source, diagnostics=row['sampling'])
+                row['sample_count'] = len(points)
+            except Exception as exc:
+                row['state'] = 'blocked'
+                row['sampling_error'] = u(exc)
+                raise
+            face_failed, face_blocked = False, False
+            for point in points:
+                coordinates = xyz(point)
+                row['samples_m'].append(coordinates)
+                candidates = surface_candidates(coordinates, index)
+                nearest, nearest_index, errors = None, None, []
+                for other in candidates:
+                    if result['projection_calls'] >= projection_budget:
+                        raise BlockedEvidence('Bidirectional surface projection budget exhausted')
+                    result['projection_calls'] += 1
+                    try:
+                        distance = dist(as_point(index['faces'][other].ProjectPoint(point)), point)
+                        if nearest is None or distance < nearest:
+                            nearest, nearest_index = distance, other
+                    except Exception as exc:
+                        errors.append({'target_face_index': other, 'error': u(exc)})
+                row['nearest_distances_m'].append(nearest)
+                if errors:
+                    row['projection_errors'].append({'sample_index': len(row['samples_m']) - 1, 'errors': errors})
+                if nearest is not None and nearest <= TOL_OWNER:
+                    row['matched_target_faces'].append(nearest_index)
+                    all_hits.add(nearest_index)
+                elif errors:
+                    face_blocked = True
+                else:
+                    face_failed = True
+            row['state'] = 'failed' if face_failed else ('blocked' if face_blocked else 'passed')
+            row['matched_target_faces'] = sorted(set(row['matched_target_faces']))
+        result['all_source_faces_sampled'] = len(result['face_results']) == len(faces) and all(row.get('sample_count', 0) >= 3 for row in result['face_results'])
+        result['target_faces_hit'] = sorted(all_hits)
+        result['target_faces_not_hit_in_this_direction'] = sorted(set(range(len(index['faces']))) - all_hits)
+        states = [row['state'] for row in result['face_results']]
+        result['state'] = 'failed' if 'failed' in states else ('blocked' if 'blocked' in states or not result['all_source_faces_sampled'] else 'passed')
+    except Exception as exc:
+        result['state'] = 'blocked'
+        result['reason'] = u(exc)
+    return result
+
+
+def sampled_surface_equivalence(a, b, snapshots=None):
+    result = {'state': 'blocked', 'method': 'independent_bidirectional_sampled_surface_correspondence',
+              'finite_sampling_not_continuous_proof': True, 'position_tolerance_m': TOL_OWNER,
+              'tolerance_origin': 'existing approved CAD TOL_OWNER; not dynamic rigid-motion tolerance',
+              'volume_interval_used_for_geometry': False}
+    try:
+        records = snapshots if snapshots is not None else [shape_record(a), shape_record(b)]
+        result['shapes'] = records
+        if any(row['topology']['state'] != 'passed' or row['topology'].get('closed') is not True
+               or row['topology'].get('manifold') is not True or row['topology'].get('piece_count', 0) < 1
+               or row['volume_m3'] <= 0 or row['surface_area_m2'] <= 0 for row in records):
+            raise BlockedEvidence('Closed/manifold/positive-volume component evidence is incomplete')
+        if records[0]['topology']['piece_count'] != records[1]['topology']['piece_count']:
+            result['state'] = 'failed'
+            result['reason'] = 'Different connected-component counts'
+            return result
+        box_error = max(abs(records[0]['bbox_m'][side][axis] - records[1]['bbox_m'][side][axis]) for side in (0, 1) for axis in range(3))
+        area_error = abs(records[0]['surface_area_m2'] - records[1]['surface_area_m2'])
+        area_tolerance = max(TOL_OWNER ** 2, TOL_OWNER * (math.sqrt(records[0]['surface_area_m2']) + math.sqrt(records[1]['surface_area_m2'])))
+        result.update({'bbox_max_difference_m': box_error, 'surface_area_difference_m2': area_error,
+                       'surface_area_tolerance_m2': area_tolerance,
+                       'area_tolerance_basis': 'TOL_OWNER*(sqrt(area_a)+sqrt(area_b)); geometric screening, not the 1% volume capability cap'})
+        if box_error > TOL_OWNER or area_error > area_tolerance:
+            result['state'] = 'failed'
+            result['reason'] = 'Bounding-box or area comparison differs beyond geometric screening tolerance'
+            return result
+        result['a_to_b'] = directed_surface_check(a, b)
+        result['b_to_a'] = directed_surface_check(b, a)
+        states = [result['a_to_b']['state'], result['b_to_a']['state']]
+        result['state'] = 'failed' if 'failed' in states else ('passed' if states == ['passed', 'passed'] else 'blocked')
+        result['all_faces_checked_in_both_directions'] = all(row.get('all_source_faces_sampled') is True for row in (result['a_to_b'], result['b_to_a']))
+    except Exception as exc:
+        result['reason'] = u(exc)
+    return result
+
+
+def geometry_equivalence(a, b, label):
+    result = {'state': 'blocked', 'label': label, 'fallback_attempted': False, 'fallback_used': False,
+              'volume_interval_used_for_geometry': False, 'native_failure_is_not_equality': True,
+              'native_failure_alone_is_not_bad_geometry': True}
+    try:
+        snapshots = [shape_record(a), shape_record(b)]
+        result['shapes'] = snapshots
+        if any(row['topology']['state'] != 'passed' or row['topology'].get('closed') is not True
+               or row['topology'].get('manifold') is not True or row['topology'].get('piece_count', 0) < 1
+               or row['volume_m3'] <= 0 or row['surface_area_m2'] <= 0 for row in snapshots):
+            raise BlockedEvidence('Required topology/positive-volume evidence is missing')
+        if snapshots[0]['topology'].get('piece_count') != snapshots[1]['topology'].get('piece_count'):
+            result['state'] = 'failed'
+            result['reason'] = 'Geometry component census differs'
+            return result
+        forward = difference_probe(a, b, label + '_a_minus_b')
+        reverse = difference_probe(b, a, label + '_b_minus_a')
+        rows = [forward, reverse]
+        native_ok = all(row.get('state') == 'passed' and row.get('empty') is True for row in rows)
+        result['native_symmetric_difference'] = {'state': 'passed' if native_ok else 'failed', 'a_minus_b': forward, 'b_minus_a': reverse}
+        if native_ok:
+            result['state'] = 'passed'
+            result['acceptance_method'] = 'native_empty_symmetric_differences'
+            return result
+        if any(row.get('state') == 'passed' and row.get('empty') is not True for row in rows):
+            result['reason'] = 'A native difference is nonempty; the interval does not override geometry'
+            result['state'] = 'failed'
+            return result
+        failed_rows = [row for row in rows if row.get('state') != 'passed']
+        if not failed_rows or any('general failure' not in row.get('error', '').lower() for row in failed_rows):
+            result['reason'] = 'Native failure is not a supported General Failure fallback case'
+            return result
+        if not geometry_surface_fallback_authorized():
+            result['reason'] = 'The hash-bound v2 surface fallback protocol is not available'
+            return result
+        result['fallback_attempted'] = True
+        result['surface_fallback'] = sampled_surface_equivalence(a, b, snapshots)
+        result['finite_sampling_not_continuous_proof'] = True
+        if result['surface_fallback']['state'] == 'passed':
+            result['fallback_used'] = True
+            result['state'] = 'passed'
+            result['acceptance_method'] = 'native_failure_retained_plus_bidirectional_sampled_surface_evidence'
+        else:
+            result['state'] = 'blocked'
+            result['reason'] = 'Independent fallback did not establish complete surface correspondence'
+    except Exception as exc:
+        result['reason'] = u(exc)
+    return result
+
+
+def domain_evidence_state(volume, geometry_checks):
+    if not geometry_checks or any(row.get('state') != 'passed' for row in geometry_checks):
+        return 'failed' if any(row.get('state') == 'failed' for row in geometry_checks) else 'blocked'
+    return volume.get('state', 'blocked') if volume.get('state') in ('passed', 'failed') else 'blocked'
+
+
+def build_domain(domain, ext):
+    members = FIXED if domain == 'background' else MOVING
+    path = CFG['output_scdoc'][domain]
+    if not inside_stage(path) or os.path.exists(path):
+        raise ValueError('Refusing escaped/existing CAD output: ' + path)
+    part = {'state': 'not_run', 'members': list(members), 'scdoc': path,
+            'subtract_fixed_material_from_arm': False, 'shared_topology_with_other_domain': False}
+    report.setdefault('domains', {})[domain] = part
+    if domain == 'background':
+        lo, hi = CFG['tank_lo_m'], CFG['tank_hi_m']
+    else:
+        boxes = [bbox(ext[name]) for name in members]
+        lo = [min(box[0][axis] for box in boxes) - CFG['padding_m'] for axis in range(3)]
+        hi = [max(box[1][axis] for box in boxes) + CFG['padding_m'] for axis in range(3)]
+    part['box_lo_m'], part['box_hi_m'] = lo, hi
+    part['analytic_box_volume_m3'] = analytic_box_volume(lo, hi)
+    doc = Document.Create()
+    root = doc.MainPart
+    fluid = make_box(lo, hi)
+    enclosure_reference = fluid.Copy()
+    snapshots = {'box_before_boolean': native_volume_snapshot(enclosure_reference)}
+    part['volume_snapshots'] = snapshots
+    part['box_volume_m3'] = finite(fluid.Volume)
+    order = sorted(members, key=lambda name: -ext[name].Volume)
+    material = ext[order[0]].Copy()
+    part['union_ledger'] = []
+    for name in order[1:]:
+        material.Unite(lst(ext[name]), TOL_BOOL)
+        part['union_ledger'].append({'added': name, 'union_volume_m3': finite(material.Volume)})
+    material_reference = material.Copy()
+    snapshots['material_before_boolean'] = native_volume_snapshot(material_reference)
+    part['material_volume_m3'] = finite(material.Volume)
+    part['sum_member_volumes_m3'] = sum(finite(ext[name].Volume) for name in members)
+    boolean_tools = lst(material)
+    tool_reference = list(boolean_tools)[0]
+    fluid.Subtract(boolean_tools, TOL_BOOL)
+    part['boolean_tool_consumed'] = bool(tool_reference.IsDeleted)
+    snapshots['material_after_boolean'] = native_volume_snapshot(material_reference)
+    snapshots['all_water_before_separation'] = native_volume_snapshot(fluid)
+    part['all_water_before_cavity_filter_m3'] = finite(fluid.Volume)
+    # SeparatePieces mutates its target and includes that target in its result.
+    # Split an independent copy, so the complete pre-filter water stays intact.
+    original_water = fluid.Copy()
+    split_target = fluid.Copy()
+    pieces = list(split_target.SeparatePieces())
+    snapshots['unseparated_water_after_split'] = native_volume_snapshot(original_water)
+    outer, rows, cavity_snapshots = [], [], []
+    for piece_index, piece in enumerate(pieces):
+        pl, ph = bbox(piece)
+        reaches = all(abs(pl[axis] - lo[axis]) <= TOL_OUTER and abs(ph[axis] - hi[axis]) <= TOL_OUTER for axis in range(3))
+        piece_snapshot = native_volume_snapshot(piece)
+        piece_snapshot['piece_index'] = piece_index
+        rows.append({'piece_index': piece_index, 'volume_m3': finite(piece.Volume), 'bbox_m': [pl, ph], 'reaches_all_box_sides': reaches,
+                     'native_volume_snapshot': piece_snapshot})
+        if reaches:
+            outer.append(piece)
+        else:
+            cavity_snapshots.append(piece_snapshot)
+    part['pieces'] = rows
+    if len(outer) != 1:
+        raise ValueError('Expected one exterior connected fluid: ' + domain)
+    main = outer[0]
+    main_piece_index = [row['piece_index'] for row in rows if row['reaches_all_box_sides']][0]
+    main_before_imprint_shape = main.Copy()
+    main_before_imprint_m3 = finite(main.Volume)
+    snapshots['main_before_imprint'] = native_volume_snapshot(main)
+    snapshots['main_before_imprint']['piece_index'] = main_piece_index
+    part['imprint_ledger'] = []
+    for name in order:
+        before = len(list(main.Faces))
+        main.Imprint(ext[name].Copy())
+        part['imprint_ledger'].append({'tool': name, 'faces_before': before, 'faces_after': len(list(main.Faces))})
+    part['fluid'] = shape_record(main)
+    snapshots['main_after_imprint'] = native_volume_snapshot(main)
+    snapshots['main_after_imprint']['piece_index'] = main_piece_index
+    part['sealed_cavities_removed_m3'] = math.fsum(row['volume_m3'] for row in rows if not row['reaches_all_box_sides'])
+    raw_balance = volume_ledger(part['box_volume_m3'], part['material_volume_m3'], part['all_water_before_cavity_filter_m3'],
+                                [row['volume_m3'] for row in rows], main_before_imprint_m3,
+                                part['fluid']['volume_m3'], part['sealed_cavities_removed_m3'])
+    part['raw_body_volume_balance'] = raw_balance
+    part['volume_balance_error_m3'] = raw_balance['residuals']['final_m3']
+    # Persist the complete raw ledger before potentially expensive diagnostic
+    # operations. No tolerance change or cavity/sign correction is permitted.
+    save()
+    native_balance = native_mass_balance(snapshots, cavity_snapshots, raw_balance['effective_tolerance_m3'], report['volume_calibration'],
+                                         analytic_enclosure_m3=part['analytic_box_volume_m3'], piece_records=rows)
+    part['calibrated_mass_volume_balance'] = native_balance
+    part['old_strict_volume_check'] = old_strict_volume_result(raw_balance, native_balance['legacy_strict_result'])
+    part['volume_acceptance'] = dict(native_balance)
+    part['volume_acceptance']['legacy_strict_result'] = part['old_strict_volume_check']
+    part['boolean_complement_diagnostics'] = complement_diagnostics(enclosure_reference, material_reference, original_water)
+    part['imprint_geometry_check'] = geometry_equivalence(main_before_imprint_shape, main, 'exterior_water_before_vs_after_imprint')
+    geometry_checks = [part['boolean_complement_diagnostics'], part['imprint_geometry_check']]
+    part['geometry_acceptance'] = {'state': domain_evidence_state({'state': 'passed'}, geometry_checks),
+                                   'checks': ['boolean_complement_diagnostics', 'imprint_geometry_check'],
+                                   'independent_of_volume_interval_width': True}
+    part['controlled_volume_diagnostics'] = {'state': 'not_run', 'tessellation_used_for_acceptance': False,
+                                            'reason': 'v2 uses native interval and separate B-rep geometry evidence; full-domain tessellation precision is not presumed from small controls'}
+    combined = domain_evidence_state(native_balance, geometry_checks)
+    part['domain_acceptance'] = {'state': combined, 'acceptance_basis_changed': True,
+                                'consistency_only_no_absolute_accuracy_certificate': True,
+                                'geometry_required_separately': True}
+    save()
+    if combined == 'failed':
+        raise ValueError('Volume interval or independent geometry evidence is inconsistent: ' + domain)
+    if combined != 'passed':
+        raise BlockedEvidence('Volume interval or independent geometry evidence remains incomplete: ' + domain)
+    part['fluid']['native_mass_volume_m3'] = snapshots['main_after_imprint']['mass_properties']['volume_at_unit_density_m3']
+    part['fluid']['reported_volume_absolute_error_m3'] = snapshots['main_after_imprint']['mass_properties']['estimated_absolute_error_m3']
+    topo = part['fluid']['topology']
+    if topo['state'] == 'failed' or topo.get('piece_count') != 1:
+        raise ValueError('Fluid is not one closed manifold connected domain: ' + domain)
+    if topo['state'] != 'passed':
+        raise BlockedEvidence('Fluid topology API incomplete: ' + domain)
+    body = DesignBody.Create(root, 'fluid_' + domain, main)
+    groups, naming = classify_faces(body, domain, members, ext, lo, hi)
+    part['naming'] = naming
+    save()
+    if naming['state'] == 'failed':
+        raise ValueError('Incomplete face naming: ' + domain)
+    if naming['state'] != 'passed':
+        raise BlockedEvidence('Ambiguous physical wall ownership: ' + domain)
+    for name in sorted(groups):
+        members_list = List[IDocObject]()
+        for face in groups[name]:
+            members_list.Add(face)
+        Group.Create(root, name, members_list)
+    # Refuse again immediately before saving; only this attempt owns new paths.
+    if os.path.exists(path):
+        raise ValueError('CAD output appeared before save: ' + path)
+    DocumentSave.Execute(path)
+    part['scdoc_sha256'] = sha256(path)
+    part['state'] = 'passed'
+    part['state_scope'] = 'construction completed; independent reopen verification still required'
+    save()
+
+
+def same_face_index(face, faces):
+    matches = []
+    for index, candidate in enumerate(faces):
+        if candidate == face or candidate.Equals(face):
+            matches.append(index)
+    if len(matches) != 1:
+        raise ValueError('Named group member does not map uniquely to a saved fluid face')
+    return matches[0]
+
+
+def regenerate_domain_reference(material, lo, hi):
+    record = {'state': 'not_run', 'scope': 'new B-rep enclosure/material/water/cavity measurement before opening saved CAD'}
+    reference = {'state': 'blocked', 'record': record}
+    try:
+        record['analytic_enclosure_m3'] = analytic_box_volume(lo, hi)
+        Document.Create()
+        enclosure = make_box(lo, hi)
+        water = enclosure.Copy()
+        snapshots = {'box_before_boolean': native_volume_snapshot(enclosure),
+                     'material_before_boolean': native_volume_snapshot(material)}
+        record['volume_snapshots'] = snapshots
+        water.Subtract(lst(material), TOL_BOOL)
+        snapshots['material_after_boolean'] = native_volume_snapshot(material)
+        snapshots['all_water_before_separation'] = native_volume_snapshot(water)
+        split_target = water.Copy()
+        pieces = list(split_target.SeparatePieces())
+        snapshots['unseparated_water_after_split'] = native_volume_snapshot(water)
+        rows, cavities, outer = [], [], []
+        record['pieces'] = rows
+        for index, piece in enumerate(pieces):
+            bounds = bbox(piece)
+            reaches = all(abs(bounds[0][axis] - lo[axis]) <= TOL_OUTER and abs(bounds[1][axis] - hi[axis]) <= TOL_OUTER for axis in range(3))
+            snapshot = native_volume_snapshot(piece)
+            snapshot['piece_index'] = index
+            rows.append({'piece_index': index, 'volume_m3': finite(piece.Volume), 'bbox_m': bounds,
+                         'reaches_all_box_sides': reaches, 'native_volume_snapshot': snapshot})
+            if reaches:
+                outer.append((index, piece))
+            else:
+                cavities.append(snapshot)
+        if len(outer) != 1:
+            raise BlockedEvidence('Independent regeneration did not find exactly one exterior water piece')
+        index, main = outer[0]
+        snapshots['main_before_imprint'] = native_volume_snapshot(main)
+        snapshots['main_before_imprint']['piece_index'] = index
+        snapshots['main_after_imprint'] = dict(snapshots['main_before_imprint'])
+        record['state'] = 'passed'
+        reference.update({'state': 'passed', 'enclosure': enclosure, 'all_water': water, 'main': main,
+                          'snapshots': snapshots, 'cavity_snapshots': cavities, 'piece_records': rows,
+                          'outer_piece_index': index, 'analytic_enclosure_m3': record['analytic_enclosure_m3']})
+    except Exception as exc:
+        record['state'] = 'blocked'
+        record['error'] = u(exc)
+        record['native_failure_does_not_prove_bad_geometry'] = True
+    return reference
+
+
+def verify_domain(domain, built, ext):
+    path = built['scdoc']
+    if not inside_stage(path) or sha256(path) != built['scdoc_sha256']:
+        raise ValueError('Saved CAD escaped stage15 or changed: ' + domain)
+    domain_members = FIXED if domain == 'background' else MOVING
+    material_order = sorted(domain_members, key=lambda name: -ext[name].Volume)
+    regenerated_material = ext[material_order[0]].Copy()
+    for member in material_order[1:]:
+        regenerated_material.Unite(lst(ext[member]), TOL_BOOL)
+    reference = regenerate_domain_reference(regenerated_material, built['box_lo_m'], built['box_hi_m'])
+    DocumentOpen.Execute(path)
+    root = GetRootPart()
+    bodies = list(root.GetAllBodies())
+    result = {'state': 'not_run', 'scdoc': path, 'sha256_before': sha256(path), 'body_count': len(bodies),
+              'regenerated_reference': reference['record'], 'acceptance_basis_changed': True}
+    report.setdefault('domains', {})[domain] = result
+    if len(bodies) != 1 or u(bodies[0].Name) != 'fluid_' + domain:
+        raise ValueError('Saved domain body census/name mismatch: ' + domain)
+    body = bodies[0]
+    shape = world_copy(body)
+    actual = shape_record(shape)
+    result['fluid'] = actual
+    expected = built['fluid']
+    tolerance = max(1e-10, expected['volume_m3'] * 1e-8)
+    result['volume_readback_error_m3'] = actual['volume_m3'] - expected['volume_m3']
+    result['legacy_readback_scalar_check'] = {'state': 'passed' if abs(result['volume_readback_error_m3']) <= tolerance else 'failed',
+                                               'residual_m3': result['volume_readback_error_m3'], 'effective_tolerance_m3': tolerance,
+                                               'absolute_tolerance_m3': 1e-10, 'relative_tolerance': 1e-8,
+                                               'retained_not_used_as_absolute_accuracy_certificate': True}
+    result['volume_acceptance'] = verify_native_domain_volume(shape, regenerated_material, built, reference)
+    result['old_strict_volume_check'] = result['volume_acceptance'].get('legacy_strict_result', {'state': 'blocked'})
+    result['old_strict_volume_check']['saved_body_readback_scalar'] = result['legacy_readback_scalar_check']
+    if result['legacy_readback_scalar_check']['state'] == 'failed':
+        result['old_strict_volume_check']['state'] = 'failed'
+    if reference['state'] == 'passed':
+        result['regenerated_material_complement'] = complement_diagnostics(reference['enclosure'], regenerated_material, reference['all_water'])
+        result['saved_vs_regenerated_geometry'] = geometry_equivalence(reference['main'], shape, 'saved_exterior_vs_independently_regenerated_exterior')
+    else:
+        result['regenerated_material_complement'] = {'state': 'blocked', 'reason': 'No valid regenerated reference'}
+        result['saved_vs_regenerated_geometry'] = {'state': 'blocked', 'reason': 'No valid regenerated reference'}
+    geometry_checks = [result['regenerated_material_complement'], result['saved_vs_regenerated_geometry']]
+    result['geometry_acceptance'] = {'state': domain_evidence_state({'state': 'passed'}, geometry_checks),
+                                     'independent_of_volume_interval_width': True}
+    combined = domain_evidence_state(result['volume_acceptance'], geometry_checks)
+    result['domain_acceptance'] = {'state': combined, 'geometry_and_interval_recomputed': True,
+                                  'consistency_only_no_absolute_accuracy_certificate': True}
+    save()
+    if combined == 'failed':
+        raise ValueError('Independent interval or geometry evidence is inconsistent: ' + domain)
+    if combined != 'passed':
+        raise BlockedEvidence('Independent interval or geometry evidence incomplete: ' + domain)
+    topology_state = actual['topology']['state']
+    if topology_state == 'failed' or actual['topology'].get('piece_count') != 1:
+        raise ValueError('Saved domain topology/connectedness failed: ' + domain)
+    if topology_state != 'passed':
+        raise BlockedEvidence('Saved domain topology API incomplete: ' + domain)
+    result['bbox_max_error_m'] = max(abs(actual['bbox_m'][side][axis] - expected['bbox_m'][side][axis]) for side in (0, 1) for axis in range(3))
+    if result['bbox_max_error_m'] > TOL_OUTER or actual['faces'] != expected['faces']:
+        raise ValueError('Saved domain geometric census differs: ' + domain)
+    faces = list(body.Faces)
+    counts = [0 for face in faces]
+    saved, group_indices = {}, {}
+    for group in Window.ActiveWindow.Groups:
+        name = u(group.Name)
+        if name in saved:
+            raise ValueError('Duplicate saved group name: ' + name)
+        indices = [same_face_index(member, faces) for member in group.Members]
+        if not indices or len(set(indices)) != len(indices):
+            raise ValueError('Empty/duplicate members in saved group: ' + name)
+        for index in indices:
+            counts[index] += 1
+        group_indices[name] = indices
+        saved[name] = {'faces': len(indices), 'area_m2': sum(finite(faces[index].Shape.Area) for index in indices)}
+    result['saved_groups'] = saved
+    result['face_membership_counts'] = counts
+    if sorted(saved) != expected_names(domain) or any(count != 1 for count in counts):
+        raise ValueError('Saved named selections do not uniquely cover every face: ' + domain)
+    members = FIXED if domain == 'background' else MOVING
+    physical_groups, physical = classify_faces(body, domain, members, ext, built['box_lo_m'], built['box_hi_m'])
+    result['independent_physical_ownership'] = physical
+    if physical['state'] == 'failed':
+        raise ValueError('Independent physical face classification failed: ' + domain)
+    if physical['state'] != 'passed':
+        raise BlockedEvidence('Independent physical ownership remains ambiguous: ' + domain)
+    mismatches = []
+    for name, members_of_group in physical_groups.items():
+        actual_indices = sorted(same_face_index(face, faces) for face in members_of_group)
+        if actual_indices != sorted(group_indices[name]):
+            mismatches.append({'name': name, 'saved_indices': sorted(group_indices[name]), 'physical_indices': actual_indices})
+        expected_group = built['naming']['names'][name]
+        if saved[name]['faces'] != expected_group['faces'] or abs(saved[name]['area_m2'] - expected_group['area_m2']) > max(1e-10, expected_group['area_m2'] * 1e-8):
+            mismatches.append({'name': name, 'reason': 'saved group area/count differs from build ledger'})
+    result['naming_mismatches'] = mismatches
+    if mismatches:
+        raise ValueError('Saved physical ownership differs from actual named groups: ' + domain)
+    result['sha256_after'] = sha256(path)
+    if result['sha256_before'] != result['sha256_after']:
+        raise ValueError('Independent verification modified saved CAD: ' + domain)
+    result['state'] = 'passed'
+    save()

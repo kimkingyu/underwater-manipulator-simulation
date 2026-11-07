@@ -1,0 +1,860 @@
+{
+  "job_id": "sizing-b001-a002", 
+  "mesh_generated": false, 
+  "schema_version": 1, 
+  "flow_iterations": 0, 
+  "zero_mesh_verified": true, 
+  "local_growth_readback_semantics": "raw_local_default_no_physical_or_inheritance_claim", 
+  "profile": "omit_local_growth", 
+  "native_errors_present": false, 
+  "messages": [], 
+  "global_readback": {
+    "MaximumSize": {
+      "value": {
+        "text": "200 [mm]", 
+        "value": 200.0, 
+        "unit": "mm"
+      }, 
+      "available": true
+    }, 
+    "GrowthRate": {
+      "value": 1.3, 
+      "available": true
+    }, 
+    "MinimumSize": {
+      "value": {
+        "text": "0.3 [mm]", 
+        "value": 0.29999999999999999, 
+        "unit": "mm"
+      }, 
+      "available": true
+    }, 
+    "CaptureCurvature": {
+      "value": false, 
+      "available": true
+    }, 
+    "ElementSize": {
+      "value": {
+        "text": "150 [mm]", 
+        "value": 150.0, 
+        "unit": "mm"
+      }, 
+      "available": true
+    }, 
+    "CaptureProximity": {
+      "value": false, 
+      "available": true
+    }
+  }, 
+  "messages_truncated": false, 
+  "control": {
+    "step": "define_final", 
+    "object_state": "FullyDefined", 
+    "mesh_counts": {
+      "elements": 0, 
+      "nodes": 0
+    }, 
+    "fields": {
+      "ProximitySizeSources": {
+        "value": "FacesAndEdges", 
+        "available": true
+      }, 
+      "CurvatureNormalAngle": {
+        "value": {
+          "text": "0 [deg]", 
+          "value": 0.0, 
+          "unit": "deg"
+        }, 
+        "available": true
+      }, 
+      "LocalMinimumSize": {
+        "value": {
+          "text": "0 [mm]", 
+          "value": 0.0, 
+          "unit": "mm"
+        }, 
+        "available": true
+      }, 
+      "NamedSelection": {
+        "value": null, 
+        "available": true
+      }, 
+      "ScopingMethod": {
+        "value": "Geometry", 
+        "available": true
+      }, 
+      "Type": {
+        "value": "ElementSize", 
+        "available": true
+      }, 
+      "GrowthRate": {
+        "value": 0.0, 
+        "available": true
+      }, 
+      "CaptureCurvature": {
+        "value": false, 
+        "available": true
+      }, 
+      "Behavior": {
+        "value": "Soft", 
+        "available": true
+      }, 
+      "Location": {
+        "value": [
+          171, 
+          182, 
+          193, 
+          204, 
+          215, 
+          226, 
+          237, 
+          248, 
+          259, 
+          270, 
+          281, 
+          292, 
+          303, 
+          314, 
+          325, 
+          336, 
+          347, 
+          358, 
+          369
+        ], 
+        "available": true
+      }, 
+      "Suppressed": {
+        "value": false, 
+        "available": true
+      }, 
+      "ProximityMinimumSize": {
+        "value": {
+          "text": "0 [mm]", 
+          "value": 0.0, 
+          "unit": "mm"
+        }, 
+        "available": true
+      }, 
+      "ProximityGapFactor": {
+        "value": "0 [mm]", 
+        "available": true
+      }, 
+      "DefeatureSize": {
+        "value": {
+          "text": "0 [mm]", 
+          "value": 0.0, 
+          "unit": "mm"
+        }, 
+        "available": true
+      }, 
+      "Active": {
+        "value": true, 
+        "available": true
+      }, 
+      "ElementSize": {
+        "value": {
+          "text": "2 [mm]", 
+          "value": 2.0, 
+          "unit": "mm"
+        }, 
+        "available": true
+      }, 
+      "CaptureProximity": {
+        "value": false, 
+        "available": true
+      }
+    }, 
+    "name": "stage15_wall_base0"
+  }, 
+  "message_capture_complete": true, 
+  "diagnostic_completed": true, 
+  "status": "completed", 
+  "message_capture_error": null, 
+  "control_fully_defined": true, 
+  "mesh_counts": {
+    "elements": 0, 
+    "nodes": 0
+  }, 
+  "snapshots": [
+    {
+      "step": "created", 
+      "object_state": "UnderDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }, 
+    {
+      "step": "set_type", 
+      "object_state": "UnderDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }, 
+    {
+      "step": "set_location", 
+      "object_state": "FullyDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [
+            171, 
+            182, 
+            193, 
+            204, 
+            215, 
+            226, 
+            237, 
+            248, 
+            259, 
+            270, 
+            281, 
+            292, 
+            303, 
+            314, 
+            325, 
+            336, 
+            347, 
+            358, 
+            369
+          ], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }, 
+    {
+      "step": "set_element_size", 
+      "object_state": "FullyDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [
+            171, 
+            182, 
+            193, 
+            204, 
+            215, 
+            226, 
+            237, 
+            248, 
+            259, 
+            270, 
+            281, 
+            292, 
+            303, 
+            314, 
+            325, 
+            336, 
+            347, 
+            358, 
+            369
+          ], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "2 [mm]", 
+            "value": 2.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }, 
+    {
+      "step": "leave_local_growth_unset", 
+      "object_state": "FullyDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [
+            171, 
+            182, 
+            193, 
+            204, 
+            215, 
+            226, 
+            237, 
+            248, 
+            259, 
+            270, 
+            281, 
+            292, 
+            303, 
+            314, 
+            325, 
+            336, 
+            347, 
+            358, 
+            369
+          ], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "2 [mm]", 
+            "value": 2.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }, 
+    {
+      "step": "define_final", 
+      "object_state": "FullyDefined", 
+      "mesh_counts": {
+        "elements": 0, 
+        "nodes": 0
+      }, 
+      "fields": {
+        "ProximitySizeSources": {
+          "value": "FacesAndEdges", 
+          "available": true
+        }, 
+        "CurvatureNormalAngle": {
+          "value": {
+            "text": "0 [deg]", 
+            "value": 0.0, 
+            "unit": "deg"
+          }, 
+          "available": true
+        }, 
+        "LocalMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "NamedSelection": {
+          "value": null, 
+          "available": true
+        }, 
+        "ScopingMethod": {
+          "value": "Geometry", 
+          "available": true
+        }, 
+        "Type": {
+          "value": "ElementSize", 
+          "available": true
+        }, 
+        "GrowthRate": {
+          "value": 0.0, 
+          "available": true
+        }, 
+        "CaptureCurvature": {
+          "value": false, 
+          "available": true
+        }, 
+        "Behavior": {
+          "value": "Soft", 
+          "available": true
+        }, 
+        "Location": {
+          "value": [
+            171, 
+            182, 
+            193, 
+            204, 
+            215, 
+            226, 
+            237, 
+            248, 
+            259, 
+            270, 
+            281, 
+            292, 
+            303, 
+            314, 
+            325, 
+            336, 
+            347, 
+            358, 
+            369
+          ], 
+          "available": true
+        }, 
+        "Suppressed": {
+          "value": false, 
+          "available": true
+        }, 
+        "ProximityMinimumSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "ProximityGapFactor": {
+          "value": "0 [mm]", 
+          "available": true
+        }, 
+        "DefeatureSize": {
+          "value": {
+            "text": "0 [mm]", 
+            "value": 0.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "Active": {
+          "value": true, 
+          "available": true
+        }, 
+        "ElementSize": {
+          "value": {
+            "text": "2 [mm]", 
+            "value": 2.0, 
+            "unit": "mm"
+          }, 
+          "available": true
+        }, 
+        "CaptureProximity": {
+          "value": false, 
+          "available": true
+        }
+      }, 
+      "name": "stage15_wall_base0"
+    }
+  ], 
+  "local_growth_override_applied": false, 
+  "message_characters": 0, 
+  "mesh_motion_verified": false, 
+  "tet_object_state": "FullyDefined", 
+  "phase": "define", 
+  "scope": "background_tet_and_wall_base0_only"
+}

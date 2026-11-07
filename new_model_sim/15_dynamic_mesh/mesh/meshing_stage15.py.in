@@ -1,0 +1,185 @@
+# Executed only inside Ansys Meshing / IronPython after explicit Workbench launch.
+import json, codecs, time, os, traceback
+C = json.loads(__CONFIG_JSON__)
+R = {"status": "failed", "valid": False, "domain": C["domain"], "settings": C,
+     "mesh_generated": False, "nodes": None, "elements": None, "quality": {},
+     "named_selections": {}, "messages": [], "motion_authorized": False}
+if os.path.exists(C["stats_path"]):
+    raise Exception("refusing to overwrite mesh statistics")
+
+def required_set(obj, key, value):
+    setattr(obj, key, value)
+    actual = getattr(obj, key)
+    R.setdefault("readback", {})[key] = str(actual)
+    if actual is None:
+        raise Exception("required setting returned None: " + key)
+
+def object_snapshot(obj):
+    result = {'properties': {}, 'unavailable': {}}
+    for name in ('Name', 'ObjectId', 'ObjectState', 'Suppressed', 'PhysicsPreference', 'SolverPreference',
+                 'BodyType', 'FluidSolid', 'Material', 'Volume', 'UseAdaptiveSizing', 'ElementOrder',
+                 'Method', 'Type', 'ElementSize', 'MinimumSize', 'MaximumSize', 'GrowthRate',
+                 'OriginDefineBy', 'OriginX', 'OriginY', 'OriginZ', 'SphereCenter', 'SphereRadius', 'Location'):
+        try:
+            result['properties'][name] = native_text(getattr(obj, name))[:1000]
+        except Exception as exc:
+            result['unavailable'][name] = native_text(exc)[:500]
+    try:
+        result['definition_properties'] = []
+        for prop in list(obj.Properties)[:150]:
+            row = {}
+            # Avoid broad value getter evaluation on hidden/invalid native properties.
+            # Read explicit supported values above; enumerate only metadata here.
+            for name in ('Name', 'InternalName', 'IsValid', 'ReadOnly'):
+                try:
+                    row[name] = native_text(getattr(prop, name))[:500]
+                except Exception:
+                    pass
+            result['definition_properties'].append(row)
+    except Exception as exc:
+        result['definition_property_error'] = native_text(exc)
+    return result
+
+
+def native_text(value):
+    try:
+        return unicode(value)
+    except NameError:
+        return str(value)
+    except Exception:
+        return repr(value)
+
+
+def capture_messages():
+    rows = []
+    try:
+        for msg in ExtAPI.Application.Messages:
+            row = {}
+            try:
+                row['severity'] = native_text(msg.Severity)
+            except Exception as exc:
+                row['severity'] = 'unavailable'
+                row['severity_error'] = native_text(exc)
+            try:
+                row['text'] = native_text(msg.DisplayString)
+            except Exception as exc:
+                row['text'] = None
+                row['text_error'] = native_text(exc)
+            rows.append(row)
+        R['messages'] = rows
+        R['message_capture_complete'] = all(row.get('text') is not None and row.get('severity') != 'unavailable' for row in rows)
+    except Exception as exc:
+        R['messages'] = rows
+        R['message_capture_complete'] = False
+        R['message_capture_error'] = native_text(exc)
+
+
+def configure_face_size(mesh, named_selection, control, growth_rate):
+    expected_ids = list(named_selection.Location.Ids)
+    if not expected_ids or len(set(expected_ids)) != len(expected_ids):
+        raise Exception('Face sizing requires nonempty unique geometry IDs')
+    selection = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    selection.Ids = expected_ids
+    size = mesh.AddSizing()
+    size.Name = 'stage15_' + control['name']
+    size.Type = SizingType.ElementSize
+    size.Location = selection
+    size.ElementSize = Quantity(str(control['size_m']) + ' [m]')
+    # Native batch001 A/B: assigning local GrowthRate=1.3 changed a valid
+    # face Sizing to UnderDefined. Leave its native default unset; the global
+    # mesh growth setting is still applied and checked separately below.
+    row = {'name': native_text(size.Name), 'size': native_text(size.ElementSize),
+           'source_named_selection': control['name'], 'expected_geometry_ids': expected_ids,
+           'actual_geometry_ids': list(size.Location.Ids), 'definition': object_snapshot(size),
+           'local_growth_override_applied': False, 'global_growth_rate_requested': growth_rate,
+           'local_growth_rate_raw_default': float(size.GrowthRate)}
+    R.setdefault('local_readback', []).append(row)
+    if sorted(row['actual_geometry_ids']) != sorted(expected_ids):
+        raise Exception('Face sizing geometry scope did not read back correctly')
+    if native_text(size.Type) != native_text(SizingType.ElementSize):
+        raise Exception('Face sizing type did not read back as ElementSize')
+    if native_text(size.ObjectState) != 'FullyDefined':
+        raise Exception('Face sizing remains undefined: ' + native_text(size.Name))
+    return size
+
+try:
+    model = ExtAPI.DataModel.Project.Model
+    mesh = model.Mesh
+    bodies = model.Geometry.GetChildren(DataModelObjectCategory.Body, True)
+    if len(bodies) != 1:
+        raise Exception("independent domain requires exactly one fluid body")
+    bodies[0].Name = C["cell_zone"]
+    selections = dict((s.Name, s) for s in model.NamedSelections.Children)
+    for name in C["required_selections"]:
+        if name not in selections or len(list(selections[name].Location.Ids)) == 0:
+            raise Exception("required nonempty named selection: " + name)
+    R["named_selections"] = dict((name, list(s.Location.Ids)) for name, s in selections.items())
+    required_set(mesh, "ElementSize", Quantity(str(C["global_size_m"]) + " [m]"))
+    required_set(mesh, "MaximumSize", Quantity(str(C["maximum_size_m"]) + " [m]"))
+    required_set(mesh, "MinimumSize", Quantity(str(C["minimum_size_m"]) + " [m]"))
+    required_set(mesh, "CaptureCurvature", False)
+    required_set(mesh, "CaptureProximity", False)
+    required_set(mesh, "GrowthRate", C["growth_rate"])
+    # Explicit tetrahedron method: no hidden conversion to polyhedral cells.
+    body_selection = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
+    body_selection.Ids = [bodies[0].GetGeoBody().Id]
+    method = mesh.AddAutomaticMethod()
+    method.Location = body_selection
+    method.Method = MethodType.AllTriAllTet
+    R["tet_method_readback"] = str(method.Method)
+    for control in C["face_controls"]:
+        configure_face_size(mesh, selections[control["name"]], control, C["growth_rate"])
+    for i, sphere in enumerate(C["spheres"]):
+        cs = model.CoordinateSystems.AddCoordinateSystem()
+        cs.Name = "stage15_overlap_%d" % i
+        cs.OriginX = Quantity(str(sphere["centre_m"][0]) + " [m]")
+        cs.OriginY = Quantity(str(sphere["centre_m"][1]) + " [m]")
+        cs.OriginZ = Quantity(str(sphere["centre_m"][2]) + " [m]")
+        size = mesh.AddSizing()
+        size.Name = cs.Name
+        size.Location = body_selection
+        size.Type = SizingType.SphereOfInfluence
+        size.SphereCenter = cs
+        size.SphereRadius = Quantity(str(sphere["radius_m"]) + " [m]")
+        size.ElementSize = Quantity(str(sphere["size_m"]) + " [m]")
+    R['definitions_before_generate'] = {
+        'mesh': object_snapshot(mesh),
+        'bodies': [object_snapshot(body) for body in bodies],
+        'mesh_children': [object_snapshot(child) for child in mesh.Children],
+        'coordinate_systems': [object_snapshot(cs) for cs in model.CoordinateSystems.Children],
+    }
+    capture_messages()
+    R['messages_before_generate'] = list(R.get('messages', []))
+    started = time.time()
+    R['generate_return_value'] = str(mesh.GenerateMesh())
+    capture_messages()
+    R['definitions_after_generate'] = {'mesh': object_snapshot(mesh), 'mesh_children': [object_snapshot(child) for child in mesh.Children]}
+    R["generation_seconds"] = time.time() - started
+    R["nodes"] = int(mesh.Nodes)
+    R["elements"] = int(mesh.Elements)
+    if R["nodes"] <= 0 or R["elements"] <= 0:
+        raise Exception("mesh generation has no positive node/element counts")
+    R["mesh_generated"] = True
+    for name, metric in (("skewness", "Skewness"), ("orthogonal_quality", "OrthogonalQuality")):
+        try:
+            mesh.MeshMetric = getattr(MeshMetricType, metric)
+            R["quality"][name] = {"minimum": float(mesh.Minimum), "maximum": float(mesh.Maximum),
+                                    "average": float(mesh.Average), "source": "Ansys Meshing MeshMetricType." + metric}
+        except Exception as exc:
+            R["quality"][name] = {"status": "unavailable", "error": native_text(exc)}
+    capture_messages()
+    if any(m["severity"].lower() == "error" for m in R["messages"]):
+        raise Exception("Meshing emitted error messages")
+    R["status"] = "generated_pending_export_and_fluent_checks"
+except Exception as exc:
+    R["exception"] = native_text(exc)
+    R["traceback"] = traceback.format_exc()
+finally:
+    # Preserve native failure messages even when GenerateMesh returns zero cells
+    # without raising, or a required definition fails before generation.
+    capture_messages()
+    out = codecs.open(C["stats_path"], "w", "utf-8")
+    out.write(json.dumps(R, indent=2))
+    out.close()
+if not R["mesh_generated"] or R["status"] == "failed":
+    raise Exception("stage15 meshing failed; inspect exact statistics JSON")

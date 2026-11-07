@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "created_local": "2026-11-05T23:04:38.585499+08:00",
+  "purpose": "immutable inputs only, not a solver or scientific validation",
+  "files": [
+    {
+      "path": "new_model_sim/11_theta_fit/matlab/theta_fit.json",
+      "bytes": 19850,
+      "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+    },
+    {
+      "path": "new_model_sim/11_theta_fit/matlab/theta_fit.mat",
+      "bytes": 17667,
+      "sha256": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850"
+    },
+    {
+      "path": "new_model_sim/14_hydro_validation/cfd/qe/sc_build_fluid_domain_qe.py",
+      "bytes": 25036,
+      "sha256": "966d0b95041b4a2e75281b94505e257ab8bd97ea009808e4582ca382ee7f3ab3"
+    },
+    {
+      "path": "new_model_sim/14_hydro_validation/cfd/validation_cases.json",
+      "bytes": 4806,
+      "sha256": "7bb87550edf60b974cedf56176c0c12fcbe44c026b7e78bb128111e93c605cb8"
+    },
+    {
+      "path": "new_model_sim/14_hydro_validation/frozen/theta87_baseline.json",
+      "bytes": 19850,
+      "sha256": "d70c8d412497e7502a310cea928762173b4c48fd3d9cb24d48649aeac7aafcbd"
+    },
+    {
+      "path": "new_model_sim/14_hydro_validation/frozen/theta87_baseline.mat",
+      "bytes": 17667,
+      "sha256": "ce1eb034c2b1a6a396928fc351e4b6dfd6bb361a2f73cb2e214e877bdde35850"
+    },
+    {
+      "path": "new_model_sim/15_dynamic_mesh/contract.json",
+      "bytes": 5438,
+      "sha256": "3d7fe4b58e320402692ba15a3e3afae6aa6788e3c20553c552972c907bbe5d18"
+    },
+    {
+      "path": "简化模型_导出/AUVM.step",
+      "bytes": 4262312,
+      "sha256": "2bdd3e5e2ab19d94abaa1481a2af0f0e9c34004e2f138d7f0fdf4a852bf59068"
+    }
+  ]
+}
