@@ -17,7 +17,7 @@ def required_set(obj, key, value):
 def object_snapshot(obj):
     result = {'properties': {}, 'unavailable': {}}
     for name in ('Name', 'ObjectId', 'ObjectState', 'Suppressed', 'PhysicsPreference', 'SolverPreference',
-                 'BodyType', 'FluidSolid', 'Material', 'Volume', 'UseAdaptiveSizing', 'ElementOrder',
+                 'BodyType', 'FluidSolid', 'FluidSolidPhase', 'Material', 'Volume', 'UseAdaptiveSizing', 'ElementOrder',
                  'Method', 'Type', 'ElementSize', 'MinimumSize', 'MaximumSize', 'GrowthRate',
                  'OriginDefineBy', 'OriginX', 'OriginY', 'OriginZ', 'SphereCenter', 'SphereRadius', 'Location'):
         try:

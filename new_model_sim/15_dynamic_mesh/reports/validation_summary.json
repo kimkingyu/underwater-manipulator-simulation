@@ -5,7 +5,8 @@
   "implemented": [
     "isolated CAD/domain preparation and kinematic audits",
     "bounded Workbench/MCP diagnostic jobs with PID/create-time ownership and preserved receipts",
-    "face-sizing fix: omit the local GrowthRate override while retaining global1.3"
+    "face-sizing fix: omit the local GrowthRate override while retaining global1.3",
+    "one separately authorized full two-domain construction with a total7200-second deadline, fixed export paths and no solver launch"
   ],
   "native_finding": {
     "background_wall_base0_scope_ids": 19,
@@ -20,7 +21,7 @@
     "both_cases_cleaned_up": true
   },
   "offline_regression": {
-    "local_test_count": 636,
+    "local_test_count": 707,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -37,27 +38,29 @@
       "cad/sc_volume.py.in": "34ade5d98d936eac2bfd901439d109fd430506e87922f6ae44607203f50a84b9",
       "cad_prepare.py": "1f83d2085f8a067ea76c78f0fed7f812915ab5b2810c8f567ee777a1fce4c466",
       "calibrate_sdk.py": "73055185ba90b07b339e9f71d02c10dd42b6240c3abd224150644ba9fa12212c",
-      "check_mcp_connection.py": "d022d823f3e440efc6b1b8402f9b1d40446e9e860d9e0a8ccad89b755701098d",
+      "check_mcp_connection.py": "c6851d0b4c290f7cd4e941e25349176bbbcad9cb9a8b558883151b8341425502",
       "complete_arm_cad.py": "5a66bf4dbf6c4e329fb6eb4b82dd26726d4ec273b654692a10f5ec72f177b2f3",
       "contract.json": "3d7fe4b58e320402692ba15a3e3afae6aa6788e3c20553c552972c907bbe5d18",
       "definition_probe.py": "77997c33b8fae3d8b7664d574cc6fc1607e6e485c37f98a9eb1b811d6e09e597",
-      "mcp_bridge.py": "5cee1344690f66d46d40f4d7f5da771905028b8394cdb1588e4e5bd27fd911f9",
+      "mcp_bridge.py": "dcbc867ada76f7b6ca1ea3a6d164c8ec85f79d28200d9cf9f331bc9ac5da8271",
       "mesh/meshing_definition_probe.py.in": "402c4fc3d5c9cbea5d8430844de9cd0ec4f5e372d94037756ea198d7128a8448",
       "mesh/meshing_sizing_diagnostic.py.in": "ecbc63e026a75dda089a3d5c35de1bec177e3af77a30a1f2a96d95f3d7616e3e",
-      "mesh/meshing_stage15.py.in": "e87f0c4f7c1983f2496a5ef0e71dbc741a2c862d5efef2e605917aa5c02f3b82",
+      "mesh/meshing_stage15.py.in": "fbc4766c9537286cae268e96dba88f72f27f5808d4a90f8873eb0071cbb1db67",
       "mesh/wb_definition_probe.wbjn.in": "35016b22416ce9795375f4f4a16646fee84f316cfbf5eede29d5e7e90fd36ba5",
       "mesh/wb_sizing_diagnostic.wbjn.in": "ec7c308c5494f3faabe84c04228bd3d782eea3852f0ca49edd8930ce74f764cf",
-      "mesh/wb_stage15.wbjn.in": "010da665445739c99ce42afd1bf35b5eda2ed28db2e9390331a01310df78be45",
-      "mesh_prepare.py": "d5bc0bc5e9c12994f82b40c5a8cf7c0065a11f44ff7d38c2843d6f26431c9e2e",
+      "mesh/wb_stage15.wbjn.in": "e5991ada29b3d93c4a5819c1a9a9faad3c3feb78062775795cf8ab28bc2ecc28",
+      "mesh_construction.py": "92c3ed528de0a90a79f0d88d80dc38db87d3e41bf1be1f94ab845f097e0c68c3",
+      "mesh_mcp_bridge.py": "ba318be4502842eab87d8f840fbc34132e49231812681073dd61ba7a00e0ceab",
+      "mesh_prepare.py": "575006de197d389abbeb2d3d1ed29e219318bbec3acac07ca438007e2ed354d9",
       "motion.py": "ca9990b5bff3376ef48db023d3bffd853ab23aba44cb2c1002aa9603591c2f9e",
       "preflight.py": "ef5ca1df8bfac15e42e14d8c8e0e1ed1573eb1ba52bde34ab5c1bd5ff5b1e9bb",
       "prepare_face_probe.py": "bf017a7e62adbd0e42039776478bc81eefda02d9e0f63240e443a93e5265b6b7",
       "run_gate.py": "e0986bde83cd18ea3393471278053665fd2e554267abb75ec9bf07f6a39e540d",
-      "run_mesh_job.py": "1792b095196cf4ff0d4cf6a56a5aa6ceda85e5807e8566c3281927e1eb64e510",
+      "run_mesh_job.py": "8edb75921f2f4136a5e0f3a2a4bdb6f0813ee25a536f95afc84bc69c055dcaec",
       "runtime.py": "c68b09580eea3aa1861da22db9f082345869372094117c6cfa9e32ec7fa25ead",
       "sizing_diagnostic.py": "cac90fcc39992142e7e7054cb20c9a8c93965a5ff21ad067927e7eef788b3614",
-      "sizing_mcp_bridge.py": "60d9bb4548f349fa8c6e4b6efb22fb3fcd4381b2c3fa89bcae04cf4cf3650f72",
-      "stage15_mcp.py": "25c79a10733d3973fed65d0cb42b04ad2bb3c8b592bfb1d60eb52eb5b7945faa",
+      "sizing_mcp_bridge.py": "d73203415eda2e88d012ed22e9531fb7c8d75ea2e13f9b1319459196536148ec",
+      "stage15_mcp.py": "7073fb8d324b6d2b0ec3154b2dcdeb6c75b1a69d184bf0118ccfb8aa89479582",
       "tests/test_arm_completion.py": "82bb00e6e750e29fd40f5cfca6a307c953a0ac123e36d8fdaf0d1baaa32d7423",
       "tests/test_audit.py": "29524d5a606c84f28477027c147ac25e358db7c640b16af61c7ed3a80a521d38",
       "tests/test_cad_prepare.py": "1bf53fab81e1d2d856a4d77584b268d31df416443c83538341ea6fb6917da710",
@@ -67,8 +70,10 @@
       "tests/test_face_sampling.py": "b8293cad5a691927599241eaecdc6c6e9510f2cdb91c7ece10316dd36c0162e2",
       "tests/test_mcp_bridge.py": "5ff65564c3943f23726dad324528e43c127b4346429f304177cfbdaa5a54f784",
       "tests/test_measurement_binding.py": "dd4a01afab2bfa92dca95521f845db1e77cf2a60aa360dd3c5539cfba17461cb",
-      "tests/test_mesh_job.py": "cbf5e871015f66871602e57431f8c7f4e7a49f0b185b0d57f0e72b5a87f3d39c",
-      "tests/test_mesh_prepare.py": "7c3dbcf3296e844db564f57162df49c46f33bd55f35391504d363ed9ebe0ccdb",
+      "tests/test_mesh_construction.py": "3980de5deb508dc621e4650ca2624989555959944a1e55b05455b1a2ea437356",
+      "tests/test_mesh_job.py": "18de9fa2fb29b27eaaf7e5fb8a0a6360f4011fe8e715b37052586b08b8327bdf",
+      "tests/test_mesh_mcp_bridge.py": "42446bee5156c4405bc519854cbb9ec4f3b5cbb984253ddd777c86ec2036fe2f",
+      "tests/test_mesh_prepare.py": "73d61d531b023ea12ff7b992436c8194a56c904787757797e68b7ba70a19001b",
       "tests/test_meshing_diagnostics.py": "82b598d6bfafa443bb4cbfdbd0ab51fbb6fb4bd32d493ffcef97101ffd23325c",
       "tests/test_meshing_face_controls.py": "b34e03aa7b0dc3d27c87c9d1fc578d418b63989d06a7919c0f00082f9d1d777e",
       "tests/test_motion.py": "3b48c860cd80c70e5148ea80dd6a71e7a72c66f13611bbb8f174924685190276",
@@ -86,7 +91,7 @@
       "verify_offline.py": "af46ea96d658caca77f165b93af4443a2a17303fec5182f62fcdbfb68b2c76df"
     },
     "note": "This local acceptance run includes private calibration-reference fixtures.",
-    "portable_unit_test_count": 633,
+    "portable_unit_test_count": 704,
     "local_fixture_tests_deselected": 3
   },
   "portable_unit_command": [
@@ -223,5 +228,14 @@
     "owned_cleanup_verified": true,
     "inputs_and_sources_reverified_after_cleanup": true,
     "is_mesh_or_motion_validation": false
+  },
+  "full_mesh_construction": {
+    "job_id": "mesh-construction-004",
+    "status": "ready_not_started",
+    "additional_attempts": 1,
+    "total_budget_seconds_including_cleanup": 7200,
+    "automatic_retries": 0,
+    "CFD_allowed": false,
+    "quality_policy": "Native minimum orthogonal quality must be finite and >=0.01. Unavailable metrics remain unverified; no substitution from skewness."
   }
 }

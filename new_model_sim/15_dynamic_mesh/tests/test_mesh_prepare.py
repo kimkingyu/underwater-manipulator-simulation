@@ -1,5 +1,7 @@
 """Offline journal/inventory tests; no Workbench or Meshing execution."""
 import json
+import os
+import time
 from pathlib import Path
 import sys
 import tempfile
@@ -129,6 +131,34 @@ class MeshPrepareTests(unittest.TestCase):
         result = mesh_prepare.collect(self.attempt, *paths)
         self.assertEqual(result["status"], "failed")
         self.assertTrue(any("input changed" in x for x in result["errors"]))
+
+    def test_inventory_deadline_keeps_failed_partial_manifest(self):
+        self.generate()
+        paths = self.fixture_exports()
+        report = mesh_prepare.collect(self.attempt, *paths, deadline_unix=time.time() - 1)
+        self.assertEqual(report['status'], 'failed')
+        self.assertTrue(any('budget' in error for error in report['errors']))
+        self.assertTrue((self.attempt / 'mesh_manifest.json').exists())
+
+    def test_inventory_cancellation_is_checked_while_hashing(self):
+        self.generate()
+        paths = self.fixture_exports()
+        calls = [0]
+        def cancelled():
+            calls[0] += 1
+            return calls[0] >= 10
+        report = mesh_prepare.collect(self.attempt, *paths, deadline_unix=time.time() + 10, cancel_check=cancelled)
+        self.assertEqual(report['status'], 'failed')
+        self.assertTrue(any('cancelled' in error for error in report['errors']))
+
+    def test_empty_export_and_same_file_alias_rejected(self):
+        self.generate()
+        paths = self.fixture_exports()
+        paths[1].unlink()
+        os.link(paths[0], paths[1])
+        report = mesh_prepare.collect(self.attempt, *paths)
+        self.assertEqual(report['status'], 'failed')
+        self.assertTrue(any('same mesh' in error for error in report['errors']))
 
     def test_stat_counts_required(self):
         self.generate()

@@ -14,16 +14,19 @@ from pydantic import StrictInt
 
 from mcp_bridge import Stage15Bridge, redact
 from sizing_mcp_bridge import SizingBudget
+from mesh_mcp_bridge import MeshSlot
 
 mcp = FastMCP(
     "ansys-stage15",
-    instructions=("Read-only status/preflight, the preserved legacy definition job, and a finite authorized sizing-diagnostic batch. "
-                  "No mesh generation, CFD, arbitrary paths/commands, or retries. "
+    instructions=("Read-only checks, preserved diagnostic jobs, and one separately authorized two-domain mesh construction. "
+                  "Only the dedicated full-mesh tool may GenerateMesh under its new fixed grant. "
+                  "No CFD, arbitrary paths/commands, implicit retries or geometry changes. "
                   "A job handle or zero exit code is not validation. Inspect final cleanup evidence."),
     log_level="WARNING",
 )
 bridge = Stage15Bridge()
 sizing = SizingBudget()
+mesh = MeshSlot()
 READ_ONLY = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False)
 START = ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=True, openWorldHint=False)
 CANCEL = ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=True, openWorldHint=False)
@@ -49,13 +52,18 @@ def guarded(function, *args):
 
 def combined_status():
     result = bridge.status()
-    result["scope"] = "preserved legacy definition job plus bounded sizing diagnostics; no full mesh or CFD"
+    result["scope"] = "preserved diagnostic jobs and one separately authorized mesh construction; no CFD"
     result["sizing_diagnostics"] = sizing.status()
+    result["mesh_construction"] = mesh.status()
     return result
 
 
 def job_bridge(job_id):
-    return bridge if job_id == bridge.JOB_ID else sizing.job(job_id)
+    if job_id == bridge.JOB_ID:
+        return bridge
+    if job_id == mesh.JOB_ID:
+        return mesh
+    return sizing.job(job_id)
 
 
 def read_job_status(job_id):
@@ -99,7 +107,7 @@ async def stage15_job_status(job_id: str) -> dict[str, Any]:
 @mcp.tool(annotations=READ_ONLY)
 async def stage15_job_log(
     job_id: str,
-    stream: Literal["worker", "workbench_stdout", "workbench_stderr", "trace", "meshing", "define", "refresh", "readback", "completion"] = "trace",
+    stream: Literal["worker", "workbench_stdout", "workbench_stderr", "trace", "meshing", "define", "refresh", "readback", "completion", "mesh_background", "mesh_arm", "execution", "plan"] = "trace",
     limit: int = 100,
 ) -> dict[str, Any]:
     """Read at most 200 lines/20000 characters from a fixed own-job log; no arbitrary paths."""
@@ -112,6 +120,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
 
     Legacy confirmation: CANCEL_STAGE15_DEFINITION_PROBE.
     Sizing confirmation: CANCEL_STAGE15_SIZING_DIAGNOSTIC.
+    Mesh construction confirmation: CANCEL_STAGE15_FULL_MESH_CONSTRUCTION.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -136,6 +145,22 @@ async def stage15_start_sizing_diagnostic(
     Profiles are fixed. Completed data collection does NOT mean FullyDefined.
     """
     return await asyncio.to_thread(guarded, sizing.start, attempt_index, profile, hypothesis, confirmation)
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_mesh_preflight() -> dict[str, Any]:
+    """Read-only readiness for the sole newly authorized two-domain mesh construction; no ANSYS launch or slot reservation."""
+    return await asyncio.to_thread(guarded, mesh.preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_mesh_construction(confirmation: str) -> dict[str, Any]:
+    """Start the one authorized full construction004, <=7200s including cleanup, with no CFD.
+
+    Requires RUN_STAGE15_FULL_MESH_CONSTRUCTION_ONCE. Repeated calls reuse the
+    persistent job, never generate again. Native quality must be evidenced;
+    exported meshes or exit0 alone do not establish topology/motion validity.
+    """
+    return await asyncio.to_thread(guarded, mesh.start, confirmation)
 
 
 if __name__ == "__main__":

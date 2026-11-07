@@ -7,8 +7,11 @@ conversion; static tetrahedral sampling is supported while motion stays blocked.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
+import os
+import time
 from pathlib import Path
 import sys
 
@@ -111,7 +114,31 @@ def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type=
     return plan
 
 
-def collect(attempt, mesh_background, mesh_arm):
+def collect(attempt, mesh_background, mesh_arm, *, deadline_unix=None, cancel_check=None):
+    def check_budget():
+        if cancel_check is not None and cancel_check():
+            raise RuntimeGateError('mesh inventory cancelled; partial evidence only')
+        if deadline_unix is not None and time.time() >= deadline_unix:
+            raise TimeoutError('mesh inventory exceeded its remaining total budget')
+    def record(path):
+        if deadline_unix is None and cancel_check is None:
+            return file_record(path)
+        path = Path(path).resolve(strict=True)
+        check_budget()
+        before = path.stat()
+        hasher = hashlib.sha256()
+        with path.open('rb') as stream:
+            while True:
+                check_budget()
+                chunk = stream.read(1024 * 1024)
+                if not chunk:
+                    break
+                hasher.update(chunk)
+        check_budget()
+        after = path.stat()
+        if before.st_size != after.st_size or before.st_mtime_ns != after.st_mtime_ns:
+            raise RuntimeGateError('mesh inventory source changed while hashing: ' + str(path))
+        return {'path': str(path), 'size': after.st_size, 'sha256': hasher.hexdigest()}
     attempt = Path(attempt).resolve(strict=True)
     plan = json.loads((attempt / "mesh_plan.json").read_text(encoding="utf-8"))
     report = {"status": "failed", "valid": False, "motion_authorized": False,
@@ -120,35 +147,40 @@ def collect(attempt, mesh_background, mesh_arm):
               "cad": plan["cad"], "cad_verification": plan.get("cad_verification"),
               "mesh_plan": file_record(attempt / "mesh_plan.json"), "journal": plan["journal"]}
     try:
-        if file_record(plan["journal"]["path"])["sha256"] != plan["journal"]["sha256"]:
+        check_budget()
+        if record(plan["journal"]["path"])["sha256"] != plan["journal"]["sha256"]:
             raise RuntimeGateError("generated journal changed before collection")
         frozen = json.loads((attempt / "inputs.json").read_text(encoding="utf-8"))
-        for source in frozen["inputs"]:
-            if file_record(source["path"])["sha256"] != source["sha256"]:
+        for source in frozen["inputs"] + frozen["sources"]:
+            if record(source["path"])["sha256"] != source["sha256"]:
                 raise RuntimeGateError("frozen input changed: " + source["path"])
-        report["workbench_completion"] = file_record(attempt / "workbench_completion.json")
+        report["workbench_completion"] = record(attempt / "workbench_completion.json")
         completion = json.loads((attempt / "workbench_completion.json").read_text(encoding="utf-8-sig"))
         if completion.get("status") != "completed_pending_mesh_inventory" or len(completion.get("systems", [])) != 2:
             raise RuntimeGateError("Workbench completion/statistics missing or unsuccessful; exit 0 is insufficient")
         paths = [Path(mesh_background).resolve(strict=True), Path(mesh_arm).resolve(strict=True)]
-        if paths[0] == paths[1]:
+        if paths[0] == paths[1] or os.path.samefile(paths[0], paths[1]):
             raise RuntimeGateError("background and arm cannot use the same mesh")
         for domain, path in zip(("background", "arm"), paths):
             if attempt not in path.parents:
                 raise RuntimeGateError("exported mesh must belong to this new attempt")
             if not (path.name.endswith(".msh") or path.name.endswith(".msh.h5")):
                 raise RuntimeGateError("expected Fluent mesh file")
+            if not path.is_file() or path.stat().st_size <= 0:
+                raise RuntimeGateError("exported mesh is empty or not a regular file")
             stats = json.loads((attempt / (domain + "_meshing_stats.json")).read_text(encoding="utf-8-sig"))
             if stats.get("domain") != domain or stats.get("mesh_generated") is not True or stats.get("status") == "failed":
                 raise RuntimeGateError("missing successful meshing evidence for " + domain)
             for key in ("nodes", "elements"):
                 if isinstance(stats.get(key), bool) or not isinstance(stats.get(key), int) or stats[key] <= 0:
                     raise RuntimeGateError("missing/invalid mesh " + key + " for " + domain)
-            row = {"domain": domain, "file": file_record(path), "nodes": stats["nodes"], "elements": stats["elements"],
-                   "quality": stats.get("quality", {}), "statistics": file_record(attempt / (domain + "_meshing_stats.json"))}
+            row = {"domain": domain, "file": record(path), "nodes": stats["nodes"], "elements": stats["elements"],
+                   "quality": stats.get("quality", {}), "statistics": record(attempt / (domain + "_meshing_stats.json"))}
             report["meshes"].append(row)
-            metric = stats.get("quality", {}).get("orthogonal_quality", {}).get("minimum")
-            if isinstance(metric, bool) or not isinstance(metric, (int, float)) or not math.isfinite(metric):
+            orthogonal = stats.get("quality", {}).get("orthogonal_quality", {})
+            metric = orthogonal.get("minimum")
+            if (orthogonal.get("status") == "unavailable" or isinstance(metric, bool) or
+                    not isinstance(metric, (int, float)) or not math.isfinite(metric)):
                 report["errors"].append(domain + ": missing finite native minimum orthogonal quality")
             elif metric < 0.01:
                 report["errors"].append(domain + ": minimum orthogonal quality below 0.01; no motion")

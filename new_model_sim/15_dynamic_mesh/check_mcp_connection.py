@@ -15,12 +15,15 @@ import sys
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 from mcp_bridge import Stage15Bridge, STAGE, ATTEMPT, JOB_ID, sha256, write_new
-from sizing_mcp_bridge import SizingBudget, SOURCE_RELATIVES
+from sizing_mcp_bridge import SizingBudget, SOURCE_RELATIVES as SIZING_SOURCES
+from mesh_mcp_bridge import MeshSlot, MESH_ATTEMPT, SOURCE_RELATIVES as MESH_SOURCES
+SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES)))
 
 EXPECTED_TOOLS = {
     "stage15_status", "stage15_preflight", "stage15_start_definition_probe",
     "stage15_job_status", "stage15_job_log", "stage15_cancel_job",
     "stage15_sizing_preflight", "stage15_start_sizing_diagnostic",
+    "stage15_mesh_preflight", "stage15_start_mesh_construction",
 }
 
 
@@ -39,6 +42,9 @@ def decoded(result):
 async def checks():
     bridge = Stage15Bridge()
     budget = SizingBudget()
+    mesh = MeshSlot()
+    mesh_slot_before = mesh.safe(mesh.ATTEMPT).exists()
+    mesh_output_before = mesh.safe(MESH_ATTEMPT).exists()
     if bridge.safe(".ansys-task.lock").exists() or bridge.safe(".sizing-dispatch.lock").exists():
         raise RuntimeError("Connection self-check requires no active ownership/dispatch lock")
     old_slot_before = bridge.safe(ATTEMPT).exists()
@@ -59,15 +65,21 @@ async def checks():
                 ("stage15_start_definition_probe", {"confirmation": "NO"}),
                 ("stage15_start_sizing_diagnostic", {"attempt_index": 1, "profile": "baseline",
                     "hypothesis": "Protocol rejection test only; no valid start", "confirmation": "NO"}),
+                ("stage15_start_mesh_construction", {"confirmation": "NO"}),
                 ("stage15_cancel_job", {"job_id": JOB_ID, "confirmation": "NO"}),
                 ("stage15_job_log", {"job_id": "../contract.json", "stream": "trace", "limit": 10}),
                 ("stage15_preflight", {}),
                 ("stage15_sizing_preflight", {}),
+                ("stage15_mesh_preflight", {}),
             ):
                 results[name] = decoded(await session.call_tool(name, arguments))
     after = {name: sha256(STAGE / name) for name in SOURCE_RELATIVES}
     checks_result = {
-        "exact_eight_tools": names == EXPECTED_TOOLS,
+        "exact_ten_tools": names == EXPECTED_TOOLS,
+        "incorrect_mesh_start_refused": results["stage15_start_mesh_construction"].get("status") == "blocked",
+        "mesh_preflight_structured": results["stage15_mesh_preflight"].get("status") in ("passed", "blocked", "failed"),
+        "mesh_slot_preserved": mesh.safe(mesh.ATTEMPT).exists() == mesh_slot_before,
+        "mesh_output_preserved": mesh.safe(MESH_ATTEMPT).exists() == mesh_output_before,
         "status_available": results["stage15_status"].get("status") == "available",
         "incorrect_legacy_start_refused": results["stage15_start_definition_probe"].get("status") == "blocked",
         "incorrect_sizing_start_refused": results["stage15_start_sizing_diagnostic"].get("status") == "blocked",
@@ -90,7 +102,7 @@ async def checks():
         "tools": [{"name": item.name, "read_only": item.annotations.readOnlyHint} for item in tools.tools],
         "checks": checks_result, "results": results,
         "source_sha256_before": before, "source_sha256_after": after,
-        "environment_status": results["stage15_sizing_preflight"].get("status"),
+        "environment_status": results["stage15_mesh_preflight"].get("status"),
         "native_probe_started": False, "mesh_generation_verified": False, "flow_iterations": 0,
     }
 
@@ -107,7 +119,7 @@ def main():
     report = bridge.safe(relative)
     if report.exists():
         raise FileExistsError("Refusing to overwrite a connection receipt")
-    result = asyncio.run(asyncio.wait_for(checks(), timeout=130))
+    result = asyncio.run(asyncio.wait_for(checks(), timeout=200))
     write_new(report, result)
     print(json.dumps({"status": result["status"], "environment_status": result["environment_status"],
                       "checks": result["checks"], "report": str(report)}, ensure_ascii=False))

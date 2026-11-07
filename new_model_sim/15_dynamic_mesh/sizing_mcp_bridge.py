@@ -100,27 +100,7 @@ class SizingSlot(Stage15Bridge):
         return request
 
     def preserve_sources(self, request):
-        archive = self.safe(self.ATTEMPT + "/source_snapshot")
-        archive.mkdir(exist_ok=False)
-        manifest = []
-        for row in request["sources"]:
-            source = Path(row["path"])
-            if self.root in source.parents:
-                relative = source.relative_to(self.root)
-            elif source == self.root.parent / "04_workbench/run_wb_fullenv.py":
-                relative = Path("external") / source.name
-            else:
-                raise BridgeError("Unexpected archival source")
-            destination = self.safe(self.ATTEMPT + "/source_snapshot/" + relative.as_posix())
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            with source.open("rb") as original, destination.open("xb") as saved:
-                shutil.copyfileobj(original, saved)
-            if sha256(destination) != row["sha256"]:
-                raise BridgeError("Source changed during create-only archival")
-            manifest.append({"original_path": str(source), "archive_relative": relative.as_posix(),
-                             "sha256": row["sha256"], "size": row["size"]})
-        write_new(self.safe(self.ATTEMPT + "/source_snapshot/archive_manifest.json"), {
-            "job_id": self.JOB_ID, "purpose": "immutable source evidence for this diagnostic only", "files": manifest})
+        return self.archive_sources(request)
     def _preceding_jobs_finished(self):
         for index in range(1, 4):
             slot = SizingSlot(index, stage_root=self.root)

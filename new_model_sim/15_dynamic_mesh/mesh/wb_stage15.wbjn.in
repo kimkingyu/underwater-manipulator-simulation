@@ -2,7 +2,7 @@
 # Stage15: exactly two independent Fluid Flow systems. No shared topology.
 # Offline-generated only. Run explicitly with run_wb_fullenv.py in this attempt.
 SetScriptVersion(Version="24.2.133")
-import System, json, os, traceback
+import System, json, os, re, traceback
 from System.IO import File, Directory
 from System.Text import Encoding
 C = json.loads(__CONFIG_JSON__)
@@ -27,9 +27,103 @@ def log(text):
         # escape into an unattended Workbench modal-error dialog.
         R.setdefault('logging_errors', []).append({'text': native_text(text)[:2000], 'error': native_text(exc)})
 
-R = {"status": "failed", "valid": False, "systems": [], "initialized": False, "flow_iterations": 0}
+def system_directories(project, system_name):
+    # Workbench can expose Name='FFF 1' while saving the system as FFF-1.
+    # Only these two bounded names inside this exact project are candidates.
+    if (not isinstance(system_name, (str, type(u''))) or len(system_name) > 64 or
+            not re.match(r'^[A-Za-z0-9_-]+(?: [A-Za-z0-9_-]+)*\Z', system_name)):
+        raise Exception('unsafe Workbench system name')
+    root = os.path.splitext(os.path.abspath(project))[0] + '_files'
+    names = [system_name]
+    normalized = system_name.replace(' ', '-')
+    if normalized != system_name:
+        names.append(normalized)
+    paths = []
+    for name in names:
+        path = os.path.abspath(os.path.join(root, 'dp0', name))
+        if not os.path.normcase(path).startswith(os.path.normcase(root + os.sep)):
+            raise Exception('system directory escapes this project_files')
+        for parent in (root, os.path.join(root, 'dp0'), path, os.path.join(path, 'MECH')):
+            if os.path.exists(parent) and int(File.GetAttributes(parent)) & 1024:
+                raise Exception('reparse project export directory forbidden')
+        paths.append(path)
+    return paths
+
+
+def mech_directory(project, system_name):
+    paths = system_directories(project, system_name)
+    existing = [path for path in paths if os.path.isdir(path)]
+    if len(existing) > 1:
+        raise Exception('ambiguous per-system export directories')
+    if not existing and len(paths) > 1:
+        raise Exception('no existing system.Name/name-with-hyphens export directory')
+    return os.path.join(existing[0] if existing else paths[0], 'MECH')
+
+
+def record_export_debug(project, system_name, phase):
+    row = {'system_name': system_name, 'phase': phase, 'directories': []}
+    try:
+        paths = system_directories(project, system_name)
+        dp0 = os.path.dirname(paths[0])
+        row['dp0_names'] = sorted(os.listdir(dp0))[:100] if os.path.isdir(dp0) else []
+        # No recursive walk, and no other project, global/MECH or mshdb fallback.
+        for path in paths:
+            mech = os.path.join(path, 'MECH')
+            row['directories'].append({'system_directory': path, 'system_exists': os.path.isdir(path),
+                'mech_directory': mech, 'mech_exists': os.path.isdir(mech),
+                'file_names': sorted(os.path.basename(native_text(p)) for p in Directory.GetFiles(mech))[:200]
+                              if os.path.isdir(mech) else []})
+    except Exception as exc:
+        row['error'] = native_text(exc)
+    R.setdefault('export_debug', []).append(row)
+    try:
+        path = os.path.join(os.path.dirname(os.path.abspath(project)), 'export_debug.json')
+        File.WriteAllText(path, json.dumps(R['export_debug'], indent=2), Encoding.UTF8)
+        R['export_debug_path'] = path
+    except Exception as exc:
+        R['export_debug_write_error'] = native_text(exc)
+
+
+def export_mesh(mech, domain, used_sources):
+    if domain not in ('background', 'arm'):
+        raise Exception('unapproved mesh domain')
+    candidates = []
+    for path in Directory.GetFiles(mech):
+        path = os.path.abspath(native_text(path))
+        if os.path.normcase(os.path.dirname(path)) != os.path.normcase(os.path.abspath(mech)):
+            raise Exception('export candidate outside fixed MECH directory')
+        if path.lower().endswith('.msh') or path.lower().endswith('.msh.h5'):
+            # Reparse points must not redirect an export outside project_files.
+            if int(File.GetAttributes(path)) & 1024:
+                raise Exception('reparse mesh candidate forbidden')
+            candidates.append(path)
+    if len(candidates) != 1:
+        raise Exception('expected exactly one native mesh export, found %d' % len(candidates))
+    source = candidates[0]
+    key = os.path.normcase(source)
+    if key in used_sources or os.path.getsize(source) <= 0:
+        raise Exception('duplicate or empty native mesh export')
+    extension = '.msh.h5' if source.lower().endswith('.msh.h5') else '.msh'
+    target = os.path.join(os.path.dirname(os.path.abspath(C['project'])), domain + extension)
+    if File.Exists(target):
+        raise Exception('refusing to overwrite mesh export')
+    File.Copy(source, target, False)
+    size = os.path.getsize(target)
+    if size <= 0 or size != os.path.getsize(source):
+        raise Exception('mesh export copy is empty or incomplete')
+    used_sources.add(key)
+    return {'source_path': source, 'path': target, 'size': size}
+
+
+R = {"status": "failed", "valid": False, "systems": [], "initialized": False, "flow_iterations": 0,
+     "solver_launched": False, "mesh_exports_written": False}
+system_name = None
 try:
+    if [item['domain'] for item in C['domains']] != ['background', 'arm']:
+        raise Exception('exactly the fixed background and arm systems are required')
     previous = None
+    system_name = None
+    used_sources = set()
     template = GetTemplate(TemplateName="Fluid Flow")
     for item in C["domains"]:
         if previous is None:
@@ -62,16 +156,27 @@ try:
         statistics = json.loads(File.ReadAllText(item["stats_path"]))
         if not statistics.get("mesh_generated") or statistics.get("status") == "failed":
             raise Exception("no successful Meshing evidence for " + item["domain"])
+        system_name = native_text(system.Name)
+        record_export_debug(C['project'], system_name, 'before_update')
+        mech = mech_directory(C['project'], system_name)
+        Directory.CreateDirectory(mech)
+        # Proven export chain: Update writes the native FFF.msh in this MECH.
         component.Update(AllDependencies=True)
         Save(Overwrite=True)
-        R["systems"].append({"domain": item["domain"], "system_name": str(system.Name),
-                              "display_text": str(system.DisplayText), "statistics_path": item["stats_path"]})
+        record_export_debug(C['project'], system_name, 'after_update')
+        exported = export_mesh(mech, item['domain'], used_sources)
+        R["systems"].append({"domain": item["domain"], "system_name": system_name,
+                              "display_text": native_text(system.DisplayText), "statistics_path": item["stats_path"],
+                              "mesh_export": exported})
         log("export completed " + item["domain"])
+    R["mesh_exports_written"] = True
     R["status"] = "completed_pending_mesh_inventory"
 except Exception as exc:
     R["exception"] = native_text(exc)
     R["traceback"] = traceback.format_exc()
     log(u"FAILED: " + native_text(exc))
+    if system_name is not None:
+        record_export_debug(C['project'], system_name, 'failed')
 finally:
     if R.get('logging_errors'):
         R['status'] = 'failed'

@@ -11,6 +11,7 @@ import math
 import os
 from pathlib import Path
 import re
+import shutil
 import stat
 import subprocess
 import time
@@ -105,6 +106,8 @@ class Stage15Bridge:
     WORKER_SCRIPT = "definition_probe.py"
     OPERATION = "definition_probe"
     CANCEL_OPERATION = "cancel_definition_probe"
+    TOTAL_SECONDS = 300
+    CLEANUP_RESERVE_SECONDS = 30
 
     def __init__(self, stage_root=STAGE):
         # Internal injection is for offline tests; no MCP tool accepts this value.
@@ -246,10 +249,32 @@ class Stage15Bridge:
 
     def make_request(self, created, sources):
         return {"schema_version": 1, "operation": self.OPERATION, "job_id": self.JOB_ID,
-                "created_unix": created, "deadline_unix": created + 300,
-                "work_deadline_unix": created + 270,
+                "created_unix": created, "deadline_unix": created + self.TOTAL_SECONDS,
+                "work_deadline_unix": created + self.TOTAL_SECONDS - self.CLEANUP_RESERVE_SECONDS,
                 "authorization": {"path": str(self.safe(self.AUTHORIZATION)),
                                   "sha256": sha256(self.safe(self.AUTHORIZATION))}, "sources": sources}
+    def archive_sources(self, request):
+        archive = self.safe(self.ATTEMPT + "/source_snapshot")
+        archive.mkdir(exist_ok=False)
+        manifest = []
+        for row in request["sources"]:
+            source = Path(row["path"])
+            if self.root in source.parents:
+                relative = source.relative_to(self.root)
+            elif source == self.root.parent / "04_workbench/run_wb_fullenv.py":
+                relative = Path("external") / source.name
+            else:
+                raise BridgeError("Unexpected archival source")
+            destination = self.safe(self.ATTEMPT + "/source_snapshot/" + relative.as_posix())
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            with source.open("rb") as original, destination.open("xb") as saved:
+                shutil.copyfileobj(original, saved)
+            if sha256(destination) != row["sha256"]:
+                raise BridgeError("Source changed during create-only archival")
+            manifest.append({"original_path": str(source), "archive_relative": relative.as_posix(),
+                             "sha256": row["sha256"], "size": row["size"]})
+        write_new(self.safe(self.ATTEMPT + "/source_snapshot/archive_manifest.json"), {
+            "job_id": self.JOB_ID, "purpose": "immutable source evidence for this job only", "files": manifest})
     def preserve_sources(self, request):
         """Optional create-only per-slot archival hook; legacy artifacts stay untouched."""
         return None
@@ -280,7 +305,7 @@ class Stage15Bridge:
             self.preserve_sources(request)
             write_new(self.safe(self.ATTEMPT + "/job_state.json"), {
                 "job_id": self.JOB_ID, "status": "reserved", "phase": "worker_start_pending",
-                "created_unix": created, "deadline_unix": created + 300,
+                "created_unix": created, "deadline_unix": request["deadline_unix"],
                 "mesh_generated": False, "flow_iterations": 0, "mesh_motion_verified": False,
                 "owned_cleanup_verified": False})
             options = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {"start_new_session": True}
@@ -296,7 +321,7 @@ class Stage15Bridge:
                 "job_id": self.JOB_ID, "pid": process.pid, "creation_time": identity["creation_time"],
                 "recorded_unix": time.time()})
             return {"status": "accepted", "job_id": self.JOB_ID, "new_worker_started": True,
-                    "deadline_unix": request["deadline_unix"], "total_budget_seconds": 300,
+                    "deadline_unix": request["deadline_unix"], "total_budget_seconds": self.TOTAL_SECONDS,
                     "remaining_definition_probes": 0, "mesh_generated": False, "flow_iterations": 0}
         except Exception as exc:
             # No broad process termination here. A worker without a matching
@@ -385,11 +410,13 @@ class Stage15Bridge:
                           owned_cleanup_verified=False)
         return answer
 
+    def log_path(self, stream):
+        return self.safe(self.ATTEMPT + "/" + self.LOGS[stream])
     def job_log(self, job_id, stream="trace", limit=100):
         self._job_path(job_id)
         if stream not in self.LOGS or type(limit) is not int or not 1 <= limit <= 200:
             raise BridgeError("Log stream must be allow-listed and limit must be 1..200")
-        path = self.safe(self.ATTEMPT + "/" + self.LOGS[stream])
+        path = self.log_path(stream)
         if not path.is_file():
             return {"job_id": job_id, "stream": stream, "status": "not_available", "text": ""}
         size = path.stat().st_size

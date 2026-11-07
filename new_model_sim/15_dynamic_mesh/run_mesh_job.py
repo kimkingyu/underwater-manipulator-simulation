@@ -1,8 +1,4 @@
-"""Run one generated Workbench mesh attempt with owned-process cleanup.
-
-A normal exit is execution evidence only. Actual mesh statistics, exported files
-and Fluent geometry/overset checks remain separate acceptance gates.
-"""
+"""Run one two-domain Workbench attempt; execution is not mesh acceptance."""
 from __future__ import annotations
 
 import argparse
@@ -51,8 +47,8 @@ def validate_plan(attempt, contract):
             raise RuntimeGateError("Frozen meshing input/source changed: " + entry["path"])
     if not frozen.get("inputs") or not frozen.get("sources"):
         raise RuntimeGateError("Input/source manifest is incomplete")
-    if len(plan.get("domains", [])) != 2:
-        raise RuntimeGateError("This stage permits exactly two independent meshing systems")
+    if [row.get("domain") for row in plan.get("domains", [])] != ["background", "arm"]:
+        raise RuntimeGateError("This stage permits exactly the two independent meshing systems")
     return attempt, plan, journal
 
 
@@ -68,14 +64,13 @@ def trace_phase(text):
 
 
 def observe_completion(path):
-    """Do not wait for a modal-blocked launcher after the journal reports failure."""
+    """Do not wait for a modal-blocked launcher after a journal failure."""
     path = Path(path)
     if not path.is_file():
         return None
     try:
         receipt = json.loads(path.read_text(encoding="utf-8-sig"))
     except (OSError, ValueError):
-        # A concurrently written partial JSON is not an empty successful result.
         return None
     if not isinstance(receipt, dict):
         raise RuntimeGateError("Workbench completion receipt is not an object")
@@ -90,88 +85,139 @@ def child_environment(attempt, contract):
     spec = importlib.util.spec_from_file_location("stage15_proven_wb_environment", helper)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    # Proven Windows logon-environment reconstruction, confined to this child.
     return full_environment(base=module.full_environment(), registry=(), attempt=attempt, contract=contract)
 
 
-def run(attempt):
-    contract = preflight.load_contract()
-    attempt, plan, journal = validate_plan(attempt, contract)
+def run(attempt, *, total_deadline_unix=None, cancel_check=None, on_progress=None):
+    # Import lazily: definition_probe imports this module for the proven child env.
+    from definition_probe import bounded_call, UncertainCall, ProbeCancelled
+    started = time.monotonic()
+    total_deadline = time.time() + 7200 if total_deadline_unix is None else float(total_deadline_unix)
+    # Both wall-clock and monotonic bounds apply; wall-clock rollback cannot extend a job.
+    end = started + max(0, total_deadline - time.time())
+    work_end = end - 30
+    def remaining(cleanup=False):
+        return max(0, min((end if cleanup else work_end) - time.monotonic(),
+                          total_deadline - (0 if cleanup else 30) - time.time()))
+    def call(function, maximum=10, *, cleanup=False):
+        return bounded_call(function, min(maximum, remaining(cleanup)))
+    def check():
+        if cancel_check is not None and cancel_check():
+            raise ProbeCancelled("mesh construction cancellation requested")
+        if remaining() <= 0:
+            raise TimeoutError("Workbench work deadline reached; cleanup reserve starts")
+    def progress(**values):
+        if on_progress is not None:
+            try:
+                on_progress(dict(values, owned_cleanup_verified=False))
+            except Exception as exc:
+                # A broken outer progress sink must never skip native process cleanup.
+                report['progress_error'] = type(exc).__name__ + ': ' + str(exc)
+    check()
+    contract = call(preflight.load_contract)
+    attempt, plan, journal = call(lambda: validate_plan(attempt, contract))
     receipt = attempt / "workbench_execution.json"
     if receipt.exists() or (attempt / "workbench.trace.txt").exists() or (attempt / "workbench_completion.json").exists():
         raise RuntimeGateError("Refusing to rerun an already-started Workbench attempt")
-    protected = json.loads((STAGE / "frozen/input_manifest.json").read_text(encoding="utf-8"))
-    if preflight.verify_inputs(protected)["status"] != "passed":
+    protected = call(lambda: json.loads((STAGE / "frozen/input_manifest.json").read_text(encoding="utf-8")))
+    if call(lambda: preflight.verify_inputs(protected))["status"] != "passed":
         raise RuntimeGateError("Protected project input changed")
-    environment = preflight.inspect_environment(contract)
+    environment = call(lambda: preflight.inspect_environment(contract), 25)
     if environment["status"] != "passed":
         raise RuntimeGateError("Workbench preflight blocked: " + repr(environment["blockers"]))
     command = [contract["software"]["workbench"], "-I", "-X", "-R", str(journal)]
     report = {"status": "not_run", "valid_mesh": False, "command": command,
               "attempt": str(attempt), "script_sha256": preflight.sha256(__file__),
               "journal_sha256": plan["journal"]["sha256"], "solver_launched": False,
-              "automatic_retries": 0, "system_timeout_seconds": contract["budget"]["mesh_system_timeout_s"],
-              "total_timeout_seconds": 2 * contract["budget"]["mesh_system_timeout_s"],
-              "preflight": environment}
+              "automatic_retries": 0, "system_timeout_seconds": min(3600, contract["budget"]["mesh_system_timeout_s"]),
+              "total_timeout_seconds": 7200, "total_deadline_unix": total_deadline,
+              "work_deadline_unix": total_deadline - 30, "preflight": environment,
+              "owned_cleanup_verified": False, "launch_attempted": False}
     process = tree = None
-    started = time.monotonic()
+    launch_uncertain = False
     phase, phase_start = None, started
-    with AnsysTaskLock(attempt):
+    with AnsysTaskLock(attempt) as lock:
         try:
-            env = child_environment(attempt, contract)
+            check()
+            env = call(lambda: child_environment(attempt, contract))
             with (attempt / "workbench.stdout.log").open("xb") as stdout, (attempt / "workbench.stderr.log").open("xb") as stderr:
-                process = subprocess.Popen(command, cwd=str(attempt), env=env, stdout=stdout, stderr=stderr, shell=False)
+                # Any exception/timeout before ownership is captured is uncertain, not permission to retry.
+                launch_uncertain = True
+                report['launch_attempted'] = True
+                progress(status='running', phase='launching', launch_attempted=True)
+                process = call(lambda: subprocess.Popen(command, cwd=str(attempt), env=env,
+                                                       stdout=stdout, stderr=stderr, shell=False))
                 report["launcher_pid"] = process.pid
-                tree = OwnedProcessTree(process, psutil)
-                if tree.errors:
+                tree = call(lambda: OwnedProcessTree(process, psutil), 3)
+                if tree.errors or not tree.members:
                     raise RuntimeGateError("Cannot establish process ownership: " + repr(tree.errors))
+                launch_uncertain = False
+                progress(status="running", phase="workbench", owned_processes=[
+                    {"pid": pid, "creation_time": stamp} for pid, stamp in tree.members.items()])
                 while True:
-                    tree.capture()
-                    observe_completion(attempt / "workbench_completion.json")
+                    check()
+                    call(tree.capture, 2)
+                    call(lambda: observe_completion(attempt / "workbench_completion.json"), 2)
                     now = time.monotonic()
                     trace = attempt / "workbench.trace.txt"
-                    current_phase = trace_phase(trace.read_text(encoding="utf-8-sig", errors="replace")) if trace.exists() else None
+                    def read_phase():
+                        return trace_phase(trace.read_text(encoding="utf-8-sig", errors="replace")) if trace.exists() else None
+                    current_phase = call(read_phase, 2)
                     if current_phase != phase:
                         phase, phase_start = current_phase, now
-                    if now - started > report["total_timeout_seconds"] or (phase is not None and now - phase_start > report["system_timeout_seconds"]):
-                        raise TimeoutError("Workbench exceeded the finite meshing budget")
-                    if shutil.disk_usage(attempt).free < contract["budget"]["minimum_free_disk_gib"] * 1024 ** 3:
+                    if phase is not None and now - phase_start >= report["system_timeout_seconds"]:
+                        raise TimeoutError("Workbench exceeded the per-domain 3600-second budget")
+                    if call(lambda: shutil.disk_usage(attempt).free, 2) < contract["budget"]["minimum_free_disk_gib"] * 1024 ** 3:
                         raise RuntimeGateError("Free disk fell below the configured budget")
+                    progress(status="running", phase=phase or "workbench", owned_processes=[
+                        {"pid": pid, "creation_time": stamp} for pid, stamp in tree.members.items()])
                     try:
-                        code = process.wait(timeout=1)
+                        code = call(lambda: process.wait(timeout=min(0.5, remaining())), 1)
                     except subprocess.TimeoutExpired:
                         continue
                     report["exit_code"] = code
                     break
-            completion_path = attempt / "workbench_completion.json"
-            if process.returncode != 0 or not completion_path.is_file():
+            completion = call(lambda: observe_completion(attempt / "workbench_completion.json"))
+            if process.returncode != 0 or completion is None:
                 raise RuntimeGateError("Workbench did not provide a completed execution receipt")
-            completion = json.loads(completion_path.read_text(encoding="utf-8-sig"))
             report["completion"] = completion
-            if completion.get("status") != "completed_pending_mesh_inventory" or len(completion.get("systems", [])) != 2:
-                raise RuntimeGateError("Workbench journal did not complete both meshing systems")
-            validate_plan(attempt, contract)
+            if (completion.get("status") != "completed_pending_mesh_inventory" or
+                    [x.get("domain") for x in completion.get("systems", [])] != ["background", "arm"] or
+                    completion.get("mesh_exports_written") is not True):
+                raise RuntimeGateError("Workbench journal did not complete both mesh exports")
+            call(lambda: validate_plan(attempt, contract))
             report["status"] = "completed_execution_pending_mesh_inventory"
         except Exception as exc:
-            report["status"] = "failed"
+            report["status"] = "cancelled" if isinstance(exc, ProbeCancelled) else "failed"
             report["error"] = type(exc).__name__ + ": " + str(exc)
+            if isinstance(exc, UncertainCall):
+                # In-flight native calls can still create/extend a process tree.
+                launch_uncertain = True
         finally:
-            cleanup = True
-            if tree is not None:
+            progress(status="cleaning", phase="cleanup")
+            cleanup = not launch_uncertain and process is None
+            if tree is not None and not launch_uncertain:
                 try:
-                    cleanup = tree.close()
+                    cleanup = call(tree.close, 20, cleanup=True)
                 except Exception as exc:
                     cleanup = False
                     report["cleanup_error"] = type(exc).__name__ + ": " + str(exc)
+            if tree is not None:
                 report["owned_processes"] = [{"pid": pid, "creation_time": stamp} for pid, stamp in tree.members.items()]
                 report["ownership_errors"] = tree.errors
-            report["owned_cleanup_verified"] = cleanup
+            report["owned_cleanup_verified"] = bool(cleanup)
             if not cleanup:
+                lock.retain("meshing launch/cleanup ownership remains uncertain; no automatic retry")
+                report["status"] = "cleanup_unverified"
+                report["task_lock_retained"] = True
+            report["protected_inputs_after"] = {"status": "unverified"}
+            try:
+                report["protected_inputs_after"] = call(lambda: preflight.verify_inputs(protected), 5, cleanup=True)
+            except Exception as exc:
+                report["reverification_error"] = type(exc).__name__ + ": " + str(exc)
+            if report["protected_inputs_after"]["status"] != "passed" and report["status"] != "cleanup_unverified":
                 report["status"] = "failed"
             report["seconds"] = time.monotonic() - started
-            report["protected_inputs_after"] = preflight.verify_inputs(protected)
-            if report["protected_inputs_after"]["status"] != "passed":
-                report["status"] = "failed"
             write_json_new(receipt, report)
     print(json.dumps({key: report.get(key) for key in ("status", "exit_code", "seconds", "owned_cleanup_verified", "error")}, ensure_ascii=False))
     return 0 if report["status"] == "completed_execution_pending_mesh_inventory" else 2
