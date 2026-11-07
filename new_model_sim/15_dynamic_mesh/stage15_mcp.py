@@ -16,6 +16,7 @@ from mcp_bridge import Stage15Bridge, redact
 from sizing_mcp_bridge import SizingBudget
 from mesh_mcp_bridge import MeshSlot
 from mesh_inspection_mcp_bridge import InspectionSlot, inspection_job
+from inspection_batch002_bridge import Batch002Slot, batch_job
 
 mcp = FastMCP(
     "ansys-stage15",
@@ -57,6 +58,7 @@ def combined_status():
     result["sizing_diagnostics"] = sizing.status()
     result["mesh_construction"] = mesh.status()
     result["mesh_inspection"] = {domain: InspectionSlot(domain).status() for domain in ("background", "arm")}
+    result["inspection_batch002"] = {name: Batch002Slot(name).status() for name in ("connection", "background", "arm")}
     return result
 
 
@@ -67,6 +69,8 @@ def job_bridge(job_id):
         return mesh
     if job_id in ("mesh-inspection-001-background", "mesh-inspection-001-arm"):
         return inspection_job(job_id)
+    if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm"):
+        return batch_job(job_id)
     return sizing.job(job_id)
 
 
@@ -126,6 +130,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     Sizing confirmation: CANCEL_STAGE15_SIZING_DIAGNOSTIC.
     Mesh construction confirmation: CANCEL_STAGE15_FULL_MESH_CONSTRUCTION.
     Read-only inspection confirmation: CANCEL_STAGE15_READ_ONLY_MESH_INSPECTION.
+    New three-slot batch002 confirmation: CANCEL_STAGE15_BATCH002_READ_ONLY.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -183,6 +188,28 @@ async def stage15_start_mesh_inspection(domain: Literal["background", "arm"], co
     remain unverified; independent domains do not establish overset connectivity.
     """
     return await asyncio.to_thread(guarded, InspectionSlot(domain).start, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_batch002_preflight(slot: Literal["connection", "background", "arm"]) -> dict[str, Any]:
+    """Read-only fixed batch002 grant/source/input preflight; no slot consumed or ANSYS launch.
+
+    Inspection slots are blocked until same-batch native connection/health/solver
+    identity, sources and owned cleanup are verified. Old slots stay consumed.
+    """
+    return await asyncio.to_thread(guarded, Batch002Slot(slot).preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_batch002(slot: Literal["connection", "background", "arm"], confirmation: str) -> dict[str, Any]:
+    """New user-authorized three-slot serial read-only batch, each <=300s including cleanup.
+
+    Requires RUN_STAGE15_BATCH002_READ_ONLY_ONCE. Start connection first; native
+    health SERVING, actual solver identity, frozen evidence and owned cleanup
+    must pass before either mesh slot can be reserved. Each slot once, no retry.
+    No mesh generation/write, initialization, iteration, motion, overset or CFD.
+    """
+    return await asyncio.to_thread(guarded, Batch002Slot(slot).start, confirmation)
 
 
 if __name__ == "__main__":

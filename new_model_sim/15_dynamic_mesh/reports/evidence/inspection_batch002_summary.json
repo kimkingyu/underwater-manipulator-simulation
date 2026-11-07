@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_batch002_native_failure_and_post_run_offline_fix",
+  "native_run_local_date": "2026-11-08",
+  "batch_id": "inspection-batch002",
+  "authorized_slots": [
+    "connection",
+    "background",
+    "arm"
+  ],
+  "maximum_seconds_per_slot_including_cleanup": 300,
+  "slot_states": {
+    "connection": "consumed_failed",
+    "background": "unconsumed_blocked_by_connection_gate",
+    "arm": "unconsumed_blocked_by_connection_gate"
+  },
+  "automatic_retries": 0,
+  "connection_gate_passed": false,
+  "job_id": "inspection-b002-connection",
+  "elapsed_seconds": 23.737305402755737,
+  "original_status": "cleanup_unverified",
+  "original_owned_cleanup_verified": false,
+  "native_channel_count": 0,
+  "native_connection_constructor_count": 0,
+  "native_health_poll_count": 0,
+  "native_read_mesh_completed": false,
+  "failure_class": "ServerInfoRejected",
+  "confirmed_failure_reason": "native server-info uses literal localhost, but the executed strict endpoint policy allowed only literal 127.0.0.1",
+  "private_schema_review": {
+    "line_count": 2,
+    "host_is_literal_localhost_alias": true,
+    "fixed_safe_reason": "endpoint_not_allowed",
+    "credentials_or_private_file_hashes_published": false
+  },
+  "original_receipts": {
+    "request.json": "71d23f6d629fc9272119160319697abaa1dbb7a23a8a43b3d5f0b13b57ed190b",
+    "native_result.json": "7efe0955dc3970c4f7068dc282bd58f7542867caad8699b4e9b1cf81c8509ddc",
+    "readiness.json": "f14fb80bece0545deefea370eaefd08820a434c1813c49eb062cef83c63a9969",
+    "probe_result.json": "a49d766f66507f1942849cdd25b2d25273206d9495dee147db9aae522298b830"
+  },
+  "fresh_cleanup_review": {
+    "known_pid_create_time_identities_rechecked": 11,
+    "active_owned_processes": 0,
+    "active_ansys_clients": 0,
+    "extra_native_engines": 0,
+    "protected_inputs_and_meshes_unchanged": true,
+    "only_two_exact_matching_owned_locks_released": true,
+    "processes_signalled_during_review": 0,
+    "original_failed_cleanup_receipt_preserved": true,
+    "receipt_sha256": "94aeabc25035bf373859a89eab92f3af8d7f69c8f89baf9b869aaf2d6879238f",
+    "schema_review_sha256": "dff6a1baa3d46b491dc565b411bc9e38ea983ad4aab5a80fd02882156e323de9"
+  },
+  "offline_followup": {
+    "real_961_version_archived_runtime_sources": 19,
+    "archive_total_files": 33,
+    "archive_manifest_sha256": "f7960d680a0b9070adfdee40c0e7f2de4648bb27866ec8a25ec1ec6f6702969b",
+    "alias_policy": "ASCII literal localhost (casefold) or literal 127.0.0.1 only; no DNS/hosts/environment lookup; one fixed 127.0.0.1 channel target",
+    "alias_validation_does_not_pass_native_readiness_gate": true,
+    "post_run_native_executions": 0,
+    "additional_attempts_granted_by_source_binding_revision": 0,
+    "regression_tests_passed": 993,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 990,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 14,
+    "protocol_checks_passed": 23
+  },
+  "limitations": {
+    "old_UNAVAILABLE_root_cause_proven": false,
+    "corrected_native_connection_verified": false,
+    "native_mesh_quality_verified": false,
+    "native_volume_or_adjacency_verified": false,
+    "static_overset_verified": false,
+    "initializations": 0,
+    "flow_iterations": 0,
+    "mesh_motion_steps": 0,
+    "mesh_generation_or_write_in_this_batch": false
+  },
+  "publication_scope": "Source/tests and this derived redacted summary only. No server-info, passwords or credential hashes, native raw logs, runtime authorizations or mesh/CAD binaries are published. Failed native receipts are unchanged."
+}
