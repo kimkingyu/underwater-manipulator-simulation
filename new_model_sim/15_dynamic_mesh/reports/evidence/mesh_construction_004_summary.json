@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_summary_of_local_native_receipts_and_bounded_mesh_file_metadata",
+  "recorded_local_date": "2026-11-07",
+  "job_id": "mesh-construction-004",
+  "native_operation": "one_authorized_two_domain_mesh_construction",
+  "native_job_status": "completed",
+  "elapsed_seconds_including_cleanup": 298.70602893829346,
+  "total_budget_seconds_including_cleanup": 7200,
+  "additional_full_mesh_attempts_remaining": 0,
+  "automatic_retries": 0,
+  "mesh_generated": true,
+  "mesh_exports_written": true,
+  "mesh_inventory_status": "failed",
+  "mesh_quality_verified": false,
+  "qualified_mesh_pair": false,
+  "native_metrics": {
+    "skewness": {
+      "status": "unavailable_in_both_original_receipts",
+      "error": "'Quantity' object has no attribute '__float__'"
+    },
+    "orthogonal_quality": {
+      "status": "unavailable_in_both_original_receipts",
+      "error": "'type' object has no attribute 'OrthogonalQuality'"
+    },
+    "acceptance_minimum_orthogonal_quality": 0.01,
+    "skewness_is_not_a_substitute_for_orthogonal_quality": true
+  },
+  "meshes": [
+    {
+      "domain": "background",
+      "path_relative_to_stage": "runs/mesh/attempt_004/background.msh",
+      "bytes": 380257330,
+      "sha256": "cbbc3d5b3ad88caffe9691307b6df74b5d51af94d9eaffd5e68051d38f1eefb2",
+      "native_nodes": 1458636,
+      "native_elements": 8617720,
+      "statistics_relative_to_stage": "runs/mesh/attempt_004/background_meshing_stats.json",
+      "statistics_sha256": "7d3fe1393990cfc7d715655d7bc80b37828eaa5fc2b3aec4aba6d27a30094240",
+      "native_message_capture_complete": true,
+      "native_messages": [],
+      "control_definitions_before_generation": {
+        "count": 4,
+        "all_fully_defined": true
+      },
+      "bounded_file_tail_zone_declarations": [
+        "(45 (1 interior interior-fluid_background)())",
+        "(45 (2 fluid fluid_background)())",
+        "(45 (5 velocity-inlet inlet)())",
+        "(45 (6 pressure-outlet outlet)())",
+        "(45 (7 wall tank_wall)())",
+        "(45 (8 wall wall_auv)())",
+        "(45 (9 wall wall_base0)())"
+      ]
+    },
+    {
+      "domain": "arm",
+      "path_relative_to_stage": "runs/mesh/attempt_004/arm.msh",
+      "bytes": 38443395,
+      "sha256": "1dffa98e02b80a9813c37d43e746ced5cf501cd0032580a04a69726b419bd8d5",
+      "native_nodes": 159630,
+      "native_elements": 846862,
+      "statistics_relative_to_stage": "runs/mesh/attempt_004/arm_meshing_stats.json",
+      "statistics_sha256": "8e26437f2ecc4bddf00aa797b611833952db1da7d47b3ce47142920969d1123e",
+      "native_message_capture_complete": true,
+      "native_messages": [],
+      "control_definitions_before_generation": {
+        "count": 8,
+        "all_fully_defined": true
+      },
+      "bounded_file_tail_zone_declarations": [
+        "(45 (1 interior interior-fluid_arm)())",
+        "(45 (2 fluid fluid_arm)())",
+        "(45 (5 overset overset_arm)())",
+        "(45 (6 wall wall_jaw1)())",
+        "(45 (7 wall wall_jaw2)())",
+        "(45 (8 wall wall_l1)())",
+        "(45 (9 wall wall_l2)())",
+        "(45 (10 wall wall_link3)())",
+        "(45 (11 wall wall_pin4)())"
+      ]
+    }
+  ],
+  "file_metadata_limitations": {
+    "tail_read_limit_bytes_per_file": 131072,
+    "zone_declarations_are_not_native_topology_or_quality_validation": true,
+    "no_verified_wall_adjacency_or_cell_volume_checks": true,
+    "no_verified_static_overset_connectivity_or_orphan_count": true
+  },
+  "cleanup_and_integrity": {
+    "owned_cleanup_verified": true,
+    "inputs_reverified_after_cleanup": true,
+    "sources_reverified_after_cleanup": true,
+    "independent_mesh_file_size_and_sha256_recheck": "passed",
+    "independent_protected_input_recheck": "passed",
+    "independent_post_run_active_ansys_clients": 0,
+    "own_task_lock_present": false,
+    "construction_source_matched_708_test_receipt_before_post_run_fix": true
+  },
+  "source_receipts": [
+    {
+      "path_relative_to_stage": "runs/mcp_mesh_construction/attempt_001/probe_result.json",
+      "sha256": "d16f0223e0c1c3c686d3920cacf5ddf3138dd74bd5c074d1bfd2007e828714df"
+    },
+    {
+      "path_relative_to_stage": "runs/mesh/attempt_004/workbench_execution.json",
+      "sha256": "b1ee7972aac8ddb746fc1e736284d58479f65cd6782dea6173c70f6bb26506ad"
+    },
+    {
+      "path_relative_to_stage": "runs/mesh/attempt_004/workbench_completion.json",
+      "sha256": "adf8e672af207af728bbf7bcdd8c12f86ca209c924e64136d4844b5f5cfc3a1f"
+    },
+    {
+      "path_relative_to_stage": "reports/offline_tests_027.json",
+      "sha256": "fdd92eefe98151f53dbd49f1ddd257fb5522fdc545898b4b899a22db8b6b185e"
+    }
+  ],
+  "post_run_code_followup": {
+    "quantity_value_readback_fix": "implemented_and_offline_tested_only",
+    "reconstructed_existing_native_metric_values": false,
+    "new_native_launches_for_this_followup": 0,
+    "offline_tests": 714,
+    "offline_failures": 0,
+    "offline_errors": 0,
+    "offline_skips": 0,
+    "portable_tests_passed": 711,
+    "local_fixture_tests_deselected_from_portable_run": 3,
+    "receipt_relative_to_stage": "reports/offline_tests_028.json",
+    "receipt_sha256": "04886017d9cdff90094477a090787146f2b6fcb0e485d57359d3a7e9b5eae808"
+  },
+  "solver_launched": false,
+  "actual_mesh_motion_steps": 0,
+  "actual_flow_steps": 0,
+  "static_overset": "not_run",
+  "restart": "not_run",
+  "load_alignment": "not_run",
+  "original_STEP_changed": false,
+  "stage14_frozen_inputs_changed": false,
+  "default_theta_changed": false,
+  "publication_scope": "Summary only; native mesh binaries, CAD, runtime grants and local source archives remain local. Original receipts remain unchanged."
+}

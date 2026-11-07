@@ -1,5 +1,5 @@
 # Executed only inside Ansys Meshing / IronPython after explicit Workbench launch.
-import json, codecs, time, os, traceback
+import json, codecs, time, os, traceback, math
 C = json.loads(__CONFIG_JSON__)
 R = {"status": "failed", "valid": False, "domain": C["domain"], "settings": C,
      "mesh_generated": False, "nodes": None, "elements": None, "quality": {},
@@ -72,6 +72,17 @@ def capture_messages():
         R['messages'] = rows
         R['message_capture_complete'] = False
         R['message_capture_error'] = native_text(exc)
+
+
+def metric_number(value):
+    # Native Mesh.Minimum/Maximum/Average can be Quantity objects, not floats.
+    raw = value.Value if hasattr(value, 'Value') else value
+    if isinstance(raw, bool):
+        raise ValueError('mesh metric must be a numeric scalar')
+    number = float(raw)
+    if math.isnan(number) or math.isinf(number):
+        raise ValueError('mesh metric must be finite')
+    return number
 
 
 def configure_face_size(mesh, named_selection, control, growth_rate):
@@ -163,8 +174,8 @@ try:
     for name, metric in (("skewness", "Skewness"), ("orthogonal_quality", "OrthogonalQuality")):
         try:
             mesh.MeshMetric = getattr(MeshMetricType, metric)
-            R["quality"][name] = {"minimum": float(mesh.Minimum), "maximum": float(mesh.Maximum),
-                                    "average": float(mesh.Average), "source": "Ansys Meshing MeshMetricType." + metric}
+            R["quality"][name] = {"minimum": metric_number(mesh.Minimum), "maximum": metric_number(mesh.Maximum),
+                                    "average": metric_number(mesh.Average), "source": "Ansys Meshing MeshMetricType." + metric}
         except Exception as exc:
             R["quality"][name] = {"status": "unavailable", "error": native_text(exc)}
     capture_messages()

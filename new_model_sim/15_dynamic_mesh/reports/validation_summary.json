@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "stage": "15_dynamic_mesh",
-  "status": "mesh_validation_not_completed",
+  "status": "real_mesh_pair_exported_quality_and_static_validation_pending",
   "implemented": [
     "isolated CAD/domain preparation and kinematic audits",
     "bounded Workbench/MCP diagnostic jobs with PID/create-time ownership and preserved receipts",
@@ -21,7 +21,7 @@
     "both_cases_cleaned_up": true
   },
   "offline_regression": {
-    "local_test_count": 707,
+    "local_test_count": 714,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -45,7 +45,7 @@
       "mcp_bridge.py": "dcbc867ada76f7b6ca1ea3a6d164c8ec85f79d28200d9cf9f331bc9ac5da8271",
       "mesh/meshing_definition_probe.py.in": "402c4fc3d5c9cbea5d8430844de9cd0ec4f5e372d94037756ea198d7128a8448",
       "mesh/meshing_sizing_diagnostic.py.in": "ecbc63e026a75dda089a3d5c35de1bec177e3af77a30a1f2a96d95f3d7616e3e",
-      "mesh/meshing_stage15.py.in": "fbc4766c9537286cae268e96dba88f72f27f5808d4a90f8873eb0071cbb1db67",
+      "mesh/meshing_stage15.py.in": "94444966ac8cbb218d4f04492c683b7ea66120931c32f86234983bfe5b17e8f4",
       "mesh/wb_definition_probe.wbjn.in": "35016b22416ce9795375f4f4a16646fee84f316cfbf5eede29d5e7e90fd36ba5",
       "mesh/wb_sizing_diagnostic.wbjn.in": "ec7c308c5494f3faabe84c04228bd3d782eea3852f0ca49edd8930ce74f764cf",
       "mesh/wb_stage15.wbjn.in": "e5991ada29b3d93c4a5819c1a9a9faad3c3feb78062775795cf8ab28bc2ecc28",
@@ -56,7 +56,7 @@
       "preflight.py": "ef5ca1df8bfac15e42e14d8c8e0e1ed1573eb1ba52bde34ab5c1bd5ff5b1e9bb",
       "prepare_face_probe.py": "bf017a7e62adbd0e42039776478bc81eefda02d9e0f63240e443a93e5265b6b7",
       "run_gate.py": "e0986bde83cd18ea3393471278053665fd2e554267abb75ec9bf07f6a39e540d",
-      "run_mesh_job.py": "8edb75921f2f4136a5e0f3a2a4bdb6f0813ee25a536f95afc84bc69c055dcaec",
+      "run_mesh_job.py": "888988aee8bf6b14ae6ba922edf75c48a98fc4ddf7f306d4c7742647d5eea193",
       "runtime.py": "c68b09580eea3aa1861da22db9f082345869372094117c6cfa9e32ec7fa25ead",
       "sizing_diagnostic.py": "cac90fcc39992142e7e7054cb20c9a8c93965a5ff21ad067927e7eef788b3614",
       "sizing_mcp_bridge.py": "d73203415eda2e88d012ed22e9531fb7c8d75ea2e13f9b1319459196536148ec",
@@ -71,10 +71,10 @@
       "tests/test_mcp_bridge.py": "5ff65564c3943f23726dad324528e43c127b4346429f304177cfbdaa5a54f784",
       "tests/test_measurement_binding.py": "dd4a01afab2bfa92dca95521f845db1e77cf2a60aa360dd3c5539cfba17461cb",
       "tests/test_mesh_construction.py": "3980de5deb508dc621e4650ca2624989555959944a1e55b05455b1a2ea437356",
-      "tests/test_mesh_job.py": "18de9fa2fb29b27eaaf7e5fb8a0a6360f4011fe8e715b37052586b08b8327bdf",
+      "tests/test_mesh_job.py": "2b18f3d7b1647d8b8d433507e012a40a7285a2a3ef5853af07cf95dd98ff4daa",
       "tests/test_mesh_mcp_bridge.py": "42446bee5156c4405bc519854cbb9ec4f3b5cbb984253ddd777c86ec2036fe2f",
       "tests/test_mesh_prepare.py": "73d61d531b023ea12ff7b992436c8194a56c904787757797e68b7ba70a19001b",
-      "tests/test_meshing_diagnostics.py": "82b598d6bfafa443bb4cbfdbd0ab51fbb6fb4bd32d493ffcef97101ffd23325c",
+      "tests/test_meshing_diagnostics.py": "b860c56d1f1babf633810be918a38ef7daad0e50e5e3d3ae02214866a392bfcb",
       "tests/test_meshing_face_controls.py": "b34e03aa7b0dc3d27c87c9d1fc578d418b63989d06a7919c0f00082f9d1d777e",
       "tests/test_motion.py": "3b48c860cd80c70e5148ea80dd6a71e7a72c66f13611bbb8f174924685190276",
       "tests/test_offline_receipt.py": "87ff1f1304d7a132dfb675e13362d51db7038f3a36a4f87cc654ec89783d1aff",
@@ -91,7 +91,7 @@
       "verify_offline.py": "af46ea96d658caca77f165b93af4443a2a17303fec5182f62fcdbfb68b2c76df"
     },
     "note": "This local acceptance run includes private calibration-reference fixtures.",
-    "portable_unit_test_count": 704,
+    "portable_unit_test_count": 711,
     "local_fixture_tests_deselected": 3
   },
   "portable_unit_command": [
@@ -106,6 +106,14 @@
   ],
   "local_prerequisites": "Native execution requires an authorized local ANSYS installation, user-owned CAD and explicit local authorization records; none are supplied by this publication. FrozenMeasurementReferenceTests require local native calibration fixtures.",
   "evidence": [
+    {
+      "path": "evidence/mesh_construction_004_summary.json",
+      "sha256": "14afc765ae5c7ec78a46d3597d5978e440eb4be9e2a37d1d52a824c8e3879c7a",
+      "kind": "derived_native_construction_summary",
+      "mesh_generated": true,
+      "mesh_quality_verified": false,
+      "motion_or_flow_steps": 0
+    },
     {
       "path": "evidence/baseline_define.json",
       "sha256": "fdd7f9e9ab84231cef1278ef3c0c6fe59f881d7a83d3c178977af0d12f01da08",
@@ -192,8 +200,8 @@
     }
   ],
   "not_yet_validated": [
-    "arm-domain controls with the revised no-local-growth configuration",
-    "valid two-domain mesh pair",
+    "native minimum orthogonal quality and wall adjacency / cell volumes",
+    "qualified two-domain mesh pair",
     "static overset connectivity",
     "mesh motion and restart",
     "CFD flow steps and loads"
@@ -231,11 +239,24 @@
   },
   "full_mesh_construction": {
     "job_id": "mesh-construction-004",
-    "status": "ready_not_started",
-    "additional_attempts": 1,
+    "status": "generated_and_exported_quality_unverified",
+    "additional_attempts_used": 1,
+    "additional_attempts_remaining": 0,
+    "elapsed_seconds_including_cleanup": 298.70602893829346,
     "total_budget_seconds_including_cleanup": 7200,
+    "background_native_nodes": 1458636,
+    "background_native_elements": 8617720,
+    "arm_native_nodes": 159630,
+    "arm_native_elements": 846862,
+    "owned_cleanup_verified": true,
+    "inputs_and_sources_reverified_after_cleanup": true,
     "automatic_retries": 0,
     "CFD_allowed": false,
-    "quality_policy": "Native minimum orthogonal quality must be finite and >=0.01. Unavailable metrics remain unverified; no substitution from skewness."
+    "solver_launched": false,
+    "actual_mesh_motion_steps": 0,
+    "actual_flow_steps": 0,
+    "summary": "evidence/mesh_construction_004_summary.json",
+    "quality_policy": "Native minimum orthogonal quality must be finite and >=0.01. Unavailable metrics remain unverified; no substitution from skewness.",
+    "post_run_quantity_fix": "Offline tested only; original native metric values were not reconstructed or overwritten."
   }
 }

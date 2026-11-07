@@ -196,9 +196,13 @@ def run(attempt, *, total_deadline_unix=None, cancel_check=None, on_progress=Non
         finally:
             progress(status="cleaning", phase="cleanup")
             cleanup = not launch_uncertain and process is None
-            if tree is not None and not launch_uncertain:
+            if tree is not None:
                 try:
-                    cleanup = call(tree.close, 20, cleanup=True)
+                    # Uncertainty does not erase verified PID/create-time ownership.
+                    # Stop every known-owned member, but retain the lock because an
+                    # in-flight call may still have extended the process tree.
+                    known_owned_closed = call(tree.close, 20, cleanup=True)
+                    cleanup = bool(known_owned_closed) and not launch_uncertain
                 except Exception as exc:
                     cleanup = False
                     report["cleanup_error"] = type(exc).__name__ + ": " + str(exc)

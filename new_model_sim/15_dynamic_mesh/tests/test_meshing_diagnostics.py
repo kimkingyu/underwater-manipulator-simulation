@@ -1,4 +1,6 @@
+import ast
 import json
+import math
 import tempfile
 import unittest
 from pathlib import Path
@@ -8,7 +10,7 @@ STAGE = Path(__file__).resolve().parents[1]
 
 
 class MeshingFailureDiagnosticsTests(unittest.TestCase):
-    def execute(self, missing_selection=False, positive_mesh=False):
+    def execute(self, missing_selection=False, positive_mesh=False, quantity_metrics=False):
         with tempfile.TemporaryDirectory(prefix="_test_mesh_diag_", dir=str(STAGE / "runs")) as directory:
             path = Path(directory) / "stats.json"
             messages = []
@@ -43,6 +45,13 @@ class MeshingFailureDiagnosticsTests(unittest.TestCase):
                   "SelectionTypeEnum": SimpleNamespace(GeometryEntities="GeometryEntities"),
                   "MethodType": SimpleNamespace(AllTriAllTet="AllTriAllTet"),
                   "Quantity": lambda value: value}
+            if quantity_metrics:
+                mesh.Minimum = SimpleNamespace(Value=0.05)
+                mesh.Maximum = SimpleNamespace(Value=0.8)
+                mesh.Average = SimpleNamespace(Value=0.2)
+                # This fixture deliberately lacks OrthogonalQuality: skewness
+                # must never be reported as a substitute for that metric.
+                ns["MeshMetricType"] = SimpleNamespace(Skewness="Skewness")
             source = (STAGE / "mesh/meshing_stage15.py.in").read_text(encoding="utf-8").replace("__CONFIG_JSON__", repr(json.dumps(cfg)))
             error = None
             try:
@@ -73,6 +82,49 @@ class MeshingFailureDiagnosticsTests(unittest.TestCase):
         self.assertFalse(report["valid"])
         self.assertFalse(report["motion_authorized"])
         self.assertIsNone(error)
+
+    def test_quantity_skewness_does_not_fabricate_orthogonal_quality(self):
+        report, error = self.execute(positive_mesh=True, quantity_metrics=True)
+        self.assertIsNone(error)
+        self.assertEqual(report["quality"]["skewness"]["minimum"], 0.05)
+        self.assertEqual(report["quality"]["skewness"]["maximum"], 0.8)
+        self.assertEqual(report["quality"]["skewness"]["average"], 0.2)
+        self.assertEqual(report["quality"]["orthogonal_quality"]["status"], "unavailable")
+        self.assertFalse(report["valid"])
+        self.assertFalse(report["motion_authorized"])
+
+
+class MetricNumberTests(unittest.TestCase):
+    def setUp(self):
+        tree = ast.parse((STAGE / "mesh/meshing_stage15.py.in").read_text(encoding="utf-8"))
+        function = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "metric_number")
+        module = ast.Module(body=[function], type_ignores=[])
+        namespace = {"math": math}
+        exec(compile(ast.fix_missing_locations(module), "metric_number_fixture", "exec"), namespace)
+        self.metric_number = namespace["metric_number"]
+
+    def test_public_quantity_value_without_float_protocol(self):
+        class Quantity:
+            Value = 0.3
+            def __float__(self):
+                raise AssertionError("must read the public Quantity.Value")
+        self.assertEqual(self.metric_number(Quantity()), 0.3)
+
+    def test_numeric_scalar_fallback(self):
+        self.assertEqual(self.metric_number(0.4), 0.4)
+
+    def test_nonfinite_values_are_rejected(self):
+        for value in (float("nan"), float("inf"), float("-inf")):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                self.metric_number(SimpleNamespace(Value=value))
+
+    def test_boolean_values_are_rejected(self):
+        with self.assertRaises(ValueError):
+            self.metric_number(SimpleNamespace(Value=True))
+
+    def test_unreadable_quantity_is_not_silently_replaced(self):
+        with self.assertRaises(ValueError):
+            self.metric_number(SimpleNamespace(Value="unreadable"))
 
 
 if __name__ == "__main__":

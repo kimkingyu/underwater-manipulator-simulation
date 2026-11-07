@@ -6,7 +6,7 @@ import subprocess
 import time
 from contextlib import ExitStack
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from pathlib import Path
 
 STAGE = Path(__file__).resolve().parents[1]
@@ -108,19 +108,22 @@ class MeshJobPreflightTests(unittest.TestCase):
 
 class MeshJobExecutionTests(MeshJobPreflightTests):
     def execute_fake(self, *, failure=False, cleanup=True, uncertain=False, ownership_error=False,
-                     cancel_after_launch=False, domain_timeout=False, progress_failure=False):
+                     cancel_after_launch=False, domain_timeout=False, progress_failure=False,
+                     owned_uncertain=False):
         contract = {'software': {'workbench': 'FAKE_WORKBENCH_NEVER_EXECUTED'},
                     'budget': {'mesh_system_timeout_s': 3600, 'minimum_free_disk_gib': 1}}
         clock = [0.0]
         process = SimpleNamespace(pid=987654, returncode=0)
         def wait(timeout):
+            if owned_uncertain:
+                raise probe.UncertainCall('synthetic wait timeout after owned tree capture')
             if domain_timeout:
                 clock[0] += 3601
                 raise subprocess.TimeoutExpired('fake', timeout)
             return 0
         process.wait = wait
         tree = SimpleNamespace(members={987654: 123.0}, errors=['synthetic initial ownership error'] if ownership_error else [],
-                               capture=lambda: None, close=lambda: cleanup)
+                               capture=lambda: None, close=Mock(return_value=cleanup))
         launched = [False]
         def spawn(*args, **kwargs):
             self.assertFalse(kwargs['shell'])
@@ -154,6 +157,10 @@ class MeshJobExecutionTests(MeshJobPreflightTests):
             code = job.run(self.root, total_deadline_unix=time.time() + 7200,
                            cancel_check=lambda: launched[0] and cancel_after_launch, on_progress=progress)
             self.assertEqual(popen.call_count, 1)
+            if owned_uncertain:
+                tree.close.assert_called_once_with()
+            if uncertain:
+                tree.close.assert_not_called()
         return code, json.loads((self.root / 'workbench_execution.json').read_text()), observed
 
     def test_fake_execution_keeps_legacy_integer_and_new_deadline_fields(self):
@@ -198,6 +205,16 @@ class MeshJobExecutionTests(MeshJobPreflightTests):
         self.assertEqual(report['status'], 'cleanup_unverified')
         self.assertFalse(report['owned_cleanup_verified'])
         self.assertTrue((self.root / '.ansys-task.lock').exists())
+
+    def test_uncertain_call_after_tree_capture_still_closes_known_owned_members_and_retains_lock(self):
+        code, report, _ = self.execute_fake(owned_uncertain=True)
+        self.assertEqual(code, 2)
+        self.assertIn('wait timeout after owned tree capture', report['error'])
+        self.assertEqual(report['status'], 'cleanup_unverified')
+        self.assertFalse(report['owned_cleanup_verified'])
+        self.assertTrue(report['task_lock_retained'])
+        self.assertTrue((self.root / '.ansys-task.lock').exists())
+        self.assertEqual(report['owned_processes'], [{'pid': 987654, 'creation_time': 123.0}])
 
     def test_unknown_ownership_never_releases_shared_lock(self):
         _, report, _ = self.execute_fake(ownership_error=True)
