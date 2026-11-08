@@ -16,7 +16,7 @@ from mcp_bridge import Stage15Bridge, redact
 from sizing_mcp_bridge import SizingBudget
 from mesh_mcp_bridge import MeshSlot
 from mesh_inspection_mcp_bridge import InspectionSlot, inspection_job
-from inspection_batch002_bridge import Batch002Slot, batch_job
+from inspection_batch002_bridge import Batch002Slot, SupplementalConnectionSlot, SUPPLEMENT_JOB, batch_job
 
 mcp = FastMCP(
     "ansys-stage15",
@@ -59,6 +59,7 @@ def combined_status():
     result["mesh_construction"] = mesh.status()
     result["mesh_inspection"] = {domain: InspectionSlot(domain).status() for domain in ("background", "arm")}
     result["inspection_batch002"] = {name: Batch002Slot(name).status() for name in ("connection", "background", "arm")}
+    result["supplemental_connection"] = SupplementalConnectionSlot().status()
     return result
 
 
@@ -69,7 +70,7 @@ def job_bridge(job_id):
         return mesh
     if job_id in ("mesh-inspection-001-background", "mesh-inspection-001-arm"):
         return inspection_job(job_id)
-    if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm"):
+    if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm", SUPPLEMENT_JOB):
         return batch_job(job_id)
     return sizing.job(job_id)
 
@@ -131,6 +132,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     Mesh construction confirmation: CANCEL_STAGE15_FULL_MESH_CONSTRUCTION.
     Read-only inspection confirmation: CANCEL_STAGE15_READ_ONLY_MESH_INSPECTION.
     New three-slot batch002 confirmation: CANCEL_STAGE15_BATCH002_READ_ONLY.
+    Supplemental connection confirmation: CANCEL_STAGE15_BATCH002_SUPPLEMENT_CONNECTION.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -204,12 +206,31 @@ async def stage15_batch002_preflight(slot: Literal["connection", "background", "
 async def stage15_start_batch002(slot: Literal["connection", "background", "arm"], confirmation: str) -> dict[str, Any]:
     """New user-authorized three-slot serial read-only batch, each <=300s including cleanup.
 
-    Requires RUN_STAGE15_BATCH002_READ_ONLY_ONCE. Start connection first; native
-    health SERVING, actual solver identity, frozen evidence and owned cleanup
-    must pass before either mesh slot can be reserved. Each slot once, no retry.
+    Requires RUN_STAGE15_BATCH002_READ_ONLY_ONCE. Original connection is retired
+    and never redirected. Only the separately authorized supplemental job's native
+    health SERVING, solver identity, current frozen evidence and owned cleanup
+    can unlock these original two QA slots. Each QA slot once, no new QA budget.
     No mesh generation/write, initialization, iteration, motion, overset or CFD.
     """
     return await asyncio.to_thread(guarded, Batch002Slot(slot).start, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_supplement_connection_preflight() -> dict[str, Any]:
+    """Read-only separately authorized one-connection supplement; no slot reservation or native launch."""
+    return await asyncio.to_thread(guarded, SupplementalConnectionSlot().preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_supplement_connection(confirmation: str) -> dict[str, Any]:
+    """One newly user-authorized connection only, <=300s including cleanup; no mesh read.
+
+    Requires RUN_STAGE15_BATCH002_SUPPLEMENT_CONNECTION_ONCE. The old failed
+    connection cannot be reused. Only this job's current native readiness and
+    verified cleanup may unlock the original two unused QA slots, never add QA
+    attempts. No automatic retry, mesh generation, initialization or CFD.
+    """
+    return await asyncio.to_thread(guarded, SupplementalConnectionSlot().start, confirmation)
 
 
 if __name__ == "__main__":

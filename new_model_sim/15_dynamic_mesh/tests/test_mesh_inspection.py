@@ -483,7 +483,8 @@ def test_server_schema_old_ten_and_new_routes_are_preserved():
            "stage15_job_log", "stage15_cancel_job", "stage15_sizing_preflight", "stage15_start_sizing_diagnostic",
            "stage15_mesh_preflight", "stage15_start_mesh_construction"}
     assert tools == old | {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection",
-                           "stage15_batch002_preflight", "stage15_start_batch002"}
+                           "stage15_batch002_preflight", "stage15_start_batch002",
+                           "stage15_supplement_connection_preflight", "stage15_start_supplement_connection"}
     assert "return inspection_job(job_id)" in source
     check = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")
     assert '("stage15_start_mesh_inspection", {"domain": "arm", "confirmation": "NO"})' in check

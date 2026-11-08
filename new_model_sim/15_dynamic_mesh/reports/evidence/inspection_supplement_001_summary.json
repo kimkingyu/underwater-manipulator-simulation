@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_native_EOF_failure_and_offline_stdin_fix",
+  "native_run_local_date": "2026-11-08",
+  "job_id": "inspection-b002-connection-supplement-001",
+  "elapsed_seconds": 45.37483927345602,
+  "supplemental_connection_attempts_authorized": 1,
+  "supplemental_connection_attempts_consumed": 1,
+  "supplemental_connection_attempts_remaining": 0,
+  "additional_QA_attempts": 0,
+  "original_QA_slots_unconsumed": 2,
+  "QA_gate_passed": false,
+  "original_status": "cleanup_unverified",
+  "original_owned_cleanup_verified": false,
+  "readiness": {
+    "loopback_alias_accepted": true,
+    "single_channel_count": 1,
+    "transport_wait_count": 1,
+    "transport_status": "FAILED_OR_TIMED_OUT",
+    "transport_wait_limit_seconds": 20,
+    "native_exception_class": "FutureTimeoutError",
+    "health_poll_count": 0,
+    "connection_constructor_count": 0,
+    "read_mesh_completed": false
+  },
+  "native_log_events": [
+    {
+      "file": "native.stdout.log",
+      "line": 85,
+      "fixed_excerpt": "The server has started and is running."
+    },
+    {
+      "file": "native.stdout.log",
+      "line": 87,
+      "fixed_excerpt": "Halting due to end of file on input."
+    },
+    {
+      "file": "native.stdout.log",
+      "line": 92,
+      "fixed_excerpt": "Shutdown Complete."
+    }
+  ],
+  "confirmed_failure": "Native service started, then explicitly halted because standard input reached EOF; the executed native Popen supplied DEVNULL.",
+  "not_claimed": "No proof that the older batch001 failures had the same cause, nor that the stdin fix has succeeded natively.",
+  "original_receipts": {
+    "request.json": "8364c433a25ecd02aaa88116bb4ae3f00d4318cf6a996187e88574be73f741e9",
+    "native_result.json": "d57609473ff1b55f02116a2f6eccf7a006e38527285f10ea6f5c055c3c5c55a6",
+    "readiness.json": "360c1d5180331a2d8f58cf80eacf3dcfc5a464701ccdbc9f24f9dd91031589d5",
+    "probe_result.json": "a75be37e1efe6e9171a7849df826d6cfdf7fcdc43abd80a440afe444b5246307"
+  },
+  "fresh_cleanup_review": {
+    "known_pid_create_time_identities_rechecked": 9,
+    "active_owned_processes": 0,
+    "active_ansys_clients": 0,
+    "extra_native_engines": 0,
+    "only_exact_matching_owned_locks_released": true,
+    "processes_signalled_during_review": 0,
+    "protected_inputs_and_meshes_unchanged": true,
+    "original_failed_cleanup_receipt_preserved": true,
+    "receipt_sha256": "89ec7c817116ba3fc8ab8ba36f57e51b740ca02a6b4287ee17710b0e60b386e2"
+  },
+  "offline_fix": {
+    "native_stdin": "private PIPE held open through connection and bounded session exit, never written; closed only in cleanup",
+    "inherits_adapter_DEVNULL": false,
+    "writes_or_flushes_commands": false,
+    "uses_communicate": false,
+    "native_mode_authentication_and_quality_gates_changed": false,
+    "new_native_runs": 0,
+    "archived_runtime_source_count": 19,
+    "archive_total_files": 34,
+    "archive_manifest_sha256": "56cf3846f7932e609fb87d1f0f1133633eae7dc94554d9a4370748984170306a",
+    "binding_revision_additional_attempts": 0,
+    "consumed_supplement_slot_retired": true,
+    "tests_passed": 1036,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1033,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 16,
+    "protocol_checks_passed": 26
+  },
+  "gates": {
+    "connection_verified": false,
+    "native_quality_verified": false,
+    "volumes_and_adjacency_verified": false,
+    "overset_verified": false,
+    "initializations": 0,
+    "flow_iterations": 0,
+    "mesh_motion_steps": 0
+  },
+  "publication_scope": "Source/tests and this derived redacted summary only. No credentials, credential hashes, server-info, authorization files, native raw logs, mesh/CAD binaries or source archives are published."
+}

@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import threading
 import time
 
 sys.dont_write_bytecode = True
@@ -21,9 +22,10 @@ from mcp_bridge import STAGE, read_json, sha256
 from mesh_inspection_connection import safe_connection_error
 from mesh_inspection_evidence import finite, parse_native_output, validate_native_evidence
 from inspection_batch002_connection import connect_ready, readiness_passed
-from inspection_batch002_bridge import Batch002Slot, BATCH, SLOTS, MESHES
+from inspection_batch002_bridge import Batch002Slot, BATCH, SLOTS, MESHES, EXECUTION_SLOTS, execution_slot, SUPPLEMENT, POLICY
 
 NATIVE_APIS = ["one Popen fixed fluent.exe 3ddp -g -t1 -sifile=<fixed attempt>/server.info -nm",
+    "private native stdin=PIPE kept open without writes through connection/inspection; close only in controlled final cleanup",
     "child-only REMOTING_SERVER_ADDRESS=127.0.0.1", "one grpc.insecure_channel on exact 127.0.0.1",
     "grpc.channel_ready_future(same_channel).result(timeout=min(20,original_45s_remaining)) once",
     "HealthCheckService.check_health same-channel bounded polling; only completed UNAVAILABLE may wait; auth/hung calls abort",
@@ -35,8 +37,8 @@ NATIVE_APIS = ["one Popen fixed fluent.exe 3ddp -g -t1 -sifile=<fixed attempt>/s
 
 def slot_for_attempt(attempt, root=STAGE):
     path = checked_path(attempt, root)
-    for name in SLOTS:
-        slot = Batch002Slot(name, root)
+    for name in EXECUTION_SLOTS:
+        slot = execution_slot(name, root)
         if path == slot.safe(slot.ATTEMPT):
             return slot, path
     raise RuntimeGateError("Only pre-reserved fixed batch002 attempts are permitted")
@@ -49,7 +51,7 @@ def validate_request(slot, attempt):
     if (set(value) != keys or type(value.get("schema_version")) is not int or value["schema_version"] != 1 or
             value.get("operation") != slot.OPERATION or value.get("job_id") != slot.JOB_ID or
             value.get("batch_id") != BATCH or value.get("slot") != slot.slot or
-            value.get("mesh") != (None if slot.slot == "connection" else MESHES[slot.slot])):
+            value.get("mesh") != (None if slot.is_connection else MESHES[slot.slot])):
         raise RuntimeGateError("Fixed batch002 request identity mismatch")
     if not all(finite(value.get(k)) for k in ("created_unix", "deadline_unix", "work_deadline_unix")):
         raise RuntimeGateError("Nonfinite batch002 deadline")
@@ -113,11 +115,52 @@ def collect_mesh(solver, slot, attempt, report):
     step("mesh_check", lambda: solver.tui.mesh.check())
 
 
+class NativeInputLease:
+    """Own only the private empty stdin writer; never write/flush/communicate.
+
+    Popen may finish after bounded_call has timed out. Mark closure requested in
+    finally; a late returned writer is closed immediately, without killing or
+    adopting an unverified process. Outer worker still preserves ownership locks.
+    """
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._writer = None
+        self._closing = False
+        self._closed = False
+        self._late_return = False
+
+    def adopt(self, process):
+        with self._lock:
+            self._writer = process.stdin
+            if self._writer is None or getattr(self._writer, "closed", False) is True:
+                raise RuntimeGateError("Native private stdin pipe was absent or already closed")
+            if self._closing:
+                self._late_return = True
+                self._writer.close()
+                self._closed = True
+        return process
+
+    def close(self):
+        with self._lock:
+            self._closing = True
+            if self._writer is not None and not self._closed:
+                self._writer.close()
+                self._closed = True
+
+    def evidence(self):
+        with self._lock:
+            return {"mode": "private_subprocess_PIPE", "bytes_written": 0,
+                    "close_requested_in_cleanup": self._closing, "pipe_returned": self._writer is not None,
+                    "writer_closed": self._closed, "late_return_after_close_request": self._late_return}
+
+
 def native_collect(attempt, *, stage_root=STAGE):
     slot, attempt = slot_for_attempt(attempt, stage_root)
+    if slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"]:
+        raise RuntimeGateError("Consumed connection worker permanently retired; no new native allowance")
     request = validate_request(slot, attempt)
     slot.authorize()
-    if slot.slot != "connection":
+    if not slot.is_connection:
         slot.connection_gate()
     parent = psutil.Process(os.getppid())
     owner = read_json(attempt / "launcher.json", 8192)
@@ -134,6 +177,7 @@ def native_collect(attempt, *, stage_root=STAGE):
         "commands": {}, "errors": {}, "launch_uncertain": True, "mesh_generated": False, "flow_iterations": 0,
         "readiness": {}}
     solver = None
+    native_input = NativeInputLease()
     transcript = attempt / "native.transcript.txt"
     try:
         frozen = validate_frozen(stage_root)
@@ -145,8 +189,12 @@ def native_collect(attempt, *, stage_root=STAGE):
         report["native_command"] = command
         end = time.monotonic() + min(45, request["work_deadline_unix"] - time.time())
         write_new(attempt / "fluent_launch_started.json", {"job_id": slot.JOB_ID, "startup_seconds": 45}, attempt)
-        process = bounded_call(lambda: subprocess.Popen(command, cwd=str(attempt), stdin=subprocess.DEVNULL, shell=False),
-                               min(10, end - time.monotonic()))
+        def launch_with_private_input():
+            # Do not inherit the adapter's DEVNULL input and do not use a Popen
+            # context manager (which would close this writer before connection).
+            process = subprocess.Popen(command, cwd=str(attempt), stdin=subprocess.PIPE, shell=False)
+            return native_input.adopt(process)
+        process = bounded_call(launch_with_private_input, min(10, end - time.monotonic()))
         identity = psutil.Process(process.pid)
         write_new(attempt / "fluent_process.json", {"job_id": slot.JOB_ID, "pid": process.pid,
             "creation_time": identity.create_time(), "parent_pid": identity.ppid(), "executable": identity.exe()}, attempt)
@@ -156,7 +204,7 @@ def native_collect(attempt, *, stage_root=STAGE):
         # Connection probe starts transcript only after authenticated connection;
         # its structured native readiness includes direct health/mode/version.
         solver.tui.file.start_transcript(str(transcript))
-        if slot.slot != "connection":
+        if not slot.is_connection:
             collect_mesh(solver, slot, attempt, report)
         solver.tui.file.stop_transcript()
         if transcript.is_file() and transcript.stat().st_size <= 2 * 1024 * 1024:
@@ -166,20 +214,37 @@ def native_collect(attempt, *, stage_root=STAGE):
     except Exception as exc:
         report["errors"]["native_adapter"] = safe_connection_error(exc)
     finally:
-        write_new(attempt / "readiness.json", report["readiness"], attempt)
-        report["readiness_sha256"] = sha256(attempt / "readiness.json")
-        if slot.slot in MESHES:
-            report["inspection"] = validate_native_evidence(report.get("mesh_evidence", {}), slot.slot)
-        write_new(attempt / "native_result.json", report, attempt)
-        if solver is not None:
-            solver.exit()
+        # Connection/inspection has ended. Keep the empty input writer alive
+        # through the bounded session shutdown request, then explicitly close
+        # only this owned handle, including every failure/timeout path.
+        try:
+            if solver is not None:
+                report["stdin_close_phase"] = "after_bounded_session_exit_request"
+                try:
+                    bounded_call(solver.exit, min(2, max(0, request["deadline_unix"] - time.time())))
+                except Exception as exc:
+                    report["errors"]["session_exit"] = safe_connection_error(exc)
+            else:
+                report["stdin_close_phase"] = "native_failure_final_cleanup"
+        finally:
+            try:
+                native_input.close()
+            except Exception as exc:
+                report["errors"]["stdin_close"] = safe_connection_error(exc)
+            report["stdin_lifecycle"] = native_input.evidence()
+            write_new(attempt / "readiness.json", report["readiness"], attempt)
+            report["readiness_sha256"] = sha256(attempt / "readiness.json")
+            if slot.slot in MESHES:
+                report["inspection"] = validate_native_evidence(report.get("mesh_evidence", {}), slot.slot)
+            write_new(attempt / "native_result.json", report, attempt)
     return report
 
 
 def run(attempt, *, stage_root=STAGE):
     slot, attempt = slot_for_attempt(attempt, stage_root)
-    if (attempt / "probe_result.json").exists():
-        raise RuntimeGateError("Batch002 slot consumed; never rerun")
+    if (slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
+            (attempt / "probe_result.json").exists()):
+        raise RuntimeGateError("Batch002 slot consumed or retired; never rerun")
     write_new(attempt / "worker_claim.json", {"job_id": slot.JOB_ID, "pid": os.getpid()}, attempt)
     began = time.monotonic()
     report = {"job_id": slot.JOB_ID, "batch_id": BATCH, "slot": slot.slot, "status": "running",
@@ -207,7 +272,7 @@ def run(attempt, *, stage_root=STAGE):
     def recheck():
         slot.authorize()
         validate_request(slot, attempt)
-        if slot.slot != "connection":
+        if not slot.is_connection:
             report["connection_gate"] = slot.connection_gate()
         return validate_frozen(stage_root)
     def capture():
@@ -284,7 +349,7 @@ def run(attempt, *, stage_root=STAGE):
         if (not readiness_passed(readiness) or readiness != native.get("readiness") or
                 native.get("readiness_sha256") != sha256(attempt / "readiness.json")):
             raise RuntimeGateError("Batch002 native readiness artifact mismatch")
-        if slot.slot == "connection" and native.get("commands") != {}:
+        if slot.is_connection and native.get("commands") != {}:
             raise RuntimeGateError("Connection probe must never inspect a mesh")
         transcript = attempt / "native.transcript.txt"
         if (not transcript.is_file() or transcript.stat().st_size > 2 * 1024 * 1024 or
@@ -368,19 +433,19 @@ def main(argv=None):
     modes.add_argument("--preflight", action="store_true")
     modes.add_argument("--run", action="store_true")
     modes.add_argument("--native", action="store_true")
-    parser.add_argument("--slot", choices=SLOTS)
+    parser.add_argument("--slot", choices=EXECUTION_SLOTS)
     parser.add_argument("--attempt", type=Path)
     args = parser.parse_args(argv)
     if args.preflight:
-        if args.slot not in SLOTS or args.attempt is not None:
+        if args.slot not in EXECUTION_SLOTS or args.attempt is not None:
             parser.error("Preflight accepts fixed slot only")
-        slot = Batch002Slot(args.slot)
+        slot = execution_slot(args.slot)
         slot.authorize()
         frozen = validate_frozen()
         if not Path(frozen["contract"]["software"]["fluent"]).is_file():
             raise RuntimeGateError("Fixed Fluent executable missing")
         report = {"status": "passed", "batch_id": BATCH, "slot": args.slot, "job_id": slot.JOB_ID,
-            "slot_reserved": slot.safe(slot.ATTEMPT).exists(), "connection_gate_required": args.slot != "connection",
+            "slot_reserved": slot.safe(slot.ATTEMPT).exists(), "connection_gate_required": not slot.is_connection,
             "maximum_seconds_including_cleanup": 300, "CFD_authorized": False}
     else:
         if args.attempt is None or args.slot is not None:

@@ -24,6 +24,9 @@ from test_definition_probe import sandbox, dump
 @pytest.fixture
 def batch(sandbox, monkeypatch):
     root, _, _ = sandbox
+    # Internal fake-process regression of historical launches only; production
+    # policy retires the consumed supplement and no MCP parameter can alter it.
+    monkeypatch.setitem(b.POLICY, "supplement_connection_retired", False)
     for relative in b.SOURCES:
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -38,7 +41,7 @@ def batch(sandbox, monkeypatch):
     baseline = root / b.POLICY["baseline_batch_authorization_relative"]
     dump(baseline, {"OFFLINE": "original unconsumed three-slot grant fixture"})
     monkeypatch.setitem(b.POLICY, "baseline_batch_authorization_sha256", legacy.sha256(baseline))
-    slot = b.Batch002Slot("connection", root)
+    slot = b.SupplementalConnectionSlot(root)
     dump(root / b.MANIFEST, {"schema_version": 1, "files": slot._sources()})
     grant = copy.deepcopy(b.POLICY)
     grant.update(authorization_source="OFFLINE fixture, not a real grant", recorded_local="fixture",
@@ -76,13 +79,16 @@ def reserve(root, slot):
 
 
 def completed_connection(root):
-    slot = b.Batch002Slot("connection", root)
+    slot = b.SupplementalConnectionSlot(root)
     path, req = reserve(root, slot)
+    req.update(created_unix=req["created_unix"] - 30, deadline_unix=req["deadline_unix"] - 30,
+               work_deadline_unix=req["work_deadline_unix"] - 30)
+    dump(path / "request.json", req)
     readiness = ready()
     (path / "native.transcript.txt").write_text("OFFLINE transcript fixture", encoding="utf-8")
-    dump(path / "command_audit.json", {"job_id": slot.JOB_ID, "batch_id": b.BATCH, "slot": "connection", "free_form_commands_accepted": False})
+    dump(path / "command_audit.json", {"job_id": slot.JOB_ID, "batch_id": b.BATCH, "slot": slot.slot, "free_form_commands_accepted": False})
     dump(path / "readiness.json", readiness)
-    native = {"job_id": slot.JOB_ID, "slot": "connection", "batch_id": b.BATCH,
+    native = {"job_id": slot.JOB_ID, "slot": slot.slot, "batch_id": b.BATCH,
         "provenance": "live_fluent_batch002", "readiness": readiness,
         "readiness_sha256": legacy.sha256(path / "readiness.json"), "launch_uncertain": False,
         "commands": {}, "errors": {}, "mesh_generated": False, "flow_iterations": 0,
@@ -95,7 +101,7 @@ def completed_connection(root):
         "parent_pid": 222, "executable": executable})
     from preflight import verify_inputs
     inputs = verify_inputs(legacy.read_json(root / "frozen/input_manifest.json"), workspace=root.parent.parent)
-    final = {"job_id": slot.JOB_ID, "slot": "connection", "batch_id": b.BATCH, "status": "completed",
+    final = {"job_id": slot.JOB_ID, "slot": slot.slot, "batch_id": b.BATCH, "status": "completed",
         "protected_inputs_before": inputs, "protected_inputs_after": inputs,
         "created_unix": req["created_unix"], "deadline_unix": req["deadline_unix"], "work_deadline_unix": req["work_deadline_unix"],
         "serial_dispatch_released": True, "mesh_motion_verified": False, "ownership_errors": [],
@@ -113,7 +119,7 @@ def completed_connection(root):
 def test_connection_gate_missing_refuses_without_consuming(batch, name):
     root, _, popen = batch
     slot = b.Batch002Slot(name, root)
-    with pytest.raises(legacy.BridgeError): slot.start(b.START)
+    with pytest.raises(legacy.BridgeError): slot.start(slot.START_CONFIRMATION)
     assert not slot.safe(slot.ATTEMPT).exists()
     popen.assert_not_called()
 
@@ -121,13 +127,13 @@ def test_connection_gate_missing_refuses_without_consuming(batch, name):
 def test_connection_slot_has_no_mesh_and_is_consumed_on_first_launch(batch, monkeypatch):
     root, slot, popen = batch
     monkeypatch.setattr(slot, "_inspect_pid", lambda pid: {"pid": pid, "exists": True, "creation_time": 123.5})
-    first = slot.start(b.START)
+    first = slot.start(slot.START_CONFIRMATION)
     assert first["new_worker_started"] is True
     req = legacy.read_json(slot.safe(slot.ATTEMPT + "/request.json"))
     assert req["mesh"] is None and req["batch_id"] == b.BATCH
     assert req["deadline_unix"] - req["created_unix"] == 300
     assert req["work_deadline_unix"] - req["created_unix"] == 270
-    assert slot.start(b.START)["status"] == "already_reserved"
+    assert slot.start(slot.START_CONFIRMATION)["status"] == "already_reserved"
     assert popen.call_count == 1
 
 
@@ -145,8 +151,8 @@ def test_exact_three_slots_no_extra_or_old_aliases(batch, monkeypatch):
     for name in ("background", "arm"):
         slot = b.Batch002Slot(name, root)
         monkeypatch.setattr(slot, "_inspect_pid", lambda pid: {"pid": pid, "exists": True, "creation_time": 123.5})
-        assert slot.start(b.START)["new_worker_started"] is True
-        assert slot.start(b.START)["new_worker_started"] is False
+        assert slot.start(slot.START_CONFIRMATION)["new_worker_started"] is True
+        assert slot.start(slot.START_CONFIRMATION)["new_worker_started"] is False
         (root / ".mesh-inspection-dispatch.lock").unlink()  # offline fake worker completes between serial slots
     assert popen.call_count == 2  # fixture wrote connection; only two fake mesh workers
     assert all(b.Batch002Slot(n, root).status()["remaining_attempts"] == 0 for n in b.SLOTS)
@@ -157,13 +163,13 @@ def test_exact_three_slots_no_extra_or_old_aliases(batch, monkeypatch):
 @pytest.mark.parametrize("key,value", [("maximum_attempts", 4), ("maximum_attempts_per_slot", 2),
     ("maximum_total_seconds_per_slot", 301), ("native_start_timeout_seconds", 60), ("remoting_server_address", "0.0.0.0"),
     ("connection_gate_required", False), ("automatic_retry_allowed", True), ("old_slots_reusable", True),
-    ("additional_attempts_authorized", 1), ("transport_ready_max_seconds", 45),
+    ("additional_attempts_authorized", 2), ("additional_QA_attempts", 1), ("additional_connection_attempts", 2), ("transport_ready_max_seconds", 45),
     ("mesh_generation_allowed", True), ("initialization_allowed", True), ("iterations_allowed", True),
     ("motion_allowed", True), ("CFD_allowed", True), ("maximum_attempts", True), ("arbitrary_command", "exec")])
 def test_new_grant_cannot_expand_scope(batch, key, value):
     root, slot, popen = batch
     grant = legacy.read_json(root / b.GRANT); grant[key] = value; dump(root / b.GRANT, grant)
-    with pytest.raises(legacy.BridgeError): slot.start(b.START)
+    with pytest.raises(legacy.BridgeError): slot.start(slot.START_CONFIRMATION)
     assert not slot.safe(slot.ATTEMPT).exists()
     popen.assert_not_called()
 
@@ -204,11 +210,11 @@ def test_connection_gate_tampering_or_exit0_alone_never_passes(batch, file, key,
 def test_source_mesh_or_manifest_changes_block_new_slots(batch, relative):
     root, slot, popen = batch
     with (root / relative).open("ab") as out: out.write(b"changed")
-    with pytest.raises(legacy.BridgeError): slot.start(b.START)
+    with pytest.raises(legacy.BridgeError): slot.start(slot.START_CONFIRMATION)
     popen.assert_not_called()
 
 
-@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_batch002_authorization_003.json", "execution_binding/mesh_inspection_batch002_sources_003.json"])
+@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_batch002_supplement_authorization_002.json", "execution_binding/mesh_inspection_batch002_supplement_sources_002.json"])
 def test_archived_execution_grant_or_manifest_tamper_blocks_mesh(batch, relative):
     root, _, popen = batch
     path = completed_connection(root)
@@ -232,7 +238,7 @@ def test_archived_connection_source_tamper_blocks_mesh(batch):
 def test_shared_lock_preserved_without_consuming(batch, lock):
     root, slot, popen = batch
     dump(root / lock, {"token": "not-owned"})
-    with pytest.raises(legacy.BridgeError): slot.start(b.START)
+    with pytest.raises(legacy.BridgeError): slot.start(slot.START_CONFIRMATION)
     assert legacy.read_json(root / lock)["token"] == "not-owned"
     assert not slot.safe(slot.ATTEMPT).exists()
     popen.assert_not_called()
@@ -241,11 +247,11 @@ def test_shared_lock_preserved_without_consuming(batch, lock):
 def test_uncertain_worker_launch_preserves_dispatch_and_once_budget(batch, monkeypatch):
     root, slot, _ = batch
     monkeypatch.setattr(slot, "launch_worker", lambda *a, **k: (_ for _ in ()).throw(legacy.WorkerLaunchUncertain("offline")))
-    result = slot.start(b.START)
+    result = slot.start(slot.START_CONFIRMATION)
     assert result["status"] == "cleanup_unverified"
     assert (root / ".mesh-inspection-dispatch.lock").exists()
-    assert slot.start(b.START)["new_worker_started"] is False
-    assert slot.cancel(slot.JOB_ID, b.CANCEL)["lock_must_be_preserved"] is True
+    assert slot.start(slot.START_CONFIRMATION)["new_worker_started"] is False
+    assert slot.cancel(slot.JOB_ID, slot.CANCEL_CONFIRMATION)["lock_must_be_preserved"] is True
 
 
 def test_old_slots_permanently_consumed_new_slots_separate(batch):
@@ -441,6 +447,9 @@ def test_fixed_policy_matches_ready_wait_limits():
     assert b.POLICY["health_call_max_seconds"] == c.HEALTH_CALL_MAX_SECONDS == 2
     assert b.POLICY["maximum_health_polls"] == c.MAX_HEALTH_POLLS == 200
     assert b.POLICY["additional_attempts_authorized"] == 0
+    assert b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["original_additional_connection_attempts"] == 1
+    assert b.POLICY["additional_QA_attempts"] == 0
 
 
 @pytest.mark.parametrize("host,category", [("localhost", "literal_localhost"), ("LOCALHOST", "literal_localhost"),
@@ -501,7 +510,7 @@ def test_consumed_failed_connection_stays_failed_after_alias_binding_repair(batc
     final["native"]["readiness"] = {"single_channel_count": 0, "transport_wait_count": 0, "health_poll_count": 0}
     dump(path / "probe_result.json", final)
     original = (path / "probe_result.json").read_bytes()
-    result = slot.start(b.START)
+    result = slot.start(slot.START_CONFIRMATION)
     assert result["status"] == "already_reserved" and result["job"]["status"] == "cleanup_unverified"
     assert result["job"]["slot_authorization"] == request["authorization"]
     assert result["job"]["connection_gate"]["status"] == "unverified"
@@ -587,7 +596,7 @@ def test_complete_fake_connection_worker_produces_gate_evidence_after_cleanup(ba
         dump(path / "fluent_process.json", {"job_id": slot.JOB_ID, "pid": 600, "creation_time": 600.5,
             "parent_pid": 500, "executable": executable})
         evidence = ready(); dump(path / "readiness.json", evidence)
-        dump(path / "native_result.json", {"job_id": slot.JOB_ID, "batch_id": b.BATCH, "slot": "connection",
+        dump(path / "native_result.json", {"job_id": slot.JOB_ID, "batch_id": b.BATCH, "slot": slot.slot,
             "provenance": "live_fluent_batch002", "launch_uncertain": False, "mesh_generated": False,
             "flow_iterations": 0, "commands": {}, "errors": {}, "readiness": evidence,
             "readiness_sha256": legacy.sha256(path / "readiness.json"),
@@ -619,7 +628,7 @@ def test_new_native_command_and_api_audit():
     assert "connect_ready" in calls
     assert "launch_fluent" not in source and "connect_to_fluent" not in source
     body = ast.get_source_segment(source, native)
-    assert 'if slot.slot != "connection":\n            collect_mesh' in body
+    assert 'if not slot.is_connection:\n            collect_mesh' in body
     assert 'REMOTING_SERVER_ADDRESS="127.0.0.1"' in source
     for danger in ("iterate(", "initialize(", "write_mesh(", "GenerateMesh", "read_case(", "find_remoting_ip("):
         assert danger not in source
@@ -628,10 +637,10 @@ def test_new_native_command_and_api_audit():
     assert set(queries) == {"(cx-solver-mode?)", "(cx-version)"}
 
 
-@pytest.mark.parametrize("name", ["connection", "background", "arm"])
+@pytest.mark.parametrize("name", [b.SUPPLEMENT, "background", "arm"])
 def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatch, name):
     root, _, _ = batch
-    slot = b.Batch002Slot(name, root)
+    slot = b.execution_slot(name, root)
     path, _ = reserve(root, slot)
     parent_pid = os.getppid()
     dump(path / "launcher.json", {"job_id": slot.JOB_ID, "pid": parent_pid, "creation_time": 123.5})
@@ -642,7 +651,7 @@ def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatc
     monkeypatch.setattr(w, "validate_frozen", lambda *a: {"contract": {"software": {"fluent": str(exe), "ansys_root": str(root)}}})
     monkeypatch.setattr(w.psutil, "Process", lambda pid=None: types.SimpleNamespace(pid=os.getpid() if pid is None else pid,
         create_time=lambda: 123.5, ppid=lambda: os.getpid(), exe=lambda: str(exe)))
-    popen = mock.Mock(return_value=types.SimpleNamespace(pid=501))
+    popen = mock.Mock(return_value=types.SimpleNamespace(pid=501, stdin=mock.Mock()))
     monkeypatch.setattr(w.subprocess, "Popen", popen)
     calls = []
     def record(label):
@@ -664,7 +673,7 @@ def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatc
     result = w.native_collect(path, stage_root=root)
     assert popen.call_count == len(connects) == 1
     assert "OFFLINE-SECRET" not in json.dumps(result)
-    if name == "connection":
+    if name == b.SUPPLEMENT:
         assert "read_mesh" not in calls and "quality" not in calls and result["commands"] == {}
         assert "mesh_evidence" not in result
     else:
@@ -679,7 +688,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
     external = next(row for row in manifest["files"] if row["path"].endswith(".step"))
     (root.parent.parent / external["path"]).write_bytes(b"changed STEP offline fixture")
     slot = b.Batch002Slot("arm", root)
-    with pytest.raises(legacy.BridgeError): slot.start(b.START)
+    with pytest.raises(legacy.BridgeError): slot.start(slot.START_CONFIRMATION)
     assert not slot.safe(slot.ATTEMPT).exists()
     popen.assert_not_called()
 
@@ -687,7 +696,8 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 14
+    assert len(names) == 16
+    assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")
     assert '("stage15_start_batch002", {"slot": "connection", "confirmation": "NO"})' in protocol
