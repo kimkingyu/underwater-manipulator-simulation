@@ -18,7 +18,7 @@ from mcp_bridge import Stage15Bridge, STAGE, ATTEMPT, JOB_ID, sha256, write_new
 from sizing_mcp_bridge import SizingBudget, SOURCE_RELATIVES as SIZING_SOURCES
 from mesh_mcp_bridge import MeshSlot, MESH_ATTEMPT, SOURCE_RELATIVES as MESH_SOURCES
 from mesh_inspection_mcp_bridge import InspectionSlot, SOURCES as INSPECTION_SOURCES
-from inspection_batch002_bridge import Batch002Slot, SupplementalConnectionSlot, SOURCES as BATCH002_SOURCES
+from inspection_batch002_bridge import Batch002Slot, SupplementalConnectionSlot, StdinValidationSlot, SOURCES as BATCH002_SOURCES
 SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES) | set(INSPECTION_SOURCES) | set(BATCH002_SOURCES)))
 
 EXPECTED_TOOLS = {
@@ -29,6 +29,7 @@ EXPECTED_TOOLS = {
     "stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection",
     "stage15_batch002_preflight", "stage15_start_batch002",
     "stage15_supplement_connection_preflight", "stage15_start_supplement_connection",
+    "stage15_stdin_validation_preflight", "stage15_start_stdin_validation",
 }
 
 
@@ -55,6 +56,7 @@ async def checks():
     batch002_before = {name: Batch002Slot(name).safe(Batch002Slot(name).ATTEMPT).exists()
                        for name in ("connection", "background", "arm")}
     supplement_before = SupplementalConnectionSlot().safe(SupplementalConnectionSlot().ATTEMPT).exists()
+    stdin_validation_before = StdinValidationSlot().safe(StdinValidationSlot().ATTEMPT).exists()
     # Existing locks are evidence, not something a read-only protocol check may
     # clear. Only NO confirmations are sent; compare lock bytes before/after.
     lock_names = (".ansys-task.lock", ".sizing-dispatch.lock", ".mesh-inspection-dispatch.lock")
@@ -84,6 +86,8 @@ async def checks():
                 ("stage15_start_batch002", {"slot": "connection", "confirmation": "NO"}),
                 ("stage15_supplement_connection_preflight", {}),
                 ("stage15_start_supplement_connection", {"confirmation": "NO"}),
+                ("stage15_stdin_validation_preflight", {}),
+                ("stage15_start_stdin_validation", {"confirmation": "NO"}),
                 ("stage15_cancel_job", {"job_id": JOB_ID, "confirmation": "NO"}),
                 ("stage15_job_log", {"job_id": "../contract.json", "stream": "trace", "limit": 10}),
                 ("stage15_preflight", {}),
@@ -93,8 +97,11 @@ async def checks():
                 results[name] = decoded(await session.call_tool(name, arguments))
     after = {name: sha256(STAGE / name) for name in SOURCE_RELATIVES}
     checks_result = {
-        "exact_sixteen_tools": names == EXPECTED_TOOLS,
-        "legacy_fourteen_tools_preserved": EXPECTED_TOOLS - {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names,
+        "exact_eighteen_tools": names == EXPECTED_TOOLS,
+        "legacy_sixteen_tools_preserved": EXPECTED_TOOLS - {"stage15_stdin_validation_preflight", "stage15_start_stdin_validation"} <= names,
+        "incorrect_stdin_validation_start_refused": results["stage15_start_stdin_validation"].get("status") == "blocked",
+        "stdin_validation_preflight_structured": results["stage15_stdin_validation_preflight"].get("status") in ("passed", "blocked", "failed"),
+        "stdin_validation_slot_preserved": StdinValidationSlot().safe(StdinValidationSlot().ATTEMPT).exists() == stdin_validation_before,
         "incorrect_supplement_start_refused": results["stage15_start_supplement_connection"].get("status") == "blocked",
         "supplement_preflight_structured": results["stage15_supplement_connection_preflight"].get("status") in ("passed", "blocked", "failed"),
         "supplement_slot_preserved": SupplementalConnectionSlot().safe(SupplementalConnectionSlot().ATTEMPT).exists() == supplement_before,

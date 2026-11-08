@@ -27,6 +27,7 @@ def batch(sandbox, monkeypatch):
     # Internal fake-process regression of historical launches only; production
     # policy retires the consumed supplement and no MCP parameter can alter it.
     monkeypatch.setitem(b.POLICY, "supplement_connection_retired", False)
+    monkeypatch.setitem(b.POLICY, "stdin_validation_retired", False)
     for relative in b.SOURCES:
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -78,8 +79,8 @@ def reserve(root, slot):
     return path, req
 
 
-def completed_connection(root):
-    slot = b.SupplementalConnectionSlot(root)
+def completed_connection(root, slot=None):
+    slot = b.StdinValidationSlot(root) if slot is None else slot
     path, req = reserve(root, slot)
     req.update(created_unix=req["created_unix"] - 30, deadline_unix=req["deadline_unix"] - 30,
                work_deadline_unix=req["work_deadline_unix"] - 30)
@@ -92,6 +93,9 @@ def completed_connection(root):
         "provenance": "live_fluent_batch002", "readiness": readiness,
         "readiness_sha256": legacy.sha256(path / "readiness.json"), "launch_uncertain": False,
         "commands": {}, "errors": {}, "mesh_generated": False, "flow_iterations": 0,
+        "stdin_lifecycle": {"mode": "private_subprocess_PIPE", "bytes_written": 0, "close_requested_in_cleanup": True,
+            "pipe_returned": True, "writer_closed": True, "late_return_after_close_request": False},
+        "stdin_close_phase": "after_bounded_session_exit_request",
         "transcript_sha256": legacy.sha256(path / "native.transcript.txt")}
     dump(path / "native_result.json", native)
     executable = legacy.read_json(root / "contract.json")["software"]["fluent"].replace("/", "\\")
@@ -214,7 +218,7 @@ def test_source_mesh_or_manifest_changes_block_new_slots(batch, relative):
     popen.assert_not_called()
 
 
-@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_batch002_supplement_authorization_002.json", "execution_binding/mesh_inspection_batch002_supplement_sources_002.json"])
+@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_transcript_repair_authorization_001.json", "execution_binding/mesh_inspection_transcript_repair_sources_001.json"])
 def test_archived_execution_grant_or_manifest_tamper_blocks_mesh(batch, relative):
     root, _, popen = batch
     path = completed_connection(root)
@@ -500,7 +504,7 @@ def test_alias_class_does_not_replace_transport_health_or_solver_proof():
 
 def test_consumed_failed_connection_stays_failed_after_alias_binding_repair(batch):
     root, slot, popen = batch
-    path = completed_connection(root)
+    path = completed_connection(root, slot)
     request = legacy.read_json(path / "request.json")
     request["authorization"] = {"path": str(root / b.POLICY["baseline_batch_authorization_relative"]),
                                 "sha256": b.POLICY["baseline_batch_authorization_sha256"]}
@@ -582,7 +586,8 @@ def test_connection_probe_cannot_enter_mesh_collector(batch):
 
 
 def test_complete_fake_connection_worker_produces_gate_evidence_after_cleanup(batch, monkeypatch):
-    root, slot, _ = batch
+    root, _, _ = batch
+    slot = b.StdinValidationSlot(root)
     path, _ = reserve(root, slot)
     contract = legacy.read_json(root / "contract.json")
     executable = contract["software"]["fluent"].replace("/", "\\")
@@ -599,6 +604,9 @@ def test_complete_fake_connection_worker_produces_gate_evidence_after_cleanup(ba
         dump(path / "native_result.json", {"job_id": slot.JOB_ID, "batch_id": b.BATCH, "slot": slot.slot,
             "provenance": "live_fluent_batch002", "launch_uncertain": False, "mesh_generated": False,
             "flow_iterations": 0, "commands": {}, "errors": {}, "readiness": evidence,
+            "stdin_lifecycle": {"mode": "private_subprocess_PIPE", "bytes_written": 0, "close_requested_in_cleanup": True,
+                "pipe_returned": True, "writer_closed": True, "late_return_after_close_request": False},
+            "stdin_close_phase": "after_bounded_session_exit_request",
             "readiness_sha256": legacy.sha256(path / "readiness.json"),
             "transcript_sha256": legacy.sha256(path / "native.transcript.txt")})
         return types.SimpleNamespace(pid=500, poll=lambda: 0)
@@ -637,7 +645,7 @@ def test_new_native_command_and_api_audit():
     assert set(queries) == {"(cx-solver-mode?)", "(cx-version)"}
 
 
-@pytest.mark.parametrize("name", [b.SUPPLEMENT, "background", "arm"])
+@pytest.mark.parametrize("name", [b.SUPPLEMENT, b.STDIN_VALIDATION, "background", "arm"])
 def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatch, name):
     root, _, _ = batch
     slot = b.execution_slot(name, root)
@@ -673,7 +681,7 @@ def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatc
     result = w.native_collect(path, stage_root=root)
     assert popen.call_count == len(connects) == 1
     assert "OFFLINE-SECRET" not in json.dumps(result)
-    if name == b.SUPPLEMENT:
+    if slot.is_connection:
         assert "read_mesh" not in calls and "quality" not in calls and result["commands"] == {}
         assert "mesh_evidence" not in result
     else:
@@ -696,7 +704,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 16
+    assert len(names) == 18
     assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")

@@ -8,6 +8,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import threading
@@ -45,6 +46,8 @@ def slot_for_attempt(attempt, root=STAGE):
 
 
 def validate_request(slot, attempt):
+    if slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"]:
+        raise RuntimeGateError("Consumed stdin validation is retired; no new native allowance")
     value = read_json(attempt / "request.json", 65536)
     keys = {"schema_version", "operation", "job_id", "created_unix", "deadline_unix", "work_deadline_unix",
             "authorization", "sources", "batch_id", "slot", "mesh"}
@@ -154,6 +157,49 @@ class NativeInputLease:
                     "writer_closed": self._closed, "late_return_after_close_request": self._late_return}
 
 
+def fixed_transcript_target(slot, attempt):
+    """Fresh fixed file only; no caller string, reparse path or TUI quoting guess."""
+    expected = slot.safe(slot.ATTEMPT)
+    if checked_path(attempt, slot.root) != expected:
+        raise RuntimeGateError("Transcript must belong to this exact fixed attempt")
+    target = slot.safe(slot.ATTEMPT + "/native.transcript.txt")
+    if target.exists():
+        raise RuntimeGateError("Refusing existing transcript file or directory; never overwrite")
+    text = target.as_posix()
+    # Current fixed roots have no spaces. Fail closed instead of introducing a
+    # new quoting rule for whitespace, quotes, control characters or TUI syntax.
+    if not target.is_absolute() or not re.fullmatch(r"(?:[A-Za-z]:/|/)[A-Za-z0-9_./-]+", text):
+        raise RuntimeGateError("Fixed transcript needs a safe absolute forward-slash path without quoting")
+    return target, text
+
+
+def transcript_call(solver, action, slot, attempt, report):
+    """Record safe per-call checkpoints; preserve the exact existing two TUI APIs."""
+    if action not in ("start", "stop"):
+        raise RuntimeGateError("Only fixed transcript start/stop actions are allowed")
+    calls = report.setdefault("transcript_calls", {})
+    state = {"stage": "attempted", "attempted": True, "completed": False, "failed": False}
+    calls[action] = state
+    write_new(attempt / ("transcript_" + action + "_attempted.json"), {
+        "job_id": slot.JOB_ID, "action": action, "stage": "attempted"}, attempt)
+    try:
+        if action == "start":
+            _, value = fixed_transcript_target(slot, attempt)
+            solver.tui.file.start_transcript(value)
+        else:
+            if calls.get("start", {}).get("stage") != "completed":
+                raise RuntimeGateError("Cannot stop an uncompleted transcript start")
+            solver.tui.file.stop_transcript()
+        state.update(stage="completed", completed=True)
+        write_new(attempt / ("transcript_" + action + "_completed.json"), {
+            "job_id": slot.JOB_ID, "action": action, "stage": "completed"}, attempt)
+    except Exception as exc:
+        state.update(stage="failed", failed=True, completed=False, safe_error=safe_connection_error(exc))
+        write_new(attempt / ("transcript_" + action + "_failed.json"), {
+            "job_id": slot.JOB_ID, "action": action, "stage": "failed", "safe_error": state["safe_error"]}, attempt)
+        raise
+
+
 def native_collect(attempt, *, stage_root=STAGE):
     slot, attempt = slot_for_attempt(attempt, stage_root)
     if slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"]:
@@ -180,6 +226,9 @@ def native_collect(attempt, *, stage_root=STAGE):
     native_input = NativeInputLease()
     transcript = attempt / "native.transcript.txt"
     try:
+        # Refuse stale/redirected transcript artifacts before starting Fluent;
+        # revalidate immediately before the existing TUI start call as well.
+        transcript, _ = fixed_transcript_target(slot, attempt)
         frozen = validate_frozen(stage_root)
         executable = checked_path(frozen["contract"]["software"]["fluent"], Path(frozen["contract"]["software"]["ansys_root"]))
         server = attempt / "server.info"
@@ -203,10 +252,10 @@ def native_collect(attempt, *, stage_root=STAGE):
         write_new(attempt / "fluent_launch_ready.json", {"job_id": slot.JOB_ID, "health": "SERVING", "solver_mode": True}, attempt)
         # Connection probe starts transcript only after authenticated connection;
         # its structured native readiness includes direct health/mode/version.
-        solver.tui.file.start_transcript(str(transcript))
+        transcript_call(solver, "start", slot, attempt, report)
         if not slot.is_connection:
             collect_mesh(solver, slot, attempt, report)
-        solver.tui.file.stop_transcript()
+        transcript_call(solver, "stop", slot, attempt, report)
         if transcript.is_file() and transcript.stat().st_size <= 2 * 1024 * 1024:
             report["transcript_sha256"] = sha256(transcript)
             if slot.slot in MESHES:

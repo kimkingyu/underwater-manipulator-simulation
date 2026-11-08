@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_native_readiness_and_failed_transcript_recording_summary",
+  "native_run_local_date": "2026-11-08",
+  "job_id": "inspection-b002-stdin-validation-001",
+  "elapsed_seconds": 27.776055166264996,
+  "validation_connection_attempts_authorized": 1,
+  "validation_connection_attempts_consumed": 1,
+  "validation_connection_attempts_remaining": 0,
+  "additional_QA_attempts": 0,
+  "original_QA_slots_unconsumed": 2,
+  "frozen_QA_gate_passed": false,
+  "original_job_status": "failed",
+  "original_job_status_modified": false,
+  "native_readiness_observed": {
+    "transport": "READY",
+    "authenticated_health": "SERVING",
+    "health_poll_count": 1,
+    "solver_mode": true,
+    "native_version": "24.2.0",
+    "solver_session_constructed": true,
+    "single_channel_count": 1,
+    "connection_constructor_count": 1,
+    "same_startup_deadline_respected": true
+  },
+  "native_stdin_lifecycle": {
+    "mode": "private_subprocess_PIPE",
+    "bytes_written": 0,
+    "close_requested_in_cleanup": true,
+    "pipe_returned": true,
+    "writer_closed": true,
+    "late_return_after_close_request": false
+  },
+  "original_cleanup_evidence": {
+    "owned_cleanup_verified": true,
+    "serial_dispatch_released": true,
+    "inputs_reverified_after_cleanup": true,
+    "sources_reverified_after_cleanup": true
+  },
+  "recording_failure": {
+    "native_error_classes": [
+      "RuntimeError",
+      "_InactiveRpcError"
+    ],
+    "native_rpc_status": "UNKNOWN",
+    "expected_transcript_file_missing": true,
+    "stderr_lines": [
+      2,
+      5,
+      8
+    ],
+    "fixed_error_excerpt": "sopenoutputfile: unable to open file for output",
+    "error_object_class": "workspace_root_directory_instead_of_target_file",
+    "automatic_transcript_exists": true,
+    "abnormal_exit_marker_observed": true,
+    "abnormal_exit_exact_cause_verified": false,
+    "exact_auxiliary_RPC_failure_site_verified": false,
+    "interpretation": "Readiness and owned cleanup have direct native evidence, but the requested transcript artifact failed. Do not convert the overall failed run into success or discard its abnormal-exit marker."
+  },
+  "original_receipt_sha256": {
+    "request.json": "488433042c12fc3cebf88f3ee54f0edde353cfb5a3c38be9109af0164cb551ee",
+    "native_result.json": "4206ee0ccbf06dfcfb8feb25559bda227320080e99a985d529214d395e77534c",
+    "readiness.json": "5d2e82daad7d800140b2385784d6a6683179b06f5ecf01bf73dd406685b17a3c",
+    "probe_result.json": "0641854abacebde0c0c8c584a1e28438385fde278f0be77bf6a090b44453e3f7"
+  },
+  "offline_followup": {
+    "fixed_transcript_target": "fresh fixed file inside exact attempt using an absolute forward-slash path; reject existing/reparse/out-of-scope/quoting-requiring paths",
+    "per_call_checkpoints": [
+      "attempted",
+      "completed",
+      "failed"
+    ],
+    "transcript_API_changed": false,
+    "connection_PIPE_mesh_collection_and_outer_runtime_symbols_unchanged": true,
+    "native_validation_of_recording_fix": false,
+    "new_native_runs": 0,
+    "additional_attempts_authorized": 0,
+    "all_consumed_connection_slots_retired": true,
+    "QA_gate_weakened": false,
+    "archived_files": 35,
+    "archive_manifest_sha256": "940c342ac2e76a7f214855794c3fee0b8c5e3fc4a37a914430112c7de870fde7",
+    "source_review_receipt_sha256": "329001c8f80552baca7f950a7d808a906de93c2004905a5ff389f71e9c8f479d",
+    "tests_passed": 1086,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1083,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 18
+  },
+  "unperformed": {
+    "read_mesh": true,
+    "initialization": true,
+    "flow_iterations": true,
+    "mesh_motion": true,
+    "mesh_generation_or_write": true,
+    "overset_assembly": true
+  },
+  "mesh_quality_volume_adjacency_verified": false,
+  "publication_scope": "Only derived redacted evidence, source code and tests. No server-info, credentials or credential hashes, authorizations, raw native logs or mesh/CAD binaries are published."
+}

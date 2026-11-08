@@ -275,13 +275,14 @@ def test_revision_has_no_new_native_allowance_and_retired_supplement_cannot_recr
     assert not slot.safe(slot.ATTEMPT + "/worker_claim.json").exists()
     assert slot.status()["remaining_attempts"] == 0
     assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["stdin_validation_job_id"] != slot.JOB_ID
     assert b.POLICY["additional_QA_attempts"] == 0
     popen.assert_not_called()
 
 
 def test_original_consumed_failed_supplement_stays_unverified_and_QA_uncreated(batch):
     root, slot, popen = batch
-    path = completed_connection(root)
+    path = completed_connection(root, slot)
     req = legacy.read_json(path / "request.json")
     req["authorization"] = {"path": str(root / b.POLICY["baseline_batch_authorization_relative"]),
                             "sha256": b.POLICY["baseline_batch_authorization_sha256"]}
