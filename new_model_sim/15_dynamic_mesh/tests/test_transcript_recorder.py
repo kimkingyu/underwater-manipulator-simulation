@@ -247,7 +247,7 @@ def test_current_zero_allowance_retires_stdin_validation_even_without_directory(
     assert not slot.safe(slot.ATTEMPT).exists() and slot.status()["remaining_attempts"]==0
     slot.safe(slot.ATTEMPT).mkdir(parents=True)
     with pytest.raises(w.RuntimeGateError,match="retired"):w.native_collect(slot.safe(slot.ATTEMPT),stage_root=root)
-    assert b.POLICY["additional_attempts_authorized"]==b.POLICY["additional_connection_attempts"]==1
+    assert b.POLICY["additional_attempts_authorized"]==b.POLICY["additional_connection_attempts"]==0
     assert b.POLICY["additional_QA_attempts"]==0
     popen.assert_not_called()
 

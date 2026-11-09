@@ -275,7 +275,7 @@ def test_revision_has_no_new_native_allowance_and_retired_supplement_cannot_recr
     with pytest.raises(w.RuntimeGateError): w.native_collect(slot.safe(slot.ATTEMPT), stage_root=root)
     assert not slot.safe(slot.ATTEMPT + "/worker_claim.json").exists()
     assert slot.status()["remaining_attempts"] == 0
-    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 1
+    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
     assert b.POLICY["stdin_validation_job_id"] != slot.JOB_ID
     assert b.POLICY["additional_QA_attempts"] == 0
     popen.assert_not_called()

@@ -266,12 +266,24 @@ async def stage15_full_record_preflight() -> dict[str, Any]:
 async def stage15_start_full_record_validation(confirmation: str) -> dict[str, Any]:
     """One independent full-record connection <=300s including owned cleanup.
 
-    Requires RUN_STAGE15_FULL_RECORD_VALIDATION_ONCE. Old slots stay retired.
-    This connection reads no mesh. Full transcript/start-stop, native normal exit,
-    PIPE, error logs, source/input/identity and cleanup are required to unlock only
-    original background/arm QA once each. No retry, extra QA, mesh write or CFD.
+    Requires RUN_STAGE15_FULL_RECORD_VALIDATION_ONCE. This consumed slot is now
+    permanently retired, including missing-directory cases, never rerun/redirected.
+    Its failed original is preserved; only explicit independent licensing-helper
+    review with dual source binding may admit the original two QA slots.
     """
     return await asyncio.to_thread(guarded, FullRecordValidationSlot().start, confirmation)
+
+
+@mcp.tool(annotations=START)
+async def stage15_review_license_classification(confirmation: str) -> dict[str, Any]:
+    """Validate old frozen runtime plus new QA binding and create one separate review.
+
+    Requires WRITE_STAGE15_LICENSE_CLASSIFICATION_REVIEW_ONCE. Never launches,
+    reserves, cancels or cleans any process/QA slot; never edits original failed.
+    Only exact approved licensing-helper classification may satisfy this review.
+    """
+    from inspection_license_review import write_review
+    return await asyncio.to_thread(guarded, write_review, confirmation)
 
 
 if __name__ == "__main__":

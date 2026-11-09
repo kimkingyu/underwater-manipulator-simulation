@@ -127,10 +127,15 @@ def full_record_passed(native):
         native.get("native_error_review", {}).get("error_classes") == [])
 
 
-def verify_full_record_artifacts(conn, native, final):
-    """No addendum: require same-slot complete evidence and current exact file hashes."""
-    if not full_record_passed(native) or final.get("owned_live_before_cleanup") != []:
-        raise RuntimeGateError("Complete normal exit and unforced owned cleanup evidence required")
+def verify_full_record_artifacts(conn, native, final, *, classified=False):
+    """Every original artifact remains mandatory; only explicit helper classification differs."""
+    if not full_record_passed(native):
+        raise RuntimeGateError("Complete normal exit evidence required")
+    if classified:
+        from inspection_license_review import classify_live_helpers
+        classify_live_helpers(conn, final)
+    elif final.get("owned_live_before_cleanup") != []:
+        raise RuntimeGateError("Unclassified live process blocks normal exit acceptance")
     path = conn.safe(conn.ATTEMPT)
     for action in ("start", "stop"):
         for stage in ("attempted", "completed"):

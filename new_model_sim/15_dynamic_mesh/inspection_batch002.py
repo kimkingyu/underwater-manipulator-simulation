@@ -49,8 +49,9 @@ def slot_for_attempt(attempt, root=STAGE):
 
 
 def validate_request(slot, attempt):
-    if slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"]:
-        raise RuntimeGateError("Consumed stdin validation is retired; no new native allowance")
+    if (slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"] or
+            slot.slot == POLICY["full_record_slot"] and POLICY["full_record_retired"]):
+        raise RuntimeGateError("Consumed connection validation is retired; no new native allowance")
     value = read_json(attempt / "request.json", 65536)
     keys = {"schema_version", "operation", "job_id", "created_unix", "deadline_unix", "work_deadline_unix",
             "authorization", "sources", "batch_id", "slot", "mesh"}
@@ -452,8 +453,14 @@ def run(attempt, *, stage_root=STAGE):
                     raise UncertainCall("Insufficient owned cleanup reserve")
                 live_before = bounded_call(tree.live, min(2, remaining() - 1))
                 report["owned_live_before_cleanup"] = [{"pid": item.pid, "creation_time": item.create_time()} for item in live_before]
-                if live_before:
-                    report["status"] = "failed"  # forced owned cleanup is not normal native exit
+                from inspection_license_review import classify_live_helpers
+                try:
+                    report["licensing_helper_classification"] = bounded_call(
+                        lambda: classify_live_helpers(slot, dict(report, owned_processes=[
+                            {"pid": pid, "creation_time": stamp} for pid, stamp in tree.members.items()])), min(3, remaining() - 1))
+                except Exception as exc:
+                    report["status"] = "failed"
+                    report["licensing_helper_classification_error"] = safe_connection_error(exc)
                 cleanup = bool(bounded_call(tree.close, min(20, remaining() - 1))) and cleanup
             except Exception as exc:
                 cleanup = False

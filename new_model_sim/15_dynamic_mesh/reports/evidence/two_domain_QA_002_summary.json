@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_real_native_two_domain_QA_and_independent_license_review",
+  "minimum_orthogonal_quality_required": 0.01,
+  "threshold_changed": false,
+  "overall_mesh_pair_acceptance": "failed_quality",
+  "native_QA_slots_authorized": 2,
+  "native_QA_slots_consumed": 2,
+  "remaining_QA_attempts": 0,
+  "automatic_retries": 0,
+  "independent_review": {
+    "review_sha256": "773b4160aed2f9767657d0329727e05b697307dbed067c9d0b65602f2ed69fee",
+    "seal_sha256": "522495d1789773d75edb0ba3dd8c9aeda62a0029863fed8a78cfab5ef86979bf",
+    "conclusion": "connection+normal-exit+final cleanup satisfied under explicitly user-approved licensing-helper classification",
+    "original_connection_status": "failed",
+    "original_status_modified": false,
+    "user_approved_classification": "only exact official licensing helper, matched executable/PID/create-time/owned tree; all solver/unknown leftovers rejected; final cleanup still mandatory",
+    "old_executed_source_count": 20,
+    "new_QA_source_count": 21,
+    "additional_connection_attempts": 0,
+    "additional_QA_attempts": 0
+  },
+  "jobs": [
+    {
+      "domain": "background",
+      "job_id": "inspection-b002-background",
+      "elapsed_seconds": 106.69159347342793,
+      "execution_status": "completed",
+      "quality_acceptance": "failed_below_0.01",
+      "inspection_gate_passed": false,
+      "minimum_orthogonal_quality": 0.000743696,
+      "minimum_cell_volume": 9.358778e-09,
+      "reported_negative_volume_count": null,
+      "zero_negative_basis": "native_global_minimum_volume_positive",
+      "positive_cell_volumes_verified": true,
+      "wall_fluid_adjacency_verified": true,
+      "native_fluid_zones": [
+        "fluid_background"
+      ],
+      "native_wall_adjacency": {
+        "wall_auv": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_background"
+        },
+        "wall_base0": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_background"
+        },
+        "tank_wall": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_background"
+        }
+      },
+      "native_commands": {
+        "read_mesh": "completed",
+        "quality": "completed",
+        "fluid_zones": "completed",
+        "wall_zones": "completed",
+        "adjacent_cell_zone:wall_auv": "completed",
+        "adjacent_cell_zone:wall_base0": "completed",
+        "adjacent_cell_zone:tank_wall": "completed",
+        "list_zones": "completed",
+        "mesh_check": "completed"
+      },
+      "native_log_error_classes": [],
+      "normal_native_returncode": 0,
+      "owned_cleanup_verified": true,
+      "inputs_and_sources_reverified_after_cleanup": true,
+      "receipt_sha256": {
+        "request.json": "d3ef03882417d9475e9c9ccfe87a470f468d271c0d5179d8459f9fe5d22705a6",
+        "native_result.json": "0ebff3e6ff70baf0d3e3e3402809ab6d45304f34b987195e824a6c7c2f6e2726",
+        "readiness.json": "7e3eb4b99baef8f47ed46acfdd731f966b0f931bac4e6ca09c45b34bb198bc35",
+        "probe_result.json": "967d158782af205c9e5eeb40c555a8a9b1344c1843728316d7944046cc6f0ef4",
+        "native.transcript.txt": "b9ff1ed2ab7123b212323fe8f9afeedec109ed639d6129b3eac50d5fcf87c85d"
+      }
+    },
+    {
+      "domain": "arm",
+      "job_id": "inspection-b002-arm",
+      "elapsed_seconds": 58.78998494532425,
+      "execution_status": "completed",
+      "quality_acceptance": "failed_below_0.01",
+      "inspection_gate_passed": false,
+      "minimum_orthogonal_quality": 0.000214865,
+      "minimum_cell_volume": 1.172144e-12,
+      "reported_negative_volume_count": null,
+      "zero_negative_basis": "native_global_minimum_volume_positive",
+      "positive_cell_volumes_verified": true,
+      "wall_fluid_adjacency_verified": true,
+      "native_fluid_zones": [
+        "fluid_arm"
+      ],
+      "native_wall_adjacency": {
+        "wall_jaw1": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        },
+        "wall_jaw2": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        },
+        "wall_l1": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        },
+        "wall_l2": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        },
+        "wall_link3": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        },
+        "wall_pin4": {
+          "native_query_completed": true,
+          "adjacent_cell_zone": "fluid_arm"
+        }
+      },
+      "native_commands": {
+        "read_mesh": "completed",
+        "quality": "completed",
+        "fluid_zones": "completed",
+        "wall_zones": "completed",
+        "adjacent_cell_zone:wall_jaw1": "completed",
+        "adjacent_cell_zone:wall_jaw2": "completed",
+        "adjacent_cell_zone:wall_l1": "completed",
+        "adjacent_cell_zone:wall_l2": "completed",
+        "adjacent_cell_zone:wall_link3": "completed",
+        "adjacent_cell_zone:wall_pin4": "completed",
+        "list_zones": "completed",
+        "mesh_check": "completed"
+      },
+      "native_log_error_classes": [],
+      "normal_native_returncode": 0,
+      "owned_cleanup_verified": true,
+      "inputs_and_sources_reverified_after_cleanup": true,
+      "receipt_sha256": {
+        "request.json": "bb102717a6d5b75e6092aade0df12003dbf55f5655bf0da92e3b38190b47ece2",
+        "native_result.json": "b404c68573ac34c2ed49770a8a4499e700320f9d7653ae02229bb15f6fd6f71f",
+        "readiness.json": "5c30bad01f9f92dd0a284444516d0b7237b0a0be38fa0d94d82eaae32e8b9dac",
+        "probe_result.json": "6a4adc0bab2a96042f4f2a4a3058362d8caf1d842cbbd1025956ca9f7682cd06",
+        "native.transcript.txt": "7c7f9d010059cb051f73f74991e181c5b6fe1476d164b6c74081a029566979fc"
+      }
+    }
+  ],
+  "original_mesh_sha256_unchanged": {
+    "background": "cbbc3d5b3ad88caffe9691307b6df74b5d51af94d9eaffd5e68051d38f1eefb2",
+    "arm": "1dffa98e02b80a9813c37d43e746ced5cf501cd0032580a04a69726b419bd8d5"
+  },
+  "eight_protected_inputs_unchanged": true,
+  "independent_active_ansys_clients": 0,
+  "task_and_dispatch_locks_absent": true,
+  "offline_regression": {
+    "tests_passed": 1204,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1201,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 21,
+    "source_hashes_bound": true
+  },
+  "unperformed": {
+    "mesh_generation_or_write": true,
+    "initialization": true,
+    "flow_iterations": true,
+    "mesh_motion": true,
+    "overset_assembly": true
+  },
+  "limitations": [
+    "completed means bounded evidence collection finished, not quality acceptance",
+    "both native minimum orthogonal qualities are below unchanged 0.01 threshold",
+    "zero negative-volume conclusion derives from a positive native global minimum; explicit negative count was not printed",
+    "independent-domain QA does not establish static overset connectivity, orphan counts or mesh motion"
+  ],
+  "publication_scope": "Only code/tests and derived redacted facts. No runtime grants, private source manifests, credentials, raw native logs or mesh/CAD binaries. Original failed connection receipt remains unchanged."
+}

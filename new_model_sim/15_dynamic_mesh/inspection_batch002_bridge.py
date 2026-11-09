@@ -11,8 +11,8 @@ from mesh_inspection_mcp_bridge import InspectionSlot, MESHES
 
 BATCH = "inspection-batch002"
 SLOTS = ("connection", "background", "arm")
-GRANT = "frozen/mesh_inspection_full_record_authorization_001.json"
-MANIFEST = "frozen/mesh_inspection_full_record_sources_001.json"
+GRANT = "frozen/mesh_inspection_license_QA_authorization_002.json"
+MANIFEST = "frozen/mesh_inspection_license_QA_sources_002.json"
 FULL_RECORD = "connection_full_record_001"
 FULL_RECORD_JOB = "inspection-b002-full-record-001"
 FULL_RECORD_ATTEMPT = "runs/mcp_mesh_inspection/batch_002/connection_full_record_001"
@@ -35,11 +35,13 @@ SOURCES = ("stage15_mcp.py", "mcp_bridge.py", "sizing_mcp_bridge.py", "mesh_mcp_
     "mesh_inspection_mcp_bridge.py", "mesh_inspection_evidence.py", "mesh_inspection_connection.py",
     "inspection_batch002_bridge.py", "inspection_batch002.py", "inspection_batch002_connection.py",
     "definition_probe.py", "runtime.py", "preflight.py", "mesh_prepare.py", "run_mesh_job.py",
-    "inspection_full_record.py", "frozen/mesh_inspection_full_record_api_basis_001.json", "contract.json", "frozen/input_manifest.json")
-POLICY = {"schema_version": 1, "binding_revision": 8,
-    "baseline_batch_authorization_relative": "frozen/mesh_inspection_transcript_repair_authorization_001.json",
-    "baseline_batch_authorization_sha256": "8e70eb6081b2bfb7e357acf103be8db5a600d9b662b1074eea9e9b004b322c30",
-    "additional_attempts_authorized": 1, "additional_connection_attempts": 1, "additional_QA_attempts": 0,
+    "inspection_full_record.py", "inspection_license_review.py", "frozen/mesh_inspection_full_record_api_basis_001.json", "contract.json", "frozen/input_manifest.json")
+POLICY = {"schema_version": 1, "binding_revision": 10,
+    "baseline_batch_authorization_relative": "frozen/mesh_inspection_full_record_authorization_001.json",
+    "baseline_batch_authorization_sha256": "0ddb5d93deebea9c9fce698ac79f61f81e891f79f957cd17775412e41b6ff240",
+    "additional_attempts_authorized": 0, "additional_connection_attempts": 0, "additional_QA_attempts": 0,
+    "full_record_retired": True, "original_full_record_attempts": 1,
+    "licensing_helper_classification_requires_independent_review": True,
     "full_record_slot": FULL_RECORD, "full_record_job_id": FULL_RECORD_JOB,
     "full_record_attempt_relative": FULL_RECORD_ATTEMPT,
     "normal_exit_cleanup_on_exit": True, "normal_exit_request_seconds": 8,
@@ -74,6 +76,7 @@ POLICY = {"schema_version": 1, "binding_revision": 8,
 
 class Batch002Slot(InspectionSlot):
     AUTHORIZATION = GRANT
+    SOURCE_MANIFEST = MANIFEST
     SOURCES = SOURCES
     START_CONFIRMATION = START
     CANCEL_CONFIRMATION = CANCEL
@@ -149,8 +152,12 @@ class Batch002Slot(InspectionSlot):
         return result
 
     def connection_gate(self):
-        """Fail closed on exact current batch, native artifacts and cleanup; no launches."""
-        conn = FullRecordValidationSlot(self.root)
+        """Dual-version user-approved review, rechecked without native launch."""
+        from inspection_license_review import review_gate
+        return review_gate(self)
+
+    def _connection_evidence(self, conn, *, classified=False):
+        """Shared original strong evidence checks; no rewriting of historical result."""
         conn.authorize()
         request = conn._json(conn.ATTEMPT + "/request.json")
         final = conn._json(conn.ATTEMPT + "/probe_result.json")
@@ -162,7 +169,7 @@ class Batch002Slot(InspectionSlot):
         if (request.get("batch_id") != BATCH or request.get("slot") != conn.slot or
                 request.get("job_id") != conn.JOB_ID or request.get("operation") != self.OPERATION or
                 request.get("mesh") is not None or request.get("sources") != conn._sources() or
-                request.get("authorization") != {"path": str(conn.safe(GRANT)), "sha256": sha256(conn.safe(GRANT))}):
+                request.get("authorization") != {"path": str(conn.safe(conn.AUTHORIZATION)), "sha256": sha256(conn.safe(conn.AUTHORIZATION))}):
             raise BridgeError("Batch002 connection gate request/source/grant mismatch")
         import math
         created = request.get("created_unix")
@@ -171,7 +178,7 @@ class Batch002Slot(InspectionSlot):
                 any(final.get(k) != request.get(k) for k in ("created_unix", "deadline_unix", "work_deadline_unix"))):
             raise BridgeError("Batch002 connection gate original deadline binding missing")
         if (final.get("job_id") != conn.JOB_ID or final.get("batch_id") != BATCH or final.get("slot") != conn.slot or
-                final.get("status") != "completed" or final.get("native") != native or
+                final.get("status") != ("failed" if classified else "completed") or final.get("native") != native or
                 any(final.get(k) is not True for k in ("owned_cleanup_verified", "inputs_reverified_after_cleanup", "sources_reverified_after_cleanup", "serial_dispatch_released")) or
                 final.get("mesh_motion_verified") is not False or final.get("solver_launched") is not True or final.get("mesh_generated") is not False or
                 type(final.get("flow_iterations")) is not int or final["flow_iterations"] != 0 or
@@ -208,7 +215,7 @@ class Batch002Slot(InspectionSlot):
             raise BridgeError("Batch002 connection native transcript/audit binding missing")
         from inspection_full_record import verify_full_record_artifacts
         try:
-            verify_full_record_artifacts(conn, native, final)
+            verify_full_record_artifacts(conn, native, final, classified=classified)
         except Exception as exc:
             raise BridgeError("Full-record native artifacts/normal exit are incomplete") from exc
         # Tie native adapter and actual Fluent process to launch ledger/owned tree.
@@ -236,7 +243,7 @@ class Batch002Slot(InspectionSlot):
                 raise BridgeError("Batch002 connection gate archived source changed")
         bindings = conn._json(conn.ATTEMPT + "/source_snapshot/execution_binding.json")
         expected_bindings = [{"original": rel, "archive_relative": "execution_binding/" + Path(rel).name,
-                              "sha256": sha256(conn.safe(rel))} for rel in (GRANT, MANIFEST)]
+                              "sha256": sha256(conn.safe(rel))} for rel in (conn.AUTHORIZATION, conn.SOURCE_MANIFEST)]
         if bindings != {"job_id": conn.JOB_ID, "files": expected_bindings}:
             raise BridgeError("Batch002 execution binding archive incomplete")
         for row in expected_bindings:
@@ -258,7 +265,8 @@ class Batch002Slot(InspectionSlot):
         if self.safe(self.ATTEMPT).exists():
             return {"status": "already_reserved", "new_worker_started": False, "job": self.job_status(self.JOB_ID)}
         if (self.slot == "connection" or self.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
-                self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"]):
+                self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"] or
+                self.slot == FULL_RECORD and POLICY["full_record_retired"]):
             raise BridgeError("Connection slot permanently retired; no new native allowance or directory recreation")
         self.authorize()
         if self.safe(".ansys-task.lock").exists() or self.safe(".sizing-dispatch.lock").exists():
@@ -293,7 +301,8 @@ class Batch002Slot(InspectionSlot):
         used = self.safe(self.ATTEMPT).exists()
         result = {"batch_id": BATCH, "slot": self.slot, "job_id": self.JOB_ID,
             "slot_reserved": used, "remaining_attempts": 0 if (used or self.slot == "connection" or self.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
-                self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"]) else 1,
+                self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"] or
+                self.slot == FULL_RECORD and POLICY["full_record_retired"]) else 1,
             "maximum_seconds_including_cleanup": 300, "start_confirmation": self.START_CONFIRMATION, "cancel_confirmation": self.CANCEL_CONFIRMATION,
             "supplemental_connection": self.slot == SUPPLEMENT, "QA_attempts_added": 0,
             "full_record_validation": self.slot == FULL_RECORD, "normal_exit_required": True,
@@ -315,8 +324,8 @@ class Batch002Slot(InspectionSlot):
             value["historical_source_count"] = len(request.get("sources", []))
             if self.is_connection:
                 try:
-                    if self.JOB_ID != FULL_RECORD_JOB:
-                        raise BridgeError("Retired connection history cannot stand in for the full-record validation gate")
+                    if self.JOB_ID != FULL_RECORD_JOB or POLICY["full_record_retired"]:
+                        raise BridgeError("Retired connection history stays original; independent review is separate")
                     value["connection_gate"] = self.connection_gate()
                 except Exception:
                     value["connection_gate"] = {"status": "unverified"}

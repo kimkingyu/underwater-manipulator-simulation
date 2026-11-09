@@ -31,6 +31,7 @@ EXPECTED_TOOLS = {
     "stage15_supplement_connection_preflight", "stage15_start_supplement_connection",
     "stage15_stdin_validation_preflight", "stage15_start_stdin_validation",
     "stage15_full_record_preflight", "stage15_start_full_record_validation",
+    "stage15_review_license_classification",
 }
 
 
@@ -59,6 +60,8 @@ async def checks():
     supplement_before = SupplementalConnectionSlot().safe(SupplementalConnectionSlot().ATTEMPT).exists()
     stdin_validation_before = StdinValidationSlot().safe(StdinValidationSlot().ATTEMPT).exists()
     full_record_before = FullRecordValidationSlot().safe(FullRecordValidationSlot().ATTEMPT).exists()
+    from inspection_license_review import REVIEW, REVIEW_SEAL
+    review_before = {name: sha256(bridge.safe(name)) if bridge.safe(name).exists() else None for name in (REVIEW, REVIEW_SEAL)}
     # Existing locks are evidence, not something a read-only protocol check may
     # clear. Only NO confirmations are sent; compare lock bytes before/after.
     lock_names = (".ansys-task.lock", ".sizing-dispatch.lock", ".mesh-inspection-dispatch.lock")
@@ -92,6 +95,7 @@ async def checks():
                 ("stage15_start_stdin_validation", {"confirmation": "NO"}),
                 ("stage15_full_record_preflight", {}),
                 ("stage15_start_full_record_validation", {"confirmation": "NO"}),
+                ("stage15_review_license_classification", {"confirmation": "NO"}),
                 ("stage15_cancel_job", {"job_id": JOB_ID, "confirmation": "NO"}),
                 ("stage15_job_log", {"job_id": "../contract.json", "stream": "trace", "limit": 10}),
                 ("stage15_preflight", {}),
@@ -101,12 +105,15 @@ async def checks():
                 results[name] = decoded(await session.call_tool(name, arguments))
     after = {name: sha256(STAGE / name) for name in SOURCE_RELATIVES}
     checks_result = {
-        "exact_twenty_tools": names == EXPECTED_TOOLS,
-        "legacy_eighteen_tools_preserved": EXPECTED_TOOLS - {"stage15_full_record_preflight", "stage15_start_full_record_validation"} <= names,
+        "exact_twentyone_tools": names == EXPECTED_TOOLS,
+        "legacy_twenty_tools_preserved": EXPECTED_TOOLS - {"stage15_review_license_classification"} <= names,
+        "incorrect_review_confirmation_refused": results["stage15_review_license_classification"].get("status") == "blocked",
+        "independent_review_artifacts_preserved": review_before == {name: sha256(bridge.safe(name)) if bridge.safe(name).exists() else None for name in (REVIEW, REVIEW_SEAL)},
+        "legacy_eighteen_tools_preserved": EXPECTED_TOOLS - {"stage15_full_record_preflight", "stage15_start_full_record_validation", "stage15_review_license_classification"} <= names,
         "incorrect_full_record_start_refused": results["stage15_start_full_record_validation"].get("status") == "blocked",
         "full_record_preflight_structured": results["stage15_full_record_preflight"].get("status") in ("passed", "blocked", "failed"),
         "full_record_slot_preserved": FullRecordValidationSlot().safe(FullRecordValidationSlot().ATTEMPT).exists() == full_record_before,
-        "legacy_sixteen_tools_preserved": EXPECTED_TOOLS - {"stage15_stdin_validation_preflight", "stage15_start_stdin_validation", "stage15_full_record_preflight", "stage15_start_full_record_validation"} <= names,
+        "legacy_sixteen_tools_preserved": EXPECTED_TOOLS - {"stage15_stdin_validation_preflight", "stage15_start_stdin_validation", "stage15_full_record_preflight", "stage15_start_full_record_validation", "stage15_review_license_classification"} <= names,
         "incorrect_stdin_validation_start_refused": results["stage15_start_stdin_validation"].get("status") == "blocked",
         "stdin_validation_preflight_structured": results["stage15_stdin_validation_preflight"].get("status") in ("passed", "blocked", "failed"),
         "stdin_validation_slot_preserved": StdinValidationSlot().safe(StdinValidationSlot().ATTEMPT).exists() == stdin_validation_before,

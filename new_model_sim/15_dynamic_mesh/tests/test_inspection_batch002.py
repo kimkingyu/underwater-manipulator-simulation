@@ -19,6 +19,7 @@ import inspection_batch002 as w
 import inspection_batch002_connection as c
 import mesh_inspection_connection as private
 from test_definition_probe import sandbox, dump
+PRODUCTION_GATE = b.Batch002Slot.connection_gate
 
 
 @pytest.fixture
@@ -28,6 +29,10 @@ def batch(sandbox, monkeypatch):
     # policy retires the consumed supplement and no MCP parameter can alter it.
     monkeypatch.setitem(b.POLICY, "supplement_connection_retired", False)
     monkeypatch.setitem(b.POLICY, "stdin_validation_retired", False)
+    monkeypatch.setitem(b.POLICY, "full_record_retired", False)
+    # Historical worker tests isolate the unchanged strong evidence checker.
+    # New classification tests explicitly restore PRODUCTION_GATE and both bindings.
+    monkeypatch.setattr(b.Batch002Slot, "connection_gate", lambda self: self._connection_evidence(b.FullRecordValidationSlot(self.root)))
     for relative in b.SOURCES:
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -246,8 +251,8 @@ def test_source_mesh_or_manifest_changes_block_new_slots(batch, relative):
     popen.assert_not_called()
 
 
-@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_full_record_authorization_001.json",
-    "execution_binding/mesh_inspection_full_record_sources_001.json"])
+@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_license_QA_authorization_002.json",
+    "execution_binding/mesh_inspection_license_QA_sources_002.json"])
 def test_archived_execution_grant_or_manifest_tamper_blocks_mesh(batch, relative):
     root, _, popen = batch
     path = completed_connection(root)
@@ -479,8 +484,8 @@ def test_fixed_policy_matches_ready_wait_limits():
     assert b.POLICY["transport_ready_max_seconds"] == c.TRANSPORT_READY_MAX_SECONDS == 20
     assert b.POLICY["health_call_max_seconds"] == c.HEALTH_CALL_MAX_SECONDS == 2
     assert b.POLICY["maximum_health_polls"] == c.MAX_HEALTH_POLLS == 200
-    assert b.POLICY["additional_attempts_authorized"] == 1
-    assert b.POLICY["additional_connection_attempts"] == 1
+    assert b.POLICY["additional_attempts_authorized"] == 0
+    assert b.POLICY["additional_connection_attempts"] == 0
     assert b.POLICY["original_additional_connection_attempts"] == 1
     assert b.POLICY["additional_QA_attempts"] == 0
 
@@ -740,7 +745,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 20
+    assert len(names) == 21
     assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")

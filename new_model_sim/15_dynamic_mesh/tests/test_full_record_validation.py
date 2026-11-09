@@ -39,7 +39,7 @@ def test_new_fixed_slot_and_original_QA_paths_no_extra_budget(batch, monkeypatch
         assert qa.status()["remaining_attempts"] == 1
         with pytest.raises(legacy.BridgeError): qa.start(b.START)
         assert not qa.safe(qa.ATTEMPT).exists()
-    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 1
+    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
     assert b.POLICY["additional_QA_attempts"] == 0
     popen.assert_not_called()
 
