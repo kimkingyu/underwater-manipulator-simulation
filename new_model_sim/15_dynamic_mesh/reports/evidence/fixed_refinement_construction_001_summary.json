@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "real_native_fixed_sphere_construction_and_offline_QA_host_dispatch_correction",
+  "trial_id": "fixed-refinement-trial001",
+  "job_id": "fixed-refinement-001-construction",
+  "construction_status": "completed",
+  "elapsed_seconds": 286.45374512672424,
+  "construction_slot_consumed": true,
+  "construction_retries_remaining": 0,
+  "actual_spheres_and_baseline_controls_verified": true,
+  "native_exports_written": true,
+  "meshes": [
+    {
+      "domain": "background",
+      "relative": "runs/mesh/fixed_refinement_trial_001/background.msh",
+      "size": 380921818,
+      "sha256": "c081575a092f342004483b3238854f2ccd3b7c37429f2fe7dbb7f0831f05aa76",
+      "nodes": 1461343,
+      "elements": 8632543,
+      "stats_sha256": "f8e48a3a75eb7f11f5995575cd1eb00b2f11eda611c266231b6aae4c7270b34a",
+      "native_spheres_verified": true
+    },
+    {
+      "domain": "arm",
+      "relative": "runs/mesh/fixed_refinement_trial_001/arm.msh",
+      "size": 58126621,
+      "sha256": "ae62549635285af0bfafc83c072f0c113f8d65b9120c5b43fb9774e2b3b49107",
+      "nodes": 238496,
+      "elements": 1286439,
+      "stats_sha256": "68e2521b050d987e88059697e4c92cd2a63c95bb8848214d0ebb786d411252ac",
+      "native_spheres_verified": true
+    }
+  ],
+  "original_CAD_contract_meshes_and_inputs_unchanged": true,
+  "owned_cleanup_verified": true,
+  "serial_dispatch_released": true,
+  "QA_slots_consumed": 0,
+  "QA_attempts_remaining_per_domain": 1,
+  "new_mesh_quality_verified": false,
+  "quality_improvement_proven": false,
+  "normal_comparison_pending": "New background cells 8632543 versus baseline 8617720; arm 1286439 versus baseline 846862. Cell counts alone are not quality evidence.",
+  "runtime_receipt_sha256": {
+    "request.json": "ffec64b4b1466f44b11e281901be0fbae4717bd044d2f061b67e46b2500fdca1",
+    "probe_result.json": "8c498e23345bef5abc0d5c8b5907de82ce1060423c8f80bd055b952f095c25f9"
+  },
+  "build_artifact_sha256": {
+    "workbench_execution.json": "b7557dc0920731e968740e5edf8a1b7e6b60bf09b0a49dd14f9f54a689bb7152",
+    "workbench_completion.json": "d09ab196075576ab8c5c7b08977daf99a2adc52c4f2dec0f9c778598034cc1d4",
+    "background_meshing_stats.json": "f8e48a3a75eb7f11f5995575cd1eb00b2f11eda611c266231b6aae4c7270b34a",
+    "arm_meshing_stats.json": "68e2521b050d987e88059697e4c92cd2a63c95bb8848214d0ebb786d411252ac",
+    "mesh_plan.json": "c14d491b157e3a155b90128972a4d6662eea3cf5f959ee22f69eb92168c1302a",
+    "fixed_refinement_configuration.json": "7ba7582d7c035ce63e5d3c0e721d1d95f4d9a028a617b3a1a5076f9c95641f84"
+  },
+  "QA_preflight_issue": {
+    "observed": "MCP Python 3.12 directly entered a psutil-dependent construction check and failed before QA reservation",
+    "offline_fix": "fixed official-Python 3.10 read-only verification, one <=60s subprocess with <=32KiB JSON; no native solver or worker start",
+    "old_executed_build_source_count": 29,
+    "new_QA_source_count": 30,
+    "old_runtime_artifacts_bound": 45,
+    "additional_construction_connection_or_QA_attempts": 0,
+    "original_completed_receipt_modified": false,
+    "actual_missing_psutil_host_environment_read_only_test_passed": true,
+    "current_host_reload_block": "approved input changed rejected MCP disconnect; remaining QA not started"
+  },
+  "offline_regression": {
+    "tests_passed": 1355,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1352,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 26,
+    "source_hashes_bound": true
+  },
+  "unperformed": {
+    "new_mesh_QA": true,
+    "initialization": true,
+    "iterations": true,
+    "motion": true,
+    "overset_assembly": true,
+    "CFD": true
+  },
+  "preserved_local_diagnostic_slots_consumed": 0,
+  "publication_scope": "Code/tests and derived redacted construction facts only; no execution authorizations, credentials, private source/runtime manifests, raw logs or mesh/CAD binaries."
+}

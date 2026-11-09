@@ -102,6 +102,8 @@ def verify_plan(slot,frozen):
 
 
 def run_build(attempt,*,stage_root=STAGE):
+    from fixed_refinement_bridge import CONSTRUCTION_RETIRED
+    if CONSTRUCTION_RETIRED:raise RuntimeGateError('Consumed construction permanently retired; no worker replay')
     slot=FixedConstructionSlot(stage_root)
     attempt=probe.checked_path(attempt,stage_root)
     if attempt!=slot.safe(slot.ATTEMPT) or (attempt/'probe_result.json').exists():

@@ -37,6 +37,7 @@ def rebind(root):
 @pytest.fixture
 def fixed(batch,monkeypatch):
     root,_,popen=batch
+    monkeypatch.setattr(f,'CONSTRUCTION_RETIRED',False)  # historical fake construction only
     for relative in f.SOURCES:
         path=root/relative;path.parent.mkdir(parents=True,exist_ok=True)
         if not path.exists():path.write_text('# offline fixed source\n',encoding='utf-8')

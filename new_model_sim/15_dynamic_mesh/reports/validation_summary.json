@@ -1,7 +1,7 @@
 {
-  "schema_version": 10,
+  "schema_version": 11,
   "stage": "15_dynamic_mesh",
-  "status": "fixed_sphere_trial_implemented_not_run_original_mesh_quality_failed",
+  "status": "fixed_sphere_trial_meshes_constructed_QA_pending_host_reload",
   "implemented": [
     "isolated CAD/domain preparation and kinematic audits",
     "bounded Workbench/MCP diagnostic jobs with PID/create-time ownership and preserved receipts",
@@ -16,7 +16,8 @@
     "independent full-record slot with same-session normal exit, observed zero returncode while PIPE remains open, strict transcript/error/identity/source/cleanup gate",
     "explicitly user-approved licensing-helper review with old/new source binding, preserving original failed result; both original QA slots consumed once with native quality failure evidence",
     "independent bounded local-diagnostic slots with explicit count/top20/wall limitations; optional six-bin histogram is never interpreted as strict threshold count",
-    "separate one-shot fixed two-domain sphere overlay construction plus one QA per new mesh with actual control/export/readback/source/cleanup gates"
+    "separate one-shot fixed two-domain sphere overlay construction plus one QA per new mesh with actual control/export/readback/source/cleanup gates",
+    "historical completed build verified against its actual 29 execution sources; corrected QA uses separate 30-source binding via bounded official-Python read-only host dispatch"
   ],
   "native_finding": {
     "background_wall_base0_scope_ids": 19,
@@ -31,7 +32,7 @@
     "both_cases_cleaned_up": true
   },
   "offline_regression": {
-    "local_test_count": 1333,
+    "local_test_count": 1355,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -52,9 +53,10 @@
       "complete_arm_cad.py": "5a66bf4dbf6c4e329fb6eb4b82dd26726d4ec273b654692a10f5ec72f177b2f3",
       "contract.json": "3d7fe4b58e320402692ba15a3e3afae6aa6788e3c20553c552972c907bbe5d18",
       "definition_probe.py": "77997c33b8fae3d8b7664d574cc6fc1607e6e485c37f98a9eb1b811d6e09e597",
-      "fixed_refinement_bridge.py": "17eb80bdbfdcec56ce4f59fc1507baf10f580c179b39357bbdf222d05ca89f84",
+      "fixed_refinement_bridge.py": "8cb7c9a108bc67509023d8da809145552bb31bf031da5a667e1d26c7895c11a4",
       "fixed_refinement_config.py": "e8a301fa71523c33c54e5769d1270da7aa34cfd6b9a66c5c34d79028136d4545",
-      "fixed_refinement_construction.py": "dd29eeafbaf4e5b9b1bdeea3909ac992ca9c37303e9df3dcdef155e6efb9debf",
+      "fixed_refinement_construction.py": "94fb22213eaa0a149eee56ed7ce080f224b831441b5bdba0a75e74b255f8a959",
+      "fixed_refinement_history.py": "9992f8ae2ba587078de0c25352cb53263060df3b92c5802c4d6f995a9cc3ea23",
       "inspection_batch002.py": "b509694b85ba3bc8bac9e468662a22329891eb5a805a7b2ca1c5565b6687bfd5",
       "inspection_batch002_bridge.py": "bf42fdaba09c7fdc401938ae85e2eddb321797638a860ef4bf822bd5a31596c7",
       "inspection_batch002_connection.py": "b058b0f12545f6cb460d3a7d48e75fd912ff7bce3bed23935a0df76ac913d34a",
@@ -93,7 +95,8 @@
       "tests/test_face_probe_preparation.py": "f4942defe0a051ebf1297153f9cfe0fd1a37ea5cf7bc02bb8c2b3e52e850cccc",
       "tests/test_face_sampling.py": "b8293cad5a691927599241eaecdc6c6e9510f2cdb91c7ece10316dd36c0162e2",
       "tests/test_fixed_refinement_config.py": "97b0626a24dbe8d1fa5f8d0c87b94a99f43ac841d01dc670bd2a777242b015f4",
-      "tests/test_fixed_refinement_slots.py": "98a5c51a14b82c0f59e3333967a4fbfb1daa4adba543b1220735734f2264c546",
+      "tests/test_fixed_refinement_dispatch.py": "3a341abc1aef50f040b35c2028555b966d26bf1546e7900e0c32d79ea1dc53dc",
+      "tests/test_fixed_refinement_slots.py": "837d9b846b88e8e684017b5844cb6433ca20332b2ac2b0df91b6e9df27bf19af",
       "tests/test_full_record_validation.py": "2c530850f81786a1fdda3b0d60b1be5daf1204a58e9f7598ad4eeb023b6c3596",
       "tests/test_inspection_batch002.py": "227efef107b3e7eb0c52d418a12882e6f39b9b737a101bb75c91256a7d36fd5c",
       "tests/test_license_classification.py": "edb0b00a5df4becdca95b6ef45a8dd5c7de4d64965e3f1b34a6f62c120376a84",
@@ -127,7 +130,7 @@
       "verify_offline.py": "af46ea96d658caca77f165b93af4443a2a17303fec5182f62fcdbfb68b2c76df"
     },
     "note": "This local acceptance run includes private calibration-reference fixtures.",
-    "portable_unit_test_count": 1330,
+    "portable_unit_test_count": 1352,
     "local_fixture_tests_deselected": 3
   },
   "portable_unit_command": [
@@ -296,6 +299,12 @@
       "sha256": "ffedefc7f05f3128c7f4c672d6d3063bdd26601071b4269b9b493cb87877ff22",
       "kind": "implementation_only_fixed_trial",
       "native_executions": 0
+    },
+    {
+      "path": "evidence/fixed_refinement_construction_001_summary.json",
+      "sha256": "7f7cc32c677f3c5835b72c7dac18e0c5423f5c631ee7a64cde8338f4bd69d037",
+      "kind": "real_construction_QA_not_run",
+      "new_mesh_quality_verified": false
     }
   ],
   "not_yet_validated": [
@@ -448,10 +457,11 @@
   },
   "fixed_refinement_trial": {
     "implemented": true,
-    "construction_slot_consumed": false,
+    "construction_slot_consumed": true,
+    "construction_completed": true,
+    "native_readback_verified": true,
     "QA_slots_consumed": 0,
-    "native_readback_verified": false,
     "quality_improved": false,
-    "summary": "evidence/fixed_refinement_implementation_summary.json"
+    "summary": "evidence/fixed_refinement_construction_001_summary.json"
   }
 }

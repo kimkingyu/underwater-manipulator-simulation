@@ -13,8 +13,9 @@ from fixed_refinement_config import TRIAL, appended_spheres, BASELINE_MESHES, tr
 
 USER_AUTH = "frozen/fixed_refinement_trial_authorization_001.json"
 USER_AUTH_SHA = "4175f9d7e36d5b3a6afff8da84c4a7131ed28e8204ad1bb79ddc290129fdd2f9"
-GRANT = "frozen/fixed_refinement_execution_authorization_001.json"
-MANIFEST = "frozen/fixed_refinement_sources_001.json"
+GRANT = "frozen/fixed_refinement_QA_dispatch_authorization_001.json"
+MANIFEST = "frozen/fixed_refinement_QA_dispatch_sources_001.json"
+CONSTRUCTION_RETIRED = True
 BUILD_JOB = "fixed-refinement-001-construction"
 BUILD_ATTEMPT = "runs/mcp_fixed_refinement/trial_001/construction"
 MESH_ATTEMPT = "runs/mesh/fixed_refinement_trial_001"
@@ -28,12 +29,17 @@ SOURCES = ("stage15_mcp.py", "mcp_bridge.py", "mesh_mcp_bridge.py", "mesh_constr
     "inspection_batch002.py", "inspection_batch002_bridge.py", "inspection_batch002_connection.py",
     "inspection_full_record.py", "inspection_license_review.py", "mesh_inspection_mcp_bridge.py",
     "mesh_inspection_connection.py", "mesh_inspection_evidence.py", "fixed_refinement_config.py",
-    "fixed_refinement_bridge.py", "fixed_refinement_construction.py", "local_quality_diagnostic.py", "local_quality_evidence.py",
+    "fixed_refinement_bridge.py", "fixed_refinement_construction.py", "fixed_refinement_history.py", "local_quality_diagnostic.py", "local_quality_evidence.py",
     "frozen/local_quality_api_basis_001.json", "mesh/meshing_stage15.py.in", "mesh/wb_stage15.wbjn.in",
     "contract.json", "frozen/input_manifest.json")
 POLICY = {"schema_version": 1, "trial_id": TRIAL, "construction_job_id": BUILD_JOB,
     "construction_attempt_relative": BUILD_ATTEMPT, "mesh_attempt_relative": MESH_ATTEMPT,
-    "construction_attempts": 1, "construction_total_seconds": 7200, "construction_domain_seconds": 3600,
+    "construction_attempts": 0, "original_construction_attempts": 1, "construction_retired": True,
+    "additional_QA_attempts": 0, "read_only_host_dispatch_seconds": 60,
+    "historical_construction_source_count": 29,
+    "historical_binding_relative": "frozen/fixed_refinement_completed_build_binding_001.json",
+    "historical_binding_sha256": "ffd2811ae7baa17056cd790ca664a678529de7e9b81e8b5a0ded762da19e0930",
+    "construction_total_seconds": 7200, "construction_domain_seconds": 3600,
     "QA_domains": ["background", "arm"], "QA_attempts_per_domain": 1, "QA_total_seconds": 300,
     "cleanup_reserve_seconds": 30, "appended_spheres": appended_spheres(), "baseline_meshes": BASELINE_MESHES,
     "baseline_control_changes_allowed": False, "original_CAD_or_mesh_changes_allowed": False,
@@ -106,7 +112,7 @@ def validate_source_archive(slot, request):
         if path.stat().st_size != row["size"] or sha256(path) != row["sha256"]: raise BridgeError("Archived source changed")
         expected_paths.add(expected)
     bindings = [{"original": rel, "archive_relative": "execution_binding/" + Path(rel).name,
-                 "sha256": sha256(slot.safe(rel))} for rel in (USER_AUTH, GRANT, MANIFEST)]
+                 "sha256": sha256(slot.safe(rel))} for rel in (USER_AUTH, slot.AUTHORIZATION, slot.SOURCE_MANIFEST)]
     if slot._json(slot.ATTEMPT + "/source_snapshot/execution_binding.json") != {"job_id": slot.JOB_ID, "files": bindings}:
         raise BridgeError("Fixed archived execution bindings differ")
     for row in bindings:
@@ -118,6 +124,7 @@ class FixedConstructionSlot(Stage15Bridge):
     JOB_ID = BUILD_JOB
     ATTEMPT = BUILD_ATTEMPT
     AUTHORIZATION = GRANT
+    SOURCE_MANIFEST = MANIFEST
     SOURCES = SOURCES
     WORKER_SCRIPT = "fixed_refinement_construction.py"
     OPERATION = "fixed_refinement_construction"
@@ -133,6 +140,8 @@ class FixedConstructionSlot(Stage15Bridge):
     def log_path(self, stream):
         return self.safe((self.ATTEMPT if stream == "worker" else MESH_ATTEMPT) + "/" + self.LOGS[stream])
     def preflight(self):
+        if CONSTRUCTION_RETIRED:
+            return dict(construction_gate(self.root), construction_retired=True, remaining_attempts=0, native_started=False)
         self.authorize()
         output = subprocess.run([self._python(), "-B", str(self.safe(self.WORKER_SCRIPT)), "--preflight"],
             stdin=subprocess.DEVNULL, capture_output=True, timeout=45, cwd=str(self.root), env=self._environment(), shell=False)
@@ -142,6 +151,9 @@ class FixedConstructionSlot(Stage15Bridge):
         return result
     def start(self, confirmation):
         if confirmation != START_BUILD: raise BridgeError("Explicit fixed construction confirmation required")
+        if CONSTRUCTION_RETIRED:
+            if self.safe(self.ATTEMPT).exists():return {'status':'already_reserved','new_worker_started':False,'job':self.job_status(self.JOB_ID),'trial_id':TRIAL}
+            raise BridgeError('Consumed fixed construction permanently retired; never recreate missing directory')
         if not self.safe(self.ATTEMPT).exists():
             self.authorize()
             if self.safe(MESH_ATTEMPT).exists(): raise BridgeError("Fixed trial output already exists; never adopt or overwrite")
@@ -166,7 +178,7 @@ class FixedConstructionSlot(Stage15Bridge):
             if release and dispatch.exists() and self._json(dispatch.name).get('token')==token:dispatch.unlink()
     def status(self):
         used = self.safe(self.ATTEMPT).exists()
-        result = {"trial_id": TRIAL, "job_id": self.JOB_ID, "slot_reserved": used, "remaining_attempts": 0 if used else 1,
+        result = {"trial_id": TRIAL, "job_id": self.JOB_ID, "slot_reserved": used, "remaining_attempts": 0 if used or CONSTRUCTION_RETIRED else 1,
             "maximum_seconds_including_cleanup":7200, "domain_seconds":3600, "mesh_attempt_relative":MESH_ATTEMPT,
             "start_confirmation":START_BUILD,"cancel_confirmation":CANCEL_BUILD,"CFD_authorized":False}
         if used: result["job"] = self.job_status(self.JOB_ID)
@@ -214,7 +226,13 @@ def validate_native_controls(config, stats):
 
 def construction_gate(stage_root=STAGE):
     """No native launch. Actual sphere settings, source archives and new mesh SHA required."""
-    slot = FixedConstructionSlot(stage_root)
+    from fixed_refinement_history import (official_process_reader_available, host_read_only_gate,
+        HistoricalConstructionSlot,HISTORY_SHA)
+    FixedQASlot('background',stage_root).authorize()
+    if not official_process_reader_available():return host_read_only_gate(stage_root)
+    # Actual completed build retains its own 29-source authorization; no current
+    # QA source is substituted into its request/source snapshot.
+    slot = HistoricalConstructionSlot(stage_root) if CONSTRUCTION_RETIRED else FixedConstructionSlot(stage_root)
     slot.authorize()
     request = slot._json(slot.ATTEMPT + "/request.json")
     validate_build_request(slot, request)
@@ -287,14 +305,18 @@ def construction_gate(stage_root=STAGE):
             raise BridgeError("Actual sphere readback statistics changed")
         records.append(row)
     return {"status":"passed", "trial_id":TRIAL, "job_id":BUILD_JOB, "construction_result_sha256":sha256(slot.safe(slot.ATTEMPT+"/probe_result.json")),
-        "construction_request_sha256":sha256(slot.safe(slot.ATTEMPT+"/request.json")), "source_manifest_sha256":sha256(slot.safe(MANIFEST)),
-        "grant_sha256":sha256(slot.safe(GRANT)), "journal_sha256":sha256(journal), "meshes":records}
+        "construction_request_sha256":sha256(slot.safe(slot.ATTEMPT+"/request.json")), "source_manifest_sha256":sha256(slot.safe(slot.SOURCE_MANIFEST)),
+        "grant_sha256":sha256(slot.safe(slot.AUTHORIZATION)),
+        "historical_binding_sha256":HISTORY_SHA if CONSTRUCTION_RETIRED else None,
+        "new_QA_source_manifest_sha256":sha256(slot.safe(MANIFEST)),
+        "new_QA_authorization_sha256":sha256(slot.safe(GRANT)),
+        "journal_sha256":sha256(journal), "meshes":records}
 
 
 def validate_build_request(slot, request):
     if (type(request) is not dict or set(request) != {"schema_version","operation","job_id","created_unix","deadline_unix","work_deadline_unix","authorization","sources"} or
             type(request.get("schema_version")) is not int or request["schema_version"]!=1 or request.get("job_id")!=BUILD_JOB or request.get("operation")!=slot.OPERATION or
-            request.get("sources")!=slot._sources() or request.get("authorization")!={"path":str(slot.safe(GRANT)),"sha256":sha256(slot.safe(GRANT))}):
+            request.get("sources")!=slot._sources() or request.get("authorization")!={"path":str(slot.safe(slot.AUTHORIZATION)),"sha256":sha256(slot.safe(slot.AUTHORIZATION))}):
         raise BridgeError("Fixed construction request identity/source mismatch")
     created=request.get("created_unix")
     if (any(type(request.get(k)) not in (int,float) or not math.isfinite(request[k]) for k in ("created_unix","deadline_unix","work_deadline_unix")) or
