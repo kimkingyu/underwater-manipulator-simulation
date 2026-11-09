@@ -10,6 +10,7 @@ from mcp_bridge import STAGE, Stage15Bridge, BridgeError, sha256, read_json, wri
 from mesh_inspection_mcp_bridge import InspectionSlot, MESHES
 
 BATCH = "inspection-batch002"
+QA_SLOTS_RETIRED = True  # both original domains actually consumed; never recreate missing paths
 SLOTS = ("connection", "background", "arm")
 GRANT = "frozen/mesh_inspection_license_QA_authorization_002.json"
 MANIFEST = "frozen/mesh_inspection_license_QA_sources_002.json"
@@ -264,6 +265,8 @@ class Batch002Slot(InspectionSlot):
         # Consumed slots stay consumed even if current sources/connection change.
         if self.safe(self.ATTEMPT).exists():
             return {"status": "already_reserved", "new_worker_started": False, "job": self.job_status(self.JOB_ID)}
+        if type(self) is Batch002Slot and self.slot in ("background", "arm") and QA_SLOTS_RETIRED:
+            raise BridgeError("Original QA slot permanently retired; no path recreation or retry")
         if (self.slot == "connection" or self.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
                 self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"] or
                 self.slot == FULL_RECORD and POLICY["full_record_retired"]):
@@ -300,7 +303,7 @@ class Batch002Slot(InspectionSlot):
     def status(self):
         used = self.safe(self.ATTEMPT).exists()
         result = {"batch_id": BATCH, "slot": self.slot, "job_id": self.JOB_ID,
-            "slot_reserved": used, "remaining_attempts": 0 if (used or self.slot == "connection" or self.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
+            "slot_reserved": used, "remaining_attempts": 0 if (used or type(self) is Batch002Slot and self.slot in ("background", "arm") and QA_SLOTS_RETIRED or self.slot == "connection" or self.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
                 self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"] or
                 self.slot == FULL_RECORD and POLICY["full_record_retired"]) else 1,
             "maximum_seconds_including_cleanup": 300, "start_confirmation": self.START_CONFIRMATION, "cancel_confirmation": self.CANCEL_CONFIRMATION,

@@ -19,6 +19,8 @@ from mesh_inspection_mcp_bridge import InspectionSlot, inspection_job
 from inspection_batch002_bridge import (Batch002Slot, SupplementalConnectionSlot, SUPPLEMENT_JOB,
                                         StdinValidationSlot, STDIN_VALIDATION_JOB, FullRecordValidationSlot, FULL_RECORD_JOB, batch_job)
 
+from local_quality_diagnostic import LocalQualitySlot, local_job
+
 mcp = FastMCP(
     "ansys-stage15",
     instructions=("Read-only checks, preserved diagnostic jobs, and one separately authorized two-domain mesh construction. "
@@ -63,6 +65,7 @@ def combined_status():
     result["supplemental_connection"] = SupplementalConnectionSlot().status()
     result["stdin_connection_validation"] = StdinValidationSlot().status()
     result["full_record_validation"] = FullRecordValidationSlot().status()
+    result["local_quality_diagnostics"] = {name: LocalQualitySlot(name).status() for name in ("background", "arm")}
     return result
 
 
@@ -75,6 +78,8 @@ def job_bridge(job_id):
         return inspection_job(job_id)
     if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm", SUPPLEMENT_JOB, STDIN_VALIDATION_JOB, FULL_RECORD_JOB):
         return batch_job(job_id)
+    if job_id in ("local-quality-001-background", "local-quality-001-arm"):
+        return local_job(job_id)
     return sizing.job(job_id)
 
 
@@ -138,6 +143,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     Supplemental connection confirmation: CANCEL_STAGE15_BATCH002_SUPPLEMENT_CONNECTION.
     New stdin validation confirmation: CANCEL_STAGE15_STDIN_CONNECTION_VALIDATION.
     Full record validation confirmation: CANCEL_STAGE15_FULL_RECORD_VALIDATION.
+    Local quality diagnostic confirmation: CANCEL_STAGE15_LOCAL_QUALITY_DIAGNOSTIC.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -284,6 +290,26 @@ async def stage15_review_license_classification(confirmation: str) -> dict[str, 
     """
     from inspection_license_review import write_review
     return await asyncio.to_thread(guarded, write_review, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_local_quality_preflight(domain: Literal["background", "arm"]) -> dict[str, Any]:
+    """Read-only new two-slot local-quality source/input/API readiness; never reserves or launches Native."""
+    return await asyncio.to_thread(guarded, LocalQualitySlot(domain).preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_local_quality_diagnostic(domain: Literal["background", "arm"], confirmation: str) -> dict[str, Any]:
+    """One independent <=300s local read-only session per domain, no retry/repair/rebuild.
+
+    Requires RUN_STAGE15_LOCAL_QUALITY_DIAGNOSTIC_ONCE. New persistent slots do
+    not reuse spent QA. Each includes one connect/read/query/normal-exit/cleanup.
+    At most six native histogram bins and twenty records; unsupported count/topN/
+    wall fields stay unavailable, never whole-cell arrays. Quality remains fail_quality
+    below 0.01; warnings including unpaired overset stay visible. No mesh write,
+    marking, initialization, iterations, motion, overset assembly or CFD.
+    """
+    return await asyncio.to_thread(guarded, LocalQualitySlot(domain).start, confirmation)
 
 
 if __name__ == "__main__":

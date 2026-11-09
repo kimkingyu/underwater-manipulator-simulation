@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "implementation_only_and_official_API_capability_limits",
+  "new_native_runs": 0,
+  "local_diagnostic_slots_consumed": 0,
+  "original_two_local_diagnostic_slots_remaining": 2,
+  "supported": {
+    "native_worst_cell_records": 1,
+    "worst_cell_source": "existing TUI mesh.quality global minimum line, not a full top20 list",
+    "histogram": "optional fixed six-bin native results.plot.histogram.get_values query, only after exact native Orthogonal Quality display-name and allowed-values match"
+  },
+  "unavailable": {
+    "strict_Q_less_than_0_01_count": "no verified bounded non-marking native query",
+    "top20_additional_cells": "no verified limit-aware query without full cell arrays",
+    "cell_to_wall_assignment": "no verified bounded native query"
+  },
+  "histogram_limits": {
+    "maximum_bins": 6,
+    "maximum_report_bytes": 16384,
+    "count_weights_and_endpoint_semantics_verified": false,
+    "unknown_or_oversized_return": "unavailable",
+    "strict_threshold_count_inferred_from_histogram": false,
+    "report_settings_temporarily_modified_and_restored": true,
+    "physical_or_mesh_state_modified": false
+  },
+  "forbidden_collection_paths": [
+    "whole-cell scalar arrays",
+    "get_fields transactions for full mesh",
+    "whole mesh export",
+    "client-side full-domain sorting",
+    "cell marking or repairs"
+  ],
+  "execution_policy": {
+    "once_per_domain": true,
+    "maximum_total_seconds": 300,
+    "cleanup_begins_seconds": 270,
+    "single_native_launch_and_connection": true,
+    "mesh_write_or_repair": false,
+    "initialization_or_iteration": false,
+    "motion_or_overset_assembly": false,
+    "automatic_retries": 0
+  },
+  "preserved_acceptance": {
+    "orthogonal_quality_threshold": 0.01,
+    "both_prior_meshes_fail_quality": true,
+    "arm_unassigned_overset_warning_retained": true,
+    "no_full_topology_or_CFD_pass_claim": true,
+    "exact_licensing_helper_and_final_owned_cleanup_required": true
+  },
+  "offline_regression": {
+    "tests_passed": 1251,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1248,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 23,
+    "source_hashes_bound": true
+  },
+  "previous_runtime_archive": {
+    "files": 62,
+    "manifest_sha256": "a993c9b1b1d3c1befc67c82711fec6143cefadbbf7f2e5adb69a6b853961c958"
+  },
+  "readiness": "Parent is confirming whether the narrowed collection adds enough value before consuming either authorized slot; no native histogram has yet been observed.",
+  "publication_scope": "Only implementation/tests and capability limits; no runtime authorizations, credentials, private manifests, raw logs or mesh/CAD binaries."
+}

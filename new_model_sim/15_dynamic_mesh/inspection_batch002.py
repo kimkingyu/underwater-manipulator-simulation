@@ -49,6 +49,9 @@ def slot_for_attempt(attempt, root=STAGE):
 
 
 def validate_request(slot, attempt):
+    from inspection_batch002_bridge import QA_SLOTS_RETIRED
+    if type(slot) is Batch002Slot and slot.slot in ("background", "arm") and QA_SLOTS_RETIRED:
+        raise RuntimeGateError("Original QA slot is permanently retired; no worker replay")
     if (slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"] or
             slot.slot == POLICY["full_record_slot"] and POLICY["full_record_retired"]):
         raise RuntimeGateError("Consumed connection validation is retired; no new native allowance")
@@ -204,11 +207,23 @@ def transcript_call(solver, action, slot, attempt, report):
         raise
 
 
-def native_collect(attempt, *, stage_root=STAGE):
-    slot, attempt = slot_for_attempt(attempt, stage_root)
+def worker_context(attempt, stage_root, local_quality):
+    """Internal fixed registry only; not an MCP/user callback or path extension."""
+    if type(local_quality) is not bool:
+        raise RuntimeGateError("Fixed diagnostic worker mode required")
+    if local_quality:
+        from local_quality_diagnostic import local_slot_for_attempt, validate_local_request, BATCH_ID, PROVENANCE
+        slot, path = local_slot_for_attempt(attempt, stage_root)
+        return slot, path, validate_local_request, BATCH_ID, PROVENANCE
+    slot, path = slot_for_attempt(attempt, stage_root)
+    return slot, path, validate_request, BATCH, "live_fluent_batch002"
+
+
+def native_collect(attempt, *, stage_root=STAGE, local_quality=False):
+    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality)
     if slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"]:
         raise RuntimeGateError("Consumed connection worker permanently retired; no new native allowance")
-    request = validate_request(slot, attempt)
+    request = request_validator(slot, attempt)
     slot.authorize()
     if not slot.is_connection:
         slot.connection_gate()
@@ -225,7 +240,7 @@ def native_collect(attempt, *, stage_root=STAGE):
     write_new(attempt / "native_claim.json", {"job_id": slot.JOB_ID, "pid": os.getpid(),
         "creation_time": psutil.Process().create_time(), "parent_pid": parent.pid,
         "parent_creation_time": parent.create_time()}, attempt)
-    report = {"job_id": slot.JOB_ID, "batch_id": BATCH, "slot": slot.slot, "provenance": "live_fluent_batch002",
+    report = {"job_id": slot.JOB_ID, "batch_id": batch_id, "slot": slot.slot, "provenance": provenance,
         "commands": {}, "errors": {}, "launch_uncertain": True, "mesh_generated": False, "flow_iterations": 0,
         "readiness": {}}
     solver = process = None
@@ -263,12 +278,19 @@ def native_collect(attempt, *, stage_root=STAGE):
                      min(TRANSCRIPT_CALL_SECONDS, max(0, request["work_deadline_unix"] - time.time() - 20)))
         if not slot.is_connection:
             collect_mesh(solver, slot, attempt, report)
+        if local_quality:
+            from local_quality_evidence import query_histogram
+            report["local_histogram"] = query_histogram(solver, lambda: request["work_deadline_unix"] - time.time() - 20)
         bounded_call(lambda: transcript_call(solver, "stop", slot, attempt, report),
                      min(TRANSCRIPT_CALL_SECONDS, max(0, request["work_deadline_unix"] - time.time() - 20)))
         if transcript.is_file() and transcript.stat().st_size <= 2 * 1024 * 1024:
             report["transcript_sha256"] = sha256(transcript)
             if slot.slot in MESHES:
                 report["mesh_evidence"]["metrics"] = parse_native_output(transcript.read_text(encoding="utf-8", errors="replace"))
+            if local_quality:
+                from local_quality_evidence import extract_diagnostic
+                report["local_diagnostic"] = extract_diagnostic(transcript.read_text(encoding="utf-8", errors="replace"),
+                    slot.slot, report.get("local_histogram"))
     except Exception as exc:
         report["errors"]["native_adapter"] = safe_connection_error(exc)
     finally:
@@ -306,15 +328,15 @@ def native_collect(attempt, *, stage_root=STAGE):
     return report
 
 
-def run(attempt, *, stage_root=STAGE):
-    slot, attempt = slot_for_attempt(attempt, stage_root)
+def run(attempt, *, stage_root=STAGE, local_quality=False):
+    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality)
     if (slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
             slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"] or
             (attempt / "probe_result.json").exists()):
         raise RuntimeGateError("Batch002 slot consumed or retired; never rerun")
     write_new(attempt / "worker_claim.json", {"job_id": slot.JOB_ID, "pid": os.getpid()}, attempt)
     began = time.monotonic()
-    report = {"job_id": slot.JOB_ID, "batch_id": BATCH, "slot": slot.slot, "status": "running",
+    report = {"job_id": slot.JOB_ID, "batch_id": batch_id, "slot": slot.slot, "status": "running",
         "phase": "validating", "mesh_generated": False, "flow_iterations": 0, "mesh_motion_verified": False,
         "owned_cleanup_verified": True, "inputs_reverified_after_cleanup": False, "sources_reverified_after_cleanup": False,
         "solver_launched": False}
@@ -338,7 +360,7 @@ def run(attempt, *, stage_root=STAGE):
         write_state(attempt, report)
     def recheck():
         slot.authorize()
-        validate_request(slot, attempt)
+        request_validator(slot, attempt)
         if not slot.is_connection:
             report["connection_gate"] = slot.connection_gate()
         return validate_frozen(stage_root)
@@ -355,7 +377,7 @@ def run(attempt, *, stage_root=STAGE):
                 except psutil.NoSuchProcess:
                     pass
     try:
-        request = validate_request(slot, attempt)
+        request = request_validator(slot, attempt)
         deadline = began + max(0, request["deadline_unix"] - time.time())
         work_deadline = deadline - 30
         report.update({k: request[k] for k in ("created_unix", "deadline_unix", "work_deadline_unix")})
@@ -371,8 +393,8 @@ def run(attempt, *, stage_root=STAGE):
         report["protected_inputs_before"] = frozen["protected_inputs"]
         lock = AnsysTaskLock(attempt, stage_root=stage_root)
         lock.__enter__()
-        write_new(attempt / "command_audit.json", {"job_id": slot.JOB_ID, "batch_id": BATCH,
-            "slot": slot.slot, "fixed_native_apis": NATIVE_APIS, "native_start_timeout": 45,
+        write_new(attempt / "command_audit.json", {"job_id": slot.JOB_ID, "batch_id": batch_id,
+            "slot": slot.slot, "fixed_native_apis": NATIVE_APIS + (["field_info.get_scalar_fields_info; results.plot.histogram allowed_values/get_state/set_state/get_values (6 bins), no cell arrays"] if local_quality else []), "native_start_timeout": 45,
             "total_seconds": 300, "cleanup_begins_seconds": 270, "free_form_commands_accepted": False}, attempt)
         env = bounded_call(lambda: run_mesh_job.child_environment(attempt, frozen["contract"]), min(10, remaining() - 30))
         env = clean_native_environment(env)
@@ -403,8 +425,8 @@ def run(attempt, *, stage_root=STAGE):
                 time.sleep(min(0.1, max(0, work_deadline - time.monotonic())))
         native = read_json(attempt / "native_result.json")
         report["native"] = native
-        if (native.get("job_id") != slot.JOB_ID or native.get("batch_id") != BATCH or native.get("slot") != slot.slot or
-                native.get("provenance") != "live_fluent_batch002" or native.get("mesh_generated") is not False or
+        if (native.get("job_id") != slot.JOB_ID or native.get("batch_id") != batch_id or native.get("slot") != slot.slot or
+                native.get("provenance") != provenance or native.get("mesh_generated") is not False or
                 type(native.get("flow_iterations")) is not int or native["flow_iterations"] != 0):
             raise RuntimeGateError("Batch002 native scope/provenance mismatch")
         if native.get("launch_uncertain") is not False:
@@ -423,6 +445,13 @@ def run(attempt, *, stage_root=STAGE):
         if slot.slot in MESHES and native.get("mesh_evidence", {}).get("metrics") != parse_native_output(
                 transcript.read_text(encoding="utf-8", errors="replace")):
             raise RuntimeGateError("Batch002 native mesh aggregate binding failed")
+        if local_quality:
+            from local_quality_evidence import extract_diagnostic, MAX_REPORT_BYTES
+            diagnostic = extract_diagnostic(transcript.read_text(encoding="utf-8", errors="replace"), slot.slot,
+                                            native.get("local_histogram"))
+            if (diagnostic != native.get("local_diagnostic") or len(json.dumps(diagnostic)) > MAX_REPORT_BYTES):
+                raise RuntimeGateError("Bounded local diagnostic/transcript binding failed")
+            report["local_diagnostic"] = diagnostic
         if not full_record_passed(native):
             raise RuntimeGateError("Complete transcript and observed normal exit evidence missing")
         report["status"] = "completed" if code == 0 and not native.get("errors") else "failed"

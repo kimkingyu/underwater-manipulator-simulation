@@ -30,6 +30,7 @@ def batch(sandbox, monkeypatch):
     monkeypatch.setitem(b.POLICY, "supplement_connection_retired", False)
     monkeypatch.setitem(b.POLICY, "stdin_validation_retired", False)
     monkeypatch.setitem(b.POLICY, "full_record_retired", False)
+    monkeypatch.setattr(b, "QA_SLOTS_RETIRED", False)  # historical fake executions only
     # Historical worker tests isolate the unchanged strong evidence checker.
     # New classification tests explicitly restore PRODUCTION_GATE and both bindings.
     monkeypatch.setattr(b.Batch002Slot, "connection_gate", lambda self: self._connection_evidence(b.FullRecordValidationSlot(self.root)))
@@ -745,7 +746,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 21
+    assert len(names) == 23
     assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")

@@ -189,7 +189,7 @@ def test_new_cancel_has_own_fixed_job_operation_and_confirmation(batch,monkeypat
 def test_eighteen_tools_fixed_schema_and_old_routes_preserved():
     source=(STAGE/"stage15_mcp.py").read_text(encoding="utf-8")
     tools={n.name:n for n in ast.parse(source).body if isinstance(n,ast.AsyncFunctionDef)}
-    assert len(tools)==21
+    assert len(tools)==23
     assert tools["stage15_stdin_validation_preflight"].args.args==[]
     assert [a.arg for a in tools["stage15_start_stdin_validation"].args.args]==["confirmation"]
     assert b.batch_job(b.STDIN_VALIDATION_JOB).ATTEMPT==b.STDIN_VALIDATION_ATTEMPT
