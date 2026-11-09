@@ -80,7 +80,7 @@ def reserve(root, slot):
 
 
 def completed_connection(root, slot=None):
-    slot = b.StdinValidationSlot(root) if slot is None else slot
+    slot = b.FullRecordValidationSlot(root) if slot is None else slot
     path, req = reserve(root, slot)
     req.update(created_unix=req["created_unix"] - 30, deadline_unix=req["deadline_unix"] - 30,
                work_deadline_unix=req["work_deadline_unix"] - 30)
@@ -114,9 +114,37 @@ def completed_connection(root, slot=None):
         "flow_iterations": 0, "native_adapter_exit_code": 0, "elapsed_seconds": 22.0,
         "owned_processes": [{"pid": 222, "creation_time": 222.5}, {"pid": 333, "creation_time": 333.5}],
         "owned_process_identity": [{"pid": 333, "creation_time": 333.5, "executable": executable}]}
+    complete_record_fixture(slot, path, native, final)
+    dump(path / "native_result.json", native)
     dump(path / "probe_result.json", final)
     (root / ".mesh-inspection-dispatch.lock").unlink()  # offline fixture models completed owned cleanup
     return path
+
+
+def complete_record_fixture(slot, path, native, final):
+    """Synthetic offline evidence only; never used with a real attempt."""
+    from inspection_full_record import native_log_review
+    native["readiness"].update(cleanup_on_exit=True, constructor_watchdog_process_started=False)
+    dump(path / "readiness.json", native["readiness"])
+    native["readiness_sha256"] = legacy.sha256(path / "readiness.json")
+    native["stdin_close_phase"] = "after_observed_normal_exit_and_wait"
+    native["transcript_target"] = (path / "native.transcript.txt").as_posix()
+    native["transcript_calls"] = {a: {"stage": "completed", "attempted": True, "completed": True, "failed": False} for a in ("start", "stop")}
+    for action in ("start", "stop"):
+        for stage in ("attempted", "completed"):
+            dump(path / ("transcript_" + action + "_" + stage + ".json"), {"job_id": slot.JOB_ID, "action": action, "stage": stage})
+    native["normal_exit"] = {"job_id": slot.JOB_ID, "stage": "completed", "cleanup_on_exit": True, "public_exit_kwargs": {},
+        "force_exit_environment_absent": True, "library_force_exit_called": False, "exit_request_attempted": True,
+        "exit_request_completed": True, "process_wait_completed": True, "native_returncode": 0, "pipe_open_at_request": True,
+        "pipe_open_after_wait": True, "exit_before_pipe_close": True, "normal_exit_observed": True,
+        "request_budget_seconds": 8, "wait_budget_seconds": 12, "errors": {},
+        "process_identity": legacy.read_json(path / "fluent_process.json")}
+    dump(path / "normal_exit_attempted.json", {"job_id": slot.JOB_ID, "stage": "attempted"})
+    dump(path / "normal_exit_completed.json", native["normal_exit"])
+    native["native_error_review"] = native_log_review(slot, path)
+    for name in ("native.stdout.log", "native.stderr.log"):
+        if not (path / name).exists(): (path / name).write_bytes(b"")
+    final.update(owned_live_before_cleanup=[], native_log_review=native_log_review(slot, path, adapter_finished=True))
 
 
 @pytest.mark.parametrize("name", ["background", "arm"])
@@ -218,7 +246,8 @@ def test_source_mesh_or_manifest_changes_block_new_slots(batch, relative):
     popen.assert_not_called()
 
 
-@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_transcript_repair_authorization_001.json", "execution_binding/mesh_inspection_transcript_repair_sources_001.json"])
+@pytest.mark.parametrize("relative", ["execution_binding.json", "execution_binding/mesh_inspection_full_record_authorization_001.json",
+    "execution_binding/mesh_inspection_full_record_sources_001.json"])
 def test_archived_execution_grant_or_manifest_tamper_blocks_mesh(batch, relative):
     root, _, popen = batch
     path = completed_connection(root)
@@ -450,8 +479,8 @@ def test_fixed_policy_matches_ready_wait_limits():
     assert b.POLICY["transport_ready_max_seconds"] == c.TRANSPORT_READY_MAX_SECONDS == 20
     assert b.POLICY["health_call_max_seconds"] == c.HEALTH_CALL_MAX_SECONDS == 2
     assert b.POLICY["maximum_health_polls"] == c.MAX_HEALTH_POLLS == 200
-    assert b.POLICY["additional_attempts_authorized"] == 0
-    assert b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["additional_attempts_authorized"] == 1
+    assert b.POLICY["additional_connection_attempts"] == 1
     assert b.POLICY["original_additional_connection_attempts"] == 1
     assert b.POLICY["additional_QA_attempts"] == 0
 
@@ -559,6 +588,7 @@ def test_worker_deadline_owned_cleanup_preserves_unknown(batch, monkeypatch, cle
             clock.now = 371
             self.members = {500: 123.5}; self.errors = []
         def capture(self): pass
+        def live(self): return []
         def close(self): events.append("owned_close"); return cleanup_ok
     monkeypatch.setattr(w, "OwnedProcessTree", Tree)
     result = w.run(path, stage_root=root)
@@ -587,7 +617,7 @@ def test_connection_probe_cannot_enter_mesh_collector(batch):
 
 def test_complete_fake_connection_worker_produces_gate_evidence_after_cleanup(batch, monkeypatch):
     root, _, _ = batch
-    slot = b.StdinValidationSlot(root)
+    slot = b.FullRecordValidationSlot(root)
     path, _ = reserve(root, slot)
     contract = legacy.read_json(root / "contract.json")
     executable = contract["software"]["fluent"].replace("/", "\\")
@@ -609,10 +639,14 @@ def test_complete_fake_connection_worker_produces_gate_evidence_after_cleanup(ba
             "stdin_close_phase": "after_bounded_session_exit_request",
             "readiness_sha256": legacy.sha256(path / "readiness.json"),
             "transcript_sha256": legacy.sha256(path / "native.transcript.txt")})
+        native = legacy.read_json(path / "native_result.json")
+        complete_record_fixture(slot, path, native, {})
+        dump(path / "native_result.json", native)
         return types.SimpleNamespace(pid=500, poll=lambda: 0)
     class Tree:
         def __init__(self, *a): self.members = {500: 500.5, 600: 600.5}; self.errors = []
         def capture(self): pass
+        def live(self): return []
         def close(self): return True
     def identity(pid=None):
         return types.SimpleNamespace(create_time=lambda: {500: 500.5, 600: 600.5}.get(pid, 123.5),
@@ -659,7 +693,7 @@ def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatc
     monkeypatch.setattr(w, "validate_frozen", lambda *a: {"contract": {"software": {"fluent": str(exe), "ansys_root": str(root)}}})
     monkeypatch.setattr(w.psutil, "Process", lambda pid=None: types.SimpleNamespace(pid=os.getpid() if pid is None else pid,
         create_time=lambda: 123.5, ppid=lambda: os.getpid(), exe=lambda: str(exe)))
-    popen = mock.Mock(return_value=types.SimpleNamespace(pid=501, stdin=mock.Mock()))
+    popen = mock.Mock(return_value=types.SimpleNamespace(pid=501, stdin=types.SimpleNamespace(closed=False, close=lambda: None), poll=lambda: None, wait=lambda **k: 0))
     monkeypatch.setattr(w.subprocess, "Popen", popen)
     calls = []
     def record(label):
@@ -676,7 +710,9 @@ def test_native_adapter_single_popen_and_connection_only_scope(batch, monkeypatc
         setup=types.SimpleNamespace(boundary_conditions=types.SimpleNamespace(wall=Walls()),
             cell_zone_conditions=types.SimpleNamespace(fluid=types.SimpleNamespace(get_object_names=lambda: [b.MESHES[name]["fluid"]]))), exit=record("exit"))
     connects = []
-    def connect(*a): connects.append(True); a[3].update(ready()); return solver
+    def connect(*a, **kwargs):
+        assert kwargs == {"normal_exit": True}
+        connects.append(True); a[3].update(ready()); return solver
     monkeypatch.setattr(w, "connect_ready", connect)
     result = w.native_collect(path, stage_root=root)
     assert popen.call_count == len(connects) == 1
@@ -704,7 +740,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 18
+    assert len(names) == 20
     assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")

@@ -64,7 +64,7 @@ def readiness_passed(value):
         value.get("scheme_identity_queries_completed") is True)
 
 
-def connect_ready(attempt, process, deadline, evidence, *, dependencies=None):
+def connect_ready(attempt, process, deadline, evidence, *, dependencies=None, normal_exit=False):
     """Transport future and health share the caller's original 45-second deadline.
 
     Internal dependency injection is offline-only, never exposed by MCP/CLI.
@@ -153,7 +153,8 @@ def connect_ready(attempt, process, deadline, evidence, *, dependencies=None):
         # cached/fallback Scheme version never qualifies as native identity.
         evidence["connection_constructor_count"] = 1
         connection = bounded_call(lambda: dependencies["connection"](channel=channel, password=credentials.password,
-            cleanup_on_exit=False, start_transcript=False, inside_container=False), remaining())
+            cleanup_on_exit=normal_exit, start_transcript=False, inside_container=False), remaining())
+        evidence.update(cleanup_on_exit=normal_exit, constructor_watchdog_process_started=False)
         del credentials
         mode = bounded_call(lambda: connection.scheme_eval.scheme_eval(FIXED_MODE_QUERY), remaining())
         evidence["solver_mode_native"] = mode is True

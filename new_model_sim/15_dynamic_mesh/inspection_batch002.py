@@ -23,6 +23,8 @@ from mcp_bridge import STAGE, read_json, sha256
 from mesh_inspection_connection import safe_connection_error
 from mesh_inspection_evidence import finite, parse_native_output, validate_native_evidence
 from inspection_batch002_connection import connect_ready, readiness_passed
+from inspection_full_record import (normal_shutdown, native_log_review, full_record_passed,
+    clean_native_environment, TRANSCRIPT_CALL_SECONDS)
 from inspection_batch002_bridge import Batch002Slot, BATCH, SLOTS, MESHES, EXECUTION_SLOTS, execution_slot, SUPPLEMENT, POLICY
 
 NATIVE_APIS = ["one Popen fixed fluent.exe 3ddp -g -t1 -sifile=<fixed attempt>/server.info -nm",
@@ -30,10 +32,11 @@ NATIVE_APIS = ["one Popen fixed fluent.exe 3ddp -g -t1 -sifile=<fixed attempt>/s
     "child-only REMOTING_SERVER_ADDRESS=127.0.0.1", "one grpc.insecure_channel on exact 127.0.0.1",
     "grpc.channel_ready_future(same_channel).result(timeout=min(20,original_45s_remaining)) once",
     "HealthCheckService.check_health same-channel bounded polling; only completed UNAVAILABLE may wait; auth/hung calls abort",
-    "FluentConnection(channel=same,password=private,cleanup_on_exit=False,inside_container=False)",
+    "FluentConnection(channel=same,password=private,cleanup_on_exit=True,start_transcript=False,inside_container=False)",
     "fixed official read-only (cx-solver-mode?) and (cx-version) queries", "Solver(fluent_connection=same)",
     "inspection slots only: file.read_mesh; mesh.quality; native fluid/wall queries; wall.adjacent_cell_zone; list_zones; mesh.check",
-    "file.start_transcript; file.stop_transcript; session.exit"]
+    "file.start_transcript; file.stop_transcript; session.exit() no kwargs/internal timeout; outer 8s bound",
+    "owned Popen.wait <=12s before closing PIPE; actual returncode and fixed native error markers required"]
 
 
 def slot_for_attempt(attempt, root=STAGE):
@@ -216,13 +219,15 @@ def native_collect(attempt, *, stage_root=STAGE):
         raise RuntimeGateError("Batch002 native adapter requires exact parent/lock ownership")
     if os.environ.get("REMOTING_SERVER_ADDRESS") != "127.0.0.1":
         raise RuntimeGateError("Batch002 child loopback environment binding missing")
+    if any(key.upper() == "PYFLUENT_TIMEOUT_FORCE_EXIT" for key in os.environ):
+        raise RuntimeGateError("Native child force-exit environment must be absent before constructing a session")
     write_new(attempt / "native_claim.json", {"job_id": slot.JOB_ID, "pid": os.getpid(),
         "creation_time": psutil.Process().create_time(), "parent_pid": parent.pid,
         "parent_creation_time": parent.create_time()}, attempt)
     report = {"job_id": slot.JOB_ID, "batch_id": BATCH, "slot": slot.slot, "provenance": "live_fluent_batch002",
         "commands": {}, "errors": {}, "launch_uncertain": True, "mesh_generated": False, "flow_iterations": 0,
         "readiness": {}}
-    solver = None
+    solver = process = None
     native_input = NativeInputLease()
     transcript = attempt / "native.transcript.txt"
     try:
@@ -247,15 +252,18 @@ def native_collect(attempt, *, stage_root=STAGE):
         identity = psutil.Process(process.pid)
         write_new(attempt / "fluent_process.json", {"job_id": slot.JOB_ID, "pid": process.pid,
             "creation_time": identity.create_time(), "parent_pid": identity.ppid(), "executable": identity.exe()}, attempt)
-        solver = connect_ready(attempt, process, end, report["readiness"])
+        solver = connect_ready(attempt, process, end, report["readiness"], normal_exit=True)
         report["launch_uncertain"] = False
         write_new(attempt / "fluent_launch_ready.json", {"job_id": slot.JOB_ID, "health": "SERVING", "solver_mode": True}, attempt)
         # Connection probe starts transcript only after authenticated connection;
         # its structured native readiness includes direct health/mode/version.
-        transcript_call(solver, "start", slot, attempt, report)
+        report["transcript_target"] = transcript.as_posix()
+        bounded_call(lambda: transcript_call(solver, "start", slot, attempt, report),
+                     min(TRANSCRIPT_CALL_SECONDS, max(0, request["work_deadline_unix"] - time.time() - 20)))
         if not slot.is_connection:
             collect_mesh(solver, slot, attempt, report)
-        transcript_call(solver, "stop", slot, attempt, report)
+        bounded_call(lambda: transcript_call(solver, "stop", slot, attempt, report),
+                     min(TRANSCRIPT_CALL_SECONDS, max(0, request["work_deadline_unix"] - time.time() - 20)))
         if transcript.is_file() and transcript.stat().st_size <= 2 * 1024 * 1024:
             report["transcript_sha256"] = sha256(transcript)
             if slot.slot in MESHES:
@@ -267,12 +275,14 @@ def native_collect(attempt, *, stage_root=STAGE):
         # through the bounded session shutdown request, then explicitly close
         # only this owned handle, including every failure/timeout path.
         try:
-            if solver is not None:
-                report["stdin_close_phase"] = "after_bounded_session_exit_request"
-                try:
-                    bounded_call(solver.exit, min(2, max(0, request["deadline_unix"] - time.time())))
-                except Exception as exc:
-                    report["errors"]["session_exit"] = safe_connection_error(exc)
+            if solver is not None and process is not None:
+                report["normal_exit"] = normal_shutdown(solver, process, native_input, slot, attempt,
+                                                       request["work_deadline_unix"])
+                if report["normal_exit"]["normal_exit_observed"]:
+                    report["stdin_close_phase"] = "after_observed_normal_exit_and_wait"
+                else:
+                    report["stdin_close_phase"] = "failed_normal_exit_final_cleanup"
+                    report["errors"]["normal_exit"] = {"error_class": "normal_exit_unverified"}
             else:
                 report["stdin_close_phase"] = "native_failure_final_cleanup"
         finally:
@@ -281,6 +291,12 @@ def native_collect(attempt, *, stage_root=STAGE):
             except Exception as exc:
                 report["errors"]["stdin_close"] = safe_connection_error(exc)
             report["stdin_lifecycle"] = native_input.evidence()
+            try:
+                report["native_error_review"] = native_log_review(slot, attempt)
+                if report["native_error_review"]["error_classes"]:
+                    report["errors"]["native_error_markers"] = report["native_error_review"]["error_classes"]
+            except Exception as exc:
+                report["errors"]["native_error_review"] = safe_connection_error(exc)
             write_new(attempt / "readiness.json", report["readiness"], attempt)
             report["readiness_sha256"] = sha256(attempt / "readiness.json")
             if slot.slot in MESHES:
@@ -292,6 +308,7 @@ def native_collect(attempt, *, stage_root=STAGE):
 def run(attempt, *, stage_root=STAGE):
     slot, attempt = slot_for_attempt(attempt, stage_root)
     if (slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
+            slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"] or
             (attempt / "probe_result.json").exists()):
         raise RuntimeGateError("Batch002 slot consumed or retired; never rerun")
     write_new(attempt / "worker_claim.json", {"job_id": slot.JOB_ID, "pid": os.getpid()}, attempt)
@@ -357,9 +374,7 @@ def run(attempt, *, stage_root=STAGE):
             "slot": slot.slot, "fixed_native_apis": NATIVE_APIS, "native_start_timeout": 45,
             "total_seconds": 300, "cleanup_begins_seconds": 270, "free_form_commands_accepted": False}, attempt)
         env = bounded_call(lambda: run_mesh_job.child_environment(attempt, frozen["contract"]), min(10, remaining() - 30))
-        for key in list(env):
-            if key.upper().startswith(("PYFLUENT", "PYTHON")):
-                env.pop(key)
+        env = clean_native_environment(env)
         env.update(PYTHONNOUSERSITE="1", PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYTHONIOENCODING="utf-8",
                    AWP_ROOT242=frozen["contract"]["software"]["ansys_root"], REMOTING_SERVER_ADDRESS="127.0.0.1")
         command = [slot._python(), "-B", str(slot.safe(slot.WORKER_SCRIPT)), "--native", "--attempt", str(attempt)]
@@ -407,6 +422,8 @@ def run(attempt, *, stage_root=STAGE):
         if slot.slot in MESHES and native.get("mesh_evidence", {}).get("metrics") != parse_native_output(
                 transcript.read_text(encoding="utf-8", errors="replace")):
             raise RuntimeGateError("Batch002 native mesh aggregate binding failed")
+        if not full_record_passed(native):
+            raise RuntimeGateError("Complete transcript and observed normal exit evidence missing")
         report["status"] = "completed" if code == 0 and not native.get("errors") else "failed"
     except InterruptedError as exc:
         report.update(status="cancelled", error=str(exc))
@@ -433,6 +450,10 @@ def run(attempt, *, stage_root=STAGE):
             try:
                 if remaining() < 15:
                     raise UncertainCall("Insufficient owned cleanup reserve")
+                live_before = bounded_call(tree.live, min(2, remaining() - 1))
+                report["owned_live_before_cleanup"] = [{"pid": item.pid, "creation_time": item.create_time()} for item in live_before]
+                if live_before:
+                    report["status"] = "failed"  # forced owned cleanup is not normal native exit
                 cleanup = bool(bounded_call(tree.close, min(20, remaining() - 1))) and cleanup
             except Exception as exc:
                 cleanup = False
@@ -441,6 +462,13 @@ def run(attempt, *, stage_root=STAGE):
             report["ownership_errors"] = list(tree.errors)
         elif process is not None:
             cleanup = False
+        if report.get("native") is not None:
+            try:
+                report["native_log_review"] = bounded_call(lambda: native_log_review(slot, attempt, adapter_finished=True), min(3, remaining() - 1))
+                if report["native_log_review"]["error_classes"]:
+                    report["status"] = "failed"
+            except Exception as exc:
+                report.update(status="failed", native_log_review_error=safe_connection_error(exc))
         if request is not None:
             try:
                 after = bounded_call(recheck, min(10, remaining() - 1))

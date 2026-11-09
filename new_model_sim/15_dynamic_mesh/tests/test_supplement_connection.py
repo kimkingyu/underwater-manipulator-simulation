@@ -77,7 +77,7 @@ def test_exactly_one_new_connection_no_new_QA_paths(batch, monkeypatch):
         assert qa.ATTEMPT == "runs/mcp_mesh_inspection/batch_002/" + name
         assert qa.JOB_ID == "inspection-b002-" + name and qa.status()["remaining_attempts"] == 1
     assert (old_path / "probe_result.json").read_bytes() == old_bytes
-    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 1
     assert b.POLICY["stdin_validation_job_id"] != slot.JOB_ID
     assert b.POLICY["original_additional_connection_attempts"] == 1
     assert b.POLICY["additional_QA_attempts"] == 0
@@ -102,7 +102,7 @@ def test_only_supplemental_success_opens_original_QA_gate(batch):
     with pytest.raises(legacy.BridgeError): b.Batch002Slot("background", root).connection_gate()
     completed_connection(root)
     gate = b.Batch002Slot("background", root).connection_gate()
-    assert gate["job_id"] == b.STDIN_VALIDATION_JOB
+    assert gate["job_id"] == b.FULL_RECORD_JOB
     assert gate["job_id"] != b.SUPPLEMENT_JOB
     assert gate["job_id"] != b.Batch002Slot("connection", root).JOB_ID
     popen.assert_not_called()
@@ -193,7 +193,7 @@ def test_sixteen_schema_routes_only_one_new_native_start_surface():
     source = (STAGE / "stage15_mcp.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
     tools = {n.name:n for n in tree.body if isinstance(n, ast.AsyncFunctionDef)}
-    assert len(tools) == 18
+    assert len(tools) == 20
     start = tools["stage15_start_supplement_connection"]
     assert [a.arg for a in start.args.args] == ["confirmation"]
     assert tools["stage15_supplement_connection_preflight"].args.args == []

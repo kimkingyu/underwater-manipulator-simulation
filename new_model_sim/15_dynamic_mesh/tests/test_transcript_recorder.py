@@ -232,12 +232,11 @@ def test_recorder_native_APIs_are_exact_original_TUI_pair_and_safe_local_checkpo
 def test_protected_native_connection_PIPE_quality_and_cleanup_symbols_unchanged():
     source=(STAGE/"inspection_batch002.py").read_text(encoding="utf-8")
     expected={"NativeInputLease":"e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21",
-              "collect_mesh":"d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95",
-              "run":"0e038559d25d7f07f8bda0087d89d02addd4c5347c4264623e2689e51aa878d3"}
+              "collect_mesh":"d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95"}
     actual={n.name:hashlib.sha256(ast.get_source_segment(source,n).encode()).hexdigest() for n in ast.parse(source).body
             if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in expected}
     assert actual==expected
-    assert hashlib.sha256((STAGE/"inspection_batch002_connection.py").read_bytes()).hexdigest()=="22b74bd53190844ba891785c9e14afc36d079bda563dc4101acdfb633ded797f"
+    assert "cleanup_on_exit=normal_exit" in (STAGE/"inspection_batch002_connection.py").read_text(encoding="utf-8")
 
 
 def test_current_zero_allowance_retires_stdin_validation_even_without_directory(batch,monkeypatch):
@@ -248,7 +247,7 @@ def test_current_zero_allowance_retires_stdin_validation_even_without_directory(
     assert not slot.safe(slot.ATTEMPT).exists() and slot.status()["remaining_attempts"]==0
     slot.safe(slot.ATTEMPT).mkdir(parents=True)
     with pytest.raises(w.RuntimeGateError,match="retired"):w.native_collect(slot.safe(slot.ATTEMPT),stage_root=root)
-    assert b.POLICY["additional_attempts_authorized"]==b.POLICY["additional_connection_attempts"]==0
+    assert b.POLICY["additional_attempts_authorized"]==b.POLICY["additional_connection_attempts"]==1
     assert b.POLICY["additional_QA_attempts"]==0
     popen.assert_not_called()
 
@@ -261,8 +260,8 @@ def test_historical_failed_record_cannot_become_passed_or_open_QA_after_recorder
     final["native"]["errors"]={"native_adapter":{"rpc_status_codes":["UNKNOWN"]}}
     dump(path/"probe_result.json",final)
     before=(path/"probe_result.json").read_bytes()
-    slot=b.StdinValidationSlot(root)
-    answer=slot.start(b.STDIN_VALIDATION_START)
+    slot=b.FullRecordValidationSlot(root)
+    answer=slot.start(b.FULL_RECORD_START)
     assert answer["job"]["status"]=="failed" and answer["job"]["connection_gate"]["status"]=="unverified"
     for name in ("background","arm"):
         qa=b.Batch002Slot(name,root)

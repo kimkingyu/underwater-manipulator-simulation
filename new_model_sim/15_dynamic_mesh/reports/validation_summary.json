@@ -1,7 +1,7 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "stage": "15_dynamic_mesh",
-  "status": "native_connection_ready_and_cleaned_transcript_recording_failed_QA_blocked",
+  "status": "full_record_validation_implemented_host_preflight_blocked_no_new_native",
   "implemented": [
     "isolated CAD/domain preparation and kinematic audits",
     "bounded Workbench/MCP diagnostic jobs with PID/create-time ownership and preserved receipts",
@@ -12,7 +12,8 @@
     "preserved original source/archive/failed receipts and independently rechecked PID/create-time cleanup",
     "separate three-slot batch with native connection/health/solver/source/cleanup gate; exact loopback alias canonicalization; no DNS or automatic launch retry",
     "one separately authorized supplemental connection slot and offline-tested native stdin pipe ownership; consumed slots stay retired",
-    "one separately authorized stdin validation and offline fixed-path TUI recorder with per-call checkpoints; overall failed record and QA gate preserved"
+    "one separately authorized stdin validation and offline fixed-path TUI recorder with per-call checkpoints; overall failed record and QA gate preserved",
+    "independent full-record slot with same-session normal exit, observed zero returncode while PIPE remains open, strict transcript/error/identity/source/cleanup gate"
   ],
   "native_finding": {
     "background_wall_base0_scope_ids": 19,
@@ -27,7 +28,7 @@
     "both_cases_cleaned_up": true
   },
   "offline_regression": {
-    "local_test_count": 1086,
+    "local_test_count": 1138,
     "failures": 0,
     "errors": 0,
     "skips": 0,
@@ -44,13 +45,14 @@
       "cad/sc_volume.py.in": "34ade5d98d936eac2bfd901439d109fd430506e87922f6ae44607203f50a84b9",
       "cad_prepare.py": "1f83d2085f8a067ea76c78f0fed7f812915ab5b2810c8f567ee777a1fce4c466",
       "calibrate_sdk.py": "73055185ba90b07b339e9f71d02c10dd42b6240c3abd224150644ba9fa12212c",
-      "check_mcp_connection.py": "c9f298fb666b4acc3fd4cfc34a3959376acfd873dbc9625764a377d4faaf0f13",
+      "check_mcp_connection.py": "d6e9059a1bc81bd43de202694c02a299747a25a0d1a56b6dc6afa511c4ff5ca2",
       "complete_arm_cad.py": "5a66bf4dbf6c4e329fb6eb4b82dd26726d4ec273b654692a10f5ec72f177b2f3",
       "contract.json": "3d7fe4b58e320402692ba15a3e3afae6aa6788e3c20553c552972c907bbe5d18",
       "definition_probe.py": "77997c33b8fae3d8b7664d574cc6fc1607e6e485c37f98a9eb1b811d6e09e597",
-      "inspection_batch002.py": "fd64d1e1d5774d6f07cee5710fb7a2692ca0419c2b763862703a122a1f239c08",
-      "inspection_batch002_bridge.py": "c1872bc0585fc7ba7b5131fa434a952836e6f662955f6d8a811f6434f849d169",
-      "inspection_batch002_connection.py": "22b74bd53190844ba891785c9e14afc36d079bda563dc4101acdfb633ded797f",
+      "inspection_batch002.py": "67dc9629b46f8b7ae103f5b78b68ba1e0669e6c26a90d8c987e0fce921503423",
+      "inspection_batch002_bridge.py": "c9d95adec9fc1a0a565a25111fe0b56745e47e40e8f161cc073ca3fddd27cce8",
+      "inspection_batch002_connection.py": "b058b0f12545f6cb460d3a7d48e75fd912ff7bce3bed23935a0df76ac913d34a",
+      "inspection_full_record.py": "9dbeb91ba61a8e8dd1522d4bc658a564aad7b00a4f3bc3439a55500df2b56eac",
       "mcp_bridge.py": "860720a68448039a4622942da1b7981ce0570644edb27dc985746b3c38bd11a7",
       "mesh/meshing_definition_probe.py.in": "402c4fc3d5c9cbea5d8430844de9cd0ec4f5e372d94037756ea198d7128a8448",
       "mesh/meshing_sizing_diagnostic.py.in": "ecbc63e026a75dda089a3d5c35de1bec177e3af77a30a1f2a96d95f3d7616e3e",
@@ -73,7 +75,7 @@
       "runtime.py": "c68b09580eea3aa1861da22db9f082345869372094117c6cfa9e32ec7fa25ead",
       "sizing_diagnostic.py": "cac90fcc39992142e7e7054cb20c9a8c93965a5ff21ad067927e7eef788b3614",
       "sizing_mcp_bridge.py": "d73203415eda2e88d012ed22e9531fb7c8d75ea2e13f9b1319459196536148ec",
-      "stage15_mcp.py": "9c63736253c985ed865d4a6c8dfc3304c3c7f7c5d568d15e26dbfa2287b2e171",
+      "stage15_mcp.py": "7b2e923cb3e5b7703a43a3323e3d9d545f8217ec0fe55e795e576e8e4126d38e",
       "tests/test_arm_completion.py": "82bb00e6e750e29fd40f5cfca6a307c953a0ac123e36d8fdaf0d1baaa32d7423",
       "tests/test_audit.py": "29524d5a606c84f28477027c147ac25e358db7c640b16af61c7ed3a80a521d38",
       "tests/test_cad_prepare.py": "1bf53fab81e1d2d856a4d77584b268d31df416443c83538341ea6fb6917da710",
@@ -81,11 +83,12 @@
       "tests/test_definition_probe_templates.py": "dea7421cdaf0042fc8ab2881a82287ec10c320848951688d300b82c5dd944d86",
       "tests/test_face_probe_preparation.py": "f4942defe0a051ebf1297153f9cfe0fd1a37ea5cf7bc02bb8c2b3e52e850cccc",
       "tests/test_face_sampling.py": "b8293cad5a691927599241eaecdc6c6e9510f2cdb91c7ece10316dd36c0162e2",
-      "tests/test_inspection_batch002.py": "2c0b8da6c3f5bfd3e0ab7bf8a585d3412e4cd7b5f0f4c954e606bea95ef33b8e",
+      "tests/test_full_record_validation.py": "ff7588d5a773db8afe52036798351f5d0d2ee6b37bbadb85a3a593c303bb6787",
+      "tests/test_inspection_batch002.py": "fcbb4ca1abbdc91bc6b515a8c1691abf1f38a53e86f7c5ef87d5842c61e624a9",
       "tests/test_mcp_bridge.py": "5ff65564c3943f23726dad324528e43c127b4346429f304177cfbdaa5a54f784",
       "tests/test_measurement_binding.py": "dd4a01afab2bfa92dca95521f845db1e77cf2a60aa360dd3c5539cfba17461cb",
       "tests/test_mesh_construction.py": "3980de5deb508dc621e4650ca2624989555959944a1e55b05455b1a2ea437356",
-      "tests/test_mesh_inspection.py": "848afc10c2e5473d1011624cd74813a15cd39c5bb51a0d4a030e98a750895346",
+      "tests/test_mesh_inspection.py": "d7e81c95643b0e2e3c4babc72aedd715c4773db9a85e40dacd693a0bf446debd",
       "tests/test_mesh_inspection_connection.py": "6bcba0871c6a3dadaa92a8e1725217611f44a76810ac69f4d651307881bb546b",
       "tests/test_mesh_job.py": "2b18f3d7b1647d8b8d433507e012a40a7285a2a3ef5853af07cf95dd98ff4daa",
       "tests/test_mesh_mcp_bridge.py": "42446bee5156c4405bc519854cbb9ec4f3b5cbb984253ddd777c86ec2036fe2f",
@@ -93,7 +96,7 @@
       "tests/test_meshing_diagnostics.py": "b860c56d1f1babf633810be918a38ef7daad0e50e5e3d3ae02214866a392bfcb",
       "tests/test_meshing_face_controls.py": "b34e03aa7b0dc3d27c87c9d1fc578d418b63989d06a7919c0f00082f9d1d777e",
       "tests/test_motion.py": "3b48c860cd80c70e5148ea80dd6a71e7a72c66f13611bbb8f174924685190276",
-      "tests/test_native_stdin_lifetime.py": "a2b1464b2a79a2387c8d28dcb8d389ebd16a9b17bf6bb3a51304eeba9cbb6bc2",
+      "tests/test_native_stdin_lifetime.py": "d2ee577a7b4005687ec64d07c6e145373a25b6c3051d71b8b2f64224e8fcc98a",
       "tests/test_offline_receipt.py": "87ff1f1304d7a132dfb675e13362d51db7038f3a36a4f87cc654ec89783d1aff",
       "tests/test_preflight.py": "040c57638f7c312f594adcb09b0f4d5229fc0df066e08603dd10d090e3b865a1",
       "tests/test_run_gate.py": "84dd86682ab3ea8f16ac341233afaaccc8afe88c36a562142f68371a6b762880",
@@ -102,16 +105,16 @@
       "tests/test_sizing_diagnostic.py": "ec1e0986f8a27e9649724afaca11a3a6251d9806fcc9b0832630e7a2410c5a71",
       "tests/test_sizing_diagnostic_templates.py": "5b3b0de7f4e300ae92bdb012b10ae036012a51945405ecd4e5c2ddc4e66a946f",
       "tests/test_sizing_mcp_bridge.py": "da995a2ba164fd86af20dfc8ec97b4e93c0e64d1453ce710e23405bbd7a1050e",
-      "tests/test_stdin_validation_slot.py": "d02258a5eaf98ffe792aaf13b18e260f50ae7ea648c4c89dd90dca9edd64dda1",
-      "tests/test_supplement_connection.py": "1908be06a1d2d8daec50d09af3b8dcc7ea0d2884533fda3cba0c2b0236d9e38a",
-      "tests/test_transcript_recorder.py": "f37c3a7a9df89ec5190333ff26d3d14aa716100eb9d3d53b46dcb572f1d2cf6a",
+      "tests/test_stdin_validation_slot.py": "7023726dcc5abff7ba174bba8664411c9d4bed5100db7048ace5aad3b1d65608",
+      "tests/test_supplement_connection.py": "60af99886c2fdc6ec0a155c1192584aaa6de5ab32e59b3e7d4ced4d262d52120",
+      "tests/test_transcript_recorder.py": "fc78f50ee24ddb4bdfd40f53274025e8b3f58a7409867105e1b9c8c0a5d7f411",
       "tests/test_wall_ownership.py": "097f56a7aeb209ad6284f1eed90ba0e4a6bbd12ca547b7d1638a54d79671ea0f",
       "tests/test_workbench_failure_exit.py": "b241d7174e29932b202ee5b9cbdd46d27d315b19bc6154ff4c8f5b95d6c2a53f",
       "udf/stage15_j1_motion.c": "42aeae54acd8f23fb47073d3f5b8119a985b4131a17abe273bdcf6a3404834ab",
       "verify_offline.py": "af46ea96d658caca77f165b93af4443a2a17303fec5182f62fcdbfb68b2c76df"
     },
     "note": "This local acceptance run includes private calibration-reference fixtures.",
-    "portable_unit_test_count": 1083,
+    "portable_unit_test_count": 1135,
     "local_fixture_tests_deselected": 3
   },
   "portable_unit_command": [
@@ -243,6 +246,12 @@
       "sha256": "1047544261f04b88afb226bae331a335cd70b0c222e9a2b5dcc49a964fb52fa1",
       "kind": "derived_ready_connection_failed_recording_summary",
       "QA_gate_passed": false
+    },
+    {
+      "path": "evidence/full_record_implementation_summary.json",
+      "sha256": "56a0902b47204c08490d3fd41a34ae0e0edb02061871d7268152ec2e07fdc453",
+      "kind": "implementation_only_no_new_native",
+      "QA_gate_passed": false
     }
   ],
   "not_yet_validated": [
@@ -358,5 +367,13 @@
     "conditional_QA_slots_remaining": 2,
     "recording_fix_native_validated": false,
     "summary": "evidence/stdin_validation_001_summary.json"
+  },
+  "full_record_validation": {
+    "state": "implemented_not_executed",
+    "slot_consumed": false,
+    "conditional_QA_slots_remaining": 2,
+    "QA_gate_passed": false,
+    "native_evidence_added": false,
+    "summary": "evidence/full_record_implementation_summary.json"
   }
 }

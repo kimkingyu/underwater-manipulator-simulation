@@ -50,7 +50,7 @@ def native_input(batch, monkeypatch):
         ppid=lambda: os.getpid(), exe=lambda: str(executable)))
     events = []
     pipe = FakePipe(events)
-    process = types.SimpleNamespace(pid=501, stdin=pipe)
+    process = types.SimpleNamespace(pid=501, stdin=pipe, poll=lambda: None, wait=lambda **k: 0)
     calls = []
     def popen(command, **kwargs):
         calls.append((command, kwargs))
@@ -73,7 +73,7 @@ def native_input(batch, monkeypatch):
     solver = types.SimpleNamespace(tui=types.SimpleNamespace(file=types.SimpleNamespace(
         start_transcript=start_transcript, stop_transcript=stop_transcript)), exit=exit_session)
     connects = []
-    def connect(attempt, actual_process, deadline, evidence):
+    def connect(attempt, actual_process, deadline, evidence, **kwargs):
         assert actual_process is process and not pipe.closed
         connects.append(True)
         events.append("connect_wait")
@@ -92,7 +92,7 @@ def test_private_pipe_kept_open_through_connection_and_session_exit(native_input
     assert result["stdin_lifecycle"] == {"mode": "private_subprocess_PIPE", "bytes_written": 0,
         "close_requested_in_cleanup": True, "pipe_returned": True, "writer_closed": True,
         "late_return_after_close_request": False}
-    assert result["stdin_close_phase"] == "after_bounded_session_exit_request"
+    assert result["stdin_close_phase"] == "after_observed_normal_exit_and_wait"
     assert "OFFLINE-SECRET" not in json.dumps(result)
     assert legacy.read_json(path / "native_result.json")["stdin_lifecycle"]["writer_closed"] is True
 
@@ -101,7 +101,7 @@ def test_private_pipe_kept_open_through_connection_and_session_exit(native_input
 def test_connection_failure_or_timeout_closes_only_in_final_cleanup(native_input, monkeypatch, error):
     root, _, path, pipe, _, _, events, calls, _ = native_input
     attempts = []
-    def fail(*a):
+    def fail(*a, **kwargs):
         assert not pipe.closed
         attempts.append(True); events.append("connect_failure")
         raise error("OFFLINE-SECRET; never persist details")
@@ -141,7 +141,7 @@ def test_session_exit_error_still_closes_writer_after_exit_attempt(native_input)
     result = w.native_collect(path, stage_root=root)
     assert events[-2:] == ["session_exit_failed", "pipe_close"]
     assert pipe.close_calls == 1 and len(calls) == 1
-    assert "session_exit" in result["errors"] and "OFFLINE-SECRET" not in json.dumps(result)
+    assert "normal_exit" in result["errors"] and "OFFLINE-SECRET" not in json.dumps(result)
 
 
 def test_receipt_write_failure_cannot_skip_input_close(native_input, monkeypatch):
@@ -196,12 +196,13 @@ def test_hung_session_exit_still_closes_input_in_cleanup_without_repeat(native_i
     bounded = w.bounded_call
     def short(function, timeout):
         return bounded(function, 0.02 if function.__name__ == "slow_exit" else timeout)
-    monkeypatch.setattr(w, "bounded_call", short)
+    import inspection_full_record as full
+    monkeypatch.setattr(full, "bounded_call", short)
     try:
         report = w.native_collect(path, stage_root=root)
         assert len(exits) == len(calls) == 1
         assert events[-2:] == ["session_exit_started", "pipe_close"]
-        assert pipe.closed and "session_exit" in report["errors"]
+        assert pipe.closed and "normal_exit" in report["errors"]
     finally:
         release.set(); assert finished.wait(timeout=1)
 
@@ -274,7 +275,7 @@ def test_revision_has_no_new_native_allowance_and_retired_supplement_cannot_recr
     with pytest.raises(w.RuntimeGateError): w.native_collect(slot.safe(slot.ATTEMPT), stage_root=root)
     assert not slot.safe(slot.ATTEMPT + "/worker_claim.json").exists()
     assert slot.status()["remaining_attempts"] == 0
-    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 1
     assert b.POLICY["stdin_validation_job_id"] != slot.JOB_ID
     assert b.POLICY["additional_QA_attempts"] == 0
     popen.assert_not_called()

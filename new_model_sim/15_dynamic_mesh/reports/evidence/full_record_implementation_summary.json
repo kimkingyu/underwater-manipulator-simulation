@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "implementation_and_offline_regression_only_no_new_native_evidence",
+  "scope": "one separately user-authorized full-record connection; existing two QA slots only after its complete native evidence gate",
+  "new_native_execution_performed": false,
+  "full_record_slot_consumed": false,
+  "original_background_QA_slot_consumed": false,
+  "original_arm_QA_slot_consumed": false,
+  "QA_gate_passed": false,
+  "old_failed_receipts_and_abnormal_exit_markers_preserved": true,
+  "native_quality_verified": false,
+  "implementation": {
+    "single_native_Popen_channel_and_connection_constructor": true,
+    "private_PIPE_zero_writes_until_shutdown_and_wait": true,
+    "transcript": "new fixed absolute forward-slash path; create-only start/stop attempted/completed/failed checkpoints",
+    "normal_exit": "same authenticated connection cleanup_on_exit=True; public solver.exit with no kwargs; external 8-second bound; wait for owned native launcher returncode zero up to 12 seconds while PIPE remains open",
+    "library_force_exit_or_cleanup_scripts_used": false,
+    "force_exit_environment_removed_and_rejected": true,
+    "owned_live_processes_before_cleanup_block_acceptance": true,
+    "error_markers_blocking_QA": [
+      "abnormal_exit",
+      "transcript_open_error",
+      "stdin_eof_halt",
+      "fatal_error",
+      "unclassified_native_error"
+    ],
+    "total_seconds_including_cleanup": 300,
+    "cleanup_starts_seconds": 270,
+    "shared_startup_seconds": 45,
+    "transcript_call_seconds": 15,
+    "normal_exit_request_seconds": 8,
+    "observed_native_exit_wait_seconds": 12,
+    "new_mesh_read_initialization_iteration_motion_or_generation": false
+  },
+  "offline_regression": {
+    "tests_passed": 1138,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1135,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 20,
+    "source_hashes_bound": true,
+    "source_review_sha256": "0e12b57d0d3e75bfd83a39d3bb5f3ba92635d6b80528fee515cad73938989c60"
+  },
+  "prior_1086_archive": {
+    "files": 31,
+    "manifest_sha256": "be9652dfc8befff7a95a169232c7b8472e5752bf357fa4d550932a217abdd67f"
+  },
+  "host_execution_block": "MCP management listing works after user resumed; full-record preflight rejected by host with approved input changed. No workaround or native start performed.",
+  "limitations": [
+    "new transcript and normal exit remain unverified natively",
+    "old native readiness evidence does not turn old failed recording into success",
+    "two QA slots remain unused and blocked",
+    "no mesh quality, volume, adjacency or static overset acceptance"
+  ],
+  "publication_scope": "Source/tests and implementation-only summary. Runtime authorizations, credentials, server-info, raw native logs, local source archives and mesh/CAD binaries remain local."
+}

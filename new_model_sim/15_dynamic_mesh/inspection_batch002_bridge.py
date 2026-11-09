@@ -11,8 +11,13 @@ from mesh_inspection_mcp_bridge import InspectionSlot, MESHES
 
 BATCH = "inspection-batch002"
 SLOTS = ("connection", "background", "arm")
-GRANT = "frozen/mesh_inspection_transcript_repair_authorization_001.json"
-MANIFEST = "frozen/mesh_inspection_transcript_repair_sources_001.json"
+GRANT = "frozen/mesh_inspection_full_record_authorization_001.json"
+MANIFEST = "frozen/mesh_inspection_full_record_sources_001.json"
+FULL_RECORD = "connection_full_record_001"
+FULL_RECORD_JOB = "inspection-b002-full-record-001"
+FULL_RECORD_ATTEMPT = "runs/mcp_mesh_inspection/batch_002/connection_full_record_001"
+FULL_RECORD_START = "RUN_STAGE15_FULL_RECORD_VALIDATION_ONCE"
+FULL_RECORD_CANCEL = "CANCEL_STAGE15_FULL_RECORD_VALIDATION"
 SUPPLEMENT = "connection_supplement_001"
 SUPPLEMENT_JOB = "inspection-b002-connection-supplement-001"
 SUPPLEMENT_ATTEMPT = "runs/mcp_mesh_inspection/batch_002/connection_supplement_001"
@@ -23,18 +28,24 @@ STDIN_VALIDATION_JOB = "inspection-b002-stdin-validation-001"
 STDIN_VALIDATION_ATTEMPT = "runs/mcp_mesh_inspection/batch_002/connection_stdin_validation_001"
 STDIN_VALIDATION_START = "RUN_STAGE15_STDIN_CONNECTION_VALIDATION_ONCE"
 STDIN_VALIDATION_CANCEL = "CANCEL_STAGE15_STDIN_CONNECTION_VALIDATION"
-EXECUTION_SLOTS = SLOTS + (SUPPLEMENT, STDIN_VALIDATION)
+EXECUTION_SLOTS = SLOTS + (SUPPLEMENT, STDIN_VALIDATION, FULL_RECORD)
 START = "RUN_STAGE15_BATCH002_READ_ONLY_ONCE"
 CANCEL = "CANCEL_STAGE15_BATCH002_READ_ONLY"
 SOURCES = ("stage15_mcp.py", "mcp_bridge.py", "sizing_mcp_bridge.py", "mesh_mcp_bridge.py",
     "mesh_inspection_mcp_bridge.py", "mesh_inspection_evidence.py", "mesh_inspection_connection.py",
     "inspection_batch002_bridge.py", "inspection_batch002.py", "inspection_batch002_connection.py",
     "definition_probe.py", "runtime.py", "preflight.py", "mesh_prepare.py", "run_mesh_job.py",
-    "frozen/mesh_inspection_transcript_repair_api_basis_001.json", "contract.json", "frozen/input_manifest.json")
-POLICY = {"schema_version": 1, "binding_revision": 7,
-    "baseline_batch_authorization_relative": "frozen/mesh_inspection_stdin_validation_authorization_001.json",
-    "baseline_batch_authorization_sha256": "2a79bbcc90697d3c04c48e117f2e45883faaa255fd355b017d4f815fc54cea45",
-    "additional_attempts_authorized": 0, "additional_connection_attempts": 0, "additional_QA_attempts": 0,
+    "inspection_full_record.py", "frozen/mesh_inspection_full_record_api_basis_001.json", "contract.json", "frozen/input_manifest.json")
+POLICY = {"schema_version": 1, "binding_revision": 8,
+    "baseline_batch_authorization_relative": "frozen/mesh_inspection_transcript_repair_authorization_001.json",
+    "baseline_batch_authorization_sha256": "8e70eb6081b2bfb7e357acf103be8db5a600d9b662b1074eea9e9b004b322c30",
+    "additional_attempts_authorized": 1, "additional_connection_attempts": 1, "additional_QA_attempts": 0,
+    "full_record_slot": FULL_RECORD, "full_record_job_id": FULL_RECORD_JOB,
+    "full_record_attempt_relative": FULL_RECORD_ATTEMPT,
+    "normal_exit_cleanup_on_exit": True, "normal_exit_request_seconds": 8,
+    "normal_exit_wait_seconds": 12, "transcript_call_seconds": 15,
+    "force_exit_environment_allowed": False, "library_force_exit_allowed": False,
+    "native_error_markers_block_QA": True,
     "stdin_validation_retired": True, "original_stdin_validation_attempts": 1,
     "transcript_target_policy": "fixed_fresh_attempt_file_absolute_forward_slashes_unquoted",
     "stdin_validation_slot": STDIN_VALIDATION, "stdin_validation_job_id": STDIN_VALIDATION_JOB,
@@ -42,7 +53,7 @@ POLICY = {"schema_version": 1, "binding_revision": 7,
     "original_additional_connection_attempts": 1, "supplement_connection_retired": True,
     "native_stdin": "private_PIPE_no_writes_until_cleanup",
     "supplement_slot": SUPPLEMENT, "supplement_job_id": SUPPLEMENT_JOB,
-    "supplement_attempt_relative": SUPPLEMENT_ATTEMPT, "connection_gate_job_id": STDIN_VALIDATION_JOB,
+    "supplement_attempt_relative": SUPPLEMENT_ATTEMPT, "connection_gate_job_id": FULL_RECORD_JOB,
     "old_connection_retired": True, "remaining_original_QA_slots": ["background", "arm"],
     "batch_id": BATCH, "operation": "read_only_connection_then_mesh_inspection",
     "slots": list(SLOTS), "maximum_attempts": 3, "maximum_attempts_per_slot": 1,
@@ -139,7 +150,7 @@ class Batch002Slot(InspectionSlot):
 
     def connection_gate(self):
         """Fail closed on exact current batch, native artifacts and cleanup; no launches."""
-        conn = StdinValidationSlot(self.root)
+        conn = FullRecordValidationSlot(self.root)
         conn.authorize()
         request = conn._json(conn.ATTEMPT + "/request.json")
         final = conn._json(conn.ATTEMPT + "/probe_result.json")
@@ -186,15 +197,20 @@ class Batch002Slot(InspectionSlot):
                 type(stdin.get("bytes_written")) is not int or stdin["bytes_written"] != 0 or
                 any(stdin.get(k) is not True for k in ("close_requested_in_cleanup", "pipe_returned", "writer_closed")) or
                 stdin.get("late_return_after_close_request") is not False or
-                native.get("stdin_close_phase") != "after_bounded_session_exit_request"):
+                native.get("stdin_close_phase") != "after_observed_normal_exit_and_wait"):
             raise BridgeError("Stdin validation gate requires the existing native PIPE lifecycle evidence")
         transcript = conn.safe(conn.ATTEMPT + "/native.transcript.txt")
         audit = conn._json(conn.ATTEMPT + "/command_audit.json")
-        if (not transcript.is_file() or transcript.stat().st_size > 2 * 1024 * 1024 or
+        if (not transcript.is_file() or not 0 < transcript.stat().st_size <= 2 * 1024 * 1024 or
                 native.get("transcript_sha256") != sha256(transcript) or audit.get("batch_id") != BATCH or
                 audit.get("job_id") != conn.JOB_ID or audit.get("slot") != conn.slot or
                 audit.get("free_form_commands_accepted") is not False):
             raise BridgeError("Batch002 connection native transcript/audit binding missing")
+        from inspection_full_record import verify_full_record_artifacts
+        try:
+            verify_full_record_artifacts(conn, native, final)
+        except Exception as exc:
+            raise BridgeError("Full-record native artifacts/normal exit are incomplete") from exc
         # Tie native adapter and actual Fluent process to launch ledger/owned tree.
         launcher = conn._json(conn.ATTEMPT + "/launcher.json")
         claim = conn._json(conn.ATTEMPT + "/native_claim.json")
@@ -280,6 +296,7 @@ class Batch002Slot(InspectionSlot):
                 self.slot == STDIN_VALIDATION and POLICY["stdin_validation_retired"]) else 1,
             "maximum_seconds_including_cleanup": 300, "start_confirmation": self.START_CONFIRMATION, "cancel_confirmation": self.CANCEL_CONFIRMATION,
             "supplemental_connection": self.slot == SUPPLEMENT, "QA_attempts_added": 0,
+            "full_record_validation": self.slot == FULL_RECORD, "normal_exit_required": True,
             "connection_gate_required": not self.is_connection, "CFD_authorized": False}
         if used:
             result["job"] = self.job_status(self.JOB_ID)
@@ -298,8 +315,8 @@ class Batch002Slot(InspectionSlot):
             value["historical_source_count"] = len(request.get("sources", []))
             if self.is_connection:
                 try:
-                    if self.JOB_ID != STDIN_VALIDATION_JOB:
-                        raise BridgeError("Retired connection history cannot stand in for the stdin validation gate")
+                    if self.JOB_ID != FULL_RECORD_JOB:
+                        raise BridgeError("Retired connection history cannot stand in for the full-record validation gate")
                     value["connection_gate"] = self.connection_gate()
                 except Exception:
                     value["connection_gate"] = {"status": "unverified"}
@@ -359,7 +376,23 @@ class StdinValidationSlot(SupplementalConnectionSlot):
         self.ATTEMPT = STDIN_VALIDATION_ATTEMPT
 
 
+class FullRecordValidationSlot(StdinValidationSlot):
+    """One independent user-approved full-record connection; no extra QA slots."""
+    START_CONFIRMATION = FULL_RECORD_START
+    CANCEL_CONFIRMATION = FULL_RECORD_CANCEL
+    CANCEL_OPERATION = "cancel_full_record_validation"
+
+    def __init__(self, stage_root=STAGE):
+        Stage15Bridge.__init__(self, stage_root)
+        self.slot = self.domain = FULL_RECORD
+        self.is_connection = True
+        self.JOB_ID = FULL_RECORD_JOB
+        self.ATTEMPT = FULL_RECORD_ATTEMPT
+
+
 def execution_slot(slot, stage_root=STAGE):
+    if slot == FULL_RECORD:
+        return FullRecordValidationSlot(stage_root)
     if slot == STDIN_VALIDATION:
         return StdinValidationSlot(stage_root)
     if slot == SUPPLEMENT:

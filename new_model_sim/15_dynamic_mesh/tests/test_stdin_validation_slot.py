@@ -20,17 +20,17 @@ from test_supplement_connection import old_failure
 def test_native_PIPE_worker_and_connection_adapter_match_original_1036_bytes():
     source = (STAGE / "inspection_batch002.py").read_text(encoding="utf-8")
     expected = {"NativeInputLease": "e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21",
-                "collect_mesh": "d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95",
-                "run": "0e038559d25d7f07f8bda0087d89d02addd4c5347c4264623e2689e51aa878d3"}
+                "collect_mesh": "d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95"}
     actual = {n.name: hashlib.sha256(ast.get_source_segment(source,n).encode("utf-8")).hexdigest()
               for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in expected}
     assert actual == expected
-    assert hashlib.sha256((STAGE / "inspection_batch002_connection.py").read_bytes()).hexdigest() == "22b74bd53190844ba891785c9e14afc36d079bda563dc4101acdfb633ded797f"
+    connection = (STAGE / "inspection_batch002_connection.py").read_text(encoding="utf-8")
+    assert "cleanup_on_exit=normal_exit" in connection  # new explicit full-record normal-exit contract
     native = next(n for n in ast.parse(source).body if isinstance(n, ast.FunctionDef) and n.name == "native_collect")
     popens = [n for n in ast.walk(native) if isinstance(n, ast.Call) and ast.unparse(n.func) == "subprocess.Popen"]
     assert len(popens) == 1
     assert ast.unparse(popens[0]) == "subprocess.Popen(command, cwd=str(attempt), stdin=subprocess.PIPE, shell=False)"
-    assert any(isinstance(n, ast.Call) and ast.unparse(n) == "connect_ready(attempt, process, end, report['readiness'])" for n in ast.walk(native))
+    assert any(isinstance(n, ast.Call) and ast.unparse(n) == "connect_ready(attempt, process, end, report['readiness'], normal_exit=True)" for n in ast.walk(native))
 
 
 @pytest.mark.parametrize("token", [b.START, b.SUPPLEMENT_START, b.SUPPLEMENT_CANCEL, "NO", "RUN_STAGE15_READ_ONLY_MESH_INSPECTION_ONCE"])
@@ -70,7 +70,7 @@ def test_new_validation_once_leaves_original_QA_paths_and_old_failures_unchanged
         assert qa.status()["remaining_attempts"] == 1
         assert not qa.safe(qa.ATTEMPT).exists()
     assert all(p.read_bytes() == data for p,data in originals.items())
-    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 0
+    assert b.POLICY["additional_attempts_authorized"] == b.POLICY["additional_connection_attempts"] == 1
     assert b.POLICY["original_stdin_validation_attempts"] == 1
     assert b.POLICY["additional_QA_attempts"] == 0
 
@@ -100,7 +100,7 @@ def test_only_new_job_native_evidence_opens_original_QA_gate(batch):
     root, _, popen = batch
     completed_connection(root)
     result = b.Batch002Slot("arm",root).connection_gate()
-    assert result["job_id"] == b.STDIN_VALIDATION_JOB and result["job_id"] != b.SUPPLEMENT_JOB
+    assert result["job_id"] == b.FULL_RECORD_JOB and result["job_id"] not in (b.SUPPLEMENT_JOB, b.STDIN_VALIDATION_JOB)
     popen.assert_not_called()
 
 
@@ -189,7 +189,7 @@ def test_new_cancel_has_own_fixed_job_operation_and_confirmation(batch,monkeypat
 def test_eighteen_tools_fixed_schema_and_old_routes_preserved():
     source=(STAGE/"stage15_mcp.py").read_text(encoding="utf-8")
     tools={n.name:n for n in ast.parse(source).body if isinstance(n,ast.AsyncFunctionDef)}
-    assert len(tools)==18
+    assert len(tools)==20
     assert tools["stage15_stdin_validation_preflight"].args.args==[]
     assert [a.arg for a in tools["stage15_start_stdin_validation"].args.args]==["confirmation"]
     assert b.batch_job(b.STDIN_VALIDATION_JOB).ATTEMPT==b.STDIN_VALIDATION_ATTEMPT

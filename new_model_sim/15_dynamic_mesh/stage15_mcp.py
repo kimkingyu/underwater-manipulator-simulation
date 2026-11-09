@@ -17,7 +17,7 @@ from sizing_mcp_bridge import SizingBudget
 from mesh_mcp_bridge import MeshSlot
 from mesh_inspection_mcp_bridge import InspectionSlot, inspection_job
 from inspection_batch002_bridge import (Batch002Slot, SupplementalConnectionSlot, SUPPLEMENT_JOB,
-                                        StdinValidationSlot, STDIN_VALIDATION_JOB, batch_job)
+                                        StdinValidationSlot, STDIN_VALIDATION_JOB, FullRecordValidationSlot, FULL_RECORD_JOB, batch_job)
 
 mcp = FastMCP(
     "ansys-stage15",
@@ -62,6 +62,7 @@ def combined_status():
     result["inspection_batch002"] = {name: Batch002Slot(name).status() for name in ("connection", "background", "arm")}
     result["supplemental_connection"] = SupplementalConnectionSlot().status()
     result["stdin_connection_validation"] = StdinValidationSlot().status()
+    result["full_record_validation"] = FullRecordValidationSlot().status()
     return result
 
 
@@ -72,7 +73,7 @@ def job_bridge(job_id):
         return mesh
     if job_id in ("mesh-inspection-001-background", "mesh-inspection-001-arm"):
         return inspection_job(job_id)
-    if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm", SUPPLEMENT_JOB, STDIN_VALIDATION_JOB):
+    if job_id in ("inspection-b002-connection", "inspection-b002-background", "inspection-b002-arm", SUPPLEMENT_JOB, STDIN_VALIDATION_JOB, FULL_RECORD_JOB):
         return batch_job(job_id)
     return sizing.job(job_id)
 
@@ -136,6 +137,7 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     New three-slot batch002 confirmation: CANCEL_STAGE15_BATCH002_READ_ONLY.
     Supplemental connection confirmation: CANCEL_STAGE15_BATCH002_SUPPLEMENT_CONNECTION.
     New stdin validation confirmation: CANCEL_STAGE15_STDIN_CONNECTION_VALIDATION.
+    Full record validation confirmation: CANCEL_STAGE15_FULL_RECORD_VALIDATION.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -210,8 +212,8 @@ async def stage15_start_batch002(slot: Literal["connection", "background", "arm"
     """New user-authorized three-slot serial read-only batch, each <=300s including cleanup.
 
     Requires RUN_STAGE15_BATCH002_READ_ONLY_ONCE. Original connection is retired
-    and never redirected. Only the separately authorized supplemental job's native
-    health SERVING, solver identity, current frozen evidence and owned cleanup
+    and never redirected. Only the independent full-record validation job's native
+    health SERVING, complete transcript, observed normal exit, frozen evidence and owned cleanup
     can unlock these original two QA slots. Each QA slot once, no new QA budget.
     No mesh generation/write, initialization, iteration, motion, overset or CFD.
     """
@@ -228,10 +230,10 @@ async def stage15_supplement_connection_preflight() -> dict[str, Any]:
 async def stage15_start_supplement_connection(confirmation: str) -> dict[str, Any]:
     """One newly user-authorized connection only, <=300s including cleanup; no mesh read.
 
-    Requires RUN_STAGE15_BATCH002_SUPPLEMENT_CONNECTION_ONCE. The old failed
-    connection cannot be reused. Only this job's current native readiness and
-    verified cleanup may unlock the original two unused QA slots, never add QA
-    attempts. No automatic retry, mesh generation, initialization or CFD.
+    Requires RUN_STAGE15_BATCH002_SUPPLEMENT_CONNECTION_ONCE. This consumed slot
+    is permanently retired, never redirected or recreated. Preserved historical
+    results cannot unlock QA; only the independent full-record validation can.
+    No retry, extra QA, mesh generation, initialization or CFD.
     """
     return await asyncio.to_thread(guarded, SupplementalConnectionSlot().start, confirmation)
 
@@ -246,12 +248,30 @@ async def stage15_stdin_validation_preflight() -> dict[str, Any]:
 async def stage15_start_stdin_validation(confirmation: str) -> dict[str, Any]:
     """One independently authorized stdin-fix connection validation, <=300s including cleanup.
 
-    Requires RUN_STAGE15_STDIN_CONNECTION_VALIDATION_ONCE. Old connection slots
-    stay consumed/retired. Only this job's frozen native readiness, PIPE lifecycle
-    and owned cleanup can unlock the original two unused QA slots, adding zero
-    QA attempts. No mesh read, initialization, iterations, motion or CFD here.
+    Requires RUN_STAGE15_STDIN_CONNECTION_VALIDATION_ONCE. This consumed slot
+    stays permanently retired with its failed result and transcript errors intact.
+    It cannot unlock QA or redirect to the independent full-record validation.
+    No mesh read, initialization, iterations, motion or CFD here.
     """
     return await asyncio.to_thread(guarded, StdinValidationSlot().start, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_full_record_preflight() -> dict[str, Any]:
+    """Read-only full-record grant/source/input preflight; never launches or reserves."""
+    return await asyncio.to_thread(guarded, FullRecordValidationSlot().preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_full_record_validation(confirmation: str) -> dict[str, Any]:
+    """One independent full-record connection <=300s including owned cleanup.
+
+    Requires RUN_STAGE15_FULL_RECORD_VALIDATION_ONCE. Old slots stay retired.
+    This connection reads no mesh. Full transcript/start-stop, native normal exit,
+    PIPE, error logs, source/input/identity and cleanup are required to unlock only
+    original background/arm QA once each. No retry, extra QA, mesh write or CFD.
+    """
+    return await asyncio.to_thread(guarded, FullRecordValidationSlot().start, confirmation)
 
 
 if __name__ == "__main__":
