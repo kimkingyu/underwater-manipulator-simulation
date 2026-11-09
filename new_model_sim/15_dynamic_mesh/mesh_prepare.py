@@ -67,7 +67,7 @@ def domain_settings(contract, attempt, *, background_size=0.15, arm_size=0.02,
 
 
 def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type="tetrahedral",
-             cad_verification=None, stage_root=STAGE_ROOT, **mesh_options):
+             cad_verification=None, stage_root=STAGE_ROOT, fixed_refinement=False, **mesh_options):
     contract_path = Path(contract_path or STAGE_ROOT / "contract.json")
     contract = load_contract(contract_path)
     cad = [Path(cad_background).resolve(strict=True), Path(cad_arm).resolve(strict=True)]
@@ -78,10 +78,25 @@ def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type=
     verification_record = file_record(cad_verification) if cad_verification else None
     if cell_type not in ("tetrahedral", "polyhedral"):
         raise RuntimeGateError("unsupported requested cell type")
+    # The fixed trial is an internal exact policy, not a parameter sweep. Its
+    # baseline sizes/options cannot be overridden through the legacy kwargs.
+    if type(fixed_refinement) is not bool:
+        raise RuntimeGateError("Fixed refinement flag must be a strict boolean")
+    if fixed_refinement and (mesh_options or cell_type != "tetrahedral"):
+        raise RuntimeGateError("Fixed refinement permits no baseline overrides or conversion")
+    def settings(path):
+        if fixed_refinement:
+            from fixed_refinement_config import trial_settings
+            return trial_settings(contract, path)
+        return domain_settings(contract, path, **mesh_options)
     # Validate numerical settings before creating any output directory.
-    domain_settings(contract, Path(attempt), **mesh_options)
+    settings(Path(attempt))
     attempt = create_attempt(attempt, stage_root=stage_root)
-    configs = domain_settings(contract, attempt, **mesh_options)
+    configs = settings(attempt)
+    if fixed_refinement:
+        from fixed_refinement_config import configuration_comparison
+        write_json_new(attempt / "fixed_refinement_configuration.json",
+                       configuration_comparison(contract, attempt))
     meshing_template = (TEMPLATES / "meshing_stage15.py.in").read_text(encoding="utf-8")
     wb_template = (TEMPLATES / "wb_stage15.wbjn.in").read_text(encoding="utf-8")
     for item, source in zip(configs, cad):
@@ -94,7 +109,8 @@ def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type=
     with journal.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(wb_template.replace("__CONFIG_JSON__", repr(json.dumps(config, ensure_ascii=True))))
     snapshot_inputs(attempt, inputs=[contract_path] + cad + ([Path(cad_verification)] if cad_verification else []),
-                    sources=[Path(__file__), STAGE_ROOT / "runtime.py", TEMPLATES / "meshing_stage15.py.in", TEMPLATES / "wb_stage15.wbjn.in"],
+                    sources=[Path(__file__), STAGE_ROOT / "runtime.py", TEMPLATES / "meshing_stage15.py.in", TEMPLATES / "wb_stage15.wbjn.in"] +
+                            ([STAGE_ROOT / "fixed_refinement_config.py"] if fixed_refinement else []),
                     settings={"domains": [{k: v for k, v in x.items() if k != "meshing_script"} for x in configs],
                               "cell_type_requested": cell_type})
     plan = {"status": "not_run", "valid": False, "journal_generated": True, "journal": file_record(journal),

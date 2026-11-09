@@ -193,7 +193,7 @@ def test_sixteen_schema_routes_only_one_new_native_start_surface():
     source = (STAGE / "stage15_mcp.py").read_text(encoding="utf-8")
     tree = ast.parse(source)
     tools = {n.name:n for n in tree.body if isinstance(n, ast.AsyncFunctionDef)}
-    assert len(tools) == 23
+    assert len(tools) == 26
     start = tools["stage15_start_supplement_connection"]
     assert [a.arg for a in start.args.args] == ["confirmation"]
     assert tools["stage15_supplement_connection_preflight"].args.args == []

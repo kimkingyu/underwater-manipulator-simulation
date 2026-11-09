@@ -676,7 +676,9 @@ def test_new_native_command_and_api_audit():
     assert "connect_ready" in calls
     assert "launch_fluent" not in source and "connect_to_fluent" not in source
     body = ast.get_source_segment(source, native)
-    assert 'if not slot.is_connection:\n            collect_mesh' in body
+    condition=next(n for n in ast.walk(native) if isinstance(n,ast.If) and ast.unparse(n.test)=='not slot.is_connection' and any(
+        isinstance(c,ast.Call) and ast.unparse(c.func)=='collect_mesh' for c in ast.walk(n)))
+    assert condition is not None  # new fixed trial chooses only its explicitly bound mesh inside this guard
     assert 'REMOTING_SERVER_ADDRESS="127.0.0.1"' in source
     for danger in ("iterate(", "initialize(", "write_mesh(", "GenerateMesh", "read_case(", "find_remoting_ip("):
         assert danger not in source
@@ -746,7 +748,7 @@ def test_same_batch_protected_input_change_blocks_gate(batch):
 def test_old_twelve_tools_and_new_routes_preserved():
     tree = ast.parse((STAGE / "stage15_mcp.py").read_text(encoding="utf-8"))
     names = {x.name for x in tree.body if isinstance(x, ast.AsyncFunctionDef)}
-    assert len(names) == 23
+    assert len(names) == 26
     assert {"stage15_supplement_connection_preflight", "stage15_start_supplement_connection"} <= names
     assert {"stage15_mesh_inspection_preflight", "stage15_start_mesh_inspection", "stage15_batch002_preflight", "stage15_start_batch002"} <= names
     protocol = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")

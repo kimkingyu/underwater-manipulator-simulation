@@ -488,7 +488,8 @@ def test_server_schema_old_ten_and_new_routes_are_preserved():
                            "stage15_stdin_validation_preflight", "stage15_start_stdin_validation",
                            "stage15_full_record_preflight", "stage15_start_full_record_validation",
                            "stage15_review_license_classification", "stage15_local_quality_preflight",
-                           "stage15_start_local_quality_diagnostic"}
+                           "stage15_start_local_quality_diagnostic", "stage15_fixed_refinement_preflight",
+                           "stage15_start_fixed_refinement_construction", "stage15_start_fixed_refinement_QA"}
     assert "return inspection_job(job_id)" in source
     check = (STAGE / "check_mcp_connection.py").read_text(encoding="utf-8")
     assert '("stage15_start_mesh_inspection", {"domain": "arm", "confirmation": "NO"})' in check

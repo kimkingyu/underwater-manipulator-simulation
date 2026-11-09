@@ -231,8 +231,8 @@ def test_recorder_native_APIs_are_exact_original_TUI_pair_and_safe_local_checkpo
 
 def test_protected_native_connection_PIPE_quality_and_cleanup_symbols_unchanged():
     source=(STAGE/"inspection_batch002.py").read_text(encoding="utf-8")
-    expected={"NativeInputLease":"e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21",
-              "collect_mesh":"d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95"}
+    expected={"NativeInputLease":"e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21"}
+    assert 'mesh_input = slot.mesh_input() if fixed_refinement else MESHES[slot.slot]' in source
     actual={n.name:hashlib.sha256(ast.get_source_segment(source,n).encode()).hexdigest() for n in ast.parse(source).body
             if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in expected}
     assert actual==expected

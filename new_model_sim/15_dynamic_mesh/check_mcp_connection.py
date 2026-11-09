@@ -20,7 +20,8 @@ from mesh_mcp_bridge import MeshSlot, MESH_ATTEMPT, SOURCE_RELATIVES as MESH_SOU
 from mesh_inspection_mcp_bridge import InspectionSlot, SOURCES as INSPECTION_SOURCES
 from inspection_batch002_bridge import Batch002Slot, SupplementalConnectionSlot, StdinValidationSlot, FullRecordValidationSlot, SOURCES as BATCH002_SOURCES
 from local_quality_diagnostic import LocalQualitySlot, SOURCES as LOCAL_SOURCES
-SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES) | set(INSPECTION_SOURCES) | set(BATCH002_SOURCES) | set(LOCAL_SOURCES)))
+from fixed_refinement_bridge import FixedConstructionSlot, FixedQASlot, SOURCES as FIXED_SOURCES
+SOURCE_RELATIVES = tuple(sorted(set(SIZING_SOURCES) | set(MESH_SOURCES) | set(INSPECTION_SOURCES) | set(BATCH002_SOURCES) | set(LOCAL_SOURCES) | set(FIXED_SOURCES)))
 
 EXPECTED_TOOLS = {
     "stage15_status", "stage15_preflight", "stage15_start_definition_probe",
@@ -34,6 +35,7 @@ EXPECTED_TOOLS = {
     "stage15_full_record_preflight", "stage15_start_full_record_validation",
     "stage15_review_license_classification",
     "stage15_local_quality_preflight", "stage15_start_local_quality_diagnostic",
+    "stage15_fixed_refinement_preflight", "stage15_start_fixed_refinement_construction", "stage15_start_fixed_refinement_QA",
 }
 
 
@@ -63,6 +65,8 @@ async def checks():
     stdin_validation_before = StdinValidationSlot().safe(StdinValidationSlot().ATTEMPT).exists()
     full_record_before = FullRecordValidationSlot().safe(FullRecordValidationSlot().ATTEMPT).exists()
     local_before = {name: LocalQualitySlot(name).safe(LocalQualitySlot(name).ATTEMPT).exists() for name in ("background", "arm")}
+    fixed_slots=(FixedConstructionSlot(),FixedQASlot('background'),FixedQASlot('arm'))
+    fixed_before={item.JOB_ID:item.safe(item.ATTEMPT).exists() for item in fixed_slots}
     from inspection_license_review import REVIEW, REVIEW_SEAL
     review_before = {name: sha256(bridge.safe(name)) if bridge.safe(name).exists() else None for name in (REVIEW, REVIEW_SEAL)}
     # Existing locks are evidence, not something a read-only protocol check may
@@ -101,6 +105,9 @@ async def checks():
                 ("stage15_review_license_classification", {"confirmation": "NO"}),
                 ("stage15_local_quality_preflight", {"domain": "background"}),
                 ("stage15_start_local_quality_diagnostic", {"domain": "background", "confirmation": "NO"}),
+                ("stage15_fixed_refinement_preflight", {"slot": "construction"}),
+                ("stage15_start_fixed_refinement_construction", {"confirmation": "NO"}),
+                ("stage15_start_fixed_refinement_QA", {"domain":"background", "confirmation":"NO"}),
                 ("stage15_cancel_job", {"job_id": JOB_ID, "confirmation": "NO"}),
                 ("stage15_job_log", {"job_id": "../contract.json", "stream": "trace", "limit": 10}),
                 ("stage15_preflight", {}),
@@ -110,7 +117,12 @@ async def checks():
                 results[name] = decoded(await session.call_tool(name, arguments))
     after = {name: sha256(STAGE / name) for name in SOURCE_RELATIVES}
     checks_result = {
-        "exact_twentythree_tools": names == EXPECTED_TOOLS,
+        "exact_twentysix_tools": names == EXPECTED_TOOLS,
+        "legacy_twentythree_tools_preserved": EXPECTED_TOOLS-{'stage15_fixed_refinement_preflight','stage15_start_fixed_refinement_construction','stage15_start_fixed_refinement_QA'}<=names,
+        "incorrect_fixed_construction_start_refused":results['stage15_start_fixed_refinement_construction'].get('status')=='blocked',
+        "incorrect_fixed_QA_start_refused":results['stage15_start_fixed_refinement_QA'].get('status')=='blocked',
+        "fixed_preflight_structured":results['stage15_fixed_refinement_preflight'].get('status') in ('passed','blocked','failed'),
+        "fixed_slots_preserved":all(item.safe(item.ATTEMPT).exists()==fixed_before[item.JOB_ID] for item in fixed_slots),
         "legacy_twentyone_tools_preserved": EXPECTED_TOOLS - {"stage15_local_quality_preflight", "stage15_start_local_quality_diagnostic"} <= names,
         "incorrect_local_start_refused": results["stage15_start_local_quality_diagnostic"].get("status") == "blocked",
         "local_preflight_structured": results["stage15_local_quality_preflight"].get("status") in ("passed", "blocked", "failed"),

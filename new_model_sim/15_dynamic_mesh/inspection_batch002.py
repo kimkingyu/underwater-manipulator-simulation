@@ -88,7 +88,7 @@ def validate_launcher(slot, attempt, remaining):
     raise RuntimeGateError("Batch002 launcher ledger missing")
 
 
-def collect_mesh(solver, slot, attempt, report):
+def collect_mesh(solver, slot, attempt, report, *, fixed_refinement=False):
     """No connection-slot path can enter this collector."""
     if slot.slot not in MESHES:
         raise RuntimeGateError("Connection probe cannot read a mesh")
@@ -103,7 +103,8 @@ def collect_mesh(solver, slot, attempt, report):
         except Exception as exc:
             mesh["commands"][name] = "failed"
             mesh["errors"][name] = safe_connection_error(exc)
-    step("read_mesh", lambda: solver.file.read_mesh(file_name=str(slot.safe(MESHES[slot.slot]["path"]))))
+    mesh_input = slot.mesh_input() if fixed_refinement else MESHES[slot.slot]
+    step("read_mesh", lambda: solver.file.read_mesh(file_name=str(slot.safe(mesh_input["path"]))))
     if mesh["commands"].get("read_mesh") != "completed":
         raise RuntimeGateError("Batch002 read_mesh failed")
     step("quality", lambda: solver.tui.mesh.quality())
@@ -207,10 +208,14 @@ def transcript_call(solver, action, slot, attempt, report):
         raise
 
 
-def worker_context(attempt, stage_root, local_quality):
+def worker_context(attempt, stage_root, local_quality, fixed_refinement=False):
     """Internal fixed registry only; not an MCP/user callback or path extension."""
-    if type(local_quality) is not bool:
-        raise RuntimeGateError("Fixed diagnostic worker mode required")
+    if type(local_quality) is not bool or type(fixed_refinement) is not bool or local_quality and fixed_refinement:
+        raise RuntimeGateError("One fixed internal worker mode required")
+    if fixed_refinement:
+        from fixed_refinement_bridge import QA_slot_for_attempt, validate_QA_attempt, TRIAL, PROVENANCE
+        slot, path = QA_slot_for_attempt(attempt, stage_root)
+        return slot, path, validate_QA_attempt, TRIAL, PROVENANCE
     if local_quality:
         from local_quality_diagnostic import local_slot_for_attempt, validate_local_request, BATCH_ID, PROVENANCE
         slot, path = local_slot_for_attempt(attempt, stage_root)
@@ -219,8 +224,8 @@ def worker_context(attempt, stage_root, local_quality):
     return slot, path, validate_request, BATCH, "live_fluent_batch002"
 
 
-def native_collect(attempt, *, stage_root=STAGE, local_quality=False):
-    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality)
+def native_collect(attempt, *, stage_root=STAGE, local_quality=False, fixed_refinement=False):
+    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality, fixed_refinement)
     if slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"]:
         raise RuntimeGateError("Consumed connection worker permanently retired; no new native allowance")
     request = request_validator(slot, attempt)
@@ -277,7 +282,10 @@ def native_collect(attempt, *, stage_root=STAGE, local_quality=False):
         bounded_call(lambda: transcript_call(solver, "start", slot, attempt, report),
                      min(TRANSCRIPT_CALL_SECONDS, max(0, request["work_deadline_unix"] - time.time() - 20)))
         if not slot.is_connection:
-            collect_mesh(solver, slot, attempt, report)
+            if fixed_refinement:
+                collect_mesh(solver, slot, attempt, report, fixed_refinement=True)
+            else:
+                collect_mesh(solver, slot, attempt, report)
         if local_quality:
             from local_quality_evidence import query_histogram
             report["local_histogram"] = query_histogram(solver, lambda: request["work_deadline_unix"] - time.time() - 20)
@@ -328,8 +336,8 @@ def native_collect(attempt, *, stage_root=STAGE, local_quality=False):
     return report
 
 
-def run(attempt, *, stage_root=STAGE, local_quality=False):
-    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality)
+def run(attempt, *, stage_root=STAGE, local_quality=False, fixed_refinement=False):
+    slot, attempt, request_validator, batch_id, provenance = worker_context(attempt, stage_root, local_quality, fixed_refinement)
     if (slot.slot == "connection" or slot.slot == SUPPLEMENT and POLICY["supplement_connection_retired"] or
             slot.slot == POLICY["stdin_validation_slot"] and POLICY["stdin_validation_retired"] or
             (attempt / "probe_result.json").exists()):

@@ -297,7 +297,12 @@ class Stage15Bridge:
         if self.safe(".ansys-task.lock").exists():
             raise BridgeError("Existing ANSYS ownership lock: no new task permitted")
         if self.OPERATION != "mesh_inspection" and self.safe(".mesh-inspection-dispatch.lock").exists():
-            raise BridgeError("Read-only inspection worker dispatch ownership is pending")
+            # The fixed new construction reserves the same serial transport
+            # before the worker owns the ANSYS task lock. No user flag/path.
+            dispatch = self._json('.mesh-inspection-dispatch.lock')
+            if not (self.OPERATION == 'fixed_refinement_construction' and self.JOB_ID == 'fixed-refinement-001-construction' and
+                    dispatch.get('job_id') == self.JOB_ID and type(dispatch.get('token')) is str and len(dispatch['token']) == 32):
+                raise BridgeError("Read-only inspection worker dispatch ownership is pending")
         python = self._python()
         sources = self._sources()
         self.safe(Path(self.ATTEMPT).parent).mkdir(parents=True, exist_ok=True)

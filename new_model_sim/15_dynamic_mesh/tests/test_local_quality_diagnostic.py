@@ -258,7 +258,7 @@ def test_new_native_path_single_launch_connect_PIPE_exit_and_bounded_query(local
 def test_fixed_MCP_surface_no_free_commands_or_bulk_fields():
     source = (STAGE / "stage15_mcp.py").read_text(encoding="utf-8")
     tools = {n.name: n for n in ast.parse(source).body if isinstance(n, ast.AsyncFunctionDef)}
-    assert len(tools) == 23
+    assert len(tools) == 26
     assert [x.arg for x in tools["stage15_start_local_quality_diagnostic"].args.args] == ["domain", "confirmation"]
     evidence = (STAGE / "local_quality_evidence.py").read_text(encoding="utf-8")
     calls = [ast.unparse(n.func) for n in ast.walk(ast.parse(evidence)) if isinstance(n, ast.Call)]

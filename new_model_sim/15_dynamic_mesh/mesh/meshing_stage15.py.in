@@ -134,6 +134,7 @@ try:
     # Explicit tetrahedron method: no hidden conversion to polyhedral cells.
     body_selection = ExtAPI.SelectionManager.CreateSelectionInfo(SelectionTypeEnum.GeometryEntities)
     body_selection.Ids = [bodies[0].GetGeoBody().Id]
+    R['fluid_body_geometry_ids'] = list(body_selection.Ids)
     method = mesh.AddAutomaticMethod()
     method.Location = body_selection
     method.Method = MethodType.AllTriAllTet
@@ -153,6 +154,19 @@ try:
         size.SphereCenter = cs
         size.SphereRadius = Quantity(str(sphere["radius_m"]) + " [m]")
         size.ElementSize = Quantity(str(sphere["size_m"]) + " [m]")
+        # Read public assigned properties back before generation. Raw Quantity
+        # text includes units; the owning trial validates it without assuming
+        # that Quantity.Value is already expressed in metres.
+        R.setdefault('sphere_readback', []).append({
+            'index': i, 'name': native_text(size.Name),
+            'type': native_text(size.Type), 'state': native_text(size.ObjectState),
+            'geometry_ids': list(size.Location.Ids),
+            'coordinate_system_name': native_text(cs.Name),
+            'assigned_coordinate_system_name': native_text(size.SphereCenter.Name),
+            'coordinate_system_state': native_text(cs.ObjectState),
+            'centre': [native_text(cs.OriginX), native_text(cs.OriginY), native_text(cs.OriginZ)],
+            'radius': native_text(size.SphereRadius),
+            'element_size': native_text(size.ElementSize)})
     R['definitions_before_generate'] = {
         'mesh': object_snapshot(mesh),
         'bodies': [object_snapshot(body) for body in bodies],

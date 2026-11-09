@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "fixed_sphere_trial_implementation_only_no_native_execution",
+  "trial_id": "fixed-refinement-trial001",
+  "native_construction_performed": false,
+  "native_QA_performed": false,
+  "slot_states": {
+    "construction": "unused",
+    "background_QA": "unused",
+    "arm_QA": "unused"
+  },
+  "mesh_output_relative": "runs/mesh/fixed_refinement_trial_001",
+  "authorized_appended_spheres_m": {
+    "background": {
+      "centre_m": [
+        0.282807,
+        0.453505,
+        0.426884
+      ],
+      "radius_m": 0.05,
+      "size_m": 0.01
+    },
+    "arm": {
+      "centre_m": [
+        -0.0153238,
+        -0.170113,
+        -0.349268
+      ],
+      "radius_m": 0.03,
+      "size_m": 0.001
+    }
+  },
+  "baseline_changes_other_than_one_appended_sphere_each": false,
+  "protected_contract_or_CAD_or_old_mesh_changed": false,
+  "construction_total_seconds_including_cleanup": 7200,
+  "construction_per_domain_seconds": 3600,
+  "QA_seconds_per_domain_including_cleanup": 300,
+  "cleanup_reserve_seconds": 30,
+  "automatic_retries": 0,
+  "initialization_iteration_motion_overset_or_CFD_allowed": false,
+  "construction_gate": "actual native sphere centre/radius/size/type/state/CS/unit/unique fluid-body scope, unchanged baseline controls, source/input/CAD/old mesh hashes, actual native export and copied mesh identity, budget and owned cleanup",
+  "QA_gate": "only each newly exported trial mesh with matching build/source/grant/hash/native-readback/cleanup; same 0.01 quality, positive volume and wall-fluid adjacency; no acceptance from execution completed alone",
+  "native_refinement_effect_verified": false,
+  "new_mesh_quality_verified": false,
+  "preserved_local_diagnostics": {
+    "remaining_attempts": 2,
+    "slots_consumed": 0,
+    "old_authorization_and_source_manifest_modified": false,
+    "current_old_source_manifest_matches_changed_shared_modules": false,
+    "use_requires_separate_zero_additional_attempts_source_rebinding": true
+  },
+  "offline_regression": {
+    "tests_passed": 1333,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "portable_tests_passed": 1330,
+    "local_calibration_tests_deselected": 3,
+    "mcp_tools": 26,
+    "source_hashes_bound": true
+  },
+  "previous_1251_archive": {
+    "files": 95,
+    "manifest_sha256": "0d0e27389201bce0f1ba1bdc1d5bd643b315c7004b9c8a1c42611b9b042be269"
+  },
+  "runtime_state": "MCP reloaded and start tools loaded, but companion preflight tool discovery rejected by host approved input changed; no start attempted",
+  "publication_scope": "Source/tests and implementation-only summary, not runtime grants, private manifests, credentials, raw logs, CAD or mesh binaries"
+}

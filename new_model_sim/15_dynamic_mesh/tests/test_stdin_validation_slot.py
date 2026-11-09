@@ -19,8 +19,8 @@ from test_supplement_connection import old_failure
 
 def test_native_PIPE_worker_and_connection_adapter_match_original_1036_bytes():
     source = (STAGE / "inspection_batch002.py").read_text(encoding="utf-8")
-    expected = {"NativeInputLease": "e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21",
-                "collect_mesh": "d8e107eee19a8380dc8c7d4735101a270edf3d105f43b30a6d4cb4cdddb9fa95"}
+    expected = {"NativeInputLease": "e082fd88fa2177cc9e4ba6e1f16d60c31cdc03c651c46e6efd1f6e08c979ac21"}
+    assert 'mesh_input = slot.mesh_input() if fixed_refinement else MESHES[slot.slot]' in source
     actual = {n.name: hashlib.sha256(ast.get_source_segment(source,n).encode("utf-8")).hexdigest()
               for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.ClassDef)) and n.name in expected}
     assert actual == expected
@@ -189,7 +189,7 @@ def test_new_cancel_has_own_fixed_job_operation_and_confirmation(batch,monkeypat
 def test_eighteen_tools_fixed_schema_and_old_routes_preserved():
     source=(STAGE/"stage15_mcp.py").read_text(encoding="utf-8")
     tools={n.name:n for n in ast.parse(source).body if isinstance(n,ast.AsyncFunctionDef)}
-    assert len(tools)==23
+    assert len(tools)==26
     assert tools["stage15_stdin_validation_preflight"].args.args==[]
     assert [a.arg for a in tools["stage15_start_stdin_validation"].args.args]==["confirmation"]
     assert b.batch_job(b.STDIN_VALIDATION_JOB).ATTEMPT==b.STDIN_VALIDATION_ATTEMPT

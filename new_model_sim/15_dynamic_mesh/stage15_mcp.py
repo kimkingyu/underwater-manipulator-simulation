@@ -20,6 +20,7 @@ from inspection_batch002_bridge import (Batch002Slot, SupplementalConnectionSlot
                                         StdinValidationSlot, STDIN_VALIDATION_JOB, FullRecordValidationSlot, FULL_RECORD_JOB, batch_job)
 
 from local_quality_diagnostic import LocalQualitySlot, local_job
+from fixed_refinement_bridge import FixedConstructionSlot, FixedQASlot, fixed_job, BUILD_JOB
 
 mcp = FastMCP(
     "ansys-stage15",
@@ -66,6 +67,7 @@ def combined_status():
     result["stdin_connection_validation"] = StdinValidationSlot().status()
     result["full_record_validation"] = FullRecordValidationSlot().status()
     result["local_quality_diagnostics"] = {name: LocalQualitySlot(name).status() for name in ("background", "arm")}
+    result["fixed_refinement"] = {"construction":FixedConstructionSlot().status(), "QA":{name:FixedQASlot(name).status() for name in ("background","arm")}}
     return result
 
 
@@ -80,6 +82,8 @@ def job_bridge(job_id):
         return batch_job(job_id)
     if job_id in ("local-quality-001-background", "local-quality-001-arm"):
         return local_job(job_id)
+    if job_id in (BUILD_JOB,"fixed-refinement-001-QA-background","fixed-refinement-001-QA-arm"):
+        return fixed_job(job_id)
     return sizing.job(job_id)
 
 
@@ -144,6 +148,8 @@ async def stage15_cancel_job(job_id: str, confirmation: str) -> dict[str, Any]:
     New stdin validation confirmation: CANCEL_STAGE15_STDIN_CONNECTION_VALIDATION.
     Full record validation confirmation: CANCEL_STAGE15_FULL_RECORD_VALIDATION.
     Local quality diagnostic confirmation: CANCEL_STAGE15_LOCAL_QUALITY_DIAGNOSTIC.
+    Fixed refinement construction: CANCEL_STAGE15_FIXED_REFINEMENT_CONSTRUCTION.
+    Fixed refinement QA: CANCEL_STAGE15_FIXED_REFINEMENT_QA.
     This is a request acknowledgment; final cleanup must be checked separately.
     """
     return await asyncio.to_thread(guarded, cancel_job, job_id, confirmation)
@@ -310,6 +316,38 @@ async def stage15_start_local_quality_diagnostic(domain: Literal["background", "
     marking, initialization, iterations, motion, overset assembly or CFD.
     """
     return await asyncio.to_thread(guarded, LocalQualitySlot(domain).start, confirmation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+async def stage15_fixed_refinement_preflight(slot: Literal["construction","background","arm"]) -> dict[str,Any]:
+    """Read-only fixed sphere trial source/input/gate check; never reserves/launches Native."""
+    item=FixedConstructionSlot() if slot=="construction" else FixedQASlot(slot)
+    return await asyncio.to_thread(guarded,item.preflight)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_fixed_refinement_construction(confirmation: str) -> dict[str,Any]:
+    """One fixed new two-domain sphere-only construction <=7200s including cleanup.
+
+    Requires RUN_STAGE15_FIXED_REFINEMENT_CONSTRUCTION_ONCE. Exactly the approved
+    appended background/arm sphere; all other baseline controls and original CAD/
+    mesh/contract unchanged. No retry, solver, initialization, motion or CFD.
+    Completion is construction evidence only; QA needs actual sphere readback,
+    exports, input/source/mesh hash and cleanup. Original local slots untouched.
+    """
+    return await asyncio.to_thread(guarded,FixedConstructionSlot().start,confirmation)
+
+
+@mcp.tool(annotations=START)
+async def stage15_start_fixed_refinement_QA(domain: Literal["background","arm"], confirmation: str) -> dict[str,Any]:
+    """One <=300s QA per new trial mesh, bound to its construction/native readback.
+
+    Requires RUN_STAGE15_FIXED_REFINEMENT_QA_ONCE. No old mesh or slots reused.
+    Same native .01/positive-volume/wall-adjacency gate, normal exit, exact helper
+    and cleanup requirements. Failed quality stays failed; never retries or runs
+    initialization, iterations, motion, overset assembly or CFD.
+    """
+    return await asyncio.to_thread(guarded,FixedQASlot(domain).start,confirmation)
 
 
 if __name__ == "__main__":
