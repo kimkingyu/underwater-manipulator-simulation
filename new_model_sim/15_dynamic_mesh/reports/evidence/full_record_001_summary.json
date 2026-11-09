@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "derived_redacted_full_record_native_observations_and_strict_failed_gate",
+  "job_id": "inspection-b002-full-record-001",
+  "elapsed_seconds": 33.098874673829414,
+  "original_status": "failed",
+  "original_status_modified": false,
+  "connection_slot_consumed": true,
+  "connection_retries_remaining": 0,
+  "original_QA_slots_unconsumed": 2,
+  "QA_gate_passed": false,
+  "native_observations": {
+    "transport_READY": true,
+    "authenticated_health_SERVING": true,
+    "solver_mode": true,
+    "version": "24.2.0",
+    "transcript_start_completed": true,
+    "transcript_stop_completed": true,
+    "transcript_bytes": 1033,
+    "transcript_sha256": "bd5415cc2d760e74f6057e78bf662c4542dad4554de4ec8cab430fd3f9dc31bb",
+    "native_error_classes": [],
+    "normal_exit_requested": true,
+    "native_launcher_returncode": 0,
+    "PIPE_open_during_exit_and_wait": true,
+    "PIPE_bytes_written": 0,
+    "library_force_exit_called": false,
+    "native_adapter_returncode": 0
+  },
+  "strict_failure_reason": {
+    "rule": "any owned live process before cleanup makes overall status failed",
+    "remaining_process_count": 1,
+    "remaining_process_name": "ansyscl.exe",
+    "remaining_process_role": "owned licensing client",
+    "process_identity_verified_by_pid_and_creation_time": true,
+    "remaining_solver_process_observed": false,
+    "helper_cleaned_by_owned_tree": true,
+    "helper_classification_does_not_rewrite_original_status": true
+  },
+  "cleanup": {
+    "owned_cleanup_verified": true,
+    "serial_dispatch_released": true,
+    "inputs_reverified_after_cleanup": true,
+    "sources_reverified_after_cleanup": true,
+    "independent_active_clients": 0,
+    "task_and_dispatch_locks_absent": true
+  },
+  "original_receipt_sha256": {
+    "request.json": "453a23620058f0c7d6a230c14b3f54188fad1d91bb9e3047a64936aa17f4f0f4",
+    "native_result.json": "0c0c4edfce8e65285d63ac3df645ac2cc0281adc07dcd9698eadd368b85df0fd",
+    "readiness.json": "0256de668fd1d6c33bc08851365eea70b5a9469576e0a5ab4ff82f5d4ac82d6e",
+    "probe_result.json": "6c88c46c303b6096a48364a15c2abaaab3f7cdb98d21849727c116a5292f45f8",
+    "normal_exit_completed.json": "7f4faee2323fd98d2d8c58ecd89680212acbcd9affed43986ea3afdf9e499a2a"
+  },
+  "native_log_review": {
+    "scope": "fixed_attempt_error_files_and_adapter_logs",
+    "files": [
+      {
+        "name": "native.stdout.log",
+        "size": 11890,
+        "sha256": "0c4c8e2416c314a19a864dd3385b353c33058dfbc99925829c54f22e50375174",
+        "error_classes": []
+      },
+      {
+        "name": "native.stderr.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "error_classes": []
+      },
+      {
+        "name": "native.transcript.txt",
+        "size": 1033,
+        "sha256": "bd5415cc2d760e74f6057e78bf662c4542dad4554de4ec8cab430fd3f9dc31bb",
+        "error_classes": []
+      }
+    ],
+    "error_classes": [],
+    "raw_text_persisted": false,
+    "server_info_processed": false
+  },
+  "unperformed": {
+    "mesh_read": true,
+    "initialization": true,
+    "iteration": true,
+    "mesh_motion": true,
+    "mesh_generation_or_write": true
+  },
+  "native_mesh_quality_volume_or_adjacency_verified": false,
+  "publication_scope": "Derived redacted evidence only. No credentials, runtime grants, raw native logs or mesh/CAD binaries. The original failed result is unchanged and does not unlock QA."
+}

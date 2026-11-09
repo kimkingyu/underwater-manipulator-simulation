@@ -1,7 +1,7 @@
 {
-  "schema_version": 6,
+  "schema_version": 7,
   "stage": "15_dynamic_mesh",
-  "status": "full_record_validation_implemented_host_preflight_blocked_no_new_native",
+  "status": "full_native_record_and_exit_verified_owned_license_helper_triggers_failed_gate",
   "implemented": [
     "isolated CAD/domain preparation and kinematic audits",
     "bounded Workbench/MCP diagnostic jobs with PID/create-time ownership and preserved receipts",
@@ -252,6 +252,12 @@
       "sha256": "56a0902b47204c08490d3fd41a34ae0e0edb02061871d7268152ec2e07fdc453",
       "kind": "implementation_only_no_new_native",
       "QA_gate_passed": false
+    },
+    {
+      "path": "evidence/full_record_001_summary.json",
+      "sha256": "14e1bcb69740856b4d4a30b3c6b3420e5c4a0db28aa3d7dd4bbd5a0b1acb3912",
+      "kind": "native_full_record_observations_strict_gate_failed",
+      "QA_gate_passed": false
     }
   ],
   "not_yet_validated": [
@@ -369,11 +375,14 @@
     "summary": "evidence/stdin_validation_001_summary.json"
   },
   "full_record_validation": {
-    "state": "implemented_not_executed",
-    "slot_consumed": false,
+    "state": "executed_original_status_failed",
+    "slot_consumed": true,
     "conditional_QA_slots_remaining": 2,
     "QA_gate_passed": false,
-    "native_evidence_added": false,
-    "summary": "evidence/full_record_implementation_summary.json"
+    "native_evidence_added": true,
+    "native_ready_transcript_normal_exit": true,
+    "remaining_owned_license_helper_before_cleanup": 1,
+    "owned_cleanup_verified": true,
+    "summary": "evidence/full_record_001_summary.json"
   }
 }
