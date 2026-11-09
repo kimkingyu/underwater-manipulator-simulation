@@ -76,6 +76,10 @@
     },
     {
       "domain": "arm",
+      "native_mesh_check_result": "failed_unassigned_overset_zone",
+      "native_mesh_check_warning": "overset zone 5 does not belong to any overset interface; Mesh check failed",
+      "native_mesh_check_source_lines": [88, 91],
+      "completed_command_is_not_a_full_topology_pass": true,
       "job_id": "inspection-b002-arm",
       "elapsed_seconds": 58.78998494532425,
       "execution_status": "completed",

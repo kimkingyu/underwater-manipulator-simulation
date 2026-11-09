@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "scope": "read-only interpretation of existing native QA transcripts and Meshing controls; no new native execution",
+  "quality_threshold_unchanged": 0.01,
+  "observations": [
+    {
+      "domain": "background",
+      "source": "runs/mcp_mesh_inspection/batch_002/background/native.transcript.txt",
+      "minimum_quality_line": 53,
+      "minimum_orthogonal_quality": 0.000743696,
+      "cell_index": 6760009,
+      "native_cell_ID": 8615634,
+      "partition": 0,
+      "zone_id": 2,
+      "zone_name": "fluid_background",
+      "location_m": [0.282807, 0.453505, 0.426884],
+      "maximum_aspect_ratio_line": 57,
+      "maximum_aspect_ratio": 161.909,
+      "maximum_aspect_ratio_cell_index": 6760097,
+      "maximum_aspect_ratio_native_cell_ID": 8615638,
+      "maximum_aspect_ratio_location_m": [0.26567, 0.455136, 0.425849],
+      "control_readback": {"global_size_mm": 150, "maximum_size_mm": 200, "minimum_size_mm": 0.3, "growth_rate": 1.3, "curvature_capture": false, "proximity_capture": false},
+      "existing_refinement_sphere": {"centre_m": [-0.000004, -0.0366, -0.460702], "radius_m": 0.65, "element_size_mm": 10},
+      "offline_geometric_observation": "The worst-quality point is approximately 1.0526 m from the existing refinement sphere centre, outside its 0.65 m radius. This does not prove the cause of the bad cell."
+    },
+    {
+      "domain": "arm",
+      "source": "runs/mcp_mesh_inspection/batch_002/arm/native.transcript.txt",
+      "minimum_quality_line": 57,
+      "minimum_orthogonal_quality": 0.000214865,
+      "cell_index": 115539,
+      "native_cell_ID": 842319,
+      "partition": 0,
+      "zone_id": 2,
+      "zone_name": "fluid_arm",
+      "location_m": [-0.0153238, -0.170113, -0.349268],
+      "maximum_aspect_ratio_line": 61,
+      "maximum_aspect_ratio": 1095.95,
+      "maximum_aspect_ratio_cell_index": 53679,
+      "maximum_aspect_ratio_native_cell_ID": 845375,
+      "maximum_aspect_ratio_location_m": [-0.0119555, -0.159525, -0.35936],
+      "control_readback": {"global_size_mm": 20, "maximum_size_mm": 20, "minimum_size_mm": 0.3, "growth_rate": 1.3, "curvature_capture": false, "proximity_capture": false},
+      "native_mesh_check": {
+        "source_lines": [88, 91],
+        "warning": "overset zone 5 does not belong to any overset interface",
+        "result": "Mesh check failed",
+        "context": "No overset interface assembly is performed in this independent-domain read-only scope.",
+        "quality_failure_cause_proven_by_this_warning": false,
+        "full_topology_passed": false
+      }
+    }
+  ],
+  "missing_evidence": [
+    "number of cells with orthogonal quality below 0.01",
+    "quality histogram and quantiles",
+    "native face/component ownership and local neighbourhood around bad cells",
+    "whether defects arise from geometry, narrow gaps, curvature or size transitions"
+  ],
+  "existing_meshing_quality_statistics": "unavailable for skewness/orthogonal quality; cannot reconstruct distributions from failed fields",
+  "repair_candidates_not_implemented": [
+    {"id": "A", "setting": "global growth rate 1.3 to 1.2 only; keep local face GrowthRate unset", "hypothesis": "May improve size-transition defects if confirmed locally", "risk": "Unproven cause; can increase element count"},
+    {"id": "B", "setting": "one fixed local volumetric refinement sphere around each confirmed defect; choose a single radius/size per domain, not a sweep", "candidate_ranges_only": {"background_radius_mm": [40, 80], "background_size_mm": [10, 20], "arm_radius_mm": [20, 40], "arm_size_mm": [0.75, 1.5]}, "hypothesis": "Targets observed defect regions instead of global refinement", "risk": "May move the worst cell or fail on geometric degeneracy; arm cell-count growth"},
+    {"id": "C", "setting": "curvature capture only after native wall/curved-surface ownership is confirmed; keep proximity disabled", "hypothesis": "May improve under-resolved curved surfaces", "risk": "No current wall attribution; definition/readback must be verified in a new authorized run"}
+  ],
+  "recommended_next_scope_not_authorized_here": "A bounded read-only localization batch, at most one existing-mesh session per domain, each <=300 s including cleanup, to request native Q<0.01 count, finite bins and at most 20 worst-cell records; unavailable APIs remain unavailable. No repairs, writes, initialization, iterations, motion or overset assembly. Then select one fixed repair experiment separately.",
+  "clarification": "completed mesh-check command is only an invocation status; arm native mesh-check result is failed. Positive global minimum volume and wall-fluid adjacency do not establish a complete topology or overset pass.",
+  "native_executions_in_this_analysis": 0,
+  "mesh_or_CAD_modified": false,
+  "new_runtime_authorization_created": false
+}

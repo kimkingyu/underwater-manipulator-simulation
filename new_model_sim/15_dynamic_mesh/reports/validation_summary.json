@@ -133,6 +133,13 @@
   "local_prerequisites": "Native execution requires an authorized local ANSYS installation, user-owned CAD and explicit local authorization records; none are supplied by this publication. FrozenMeasurementReferenceTests require local native calibration fixtures.",
   "evidence": [
     {
+      "path": "evidence/mesh_quality_localization_001.json",
+      "sha256": "427bedacf85ff448bb1c78d1817373aa38e125a8eefa605de31e0f503cff9d48",
+      "kind": "existing_native_worst_cell_localization_and_unimplemented_repair_candidates",
+      "new_native_runs": 0,
+      "arm_full_topology_passed": false
+    },
+    {
       "path": "evidence/mesh_construction_004_summary.json",
       "sha256": "14afc765ae5c7ec78a46d3597d5978e440eb4be9e2a37d1d52a824c8e3879c7a",
       "kind": "derived_native_construction_summary",
@@ -264,7 +271,7 @@
     },
     {
       "path": "evidence/two_domain_QA_002_summary.json",
-      "sha256": "7acc450cece79d7aa9f42923ef25b6cd2ed75e8d68413cc19d6364b28b9b8ea1",
+      "sha256": "2493d277c6650333768daef3bdb8618d55680df9cd261e2edb565f7a69ff7394",
       "kind": "real_native_QA_quality_failure",
       "mesh_quality_passed": false
     }
