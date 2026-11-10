@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "question": "Does Fluent 2024 R2 overset accept polyhedral cells (tet mesh converted to polyhedra)?",
+  "local_install_help": "D:/Program Files/ANSYS Inc/v242/commonfiles/help/en-us contains only fluent_gui_help fragments; no overset text found locally",
+  "source": "https://ansyshelp.ansys.com/public/Views/Secured/corp/v242/en/flu_ug/flu_ug_sec_overset.html",
+  "source_section": "Fluent 2024 R2 User's Guide 6.7 Overset Meshes",
+  "retrieved_local_date": "2026-11-10",
+  "quoted_statement": "All cell types generally supported in Fluent are supported with overset meshing, including polyhedral cells in 3D. The different zones paired in an overset interface can have different element types or can have mixed element types.",
+  "answer": "supported",
+  "relevant_requirements": {
+    "overlap_cells_min": 4,
+    "gap_cells_min": 4,
+    "donor_receptor_length_ratio_default_max": 3,
+    "overlapping_wall_tolerance": "at most one cell size in wall-normal direction",
+    "background_zone_may_not_have_overset_boundary": true,
+    "one_cell_zone_per_overset_interface": true,
+    "FMG_initialization_supported": false,
+    "orphan_cells": "should be removed by mesh changes; default numerical treatment does not guarantee accuracy or robustness"
+  },
+  "decision": "Generate tetrahedra in Meshing, convert both domains to polyhedra in Fluent (convert-domain then one improve-quality), then gate on min orthogonal quality >= 0.01, positive volume, wall adjacency, and later static overset zero orphans. Target total <= 500000 polyhedral cells (kim).",
+  "not_yet_verified_natively": [
+    "convert-domain on a mesh containing the overset_arm boundary keeps the boundary type and name",
+    "polyhedral overset assembly orphan count for this geometry"
+  ]
+}

@@ -67,7 +67,7 @@ def domain_settings(contract, attempt, *, background_size=0.15, arm_size=0.02,
 
 
 def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type="tetrahedral",
-             cad_verification=None, stage_root=STAGE_ROOT, fixed_refinement=False, **mesh_options):
+             cad_verification=None, stage_root=STAGE_ROOT, fixed_refinement=False, compact=False, **mesh_options):
     contract_path = Path(contract_path or STAGE_ROOT / "contract.json")
     contract = load_contract(contract_path)
     cad = [Path(cad_background).resolve(strict=True), Path(cad_arm).resolve(strict=True)]
@@ -82,12 +82,19 @@ def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type=
     # baseline sizes/options cannot be overridden through the legacy kwargs.
     if type(fixed_refinement) is not bool:
         raise RuntimeGateError("Fixed refinement flag must be a strict boolean")
-    if fixed_refinement and (mesh_options or cell_type != "tetrahedral"):
+    if type(compact) is not bool:
+        raise RuntimeGateError("Compact profile flag must be a strict boolean")
+    if fixed_refinement and (compact or mesh_options or cell_type != "tetrahedral"):
         raise RuntimeGateError("Fixed refinement permits no baseline overrides or conversion")
+    if compact and mesh_options:
+        raise RuntimeGateError("Compact profile is a fixed configuration; no size overrides")
     def settings(path):
         if fixed_refinement:
             from fixed_refinement_config import trial_settings
             return trial_settings(contract, path)
+        if compact:
+            from compact_mesh_config import compact_settings
+            return compact_settings(contract, path)
         return domain_settings(contract, path, **mesh_options)
     # Validate numerical settings before creating any output directory.
     settings(Path(attempt))
@@ -110,7 +117,8 @@ def generate(attempt, cad_background, cad_arm, *, contract_path=None, cell_type=
         stream.write(wb_template.replace("__CONFIG_JSON__", repr(json.dumps(config, ensure_ascii=True))))
     snapshot_inputs(attempt, inputs=[contract_path] + cad + ([Path(cad_verification)] if cad_verification else []),
                     sources=[Path(__file__), STAGE_ROOT / "runtime.py", TEMPLATES / "meshing_stage15.py.in", TEMPLATES / "wb_stage15.wbjn.in"] +
-                            ([STAGE_ROOT / "fixed_refinement_config.py"] if fixed_refinement else []),
+                            ([STAGE_ROOT / "fixed_refinement_config.py"] if fixed_refinement else []) +
+                            ([STAGE_ROOT / "compact_mesh_config.py"] if compact else []),
                     settings={"domains": [{k: v for k, v in x.items() if k != "meshing_script"} for x in configs],
                               "cell_type_requested": cell_type})
     plan = {"status": "not_run", "valid": False, "journal_generated": True, "journal": file_record(journal),
@@ -216,6 +224,7 @@ def main(argv=None):
     parser.add_argument("--cad-verification", help="actual independent CAD verify report; not a generated manifest")
     parser.add_argument("--cell-type", choices=("tetrahedral", "polyhedral"), default="tetrahedral")
     parser.add_argument("--collect", action="store_true")
+    parser.add_argument("--compact", action="store_true", help="fixed <=500k-cell profile (compact_mesh_config.py)")
     parser.add_argument("--mesh-background")
     parser.add_argument("--mesh-arm")
     for name, default in (("background-size", .15), ("arm-size", .02), ("interface-size", .01),
@@ -231,9 +240,13 @@ def main(argv=None):
         else:
             if not args.cad_background or not args.cad_arm:
                 parser.error("generation requires two explicit saved .scdoc files")
-            opts = {key: getattr(args, key) for key in ("background_size", "arm_size", "interface_size", "contact_size", "overlap_radius", "minimum_size", "growth_rate")}
-            result = generate(args.attempt, args.cad_background, args.cad_arm, contract_path=args.contract,
-                              cell_type=args.cell_type, cad_verification=args.cad_verification, **opts)
+            if args.compact:
+                result = generate(args.attempt, args.cad_background, args.cad_arm, contract_path=args.contract,
+                                  cad_verification=args.cad_verification, compact=True)
+            else:
+                opts = {key: getattr(args, key) for key in ("background_size", "arm_size", "interface_size", "contact_size", "overlap_radius", "minimum_size", "growth_rate")}
+                result = generate(args.attempt, args.cad_background, args.cad_arm, contract_path=args.contract,
+                                  cell_type=args.cell_type, cad_verification=args.cad_verification, **opts)
         print(json.dumps({k: result[k] for k in ("status", "valid", "motion_authorized")}, ensure_ascii=False))
         return 2 if result["status"] == "failed" else 0
     except Exception as exc:
