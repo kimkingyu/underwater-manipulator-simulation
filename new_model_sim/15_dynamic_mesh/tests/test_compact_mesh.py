@@ -48,9 +48,14 @@ class CompactProfileTests(unittest.TestCase):
         bg, arm = cmc.compact_settings(self.contract, self.root)
         new = cmc.rough_tet_estimate(bg, arm)["total_tets"]
         old = cmc.rough_tet_estimate(*mesh_prepare.domain_settings(self.contract, self.root))["total_tets"]
-        self.assertLess(new, old / 10)
-        # Past tet->poly ratios 0.36-0.55 put this under 500k polyhedra.
-        self.assertLess(new * 0.6, cmc.MAX_TOTAL_POLY_CELLS)
+        self.assertLess(new, old / 8)
+        # Planning number only: gap spheres sit mostly inside solid parts, so the volume term
+        # overestimates. The binding budget is the native post-conversion count recorded in
+        # COMPACT_RESULT (compact_001 background + compact_003 arm).
+        actual = sum(cmc.COMPACT_RESULT[d]["polyhedral_cells"] for d in ("background", "arm"))
+        self.assertLessEqual(actual, cmc.MAX_TOTAL_POLY_CELLS)
+        self.assertTrue(all(cmc.COMPACT_RESULT[d]["min_orth"] >= cmc.MIN_ORTHOGONAL_QUALITY
+                            for d in ("background", "arm")))
 
     def test_contact_sizes_match_and_bad_sphere_rejected(self):
         bg, arm = cmc.compact_settings(self.contract, self.root)
@@ -68,7 +73,11 @@ class CompactProfileTests(unittest.TestCase):
             plan = mesh_prepare.generate(attempt, self.background, self.arm, stage_root=self.root, compact=True)
             spawn.assert_not_called()
         self.assertEqual(plan["status"], "not_run")
-        self.assertEqual(plan["domains"][0]["profile"], "compact-001")
+        self.assertEqual(plan["domains"][0]["profile"], cmc.PROFILE)
+        self.assertEqual(len(plan["domains"][1]["spheres"]), len(cmc.ARM_GAP_SPHERES))
+        for s in plan["domains"][1]["spheres"]:
+            self.assertLessEqual(s["radius_m"], 0.01)
+            self.assertGreaterEqual(s["size_m"], cmc.MINIMUM_SIZE_M)
         frozen = json.loads((attempt / "inputs.json").read_text(encoding="utf-8"))
         self.assertTrue(any(s["path"].endswith("compact_mesh_config.py") for s in frozen["sources"]))
         with self.assertRaises(runtime.RuntimeGateError):
@@ -98,6 +107,16 @@ class PolyGateTests(unittest.TestCase):
 
     def test_cell_count_parse(self):
         self.assertEqual(poly_convert.parse_cells("  318726 polyhedra cells, zone  2.\n 12 faces"), 318726)
+
+    def test_skipped_conversion_is_not_counted_as_polyhedra(self):
+        # Real compact_001 arm transcript: Fluent skipped conversion, mesh stayed tetrahedral.
+        info = "354949 tetrahedral cells, zone  2.\n693948 triangular interior faces, zone  1."
+        self.assertEqual(poly_convert.parse_cells(info), 0)
+        self.assertEqual(poly_convert.parse_cells(info, ("tetrahedral",)), 354949)
+        good = poly_convert.parse_quality(self.TEXT)
+        errors = poly_convert.verdict({"poly_improved": good, "polyhedral_cells": 0,
+                                       "tetrahedral_cells_remaining": 354949})
+        self.assertIn("conversion incomplete: 354949 tetrahedral cells remain", errors)
 
 
 if __name__ == "__main__":

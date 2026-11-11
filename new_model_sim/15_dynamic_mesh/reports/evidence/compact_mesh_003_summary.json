@@ -1,0 +1,190 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "compact_two_domain_mesh_native_build_and_polyhedral_QA",
+  "requirement": "kim: total cells <= 500,000; gate min orthogonal quality >= 0.01, no negative volume",
+  "replaces": "attempt_004 (8,617,720 + 846,862 tetrahedra; min orth 0.000744 / 0.000215)",
+  "attempts": {
+    "compact_001": {
+      "background": {
+        "nodes": 55083,
+        "tetrahedra": 307159,
+        "spheres": [
+          {
+            "name": "stage15_overlap_0",
+            "state": "FullyDefined",
+            "radius": "363.3 [mm]",
+            "size": "25 [mm]"
+          }
+        ],
+        "status": "passed_static_single_domain",
+        "polyhedral_cells": 70150,
+        "tetrahedral_cells_remaining": null,
+        "errors": [],
+        "seconds": 70.2,
+        "min_orth_tet": 0.000189217,
+        "min_orth_final": 0.0352546,
+        "min_volume_final_m3": 8.034741e-09,
+        "worst_location_final_m": "2.76793e-01,  4.56959e-01,  4.32110e-01"
+      },
+      "arm": {
+        "nodes": 67077,
+        "tetrahedra": 354949,
+        "spheres": [],
+        "convert_domain": {
+          "status": "failed",
+          "polyhedral_cells": 354949,
+          "tetrahedral_cells_remaining": null,
+          "errors": [
+            "final minimum orthogonal quality 4.20169e-06 < 0.01"
+          ],
+          "seconds": 59.1,
+          "min_orth_tet": 4.20169e-06,
+          "min_orth_final": 4.20169e-06,
+          "min_volume_final_m3": 2.380021e-14,
+          "worst_location_final_m": "-2.77659e-02, -1.84299e-01, -5.52703e-01"
+        },
+        "tet_pre_improve": {
+          "status": "failed",
+          "polyhedral_cells": 0,
+          "tetrahedral_cells_remaining": 354949,
+          "errors": [
+            "final minimum orthogonal quality 4.20169e-06 < 0.01",
+            "polyhedral cell count not observed",
+            "conversion incomplete: 354949 tetrahedral cells remain"
+          ],
+          "seconds": 65.1,
+          "min_orth_tet": 4.20169e-06,
+          "min_orth_final": 4.20169e-06,
+          "min_volume_final_m3": 2.380021e-14,
+          "worst_location_final_m": "-2.77659e-02, -1.84299e-01, -5.52703e-01"
+        },
+        "convert_skewed_cells_0.9": {
+          "status": "failed",
+          "polyhedral_cells": 0,
+          "tetrahedral_cells_remaining": 0,
+          "errors": [
+            "final minimum orthogonal quality 4.20169e-06 < 0.01",
+            "polyhedral cell count not observed"
+          ],
+          "seconds": 58.8,
+          "min_orth_tet": 4.20169e-06,
+          "min_orth_final": 4.20169e-06,
+          "min_volume_final_m3": 2.380021e-14,
+          "worst_location_final_m": "-2.77659e-02, -1.84299e-01, -5.52703e-01"
+        }
+      },
+      "diagnosis": "Fluent skipped convert-domain ('Cell Equivolume Skewness too high'); worst tets at pin4 ends, pin4-link3 gap 0.094 mm, pin4-jaw2 0.148 mm"
+    },
+    "compact_002": {
+      "arm": {
+        "nodes": 98723,
+        "tetrahedra": 521530,
+        "spheres": [
+          {
+            "name": "stage15_overlap_0",
+            "state": "FullyDefined",
+            "radius": "6 [mm]",
+            "size": "0.4 [mm]"
+          },
+          {
+            "name": "stage15_overlap_1",
+            "state": "FullyDefined",
+            "radius": "6 [mm]",
+            "size": "0.4 [mm]"
+          }
+        ],
+        "status": "failed",
+        "polyhedral_cells": 151861,
+        "tetrahedral_cells_remaining": 0,
+        "errors": [
+          "final minimum orthogonal quality 0.00220182 < 0.01"
+        ],
+        "seconds": 91.4,
+        "min_orth_tet": 2.72343e-05,
+        "min_orth_final": 0.00220182,
+        "min_volume_final_m3": 8.290227e-14,
+        "worst_location_final_m": "-1.51808e-02, -1.70037e-01, -3.59595e-01"
+      },
+      "diagnosis": "two pin4 spheres fixed pin4 ends; worst moved to l2-link3 (0.21 mm) and l1-l2 (0.205 mm) gaps"
+    },
+    "compact_003": {
+      "arm": {
+        "nodes": 126490,
+        "tetrahedra": 663996,
+        "spheres": [
+          {
+            "name": "stage15_overlap_0",
+            "state": "FullyDefined",
+            "radius": "6 [mm]",
+            "size": "0.4 [mm]"
+          },
+          {
+            "name": "stage15_overlap_1",
+            "state": "FullyDefined",
+            "radius": "6 [mm]",
+            "size": "0.4 [mm]"
+          },
+          {
+            "name": "stage15_overlap_2",
+            "state": "FullyDefined",
+            "radius": "5 [mm]",
+            "size": "0.4 [mm]"
+          },
+          {
+            "name": "stage15_overlap_3",
+            "state": "FullyDefined",
+            "radius": "5 [mm]",
+            "size": "0.4 [mm]"
+          },
+          {
+            "name": "stage15_overlap_4",
+            "state": "FullyDefined",
+            "radius": "5 [mm]",
+            "size": "0.4 [mm]"
+          }
+        ],
+        "status": "passed_static_single_domain",
+        "polyhedral_cells": 190206,
+        "tetrahedral_cells_remaining": 0,
+        "errors": [],
+        "seconds": 97.1,
+        "min_orth_tet": 3.93598e-05,
+        "min_orth_final": 0.0364001,
+        "min_volume_final_m3": 8.607045e-14,
+        "worst_location_final_m": "-1.22341e-02, -1.56462e-01, -3.55736e-01"
+      }
+    }
+  },
+  "accepted_pair": {
+    "background": {
+      "case": "runs/mesh/compact_001/background_poly.cas.h5",
+      "sha256": "41f5f439300efef6780963a1965bc83df1f53939944f8b597559257d525e91fc",
+      "source_msh_sha256": "91c6df7e0c98a5c07862c34221bc6eda2c014866b9adc34d1ec49ed846f08d92"
+    },
+    "arm": {
+      "case": "runs/mesh/compact_003/arm_poly.cas.h5",
+      "sha256": "48fbb358ac7adc3fe62433a4c6711cc77893b105b98344f9158cd276855bed24",
+      "source_msh_sha256": "c950677e8d76264525c8e6240bac2f286e06341305f10561ceedd2fc5bc3bf8e"
+    },
+    "total_polyhedral_cells": 260356,
+    "within_500k": true,
+    "min_orth": {
+      "background": 0.0352546,
+      "arm": 0.0364001
+    },
+    "negative_volume": false
+  },
+  "geometry_changed": false,
+  "hull_removed": false,
+  "not_yet_run": [
+    "static overset assembly and orphan count",
+    "motion API probe",
+    "mesh cycle",
+    "flow"
+  ],
+  "notes": [
+    "background.msh identical in compact_001/002/003 (same SHA256); converted once",
+    "arm gap spheres r 5-6 mm / 0.4 mm only; no CAD edit",
+    "Fluent warns 'overset zone 5 does not belong to any overset interface' for a standalone arm domain; expected until the interface is created"
+  ]
+}

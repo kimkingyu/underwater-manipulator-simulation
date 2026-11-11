@@ -37,8 +37,9 @@ def parse_quality(text):
     return row
 
 
-def parse_cells(text):
-    return sum(int(n) for n in re.findall(r"^\s*(\d+)\s+(?:polyhedra|polyhedral|tetrahedral|mixed)\s+cells", text, re.M))
+def parse_cells(text, kinds=("polyhedra", "polyhedral")):
+    pattern = r"^\s*(\d+)\s+(?:" + "|".join(kinds) + r")\s+cells"
+    return sum(int(n) for n in re.findall(pattern, text, re.M))
 
 
 def verdict(report):
@@ -54,6 +55,8 @@ def verdict(report):
         errors.append("Fluent reported errors during quality/check")
     if not report.get("polyhedral_cells"):
         errors.append("polyhedral cell count not observed")
+    if report.get("tetrahedral_cells_remaining") and report.get("skewed_only") is None:
+        errors.append("conversion incomplete: %d tetrahedral cells remain" % report["tetrahedral_cells_remaining"])
     if report.get("domain") == "arm" and "mesh_info" in report and not any(
             "overset" in line for line in report["mesh_info"]):
         errors.append("overset boundary faces not observed after conversion")
@@ -64,13 +67,22 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mesh", required=True)
     parser.add_argument("--domain", required=True, choices=("background", "arm"))
+    parser.add_argument("--tag", default="poly", help="output name suffix; a new tag never overwrites an earlier attempt")
+    parser.add_argument("--pre-improve", action="store_true",
+                        help="one tet improve-quality before convert-domain (Fluent skips conversion when equivolume skewness is too high)")
+    parser.add_argument("--skewed-only", type=float, metavar="SKEWNESS",
+                        help="instead of convert-domain, convert only cells above this equivolume skewness (mixed tet+poly result)")
     args = parser.parse_args(argv)
+    if args.skewed_only is not None and not 0.5 <= args.skewed_only < 1.0:
+        raise SystemExit("skewness threshold must be in [0.5, 1)")
+    if not re.fullmatch(r"[A-Za-z0-9_]{1,32}", args.tag):
+        raise SystemExit("invalid tag")
     mesh = Path(args.mesh).resolve(strict=True)
     if STAGE not in mesh.parents:
         raise SystemExit("mesh must be inside stage15")
-    out = mesh.parent / (args.domain + "_poly.json")
-    trn = mesh.parent / (args.domain + "_poly.trn")
-    case = mesh.parent / (args.domain + "_poly.cas.h5")
+    out = mesh.parent / (args.domain + "_" + args.tag + ".json")
+    trn = mesh.parent / (args.domain + "_" + args.tag + ".trn")
+    case = mesh.parent / (args.domain + "_" + args.tag + ".cas.h5")
     for p in (out, trn, case):
         if p.exists():
             raise SystemExit("refusing to overwrite " + str(p))
@@ -79,6 +91,7 @@ def main(argv=None):
     import ansys.fluent.core as pyfluent
 
     report = {"domain": args.domain, "mesh": str(mesh), "gate_min_orth": GATE, "status": "failed",
+              "tag": args.tag, "pre_improve": args.pre_improve, "skewed_only": args.skewed_only,
               "initialized": False, "iterations": 0, "motion": False, "overset_assembled": False}
 
     def save():
@@ -103,8 +116,18 @@ def main(argv=None):
         solver.transcript.start(str(trn))
         solver.file.read_mesh(file_name=str(mesh))
         quality("tet")
+        if args.pre_improve:
+            solver.tui.mesh.repair_improve.improve_quality()
+            quality("tet_improved")
         t0 = time.time()
-        solver.tui.mesh.polyhedra.convert_domain()
+        if args.skewed_only is None:
+            solver.tui.mesh.polyhedra.convert_domain()
+        else:
+            zone = "fluid_" + args.domain
+            # TUI prompts: cell zone list, then maximum cell skewness. Passed as one Scheme
+            # menu string because the pyfluent positional form raised wta(1st) symbol->string.
+            solver.scheme_eval.scheme_eval('(ti-menu-load-string "mesh/polyhedra/convert-skewed-cells %s () %g")'
+                                           % (zone, args.skewed_only))
         report["convert_seconds"] = round(time.time() - t0, 1)
         quality("poly")
         solver.tui.mesh.repair_improve.improve_quality()
@@ -114,6 +137,7 @@ def main(argv=None):
         info = transcript_since(before)
         report["mesh_info"] = [l.strip() for l in info.splitlines() if "cells" in l or "faces" in l or "nodes" in l][:30]
         report["polyhedral_cells"] = parse_cells(info)
+        report["tetrahedral_cells_remaining"] = parse_cells(info, ("tetrahedral",))
         solver.file.write(file_type="case", file_name=str(case))
         report["case_written"] = case.exists()
     except Exception as exc:

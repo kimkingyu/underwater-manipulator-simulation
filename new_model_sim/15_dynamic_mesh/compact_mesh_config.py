@@ -15,9 +15,31 @@ import math
 
 from runtime import RuntimeGateError
 
-PROFILE = "compact-001"
+PROFILE = "compact-003"
+# compact-002 (runs/mesh/compact_002): pin4 spheres fixed the pin4 ends and the arm converted
+# (151,861 poly) but min orth 0.0022 moved to the l2/link3 (0.21 mm) and l1/l2 (0.205 mm) gaps.
+# compact-001 (runs/mesh/compact_001): background passed (70,150 poly, min orth 0.0353); arm stayed
+# tetrahedral, Fluent refused convert-domain ("Cell Equivolume Skewness too high") and min orth was
+# 4.2e-6. Worst cells sit at both ends of pin4, where pin4-link3 gap is 0.094 mm and pin4-jaw2 0.148 mm
+# (measured from exported wall triangles). compact-002 adds local spheres there only.
+ARM_GAP_SPHERES = (
+    {"centre_m": [-0.0438, -0.1820, -0.5560], "radius_m": 0.006, "size_m": 0.0004},  # pin4/link3/jaw1 end
+    {"centre_m": [-0.0278, -0.1860, -0.5565], "radius_m": 0.006, "size_m": 0.0004},  # pin4/link3/jaw2 end
+    {"centre_m": [-0.0153, -0.1708, -0.3595], "radius_m": 0.005, "size_m": 0.0004},  # l2/link3 gap, upper
+    {"centre_m": [-0.0210, -0.1925, -0.3215], "radius_m": 0.005, "size_m": 0.0004},  # l2/link3 gap, lower
+    {"centre_m": [0.0137, -0.0435, -0.5135], "radius_m": 0.005, "size_m": 0.0004},   # l1/l2 gap
+)
 MAX_TOTAL_POLY_CELLS = 500_000
 MIN_ORTHOGONAL_QUALITY = 0.01
+
+# Native Fluent 24.2 results (poly_convert.py, convert-domain + one improve-quality).
+# Background is identical in compact_001/002/003 (same SHA256); compact_001 is the converted copy.
+COMPACT_RESULT = {
+    "background": {"attempt": "runs/mesh/compact_001", "tetrahedra": 307159, "polyhedral_cells": 70150,
+                   "min_orth": 0.0352546, "min_volume_m3": 8.034741e-09},
+    "arm": {"attempt": "runs/mesh/compact_003", "tetrahedra": 663996, "polyhedral_cells": 190206,
+            "min_orth": 0.0364001, "min_volume_m3": 8.607045e-14},
+}
 
 # Arm overset box from runs/cad_arm_completion/attempt_002/build_report.json
 ARM_BOX_LO_M = (-0.14343444406861916, -0.27383906772699129, -0.72053967036103161)
@@ -77,7 +99,7 @@ def compact_settings(contract, attempt):
            "required_selections": moving + [domains["overset_boundary"]],
            "face_controls": [{"name": n, "size_m": arm_wall_size(n)} for n in moving] +
                             [{"name": domains["overset_boundary"], "size_m": OVERSET_BOUNDARY_SIZE_M}],
-           "spheres": []}
+           "spheres": [dict(s, centre_m=list(s["centre_m"])) for s in ARM_GAP_SPHERES]}
     for item in (background, arm):
         item.update({"minimum_size_m": MINIMUM_SIZE_M, "growth_rate": GROWTH_RATE,
                      "stats_path": str(attempt / (item["domain"] + "_meshing_stats.json")),
@@ -120,5 +142,6 @@ def rough_tet_estimate(background, arm, tets_per_cube=7.5, tets_per_surface_tria
                    for c in item["face_controls"])
     bg = sphere + tank + surface(background)
     am = surface(arm) + tets_per_cube * 0.032 / ARM_GLOBAL_SIZE_M ** 3
+    am += sum(tets_per_cube * (4 / 3 * math.pi * s["radius_m"] ** 3) / s["size_m"] ** 3 for s in arm["spheres"])
     return {"background_tets": round(bg), "arm_tets": round(am), "total_tets": round(bg + am),
             "basis": "7.5 tets per h^3 volume (attempt_004 sphere calibration) + ~10 tets per wall triangle"}
